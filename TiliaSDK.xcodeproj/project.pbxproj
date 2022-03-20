@@ -24,6 +24,9 @@
 		D135DCB627E7703D0009D888 /* TLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB527E7703D0009D888 /* TLManager.swift */; };
 		D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB727E771100009D888 /* ServerConfiguration.swift */; };
 		D135DCBA27E777030009D888 /* ServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB927E777030009D888 /* ServerClient.swift */; };
+		D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165827E7C0AF0082A85B /* AccountRouter.swift */; };
+		D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165A27E7C0C50082A85B /* PaymentRouter.swift */; };
+		D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */; };
 		DE8A075B715F949C9C932C21 /* Pods_TiliaSDK_TiliaSDKUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +74,9 @@
 		D135DCB527E7703D0009D888 /* TLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLManager.swift; sourceTree = "<group>"; };
 		D135DCB727E771100009D888 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 		D135DCB927E777030009D888 /* ServerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClient.swift; sourceTree = "<group>"; };
+		D188165827E7C0AF0082A85B /* AccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouter.swift; sourceTree = "<group>"; };
+		D188165A27E7C0C50082A85B /* PaymentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRouter.swift; sourceTree = "<group>"; };
+		D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouter.swift; sourceTree = "<group>"; };
 		D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK_TiliaSDKUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -152,7 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				D135DCB427E7702B0009D888 /* Managers */,
-				D135DCAD27E762790009D888 /* Interfaces */,
+				D135DCAD27E762790009D888 /* Routers */,
 				D135DCA827E75F320009D888 /* Models */,
 				D135DC7827E74A4A0009D888 /* AppDelegate.swift */,
 				D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */,
@@ -192,12 +198,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		D135DCAD27E762790009D888 /* Interfaces */ = {
+		D135DCAD27E762790009D888 /* Routers */ = {
 			isa = PBXGroup;
 			children = (
 				D135DCAB27E762460009D888 /* RouterProtocol.swift */,
+				D188165827E7C0AF0082A85B /* AccountRouter.swift */,
+				D188165A27E7C0C50082A85B /* PaymentRouter.swift */,
+				D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */,
 			);
-			path = Interfaces;
+			path = Routers;
 			sourceTree = "<group>";
 		};
 		D135DCB427E7702B0009D888 /* Managers */ = {
@@ -451,9 +460,12 @@
 				D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* ViewController.swift in Sources */,
+				D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */,
 				D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */,
+				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
 				D135DCAC27E762460009D888 /* RouterProtocol.swift in Sources */,
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
+				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
 				D135DCB627E7703D0009D888 /* TLManager.swift in Sources */,
 				D135DCAF27E763130009D888 /* TLEnvironment.swift in Sources */,
 				D135DCB327E76E090009D888 /* TLError.swift in Sources */,
