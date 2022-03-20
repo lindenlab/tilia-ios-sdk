@@ -11,7 +11,8 @@ public final class TLManager {
   
   static let shared = TLManager()
   
-  private(set) lazy var serverConfiguration = ServerConfiguration()
+  private(set) var serverConfiguration = ServerConfiguration()
+  private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue")
   
   private init() { }
   
@@ -22,15 +23,23 @@ public final class TLManager {
 public extension TLManager {
   
   func setToken(_ token: String) {
-    serverConfiguration.token = token
+    executeOnQueue { serverConfiguration.token = token }
   }
   
   func setTimeoutInterval(_ timeoutInterval: Double) {
-    serverConfiguration.timeoutInterval = timeoutInterval
+    executeOnQueue { serverConfiguration.timeoutInterval = timeoutInterval }
   }
   
   func setEnvironment(_ environment: TLEnvironment) {
-    serverConfiguration.environment = environment
+    executeOnQueue { serverConfiguration.environment = environment }
+  }
+  
+}
+
+private extension TLManager {
+  
+  func executeOnQueue(handler: () -> Void) {
+    synchronizationQueue.sync(execute: handler)
   }
   
 }
