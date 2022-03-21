@@ -7,6 +7,8 @@
 
 import Foundation
 
+public typealias CompletionResultHandler<T> = (Result<T, Error>) -> Void
+
 public final class TLManager {
   
   static let shared = TLManager()
@@ -32,6 +34,17 @@ public extension TLManager {
   
   func setEnvironment(_ environment: TLEnvironment) {
     executeOnQueue { serverConfiguration.environment = environment }
+  }
+  
+}
+
+// MARK: - Get User Info
+
+public extension TLManager {
+  
+  func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TLTosModel>) {
+    ServerClient.performRequestWithDecodableModel(router: AccountRouter.getTosRequiredForUser,
+                                                  completion: completion)
   }
   
 }

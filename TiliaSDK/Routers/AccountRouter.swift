@@ -9,12 +9,22 @@ import Alamofire
 
 enum AccountRouter: RouterProtocol {
   
-  var method: HTTPMethod { return .get }
+  case getTosRequiredForUser
+  
+  var method: HTTPMethod {
+    switch self {
+    case .getTosRequiredForUser: return .get
+    }
+  }
   
   var bodyParameters: Parameters? { return nil }
   
   var service: String { return "accounts" }
   
-  var endpoint: String { return "" }
+  var endpoint: String {
+    switch self {
+    case .getTosRequiredForUser: return "/v1/user-info/tos/tilia"
+    }
+  }
   
 }

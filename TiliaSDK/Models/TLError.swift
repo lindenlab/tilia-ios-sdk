@@ -11,6 +11,10 @@ public enum TLError: Error {
   
   case invalidToken
   
+  case serverBaseResponseIsNil
+  case serverBaseResponseDecodingFailed
+  case serverError(String)
+  
 }
 
 // MARK: -
@@ -21,6 +25,10 @@ extension TLError: LocalizedError {
     switch self {
     case .invalidToken:
       return "Invalid or empty token"
+    case .serverBaseResponseIsNil, .serverBaseResponseDecodingFailed:
+      return "Something went wrong"
+    case .serverError(let error):
+      return error
     }
   }
   

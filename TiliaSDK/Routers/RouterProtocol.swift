@@ -26,9 +26,7 @@ extension RouterProtocol {
   }
   
   func requestHeaders() throws -> [String: String?] {
-    guard let token = serverConfiguration.token, !token.isEmpty else {
-      throw TLError.invalidToken
-    }
+    guard let token = serverConfiguration.token, !token.isEmpty else { throw TLError.invalidToken }
     let headers = [
       "Content-Type": "application/json",
       "Authorization": "Bearer \(token)"
@@ -37,7 +35,7 @@ extension RouterProtocol {
   }
   
   func asURLRequest() throws -> URLRequest {
-    let stringUrl = "https://\(service).\(serverConfiguration.environment.description).com/\(endpoint)"
+    let stringUrl = "https://\(service).\(serverConfiguration.environment.description).com\(endpoint)"
     let url = try stringUrl.asURL()
     
     var urlRequest = URLRequest(url: url)
