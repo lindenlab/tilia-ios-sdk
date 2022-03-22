@@ -10,11 +10,8 @@ import Foundation
 public enum TLError: Error {
   
   case invalidToken
-  
-  case serverBaseResponseIsNil
-  case serverBaseResponseDecodingFailed
+  case decodableDataIsNil
   case serverError(String)
-  
   case userBalanceDoesNotExistForCurrency(String)
   
 }
@@ -27,7 +24,7 @@ extension TLError: LocalizedError {
     switch self {
     case .invalidToken:
       return "Invalid or empty token"
-    case .serverBaseResponseIsNil, .serverBaseResponseDecodingFailed:
+    case .decodableDataIsNil:
       return "Something went wrong"
     case .serverError(let error):
       return error

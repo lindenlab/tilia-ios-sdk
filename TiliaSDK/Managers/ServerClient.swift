@@ -36,22 +36,17 @@ enum ServerClient {
 private extension ServerClient {
   
   static func performRequestWithDecodableModel<DataType: Decodable>(router: URLRequestConvertible, completion: @escaping CompletionResultHandler<DataType>) {
-    AF.request(router).validate().responseJSON { response in
+    AF.request(router).validate().responseDecodable(of: BaseResponse<DataType>.self) { response in
       switch response.result {
-      case .success(let data):
-        do {
-          let baseResponse = try BaseResponse<DataType>(from: data)
-          switch baseResponse.result {
-          case .success(let model):
-            completion(.success(model))
-          case .failure(let error):
-            completion(.failure(error))
-          }
-        } catch {
+      case .success(let baseResponse):
+        switch baseResponse.result {
+        case .success(let model):
+          completion(.success(model))
+        case .failure(let error):
           completion(.failure(error))
         }
       case .failure(let error):
-        if let serverError = (try? BaseResponse<DataType>(from: response.data?.simpleSerialize))?.error {
+        if let serverError = (try? BaseResponse<DataType>.decodeObject(from: response.data))?.error {
           completion(.failure(serverError))
         } else {
           completion(.failure(error))

@@ -9,11 +9,10 @@ import Foundation
 
 extension Decodable {
   
-  static func decodeObject(from dataDict: Any?) throws -> Self? {
-    guard let dataDict = dataDict, !(dataDict is NSNull) else { return nil }
-    let jsonData: Data = try JSONSerialization.data(withJSONObject: dataDict, options: [.prettyPrinted])
+  static func decodeObject(from data: Data?) throws -> Self {
+    guard let data = data else { throw TLError.decodableDataIsNil }
     let decoder = JSONDecoder()
-    return try decoder.decode(Self.self, from: jsonData)
+    return try decoder.decode(Self.self, from: data)
   }
   
 }
