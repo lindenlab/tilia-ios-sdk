@@ -11,7 +11,7 @@ public typealias CompletionResultHandler<T> = (Result<T, Error>) -> Void
 
 public final class TLManager {
   
-  static let shared = TLManager()
+  public static let shared = TLManager()
   
   private(set) var serverConfiguration = ServerConfiguration()
   private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue")
