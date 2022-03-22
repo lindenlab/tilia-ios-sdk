@@ -25,6 +25,8 @@ extension RouterProtocol {
     return TLManager.shared.serverConfiguration
   }
   
+  var bodyParameters: Parameters? { return nil }
+  
   func requestHeaders() throws -> [String: String?] {
     guard let token = serverConfiguration.token, !token.isEmpty else { throw TLError.invalidToken }
     let headers = [

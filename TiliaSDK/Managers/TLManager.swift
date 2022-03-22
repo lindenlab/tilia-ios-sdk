@@ -43,8 +43,11 @@ public extension TLManager {
 public extension TLManager {
   
   func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TLTosModel>) {
-    ServerClient.performRequestWithDecodableModel(router: AccountRouter.getTosRequiredForUser,
-                                                  completion: completion)
+    ServerClient.getTosRequiredForUser(completion: completion)
+  }
+  
+  func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<TLBalanceModel>) {
+    ServerClient.getUserBalanceByCurrencyCode(currencyCode, completion: completion)
   }
   
 }

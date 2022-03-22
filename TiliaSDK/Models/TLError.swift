@@ -15,9 +15,11 @@ public enum TLError: Error {
   case serverBaseResponseDecodingFailed
   case serverError(String)
   
+  case userBalanceDoesNotExistForCurrency(String)
+  
 }
 
-// MARK: -
+// MARK: - LocalizedError
 
 extension TLError: LocalizedError {
   
@@ -29,6 +31,8 @@ extension TLError: LocalizedError {
       return "Something went wrong"
     case .serverError(let error):
       return error
+    case .userBalanceDoesNotExistForCurrency(let currency):
+      return "User balance does not exist for currency: \(currency)"
     }
   }
   

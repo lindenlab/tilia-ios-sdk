@@ -9,12 +9,20 @@ import Alamofire
 
 enum PaymentRouter: RouterProtocol {
   
-  var method: HTTPMethod { return .get }
+  case getUserBalanceByCurrencyCode
   
-  var bodyParameters: Parameters? { return nil }
-  
+  var method: HTTPMethod {
+    switch self {
+    case .getUserBalanceByCurrencyCode: return .get
+    }
+  }
+    
   var service: String { return "payments" }
   
-  var endpoint: String { return "" }
+  var endpoint: String {
+    switch self {
+    case .getUserBalanceByCurrencyCode: return "/transaction-methods"
+    }
+  }
   
 }
