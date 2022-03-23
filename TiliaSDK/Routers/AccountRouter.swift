@@ -17,8 +17,6 @@ enum AccountRouter: RouterProtocol {
     }
   }
   
-  var bodyParameters: Parameters? { return nil }
-  
   var service: String { return "accounts" }
   
   var endpoint: String {
