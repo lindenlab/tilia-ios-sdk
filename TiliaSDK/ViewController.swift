@@ -17,14 +17,16 @@ class ViewController: UIViewController {
 
 
   @IBAction func doSmth(_ sender: Any) {
-    TLManager.shared.getUserBalanceByCurrencyCode("TST") { result in
-      switch result {
-      case .success(let model):
-        print(model)
-      case .failure(let error):
-        print(error)
-      }
-    }
+    let vc = TLTosViewController()
+    present(vc, animated: true)
+//    TLManager.shared.getUserBalanceByCurrencyCode("TST") { result in
+//      switch result {
+//      case .success(let model):
+//        print(model)
+//      case .failure(let error):
+//        print(error)
+//      }
+//    }
   }
 }
 
