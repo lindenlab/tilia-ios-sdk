@@ -17,8 +17,7 @@ class ViewController: UIViewController {
 
 
   @IBAction func doSmth(_ sender: Any) {
-    let vc = TLTosViewController()
-    present(vc, animated: true)
+    TLManager.shared.showTosIsRequired(on: self, animated: true)
 //    TLManager.shared.getUserBalanceByCurrencyCode("TST") { result in
 //      switch result {
 //      case .success(let model):

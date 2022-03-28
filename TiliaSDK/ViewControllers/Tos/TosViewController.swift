@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final public class TLTosViewController: UIViewController {
+final class TosViewController: UIViewController {
   
   private let viewModel: TosViewModelProtocol = TosViewModel()
   private lazy var router: TosRoutingProtocol = {
@@ -65,7 +65,7 @@ final public class TLTosViewController: UIViewController {
     return button
   }()
   
-  public init() {
+  init() {
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
   }
@@ -75,7 +75,7 @@ final public class TLTosViewController: UIViewController {
     modalPresentationStyle = .fullScreen
   }
   
-  public override func viewDidLoad() {
+  override func viewDidLoad() {
     super.viewDidLoad()
     setup()
     bind()
@@ -83,7 +83,7 @@ final public class TLTosViewController: UIViewController {
   
 }
 
-private extension TLTosViewController {
+private extension TosViewController {
   
   func setup() {
     view.backgroundColor = .white
