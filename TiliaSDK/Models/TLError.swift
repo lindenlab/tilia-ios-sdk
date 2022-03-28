@@ -13,7 +13,7 @@ public enum TLError: Error {
   case decodableDataIsNil
   case serverError(String)
   case userBalanceDoesNotExistForCurrency(String)
-  
+  case tosIsNotSigned
 }
 
 // MARK: - LocalizedError
@@ -30,6 +30,8 @@ extension TLError: LocalizedError {
       return error
     case .userBalanceDoesNotExistForCurrency(let currency):
       return "User balance does not exist for currency: \(currency)"
+    case .tosIsNotSigned:
+      return "Terms Of Services can not be accepted"
     }
   }
   

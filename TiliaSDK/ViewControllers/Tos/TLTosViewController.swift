@@ -8,10 +8,16 @@
 import UIKit
 import Combine
 
-final public class TLTosViewController: UIViewController {
+final public class TLTosViewController: TLBaseViewController {
   
   private let viewModel: TosViewModelProtocol = TosViewModel()
+  private lazy var router: TosRoutingProtocol = {
+    let router = TosRouter()
+    router.viewController = self
+    return router
+  }()
   private var subscriptions: Set<AnyCancellable> = []
+  private var links: [TosAcceptModel] { return TosAcceptModel.allCases }
   
   private let titleLabel: UILabel = {
     let label = UILabel()
@@ -32,12 +38,12 @@ final public class TLTosViewController: UIViewController {
   
   private lazy var messageTextView: TextViewWithLink = {
     let textView = TextViewWithLink()
-    textView.linkPublisher.sink {
-      print($0)
+    textView.linkPublisher.sink { [weak self] in
+      self?.router.routeToWebView(with: $0)
     }.store(in: &subscriptions)
     textView.translatesAutoresizingMaskIntoConstraints = false
-    let text = "I agree to Tilia Inc.'s Terms of Service and acknowledge receipt of Tilia Inc.'s Privacy Policy."
-    let links = ["Terms of Service", "Privacy Policy"]
+    let text = TosAcceptModel.title
+    let links = self.links.map { $0.rawValue }
     textView.textData = (text, links)
     return textView
   }()
@@ -47,6 +53,7 @@ final public class TLTosViewController: UIViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Accept", for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
+    button.isEnabled = false
     return button
   }()
   
@@ -71,6 +78,7 @@ final public class TLTosViewController: UIViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
     setup()
+    bind()
   }
   
 }
@@ -101,20 +109,28 @@ private extension TLTosViewController {
     ])
   }
   
+  func bind() {
+    viewModel.loading.sink { [weak self] in
+      self?.isLoading = $0
+    }.store(in: &subscriptions)
+    viewModel.accept.sink { [weak self] _ in
+      self?.router.dismiss()
+    }.store(in: &subscriptions)
+    viewModel.error.sink { [weak self] in
+      self?.router.showAlert(title: $0.localizedDescription)
+    }.store(in: &subscriptions)
+  }
+  
   @objc func switchDidChange() {
     acceptButton.isEnabled = acceptSwitch.isOn
   }
   
   @objc func acceptButtonDidTap() {
-    
+    viewModel.acceptTos()
   }
   
   @objc func cancelButtonDidTap() {
-    if presentingViewController != nil {
-      dismiss(animated: true)
-    } else if let navigationController = navigationController, navigationController.contains(self) {
-      navigationController.popViewController(animated: true)
-    }
+    router.dismiss()
   }
   
 }
