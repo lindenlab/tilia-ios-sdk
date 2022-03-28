@@ -5,6 +5,7 @@
 //  Created by Serhii.Petrishenko on 23.03.2022.
 //
 
+import UIKit
 import Combine
 
 protocol TosViewModelInputProtocol {

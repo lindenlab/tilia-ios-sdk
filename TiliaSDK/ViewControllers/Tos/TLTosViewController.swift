@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final public class TLTosViewController: TLBaseViewController {
+final public class TLTosViewController: UIViewController {
   
   private let viewModel: TosViewModelProtocol = TosViewModel()
   private lazy var router: TosRoutingProtocol = {
@@ -48,8 +48,8 @@ final public class TLTosViewController: TLBaseViewController {
     return textView
   }()
   
-  private lazy var acceptButton: UIButton = {
-    let button = UIButton(type: .system)
+  private lazy var acceptButton: ButtonWithSpinner = {
+    let button = ButtonWithSpinner(type: .system)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("Accept", for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
@@ -111,10 +111,12 @@ private extension TLTosViewController {
   
   func bind() {
     viewModel.loading.sink { [weak self] in
-      self?.isLoading = $0
+      guard let self = self else { return }
+      self.acceptButton.isLoading = $0
+      self.acceptButton.isEnabled = self.acceptSwitch.isOn
     }.store(in: &subscriptions)
     viewModel.accept.sink { [weak self] _ in
-      self?.router.dismiss()
+      self?.router.dismiss(animated: true, completion: nil)
     }.store(in: &subscriptions)
     viewModel.error.sink { [weak self] in
       self?.router.showAlert(title: $0.localizedDescription)
@@ -130,7 +132,7 @@ private extension TLTosViewController {
   }
   
   @objc func cancelButtonDidTap() {
-    router.dismiss()
+    router.dismiss(animated: true, completion: nil)
   }
   
 }
