@@ -22,14 +22,4 @@ final class TosRouter: TosRoutingProtocol {
     viewController?.present(safariViewController, animated: true)
   }
   
-  func dismiss(animated: Bool, completion: (() -> Void)?) {
-    if let presentedViewController = viewController?.presentedViewController {
-      presentedViewController.dismiss(animated: animated) {
-        self.viewController?.dismiss(animated: animated)
-      }
-    } else {
-      viewController?.dismiss(animated: animated)
-    }
-  }
-  
 }

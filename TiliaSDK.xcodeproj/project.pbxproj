@@ -12,7 +12,7 @@
 		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
 		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
 		D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */; };
-		D120F2D627F21082009B30DD /* ButtonWithSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D527F21082009B30DD /* ButtonWithSpinner.swift */; };
+		D120F2D627F21082009B30DD /* FullFilledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D527F21082009B30DD /* FullFilledButton.swift */; };
 		D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D727F22A2A009B30DD /* TestViewController.swift */; };
 		D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443DE27EB9C7100C68811 /* TosViewModel.swift */; };
 		D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E027EB9C8100C68811 /* TosViewController.swift */; };
@@ -43,6 +43,7 @@
 		D192AD8A27EA2D2B00E3DC2A /* TLBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8927EA2D2B00E3DC2A /* TLBalanceModel.swift */; };
 		D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8BD27F38BF200FD0E25 /* UIColor+Colors.swift */; };
 		D1CCE8C027F3927F00FD0E25 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8BF27F3927F00FD0E25 /* RoundedButton.swift */; };
+		D1CCE8C227F3A6B900FD0E25 /* LoadableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */; };
 		DE8A075B715F949C9C932C21 /* Pods_TiliaSDK_TiliaSDKUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,7 +75,7 @@
 		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
 		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
 		D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosAcceptModel.swift; sourceTree = "<group>"; };
-		D120F2D527F21082009B30DD /* ButtonWithSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithSpinner.swift; sourceTree = "<group>"; };
+		D120F2D527F21082009B30DD /* FullFilledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullFilledButton.swift; sourceTree = "<group>"; };
 		D120F2D727F22A2A009B30DD /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		D12443DE27EB9C7100C68811 /* TosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewModel.swift; sourceTree = "<group>"; };
 		D12443E027EB9C8100C68811 /* TosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +110,7 @@
 		D192AD8927EA2D2B00E3DC2A /* TLBalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLBalanceModel.swift; sourceTree = "<group>"; };
 		D1CCE8BD27F38BF200FD0E25 /* UIColor+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Colors.swift"; sourceTree = "<group>"; };
 		D1CCE8BF27F3927F00FD0E25 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableProtocol.swift; sourceTree = "<group>"; };
 		D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK_TiliaSDKUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */,
+				D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */,
 			);
 			path = BaseClasses;
 			sourceTree = "<group>";
@@ -196,7 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				D12443E427EB9F0300C68811 /* TextViewWithLink.swift */,
-				D120F2D527F21082009B30DD /* ButtonWithSpinner.swift */,
+				D120F2D527F21082009B30DD /* FullFilledButton.swift */,
 				D1CCE8BF27F3927F00FD0E25 /* RoundedButton.swift */,
 			);
 			path = CustomUI;
@@ -561,6 +564,7 @@
 				D135DCAC27E762460009D888 /* RouterProtocol.swift in Sources */,
 				D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */,
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
+				D1CCE8C227F3A6B900FD0E25 /* LoadableProtocol.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
@@ -569,7 +573,7 @@
 				D135DCAF27E763130009D888 /* TLEnvironment.swift in Sources */,
 				D135DCB327E76E090009D888 /* TLError.swift in Sources */,
 				D192AD8827E8F53900E3DC2A /* TLTosModel.swift in Sources */,
-				D120F2D627F21082009B30DD /* ButtonWithSpinner.swift in Sources */,
+				D120F2D627F21082009B30DD /* FullFilledButton.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* RoundedButton.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,

@@ -8,7 +8,9 @@
 import UIKit
 import Combine
 
-final class TosViewController: UIViewController {
+final class TosViewController: UIViewController, LoadableProtocol {
+  
+  var hideableView: UIView { return stackView }
   
   private let viewModel: TosViewModelProtocol = TosViewModel()
   private lazy var router: TosRoutingProtocol = {
@@ -48,11 +50,11 @@ final class TosViewController: UIViewController {
     return textView
   }()
   
-  private lazy var acceptButton: ButtonWithSpinner = {
-    let button = ButtonWithSpinner()
+  private lazy var acceptButton: FullFilledButton = {
+    let button = FullFilledButton()
     button.setTitle("Accept", for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
-    button.isEnabled = false
+    button.isEnabled = acceptSwitch.isOn
     return button
   }()
   
@@ -63,15 +65,21 @@ final class TosViewController: UIViewController {
     return button
   }()
   
-  init() {
-    super.init(nibName: nil, bundle: nil)
-    modalPresentationStyle = .fullScreen
-  }
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    modalPresentationStyle = .fullScreen
-  }
+  private lazy var stackView: UIStackView = {
+    let messageStackView = UIStackView(arrangedSubviews: [acceptSwitch,
+                                                          messageTextView])
+    messageStackView.alignment = .center
+    messageStackView.spacing = 10
+    
+    let stackView = UIStackView(arrangedSubviews: [titleLabel,
+                                                   messageStackView,
+                                                   acceptButton,
+                                                   cancelButton])
+    stackView.axis = .vertical
+    stackView.spacing = 20
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    return stackView
+  }()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -85,19 +93,6 @@ private extension TosViewController {
   
   func setup() {
     view.backgroundColor = .white
-    
-    let messageStackView = UIStackView(arrangedSubviews: [acceptSwitch,
-                                                          messageTextView])
-    messageStackView.alignment = .center
-    messageStackView.spacing = 10
-    
-    let stackView = UIStackView(arrangedSubviews: [titleLabel,
-                                                   messageStackView,
-                                                   acceptButton,
-                                                   cancelButton])
-    stackView.axis = .vertical
-    stackView.spacing = 20
-    stackView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(stackView)
     
     NSLayoutConstraint.activate([
@@ -110,10 +105,10 @@ private extension TosViewController {
   func bind() {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
-      self.acceptButton.isLoading = $0
+      $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
     viewModel.accept.sink { [weak self] _ in
-      self?.router.dismiss(animated: true, completion: nil)
+      self?.router.dismiss()
     }.store(in: &subscriptions)
     viewModel.error.sink { [weak self] in
       self?.router.showAlert(title: $0.localizedDescription)
@@ -129,7 +124,7 @@ private extension TosViewController {
   }
   
   @objc func cancelButtonDidTap() {
-    router.dismiss(animated: true, completion: nil)
+    router.dismiss()
   }
   
 }

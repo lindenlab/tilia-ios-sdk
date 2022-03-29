@@ -38,7 +38,6 @@ class TestViewController: UIViewController {
     let button = UIButton(type: .system)
     button.setTitle("DO SMTH", for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     return button
   }()
   
@@ -49,6 +48,7 @@ class TestViewController: UIViewController {
     stackView.addArrangedSubview(accessTokenTextField)
     view.addSubview(stackView)
     view.addSubview(button)
+    button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     NSLayoutConstraint.activate([
       stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
@@ -58,7 +58,6 @@ class TestViewController: UIViewController {
       button.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
       button.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16)
     ])
-    
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
