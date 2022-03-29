@@ -96,7 +96,7 @@ private extension TextViewWithLink {
   }
   
   func updateLinkAttributes() {
-    linkTextAttributes = [.foregroundColor: linkColor]
+    linkTextAttributes = [.foregroundColor: linkColor, .underlineStyle: NSUnderlineStyle.single.rawValue]
   }
   
   func setTextData() {

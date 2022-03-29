@@ -22,16 +22,15 @@ final class TosViewController: UIViewController {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "Tilia Terms Of Service"
     label.numberOfLines = 0
-    label.textColor = .black
+    label.font = UIFont.boldSystemFont(ofSize: 18)
+    label.textColor = .customBlack
     return label
   }()
   
   private lazy var acceptSwitch: UISwitch = {
     let uiSwitch = UISwitch()
-    uiSwitch.translatesAutoresizingMaskIntoConstraints = false
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
     return uiSwitch
   }()
@@ -41,25 +40,24 @@ final class TosViewController: UIViewController {
     textView.linkPublisher.sink { [weak self] in
       self?.router.routeToWebView(with: $0)
     }.store(in: &subscriptions)
-    textView.translatesAutoresizingMaskIntoConstraints = false
     let text = TosAcceptModel.title
     let links = self.links.map { $0.rawValue }
     textView.textData = (text, links)
+    textView.linkColor = .royalBlue
+    textView.textColor = .customBlack
     return textView
   }()
   
   private lazy var acceptButton: ButtonWithSpinner = {
-    let button = ButtonWithSpinner(type: .system)
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = ButtonWithSpinner()
     button.setTitle("Accept", for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
     button.isEnabled = false
     return button
   }()
   
-  private lazy var cancelButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.translatesAutoresizingMaskIntoConstraints = false
+  private lazy var cancelButton: RoundedButton = {
+    let button = RoundedButton()
     button.setTitle("Cancel", for: .normal)
     button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
     return button
@@ -104,8 +102,8 @@ private extension TosViewController {
     
     NSLayoutConstraint.activate([
       stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      stackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-      stackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16)
+      stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+      stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16)
     ])
   }
   
@@ -113,7 +111,6 @@ private extension TosViewController {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
       self.acceptButton.isLoading = $0
-      self.acceptButton.isEnabled = self.acceptSwitch.isOn
     }.store(in: &subscriptions)
     viewModel.accept.sink { [weak self] _ in
       self?.router.dismiss(animated: true, completion: nil)

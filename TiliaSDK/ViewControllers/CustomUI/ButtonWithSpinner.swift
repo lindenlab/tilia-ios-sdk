@@ -9,6 +9,10 @@ import UIKit
 
 final class ButtonWithSpinner: UIButton {
   
+  override var intrinsicContentSize: CGSize {
+    return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
+  }
+  
   var isLoading: Bool {
     get {
       return spinner.isAnimating
@@ -40,5 +44,28 @@ final class ButtonWithSpinner: UIButton {
     spinner.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     return spinner
   }()
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    setup()
+  }
+  
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    setup()
+  }
+  
+}
+
+private extension ButtonWithSpinner {
+  
+  func setup() {
+    setTitleColor(.white, for: .normal)
+    setBackgroundImage(UIColor.royalBlue.image(), for: .normal)
+    layer.cornerRadius = 6
+    clipsToBounds = true
+    titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    isExclusiveTouch = true
+  }
   
 }
