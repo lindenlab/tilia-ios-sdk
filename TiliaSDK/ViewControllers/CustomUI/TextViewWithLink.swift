@@ -105,10 +105,7 @@ private extension TextViewWithLink {
       let nonBreakingLinkText = link.replacingOccurrences(of: " ", with: "\u{00a0}")
       let textWithNonBreakingLink = textData.text.replacingOccurrences(of: link, with: nonBreakingLinkText)
       if let range = textWithNonBreakingLink.range(of: nonBreakingLinkText).map({ NSRange($0, in: textWithNonBreakingLink) }) {
-        attributedText.addAttributes(
-          [.link: Self.hyperlinkTapUrl],
-          range: range
-        )
+        attributedText.addAttributes([.link: Self.hyperlinkTapUrl], range: range)
       }
     }
     self.attributedText = attributedText
