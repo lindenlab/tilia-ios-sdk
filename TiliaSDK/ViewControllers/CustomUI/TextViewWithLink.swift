@@ -53,8 +53,9 @@ final class TextViewWithLink: UITextView {
   override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     if let tapGesture = gestureRecognizer as? UITapGestureRecognizer, tapGesture.numberOfTapsRequired > 1 {
       return false
+    } else {
+      return true
     }
-    return true
   }
   
   /// Disable text selection and actions while still allowing `isSelectable = true` to enable link tapping
