@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-class TextViewWithLink: UITextView {
+final class TextViewWithLink: UITextView {
   
   typealias TextData = (text: String, links: [String])
   
