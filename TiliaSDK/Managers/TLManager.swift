@@ -5,7 +5,7 @@
 //  Created by Serhii.Petrishenko on 20.03.2022.
 //
 
-import Foundation
+import UIKit
 
 public typealias CompletionResultHandler<T> = (Result<T, Error>) -> Void
 
@@ -52,6 +52,17 @@ public extension TLManager {
   
   func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<TLBalanceModel>) {
     ServerClient.getUserBalanceByCurrencyCode(currencyCode, completion: completion)
+  }
+  
+}
+
+// MARK: - View Controllers
+
+public extension TLManager {
+  
+  func presentTosIsRequiredViewController(on viewController: UIViewController, animated: Bool) {
+    let tosViewController = TosViewController()
+    viewController.present(tosViewController, animated: animated)
   }
   
 }

@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		4EB2150A50A139EE8FAFEC17 /* Pods_TiliaSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5263EBCF7E0ECCEC353A1C3 /* Pods_TiliaSDKTests.framework */; };
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
+		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
+		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
+		D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */; };
+		D120F2D627F21082009B30DD /* ButtonWithSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D527F21082009B30DD /* ButtonWithSpinner.swift */; };
+		D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443DE27EB9C7100C68811 /* TosViewModel.swift */; };
+		D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E027EB9C8100C68811 /* TosViewController.swift */; };
+		D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E427EB9F0300C68811 /* TextViewWithLink.swift */; };
 		D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7827E74A4A0009D888 /* AppDelegate.swift */; };
 		D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */; };
 		D135DC7D27E74A4A0009D888 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7C27E74A4A0009D888 /* ViewController.swift */; };
@@ -61,6 +68,13 @@
 		7BD7BDACC70EF057DF9DB4B1 /* Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDK-TiliaSDKUITests/Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
 		C5263EBCF7E0ECCEC353A1C3 /* Pods_TiliaSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
+		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
+		D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosAcceptModel.swift; sourceTree = "<group>"; };
+		D120F2D527F21082009B30DD /* ButtonWithSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithSpinner.swift; sourceTree = "<group>"; };
+		D12443DE27EB9C7100C68811 /* TosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewModel.swift; sourceTree = "<group>"; };
+		D12443E027EB9C8100C68811 /* TosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewController.swift; sourceTree = "<group>"; };
+		D12443E427EB9F0300C68811 /* TextViewWithLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewWithLink.swift; sourceTree = "<group>"; };
 		D135DC7527E74A4A0009D888 /* TiliaSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiliaSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D135DC7827E74A4A0009D888 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +158,43 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		D120F2CC27F1DE4B009B30DD /* BaseClasses */ = {
+			isa = PBXGroup;
+			children = (
+				D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */,
+			);
+			path = BaseClasses;
+			sourceTree = "<group>";
+		};
+		D12443DD27EB9B0700C68811 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D120F2CC27F1DE4B009B30DD /* BaseClasses */,
+				D12443E327EB9EE700C68811 /* CustomUI */,
+				D12443E227EB9C8800C68811 /* Tos */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		D12443E227EB9C8800C68811 /* Tos */ = {
+			isa = PBXGroup;
+			children = (
+				D12443DE27EB9C7100C68811 /* TosViewModel.swift */,
+				D120F2CA27F1DDD5009B30DD /* TosRouter.swift */,
+				D12443E027EB9C8100C68811 /* TosViewController.swift */,
+			);
+			path = Tos;
+			sourceTree = "<group>";
+		};
+		D12443E327EB9EE700C68811 /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				D12443E427EB9F0300C68811 /* TextViewWithLink.swift */,
+				D120F2D527F21082009B30DD /* ButtonWithSpinner.swift */,
+			);
+			path = CustomUI;
+			sourceTree = "<group>";
+		};
 		D135DC6C27E74A4A0009D888 = {
 			isa = PBXGroup;
 			children = (
@@ -169,6 +220,7 @@
 		D135DC7727E74A4A0009D888 /* TiliaSDK */ = {
 			isa = PBXGroup;
 			children = (
+				D12443DD27EB9B0700C68811 /* ViewControllers */,
 				D192AD7E27E8DE8B00E3DC2A /* Extensions */,
 				D135DCB427E7702B0009D888 /* Managers */,
 				D135DCAD27E762790009D888 /* Routers */,
@@ -210,6 +262,7 @@
 				D192AD8927EA2D2B00E3DC2A /* TLBalanceModel.swift */,
 				D135DCB727E771100009D888 /* ServerConfiguration.swift */,
 				D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */,
+				D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -487,18 +540,25 @@
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* ViewController.swift in Sources */,
+				D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */,
 				D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */,
 				D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */,
+				D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */,
 				D192AD8A27EA2D2B00E3DC2A /* TLBalanceModel.swift in Sources */,
 				D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */,
+				D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
+				D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */,
 				D135DCAC27E762460009D888 /* RouterProtocol.swift in Sources */,
+				D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */,
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
+				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
 				D135DCB627E7703D0009D888 /* TLManager.swift in Sources */,
 				D135DCAF27E763130009D888 /* TLEnvironment.swift in Sources */,
 				D135DCB327E76E090009D888 /* TLError.swift in Sources */,
 				D192AD8827E8F53900E3DC2A /* TLTosModel.swift in Sources */,
+				D120F2D627F21082009B30DD /* ButtonWithSpinner.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,
 			);
