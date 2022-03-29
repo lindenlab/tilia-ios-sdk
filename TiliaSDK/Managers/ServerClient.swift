@@ -7,6 +7,8 @@
 
 import Alamofire
 
+typealias CompletionResultHandler<T> = (Result<T, Error>) -> Void
+
 enum ServerClient {
   
   static func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TLTosModel>) {

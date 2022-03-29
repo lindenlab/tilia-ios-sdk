@@ -7,8 +7,6 @@
 
 import UIKit
 
-public typealias CompletionResultHandler<T> = (Result<T, Error>) -> Void
-
 public final class TLManager {
   
   public static let shared = TLManager()
@@ -46,11 +44,11 @@ public extension TLManager {
 
 public extension TLManager {
   
-  func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TLTosModel>) {
+  func getTosRequiredForUser(completion: @escaping (Result<TLTosModel, Error>) -> Void) {
     ServerClient.getTosRequiredForUser(completion: completion)
   }
   
-  func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<TLBalanceModel>) {
+  func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping (Result<TLBalanceModel, Error>) -> Void) {
     ServerClient.getUserBalanceByCurrencyCode(currencyCode, completion: completion)
   }
   
