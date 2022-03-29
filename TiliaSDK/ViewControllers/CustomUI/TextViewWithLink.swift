@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-class TextViewWithLink: UITextView {
+final class TextViewWithLink: UITextView {
   
   typealias TextData = (text: String, links: [String])
   
@@ -53,8 +53,9 @@ class TextViewWithLink: UITextView {
   override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
     if let tapGesture = gestureRecognizer as? UITapGestureRecognizer, tapGesture.numberOfTapsRequired > 1 {
       return false
+    } else {
+      return true
     }
-    return true
   }
   
   /// Disable text selection and actions while still allowing `isSelectable = true` to enable link tapping
@@ -105,10 +106,7 @@ private extension TextViewWithLink {
       let nonBreakingLinkText = link.replacingOccurrences(of: " ", with: "\u{00a0}")
       let textWithNonBreakingLink = textData.text.replacingOccurrences(of: link, with: nonBreakingLinkText)
       if let range = textWithNonBreakingLink.range(of: nonBreakingLinkText).map({ NSRange($0, in: textWithNonBreakingLink) }) {
-        attributedText.addAttributes(
-          [.link: Self.hyperlinkTapUrl],
-          range: range
-        )
+        attributedText.addAttributes([.link: Self.hyperlinkTapUrl], range: range)
       }
     }
     self.attributedText = attributedText
