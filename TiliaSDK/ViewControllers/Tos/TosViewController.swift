@@ -18,6 +18,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     router.viewController = self
     return router
   }()
+  private var completion: ((Bool) -> Void)?
   private var subscriptions: Set<AnyCancellable> = []
   private var links: [TosAcceptModel] { return TosAcceptModel.allCases }
   
@@ -87,6 +88,11 @@ final class TosViewController: UIViewController, LoadableProtocol {
     bind()
   }
   
+  convenience init(completion: ((Bool) -> Void)?) {
+    self.init(nibName: nil, bundle: nil)
+    self.completion = completion
+  }
+  
 }
 
 private extension TosViewController {
@@ -108,7 +114,8 @@ private extension TosViewController {
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
     viewModel.accept.sink { [weak self] _ in
-      self?.router.dismiss()
+      guard let self = self else { return }
+      self.router.dismiss() { self.completion?(true) }
     }.store(in: &subscriptions)
     viewModel.error.sink { [weak self] in
       self?.router.showAlert(title: $0.localizedDescription)
@@ -124,7 +131,7 @@ private extension TosViewController {
   }
   
   @objc func cancelButtonDidTap() {
-    router.dismiss()
+    router.dismiss { self.completion?(false) }
   }
   
 }

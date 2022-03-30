@@ -121,7 +121,9 @@ final class TosRequiredForUserFlowTestViewController: TestViewController {
   override func buttonTapped() {
     super.buttonTapped()
     label.text = "Presented flow"
-    manager.presentTosIsRequiredViewController(on: self, animated: true)
+    manager.presentTosIsRequiredViewController(on: self, animated: true) { [weak self] in
+      self?.label.text = "Tos accepted state: \($0)"
+    }
   }
   
 }

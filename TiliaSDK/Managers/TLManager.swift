@@ -58,8 +58,8 @@ public extension TLManager {
 
 public extension TLManager {
   
-  func presentTosIsRequiredViewController(on viewController: UIViewController, animated: Bool) {
-    let tosViewController = TosViewController()
+  func presentTosIsRequiredViewController(on viewController: UIViewController, animated: Bool, completion: ((Bool) -> Void)?) {
+    let tosViewController = TosViewController(completion: completion)
     viewController.present(tosViewController, animated: animated)
   }
   
