@@ -24,6 +24,8 @@ final class RoundedButton: UIButton {
   
 }
 
+// MARK: - Private Methods
+
 private extension RoundedButton {
   
   func setup() {

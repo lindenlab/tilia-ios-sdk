@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - Internal Methods
-
 extension TLManager {
   
   func getTosModel(completion: @escaping CompletionResultHandler<TosModel>) {

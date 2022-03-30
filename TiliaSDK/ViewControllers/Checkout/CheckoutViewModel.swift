@@ -52,7 +52,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
   }
   
   func proceedCheckout() {
-    
+    loading.send(false)
   }
   
 }

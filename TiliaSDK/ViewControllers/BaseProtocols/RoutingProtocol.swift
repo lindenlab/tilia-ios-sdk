@@ -14,6 +14,8 @@ protocol RoutingProtocol {
   func showAlert(title: String, message: String?, cancelAction: (() -> Void)?, otherActions: [UIAlertAction])
 }
 
+// MARK: - Default Implementation
+
 extension RoutingProtocol {
   
   func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {

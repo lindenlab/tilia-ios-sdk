@@ -15,6 +15,8 @@ protocol LoadableProtocol {
   func stopLoading()
 }
 
+// MARK: - Default Implementation
+
 extension LoadableProtocol {
   
   func startLoading() {

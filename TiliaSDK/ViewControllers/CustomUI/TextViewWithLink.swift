@@ -67,6 +67,8 @@ final class TextViewWithLink: UITextView {
   
 }
 
+// MARK: - UITextFieldDelegate
+
 extension TextViewWithLink: UITextViewDelegate {
   
   func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
@@ -76,6 +78,8 @@ extension TextViewWithLink: UITextViewDelegate {
   }
   
 }
+
+// MARK: - Private Methods
 
 private extension TextViewWithLink {
   

@@ -24,6 +24,8 @@ final class FullFilledButton: UIButton {
   
 }
 
+// MARK: - Private Methods
+
 private extension FullFilledButton {
   
   func setup() {

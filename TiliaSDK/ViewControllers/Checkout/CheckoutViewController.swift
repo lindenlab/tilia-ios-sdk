@@ -22,6 +22,12 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     let tableView = UITableView(frame: .zero, style: .grouped)
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.backgroundColor = .clear
+    tableView.separatorStyle = .none
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.register(ChekoutTitleHeaderView.self)
+    tableView.register(CheckoutPayloadFooterView.self)
+    tableView.register(CheckoutPayloadCell.self)
     return tableView
   }()
   
@@ -54,6 +60,44 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   
 }
 
+// MARK: - UITableViewDataSource
+
+extension CheckoutViewController: UITableViewDataSource {
+  
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return 1
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 3
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeue(CheckoutPayloadCell.self, for: indexPath)
+    cell.configure(description: "description", product: "product", amount: "amount", isDividerHidden: false)
+    return cell
+  }
+  
+}
+
+// MARK: - UITableViewDelegate {
+
+extension CheckoutViewController: UITableViewDelegate {
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view = tableView.dequeue(ChekoutTitleHeaderView.self)
+    view.configure(title: "title", subTitle: "subTitle")
+    return view
+  }
+
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    let view = tableView.dequeue(CheckoutPayloadFooterView.self)
+    view.configure(title: "title", amount: "amount")
+    return view
+  }
+  
+}
+
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
@@ -63,6 +107,8 @@ extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
   }
   
 }
+
+// MARK: - Private Methods
 
 private extension CheckoutViewController {
   

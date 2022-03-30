@@ -111,6 +111,8 @@ extension TosViewController: UIAdaptivePresentationControllerDelegate {
   
 }
 
+// MARK: - Private Methods
+
 private extension TosViewController {
   
   func setup() {

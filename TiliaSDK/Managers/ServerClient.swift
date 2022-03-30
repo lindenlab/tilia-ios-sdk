@@ -40,6 +40,8 @@ enum ServerClient {
   
 }
 
+// MARK: - Private Methods
+
 private extension ServerClient {
   
   static func performRequestWithDecodableModel<DataType: Decodable>(router: URLRequestConvertible, completion: @escaping CompletionResultHandler<DataType>) {
