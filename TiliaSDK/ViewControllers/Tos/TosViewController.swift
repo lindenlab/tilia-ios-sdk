@@ -11,6 +11,7 @@ import Combine
 final class TosViewController: UIViewController, LoadableProtocol {
   
   var hideableView: UIView { return stackView }
+  var spinnerPosition: CGPoint { return stackView.center }
   
   private let viewModel: TosViewModelProtocol
   private let router: TosRoutingProtocol
@@ -91,10 +92,21 @@ final class TosViewController: UIViewController, LoadableProtocol {
     self.completion = completion
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
+    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension TosViewController: UIAdaptivePresentationControllerDelegate {
+  
+  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    completion?(false)
   }
   
 }

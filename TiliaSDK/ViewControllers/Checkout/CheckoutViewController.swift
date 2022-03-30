@@ -6,14 +6,17 @@
 //
 
 import UIKit
+import Combine
 
 final class CheckoutViewController: UIViewController, LoadableProtocol {
   
   var hideableView: UIView { return tableView }
+  var spinnerPosition: CGPoint { return view.center }
   
   private let viewModel: CheckoutViewModelProtocol
   private let router: CheckoutRoutingProtocol
   private let completion: ((Bool) -> Void)?
+  private var subscriptions: Set<AnyCancellable> = []
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -32,6 +35,7 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     super.viewDidLoad()
     setup()
     bind()
+    viewModel.checkIsTosRequired()
   }
   
   init(invoiceId: String, completion: ((Bool) -> Void)?) {
@@ -41,10 +45,21 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     self.completion = completion
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
+    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
+  
+  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    completion?(false)
   }
   
 }
@@ -67,7 +82,25 @@ private extension CheckoutViewController {
   }
   
   func bind() {
-    
+    viewModel.loading.sink { [weak self] in
+      guard let self = self else { return }
+      $0 ? self.startLoading() : self.stopLoading()
+    }.store(in: &subscriptions)
+    viewModel.error.sink { [weak self] in
+      self?.router.showAlert(title: $0.localizedDescription)
+    }.store(in: &subscriptions)
+    viewModel.needToAcceptTos.sink { [weak self] _ in
+      guard let self = self else { return }
+      self.router.routeToTosView { isTosSigned in
+        if isTosSigned {
+          self.viewModel.proceedCheckout()
+        } else {
+          self.router.dismiss {
+            self.completion?(false)
+          }
+        }
+      }
+    }.store(in: &subscriptions)
   }
   
 }

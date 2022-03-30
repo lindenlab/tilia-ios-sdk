@@ -24,7 +24,7 @@ final class CheckoutFlowTestViewController: TestViewController {
   override func buttonTapped() {
     super.buttonTapped()
     manager.presentCheckoutViewController(on: self,
-                                          withInvoiceId: invoiceIdTextField.text!,
+                                          withInvoiceId: invoiceIdTextField.text ?? "",
                                           animated: true,
                                           completion: nil)
   }
