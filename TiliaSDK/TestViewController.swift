@@ -78,8 +78,8 @@ final class TosRequiredForUserTestViewController: TestViewController {
     super.buttonTapped()
     manager.getTosRequiredForUser { [weak self] result in
       switch result {
-      case .success(let model):
-        self?.label.text = "Is TOS signed with value: \(model.isTosSigned)"
+      case .success(let isTosSigned):
+        self?.label.text = "Is TOS signed with value: \(isTosSigned)"
       case .failure(let error):
         self?.label.text = error.localizedDescription
       }
@@ -106,8 +106,8 @@ final class UserBalanceByCurrencyTestViewController: TestViewController {
     super.buttonTapped()
     manager.getUserBalanceByCurrencyCode(currencyTextField.text ?? "") { [weak self] result in
       switch result {
-      case .success(let model):
-        self?.label.text = "User balance is: \(model.balance), description is: \(model.description)"
+      case .success(let balance):
+        self?.label.text = "User balance is: \(balance)"
       case .failure(let error):
         self?.label.text = error.localizedDescription
       }

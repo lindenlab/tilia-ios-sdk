@@ -11,12 +11,12 @@ typealias CompletionResultHandler<T> = (Result<T, Error>) -> Void
 
 enum ServerClient {
   
-  static func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TLTosModel>) {
+  static func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TosModel>) {
     let router = AccountRouter.getTosRequiredForUser
     Self.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
-  static func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<TLBalanceModel>) {
+  static func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<BalanceModel>) {
     let completionHandler: CompletionResultHandler<BalancesModel> = { result in
       switch result {
       case .success(let model):

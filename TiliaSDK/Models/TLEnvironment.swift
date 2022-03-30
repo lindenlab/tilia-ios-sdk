@@ -7,9 +7,13 @@
 
 import Foundation
 
+/// Tilia environment
 public enum TLEnvironment {
   
+  /// Staging environment
   case staging
+  
+  /// Production environment
   case production
   
 }

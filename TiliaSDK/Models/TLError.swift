@@ -7,12 +7,26 @@
 
 import Foundation
 
+/// Tilia error
 public enum TLError: Error {
   
+  /// Invalid or empty token
   case invalidToken
+  
+  /// Decodable data is nil
   case decodableDataIsNil
+  
+  /// Server error with localized description
+  /// - Parameters:
+  ///   - error: localized description
   case serverError(String)
+  
+  /// User balance does not exist for currency code
+  /// - Parameters:
+  ///   - currency: currency code
   case userBalanceDoesNotExistForCurrency(String)
+  
+  /// Terms Of Service is not signed
   case tosIsNotSigned
 }
 

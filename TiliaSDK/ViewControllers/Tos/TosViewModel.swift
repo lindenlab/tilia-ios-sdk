@@ -31,8 +31,8 @@ final class TosViewModel: TosViewModelProtocol {
     TLManager.shared.getTosRequiredForUser { result in
       self.loading.send(false)
       switch result {
-      case .success(let model):
-        if model.isTosSigned {
+      case .success(let isTosSigned):
+        if isTosSigned {
           self.accept.send(())
         } else {
           self.error.send(TLError.tosIsNotSigned)
