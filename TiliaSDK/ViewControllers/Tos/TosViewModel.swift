@@ -5,7 +5,6 @@
 //  Created by Serhii.Petrishenko on 23.03.2022.
 //
 
-import UIKit
 import Combine
 
 protocol TosViewModelInputProtocol {
@@ -26,17 +25,16 @@ final class TosViewModel: TosViewModelProtocol {
   let accept = PassthroughSubject<Void, Never>()
   let error = PassthroughSubject<Error, Never>()
   
+  private let manager = TLManager.shared
+  
   func acceptTos() {
     loading.send(true)
-    TLManager.shared.getTosRequiredForUser { result in
+    manager.signTos { [weak self] result in
+      guard let self = self else { return }
       self.loading.send(false)
       switch result {
-      case .success(let isTosSigned):
-        if isTosSigned {
-          self.accept.send(())
-        } else {
-          self.error.send(TLError.tosIsNotSigned)
-        }
+      case .success:
+        self.accept.send(())
       case .failure(let error):
         self.error.send(error)
       }

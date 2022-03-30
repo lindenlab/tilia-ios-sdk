@@ -45,6 +45,12 @@
 		D1CCE8C027F3927F00FD0E25 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8BF27F3927F00FD0E25 /* RoundedButton.swift */; };
 		D1CCE8C227F3A6B900FD0E25 /* LoadableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */; };
 		D1CCE8C427F4861000FD0E25 /* TLManager+InternalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8C327F4861000FD0E25 /* TLManager+InternalExtensions.swift */; };
+		D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */; };
+		D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */; };
+		D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */; };
+		D1CCE8CE27F4A65100FD0E25 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1CCE8CD27F4A65100FD0E25 /* Icons.xcassets */; };
+		D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8D027F4A9DF00FD0E25 /* UIImage+Images.swift */; };
+		D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8D227F4C34F00FD0E25 /* EmptyModel.swift */; };
 		DE8A075B715F949C9C932C21 /* Pods_TiliaSDK_TiliaSDKUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +119,12 @@
 		D1CCE8BF27F3927F00FD0E25 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableProtocol.swift; sourceTree = "<group>"; };
 		D1CCE8C327F4861000FD0E25 /* TLManager+InternalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TLManager+InternalExtensions.swift"; sourceTree = "<group>"; };
+		D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
+		D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewModel.swift; sourceTree = "<group>"; };
+		D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutRouter.swift; sourceTree = "<group>"; };
+		D1CCE8CD27F4A65100FD0E25 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
+		D1CCE8D027F4A9DF00FD0E25 /* UIImage+Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Images.swift"; sourceTree = "<group>"; };
+		D1CCE8D227F4C34F00FD0E25 /* EmptyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyModel.swift; sourceTree = "<group>"; };
 		D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK_TiliaSDKUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -233,6 +245,7 @@
 		D135DC7727E74A4A0009D888 /* TiliaSDK */ = {
 			isa = PBXGroup;
 			children = (
+				D1CCE8CC27F4A62300FD0E25 /* Resources */,
 				D12443DD27EB9B0700C68811 /* ViewControllers */,
 				D192AD7E27E8DE8B00E3DC2A /* Extensions */,
 				D135DCB427E7702B0009D888 /* Managers */,
@@ -277,6 +290,7 @@
 				D135DCB727E771100009D888 /* ServerConfiguration.swift */,
 				D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */,
 				D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */,
+				D1CCE8D227F4C34F00FD0E25 /* EmptyModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -309,6 +323,7 @@
 				D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */,
 				D192AD8327E8DF3D00E3DC2A /* Data+Serialization.swift */,
 				D1CCE8BD27F38BF200FD0E25 /* UIColor+Colors.swift */,
+				D1CCE8D027F4A9DF00FD0E25 /* UIImage+Images.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -316,8 +331,27 @@
 		D1CCE8C527F4872F00FD0E25 /* Checkout */ = {
 			isa = PBXGroup;
 			children = (
+				D1CCE8CF27F4A6C200FD0E25 /* Views */,
+				D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */,
+				D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */,
+				D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */,
 			);
 			path = Checkout;
+			sourceTree = "<group>";
+		};
+		D1CCE8CC27F4A62300FD0E25 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D1CCE8CD27F4A65100FD0E25 /* Icons.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D1CCE8CF27F4A6C200FD0E25 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -431,6 +465,7 @@
 			files = (
 				D135DC8527E74A520009D888 /* LaunchScreen.storyboard in Resources */,
 				D135DC8227E74A510009D888 /* Assets.xcassets in Resources */,
+				D1CCE8CE27F4A65100FD0E25 /* Icons.xcassets in Resources */,
 				D135DC8027E74A4A0009D888 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -578,6 +613,10 @@
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
 				D1CCE8C227F3A6B900FD0E25 /* LoadableProtocol.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
+				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
+				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
+				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,
+				D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */,
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
 				D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */,
@@ -587,6 +626,7 @@
 				D192AD8827E8F53900E3DC2A /* TosModel.swift in Sources */,
 				D120F2D627F21082009B30DD /* FullFilledButton.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* RoundedButton.swift in Sources */,
+				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,
 			);

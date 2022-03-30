@@ -16,6 +16,11 @@ enum ServerClient {
     Self.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
+  static func signTosForUser(completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = AccountRouter.signTosForUser
+    Self.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
   static func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<BalanceModel>) {
     let completionHandler: CompletionResultHandler<BalancesModel> = { result in
       switch result {

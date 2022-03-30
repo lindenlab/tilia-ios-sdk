@@ -15,6 +15,10 @@ extension TLManager {
     ServerClient.getTosRequiredForUser(completion: completion)
   }
   
+  func signTos(compeltion: @escaping CompletionResultHandler<EmptyModel>) {
+    ServerClient.signTosForUser(completion: compeltion)
+  }
+  
   func getBalanceModelByCurrencyCode(_ currencyCode: String,
                                      completion: @escaping CompletionResultHandler<BalanceModel>) {
     ServerClient.getUserBalanceByCurrencyCode(currencyCode, completion: completion)

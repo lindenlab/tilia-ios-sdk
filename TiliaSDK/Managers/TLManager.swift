@@ -89,6 +89,19 @@ public extension TLManager {
     viewController.present(tosViewController, animated: animated)
   }
   
+  /// Show Checkout flow, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting Checkout flow
+  ///   - invoiceId: authorized invoice id
+  ///   - animated: animated flag
+  ///   - completion: completion that returns Checkout is successfully completed
+  func presentCheckoutViewController(on viewController: UIViewController,
+                                     withInvoiceId invoiceId: String,
+                                     animated: Bool,
+                                     completion: ((Bool) -> Void)?) {
+    
+  }
+  
 }
 
 // MARK: - Private Methods

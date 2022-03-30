@@ -10,19 +10,17 @@ import Alamofire
 enum AccountRouter: RouterProtocol {
   
   case getTosRequiredForUser
+  case signTosForUser
   
   var method: HTTPMethod {
     switch self {
     case .getTosRequiredForUser: return .get
+    case .signTosForUser: return .post
     }
   }
   
   var service: String { return "accounts" }
   
-  var endpoint: String {
-    switch self {
-    case .getTosRequiredForUser: return "/v1/user-info/tos/tilia"
-    }
-  }
+  var endpoint: String { return "/v1/user-info/tos/tilia" }
   
 }
