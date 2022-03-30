@@ -91,21 +91,6 @@ public extension TLManager {
   
 }
 
-// MARK: - Internal Methods
-
-extension TLManager {
-  
-  func getTosModel(completion: @escaping CompletionResultHandler<TosModel>) {
-    ServerClient.getTosRequiredForUser(completion: completion)
-  }
-  
-  func getBalanceModelByCurrencyCode(_ currencyCode: String,
-                                     completion: @escaping CompletionResultHandler<BalanceModel>) {
-    ServerClient.getUserBalanceByCurrencyCode(currencyCode, completion: completion)
-  }
-  
-}
-
 // MARK: - Private Methods
 
 private extension TLManager {
