@@ -11,12 +11,9 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   
   var hideableView: UIView { return tableView }
   
-  private let viewModel: CheckoutViewModelProtocol = CheckoutViewModel()
-  private lazy var router: CheckoutRoutingProtocol = {
-    let router = CheckoutRouter()
-    router.viewController = self
-    return router
-  }()
+  private let viewModel: CheckoutViewModelProtocol
+  private let router: CheckoutRoutingProtocol
+  private let completion: ((Bool) -> Void)?
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -35,6 +32,19 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     super.viewDidLoad()
     setup()
     bind()
+  }
+  
+  init(invoiceId: String, completion: ((Bool) -> Void)?) {
+    let router = CheckoutRouter()
+    self.viewModel = CheckoutViewModel(invoiceId: invoiceId)
+    self.router = router
+    self.completion = completion
+    super.init(nibName: nil, bundle: nil)
+    router.viewController = self
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
 }

@@ -17,6 +17,11 @@ protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutView
 
 final class CheckoutViewModel: CheckoutViewModelProtocol {
   
+  private let invoiceId: String
   private let manager = TLManager.shared
+  
+  init(invoiceId: String) {
+    self.invoiceId = invoiceId
+  }
   
 }

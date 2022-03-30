@@ -12,13 +12,9 @@ final class TosViewController: UIViewController, LoadableProtocol {
   
   var hideableView: UIView { return stackView }
   
-  private let viewModel: TosViewModelProtocol = TosViewModel()
-  private lazy var router: TosRoutingProtocol = {
-    let router = TosRouter()
-    router.viewController = self
-    return router
-  }()
-  private var completion: ((Bool) -> Void)?
+  private let viewModel: TosViewModelProtocol
+  private let router: TosRoutingProtocol
+  private let completion: ((Bool) -> Void)?
   private var subscriptions: Set<AnyCancellable> = []
   private var links: [TosAcceptModel] { return TosAcceptModel.allCases }
   
@@ -88,9 +84,17 @@ final class TosViewController: UIViewController, LoadableProtocol {
     bind()
   }
   
-  convenience init(completion: ((Bool) -> Void)?) {
-    self.init(nibName: nil, bundle: nil)
+  init(completion: ((Bool) -> Void)?) {
+    let router = TosRouter()
+    self.viewModel = TosViewModel()
+    self.router = router
     self.completion = completion
+    super.init(nibName: nil, bundle: nil)
+    router.viewController = self
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
 }

@@ -99,7 +99,8 @@ public extension TLManager {
                                      withInvoiceId invoiceId: String,
                                      animated: Bool,
                                      completion: ((Bool) -> Void)?) {
-    
+    let checkoutViewController = CheckoutViewController(invoiceId: invoiceId, completion: completion)
+    viewController.present(checkoutViewController, animated: animated)
   }
   
 }

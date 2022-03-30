@@ -40,8 +40,7 @@ final class TextViewWithLink: UITextView {
   }
   
   required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setup()
+    fatalError("init(coder:) has not been implemented")
   }
   
   /// Returns `false` so the user can't copy, paste, etc

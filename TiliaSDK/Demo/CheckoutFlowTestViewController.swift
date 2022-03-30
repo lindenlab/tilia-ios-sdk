@@ -9,10 +9,24 @@ import UIKit
 
 final class CheckoutFlowTestViewController: TestViewController {
   
+  let invoiceIdTextField: UITextField = {
+    let textField = UITextField()
+    textField.borderStyle = .roundedRect
+    textField.placeholder = "Invoice id"
+    return textField
+  }()
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    stackView.addArrangedSubview(invoiceIdTextField)
+  }
+  
   override func buttonTapped() {
     super.buttonTapped()
-    let vc = CheckoutViewController()
-    present(vc, animated: true)
+    manager.presentCheckoutViewController(on: self,
+                                          withInvoiceId: invoiceIdTextField.text!,
+                                          animated: true,
+                                          completion: nil)
   }
   
 }
