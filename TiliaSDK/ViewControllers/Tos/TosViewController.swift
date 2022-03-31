@@ -22,7 +22,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-    label.text = "Tilia Terms Of Service"
+    label.text = L.tiliaTos
     label.numberOfLines = 0
     label.font = UIFont.boldSystemFont(ofSize: 18)
     label.textColor = .customBlack
@@ -41,7 +41,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
       self?.router.routeToWebView(with: $0)
     }.store(in: &subscriptions)
     let text = TosAcceptModel.title
-    let links = self.links.map { $0.rawValue }
+    let links = self.links.map { $0.description }
     textView.textData = (text, links)
     textView.linkColor = .royalBlue
     textView.textColor = .customBlack
@@ -50,7 +50,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
   
   private lazy var acceptButton: FullFilledButton = {
     let button = FullFilledButton()
-    button.setTitle("Accept", for: .normal)
+    button.setTitle(L.accept, for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
     button.isEnabled = acceptSwitch.isOn
     return button
@@ -58,7 +58,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
   
   private lazy var cancelButton: RoundedButton = {
     let button = RoundedButton()
-    button.setTitle("Cancel", for: .normal)
+    button.setTitle(L.cancel, for: .normal)
     button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
     return button
   }()

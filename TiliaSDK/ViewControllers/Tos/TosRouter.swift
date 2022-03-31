@@ -17,7 +17,7 @@ final class TosRouter: TosRoutingProtocol {
   weak var viewController: UIViewController?
   
   func routeToWebView(with link: String) {
-    guard let model = TosAcceptModel(rawValue: link) else { return }
+    guard let model = TosAcceptModel(str: link) else { return }
     let safariViewController = SFSafariViewController(url: model.url)
     viewController?.present(safariViewController, animated: true)
   }

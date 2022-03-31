@@ -86,7 +86,7 @@ extension CheckoutViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let view = tableView.dequeue(ChekoutTitleHeaderView.self)
-    view.configure(title: "title", subTitle: "subTitle")
+    view.configure(title: L.choosePaymentMethod, subTitle: "subTitle")
     return view
   }
 
