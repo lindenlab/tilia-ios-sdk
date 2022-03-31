@@ -9,22 +9,20 @@ import Alamofire
 
 enum InvoiceRouter: RouterProtocol {
   
-  case getAuthorizedInvoiceDetails(id: String)
-  case createNonEscrowInvoice(id: String)
-  case payNonEscrowInvoice(id: String)
-  case createEscrowInvoice(id: String)
-  case payEscrowInvoice(id: String)
+  case getInvoiceDetails(id: String)
+  case createInvoice(id: String, isEscrow: Bool)
+  case payInvoice(id: String, isEscrow: Bool)
   
   var method: HTTPMethod {
     switch self {
-    case .getAuthorizedInvoiceDetails: return .get
+    case .getInvoiceDetails: return .get
     default: return .post
     }
   }
   
   var bodyParameters: Parameters? {
     switch self {
-    case .createNonEscrowInvoice(let id), .createEscrowInvoice(let id): return ["authorized_invoice_id": id]
+    case let .createInvoice(id, _): return ["authorized_invoice_id": id]
     default: return nil
     }
   }
@@ -33,11 +31,9 @@ enum InvoiceRouter: RouterProtocol {
   
   var endpoint: String {
     switch self {
-    case .getAuthorizedInvoiceDetails(let id): return "/v2/authorize/invoice/\(id)"
-    case .createNonEscrowInvoice: return "/v2/invoice"
-    case .payNonEscrowInvoice(let id): return "/v2/invoice/\(id)/pay"
-    case .createEscrowInvoice: return "/v2/escrow"
-    case .payEscrowInvoice(let id): return "/v2/escrow/\(id)/pay"
+    case let .getInvoiceDetails(id): return "/v2/authorize/invoice/\(id)"
+    case let .createInvoice(_, isEscrow): return isEscrow ? "/v2/escrow" : "/v2/invoice"
+    case let .payInvoice(id, isEscrow): return isEscrow ? "/v2/escrow/\(id)/pay" : "/v2/invoice/\(id)/pay"
     }
   }
   

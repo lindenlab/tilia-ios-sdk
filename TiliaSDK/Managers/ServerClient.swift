@@ -38,6 +38,21 @@ enum ServerClient {
     Self.performRequestWithDecodableModel(router: router, completion: completionHandler)
   }
   
+  static func getInvoiceDetails(with id: String, completion: @escaping CompletionResultHandler<InvoiceDetailsModel>) {
+    let router = InvoiceRouter.getInvoiceDetails(id: id)
+    Self.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  static func createInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<InvoiceModel>) {
+    let router = InvoiceRouter.createInvoice(id: id, isEscrow: isEscrow)
+    Self.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  static func payInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = InvoiceRouter.payInvoice(id: id, isEscrow: isEscrow)
+    Self.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
 }
 
 // MARK: - Private Methods

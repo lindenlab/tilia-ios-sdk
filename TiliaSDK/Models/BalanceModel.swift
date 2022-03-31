@@ -10,12 +10,7 @@ import Foundation
 struct BalanceModel: Decodable {
   
   let balance: Double
-  let description: String
-  
-  private enum CodingKeys: String, CodingKey {
-    case balance
-    case description = "display"
-  }
+  let display: String
   
 }
 

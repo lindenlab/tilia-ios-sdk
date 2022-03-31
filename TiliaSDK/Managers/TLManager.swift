@@ -59,7 +59,7 @@ public extension TLManager {
   /// - Parameters:
   ///   - completion: completion that returns user needs to sign TOS or error
   func getTosRequiredForUser(completion: @escaping (Result<Bool, Error>) -> Void) {
-    getTosModel { completion($0.map { $0.isTosSigned }) }
+    getTos { completion($0.map { $0.isTosSigned }) }
   }
   
   /// Checks user balance by currency code, user access token is required
@@ -68,7 +68,7 @@ public extension TLManager {
   ///   - completion: completion that returns user balance or error
   func getUserBalanceByCurrencyCode(_ currencyCode: String,
                                     completion: @escaping (Result<Double, Error>) -> Void) {
-    getBalanceModelByCurrencyCode(currencyCode) { completion($0.map { $0.balance }) }
+    getBalanceByCurrencyCode(currencyCode) { completion($0.map { $0.balance }) }
   }
   
 }
