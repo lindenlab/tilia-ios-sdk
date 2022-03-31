@@ -141,9 +141,7 @@ private extension CheckoutViewController {
         if isTosSigned {
           self.viewModel.proceedCheckout()
         } else {
-          self.router.dismiss {
-            self.completion?(false)
-          }
+          self.router.dismiss { self.completion?(false) }
         }
       }
     }.store(in: &subscriptions)
