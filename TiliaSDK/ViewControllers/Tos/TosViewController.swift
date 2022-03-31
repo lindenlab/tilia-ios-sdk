@@ -37,14 +37,11 @@ final class TosViewController: UIViewController, LoadableProtocol {
   
   private lazy var messageTextView: TextViewWithLink = {
     let textView = TextViewWithLink()
-    textView.linkPublisher.sink { [weak self] in
-      self?.router.routeToWebView(with: $0)
-    }.store(in: &subscriptions)
+    textView.linkDelegate = self
+    textView.font = UIFont.systemFont(ofSize: 16)
     let text = TosAcceptModel.title
     let links = self.links.map { $0.description }
     textView.textData = (text, links)
-    textView.linkColor = .royalBlue
-    textView.textColor = .customBlack
     return textView
   }()
   
@@ -107,6 +104,16 @@ extension TosViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     completion?(false)
+  }
+  
+}
+
+// MARK: - TextViewWithLinkDelegate
+
+extension TosViewController: TextViewWithLinkDelegate {
+  
+  func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
+    router.routeToWebView(with: link)
   }
   
 }

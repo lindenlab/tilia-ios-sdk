@@ -13,6 +13,7 @@ enum TosAcceptModel: CaseIterable {
   case privacyPolicy
   
   static var title: String { return L.tosAcceptDescription }
+  static var payTitle: String { return L.payAcceptDescription }
   
   var description: String {
     switch self {

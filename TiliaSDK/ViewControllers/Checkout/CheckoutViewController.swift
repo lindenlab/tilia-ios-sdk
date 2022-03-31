@@ -21,13 +21,15 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
     tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .clear
     tableView.separatorStyle = .none
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(ChekoutTitleHeaderView.self)
-    tableView.register(CheckoutPayloadFooterView.self)
+    tableView.register(CheckoutPayloadSummaryFooterView.self)
     tableView.register(CheckoutPayloadCell.self)
+    tableView.register(CheckoutPayloadActionsFooterView.self)
     return tableView
   }()
   
@@ -35,6 +37,12 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     let imageView = UIImageView(image: .logoImage)
     imageView.translatesAutoresizingMaskIntoConstraints = false
     return imageView
+  }()
+  
+  private let divider: DividerView = {
+    let divider = DividerView()
+    divider.translatesAutoresizingMaskIntoConstraints = false
+    return divider
   }()
   
   override func viewDidLoad() {
@@ -65,7 +73,7 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
 extension CheckoutViewController: UITableViewDataSource {
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
+    return 2
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -91,9 +99,16 @@ extension CheckoutViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let view = tableView.dequeue(CheckoutPayloadFooterView.self)
-    view.configure(title: "title", amount: "amount")
-    return view
+    switch section {
+    case 0:
+      let view = tableView.dequeue(CheckoutPayloadSummaryFooterView.self)
+      view.configure(title: "title", amount: "fsfs")
+      return view
+    default:
+      let view = tableView.dequeue(CheckoutPayloadActionsFooterView.self)
+      view.configure(roundedButtonTitle: "Cancel", isTextViewHidden: false, delegate: nil, textViewDelegate: nil)
+      return view
+    }
   }
   
 }
@@ -116,14 +131,18 @@ private extension CheckoutViewController {
     view.backgroundColor = .white
     view.addSubview(logoImageView)
     view.addSubview(tableView)
+    view.addSubview(divider)
     
     NSLayoutConstraint.activate([
-      logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      logoImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
       tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
       tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
       tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-      tableView.bottomAnchor.constraint(equalTo: logoImageView.topAnchor)
+      tableView.bottomAnchor.constraint(equalTo: divider.topAnchor),
+      divider.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
+      divider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
+      divider.bottomAnchor.constraint(equalTo: logoImageView.topAnchor, constant: -16),
+      logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      logoImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
     ])
   }
   

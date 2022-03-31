@@ -1,5 +1,5 @@
 //
-//  CheckoutPayloadFooterView.swift
+//  CheckoutPayloadSummaryFooterView.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 30.03.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CheckoutPayloadFooterView: UITableViewHeaderFooterView {
+final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
   
   private let topDivider: DividerView = {
     let view = DividerView()
@@ -53,7 +53,7 @@ final class CheckoutPayloadFooterView: UITableViewHeaderFooterView {
 
 // MARK: - Private Methods
 
-private extension CheckoutPayloadFooterView {
+private extension CheckoutPayloadSummaryFooterView {
   
   func setup() {
     let stackView = UIStackView(arrangedSubviews: [titleLabel, amountLabel])
@@ -62,13 +62,14 @@ private extension CheckoutPayloadFooterView {
     contentView.addSubview(stackView)
     contentView.addSubview(topDivider)
     contentView.addSubview(bottomDivider)
+    
     let topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
     topConstraint.priority = UILayoutPriority(999)
     NSLayoutConstraint.activate([
       topConstraint,
       stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-      stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-      stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+      stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+      stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
       topDivider.topAnchor.constraint(equalTo: contentView.topAnchor),
       topDivider.leftAnchor.constraint(equalTo: contentView.leftAnchor),
       topDivider.rightAnchor.constraint(equalTo: contentView.rightAnchor),

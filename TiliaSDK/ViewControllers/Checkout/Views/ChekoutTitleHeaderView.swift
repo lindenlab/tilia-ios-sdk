@@ -49,13 +49,14 @@ private extension ChekoutTitleHeaderView {
     stackView.axis = .vertical
     stackView.translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(stackView)
+    
     let topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
     topConstraint.priority = UILayoutPriority(999)
     NSLayoutConstraint.activate([
       topConstraint,
       stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-      stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-      stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+      stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+      stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
     ])
   }
   

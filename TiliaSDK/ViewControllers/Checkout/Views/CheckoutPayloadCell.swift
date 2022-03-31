@@ -70,6 +70,7 @@ private extension CheckoutPayloadCell {
     stackView.alignment = .top
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
+    
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
