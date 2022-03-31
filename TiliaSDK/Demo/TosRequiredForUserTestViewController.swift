@@ -14,7 +14,7 @@ final class TosRequiredForUserTestViewController: TestViewController {
     manager.getTosRequiredForUser { [weak self] result in
       switch result {
       case .success(let isTosSigned):
-        self?.label.text = "Is TOS signed with value: \(isTosSigned)"
+        self?.label.text = "TOS is signed with value: \(isTosSigned)"
       case .failure(let error):
         self?.label.text = error.localizedDescription
       }

@@ -15,10 +15,10 @@ final class TosRequiredForUserFlowTestViewController: TestViewController {
       guard let self = self else { return }
       switch result {
       case .success(let isTosSigned):
-        self.label.text = "Tos accepted state: \(isTosSigned)"
+        self.label.text = "Tos state: \(isTosSigned)"
         if !isTosSigned {
           self.manager.presentTosIsRequiredViewController(on: self, animated: true) {
-            self.label.text = "Tos accepted state: \($0)"
+            self.label.text = "Tos state: \($0)"
           }
         }
       case .failure(let error):

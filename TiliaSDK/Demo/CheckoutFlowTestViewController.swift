@@ -25,8 +25,9 @@ final class CheckoutFlowTestViewController: TestViewController {
     super.buttonTapped()
     manager.presentCheckoutViewController(on: self,
                                           withInvoiceId: invoiceIdTextField.text ?? "",
-                                          animated: true,
-                                          completion: nil)
+                                          animated: true) { [weak self] in
+      self?.label.text = "Checkout state: \($0)"
+    }
   }
   
 }
