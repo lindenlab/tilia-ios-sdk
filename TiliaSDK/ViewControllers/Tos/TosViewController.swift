@@ -113,7 +113,7 @@ extension TosViewController: UIAdaptivePresentationControllerDelegate {
 extension TosViewController: TextViewWithLinkDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
-    router.routeToWebView(with: link)
+    router.showWebView(with: link)
   }
   
 }

@@ -6,20 +6,11 @@
 //
 
 import UIKit
-import SafariServices
 
-protocol TosRoutingProtocol: RoutingProtocol {
-  func routeToWebView(with link: String)
-}
+protocol TosRoutingProtocol: RoutingProtocol { }
 
 final class TosRouter: TosRoutingProtocol {
   
   weak var viewController: UIViewController?
-  
-  func routeToWebView(with link: String) {
-    guard let model = TosAcceptModel(str: link) else { return }
-    let safariViewController = SFSafariViewController(url: model.url)
-    viewController?.present(safariViewController, animated: true)
-  }
   
 }

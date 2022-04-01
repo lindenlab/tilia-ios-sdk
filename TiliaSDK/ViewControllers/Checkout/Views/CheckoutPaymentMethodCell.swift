@@ -9,7 +9,11 @@ import UIKit
 
 final class CheckoutPaymentMethodCell: UITableViewCell {
   
-  private let radioButton = RadioButton()
+  private let radioButton: RadioButton = {
+    let button = RadioButton()
+    button.isUserInteractionEnabled = false
+    return button
+  }()
   
   private let titleLabel: UILabel = {
     let label = UILabel()

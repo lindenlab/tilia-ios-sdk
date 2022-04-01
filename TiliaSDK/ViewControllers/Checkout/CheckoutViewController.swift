@@ -111,7 +111,7 @@ extension CheckoutViewController: UITableViewDelegate {
 extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    completion?(false)
+    completion?(viewModel.successfulPayment.value)
   }
   
 }
@@ -125,7 +125,7 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
   }
   
   func checkoutPaymentFooterViewRoundedButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
-    
+    dismiss()
   }
   
 }
@@ -135,7 +135,7 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
 extension CheckoutViewController: TextViewWithLinkDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
-    
+    router.showWebView(with: link)
   }
   
 }
@@ -174,11 +174,7 @@ private extension CheckoutViewController {
     viewModel.needToAcceptTos.sink { [weak self] _ in
       guard let self = self else { return }
       self.router.routeToTosView { isTosSigned in
-        if isTosSigned {
-          self.viewModel.proceedCheckout()
-        } else {
-          self.router.dismiss { self.completion?(false) }
-        }
+        isTosSigned ? self.viewModel.proceedCheckout() : self.dismiss()
       }
     }.store(in: &subscriptions)
     viewModel.content.sink { [weak self] in
@@ -189,6 +185,11 @@ private extension CheckoutViewController {
       ]
       self.tableView.reloadData()
     }.store(in: &subscriptions)
+  }
+  
+  func dismiss() {
+    let isPaid = viewModel.successfulPayment.value
+    router.dismiss { self.completion?(isPaid) }
   }
   
 }

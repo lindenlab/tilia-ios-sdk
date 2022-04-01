@@ -83,11 +83,11 @@ private extension CheckoutPaymentFooterView {
   }
   
   @objc func fullFilledButtonDidTap() {
-    
+    delegate?.checkoutPaymentFooterViewFullFilledButtonDidTap(self)
   }
   
   @objc func roundedButtonDidTap() {
-    
+    delegate?.checkoutPaymentFooterViewRoundedButtonDidTap(self)
   }
   
 }
