@@ -14,6 +14,9 @@ extension UIColor {
   static let grayWithMediumTransparency = UIColor(red: 0.106, green: 0.133, blue: 0.157, alpha: 0.45)
   static let customBlack = UIColor(red: 0.108, green: 0.133, blue: 0.158, alpha: 1)
   static let blackWithLightTransparency = UIColor(red: 0, green: 0, blue: 0, alpha: 0.08)
+  static let customRed = UIColor(red: 0.898, green: 0.243, blue: 0.243, alpha: 1)
+  static let customGreen = UIColor(red: 0.22, green: 0.631, blue: 0.412, alpha: 1)
+  static let customBlue = UIColor(red: 0.192, green: 0.51, blue: 0.808, alpha: 1)
   
 }
 

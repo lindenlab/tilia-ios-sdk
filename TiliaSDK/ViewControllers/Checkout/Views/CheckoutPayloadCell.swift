@@ -60,9 +60,11 @@ private extension CheckoutPayloadCell {
   
   func setup() {
     selectionStyle = .none
+    
     let leadingStackView = UIStackView(arrangedSubviews: [descriptionLabel, productLabel])
     leadingStackView.spacing = 2
     leadingStackView.axis = .vertical
+    
     let stackView = UIStackView(arrangedSubviews: [leadingStackView, amountLabel])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.spacing = 5

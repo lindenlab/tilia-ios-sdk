@@ -13,10 +13,8 @@ struct InvoiceModel: Decodable {
   let referenceId: String
   let displayAmount: String
   let invoiceId: String
-  let items: [String: InvoiceItemModel]
-  
-  var itemsArray: [InvoiceItemModel] { return Array(items.values) }
-  
+  let items: [InvoiceItemModel]
+    
   private enum CodingKeys: String, CodingKey {
     case referenceType = "reference_type"
     case referenceId = "reference_id"
@@ -33,7 +31,8 @@ struct InvoiceModel: Decodable {
     self.referenceId = try container.decode(String.self, forKey: .referenceId)
     self.displayAmount = try nestedContainer.decode(String.self, forKey: .displayAmount)
     self.invoiceId = try container.decode(String.self, forKey: .invoiceId)
-    self.items = try container.decode([String: InvoiceItemModel].self, forKey: .items)
+    let itemsDict = try container.decode([String: InvoiceItemModel].self, forKey: .items)
+    self.items = Array(itemsDict.values)
   }
   
 }

@@ -1,5 +1,5 @@
 //
-//  CheckoutPayloadActionsFooterView.swift
+//  CheckoutPaymentFooterView.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 31.03.2022.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol CheckoutPayloadActionsFooterViewDelegate: AnyObject {
-  func checkoutPayloadActionsFooterViewFullFilledButtonDidTap(_ footerView: CheckoutPayloadActionsFooterView)
-  func checkoutPayloadActionsFooterViewRoundedButtonDidTap(_ footerView: CheckoutPayloadActionsFooterView)
+protocol CheckoutPaymentFooterViewDelegate: AnyObject {
+  func checkoutPaymentFooterViewFullFilledButtonDidTap(_ footerView: CheckoutPaymentFooterView)
+  func checkoutPaymentFooterViewRoundedButtonDidTap(_ footerView: CheckoutPaymentFooterView)
 }
 
-final class CheckoutPayloadActionsFooterView: UITableViewHeaderFooterView {
+final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   
-  private weak var delegate: CheckoutPayloadActionsFooterViewDelegate?
+  private weak var delegate: CheckoutPaymentFooterViewDelegate?
   
   private lazy var fullFilledButton: FullFilledButton = {
     let button = FullFilledButton()
@@ -51,11 +51,10 @@ final class CheckoutPayloadActionsFooterView: UITableViewHeaderFooterView {
   }
   
   func configure(roundedButtonTitle: String,
-                 isTextViewHidden: Bool,
-                 delegate: CheckoutPayloadActionsFooterViewDelegate?,
+                 delegate: CheckoutPaymentFooterViewDelegate?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
     roundedButton.setTitle(roundedButtonTitle, for: .normal)
-    textView.isHidden = isTextViewHidden
+    textView.isHidden = textViewDelegate == nil
     textView.linkDelegate = textViewDelegate
     self.delegate = delegate
   }
@@ -64,7 +63,7 @@ final class CheckoutPayloadActionsFooterView: UITableViewHeaderFooterView {
 
 // MARK: - Private Methods
 
-private extension CheckoutPayloadActionsFooterView {
+private extension CheckoutPaymentFooterView {
   
   func setup() {
     let stackView = UIStackView(arrangedSubviews: [fullFilledButton, roundedButton, textView])

@@ -20,7 +20,7 @@ protocol CheckoutViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var content: CurrentValueSubject<CheckoutContent?, Never> { get }
-  var successfulPay: PassthroughSubject<Void, Never> { get }
+  var successfulPayment: PassthroughSubject<Void, Never> { get }
 }
 
 protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutViewModelOutputProtocol { }
@@ -31,7 +31,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
   let error = PassthroughSubject<Error, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let content = CurrentValueSubject<CheckoutContent?, Never>(nil)
-  let successfulPay = PassthroughSubject<Void, Never>()
+  let successfulPayment = PassthroughSubject<Void, Never>()
   
   private let invoiceId: String
   private let manager = TLManager.shared
@@ -78,7 +78,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
       guard let self = self else { return }
       switch result {
       case .success:
-        self.successfulPay.send(())
+        self.successfulPayment.send(())
       case .failure(let error):
         self.setFailed(with: error)
       }

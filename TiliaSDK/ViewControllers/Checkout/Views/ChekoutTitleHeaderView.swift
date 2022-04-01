@@ -47,6 +47,7 @@ private extension ChekoutTitleHeaderView {
   func setup() {
     let stackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
     stackView.axis = .vertical
+    stackView.spacing = 2
     stackView.translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(stackView)
     

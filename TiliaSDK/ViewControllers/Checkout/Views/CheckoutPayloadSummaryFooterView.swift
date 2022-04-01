@@ -19,6 +19,7 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
     let label = UILabel()
     label.textColor = .customBlack
     label.font = UIFont.systemFont(ofSize: 16)
+    label.text = L.total
     return label
   }()
   
@@ -44,8 +45,7 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String, amount: String) {
-    titleLabel.text = title
+  func configure(amount: String) {
     amountLabel.text = amount
   }
   

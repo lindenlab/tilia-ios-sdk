@@ -16,7 +16,9 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   private let viewModel: CheckoutViewModelProtocol
   private let router: CheckoutRoutingProtocol
   private let completion: ((Bool) -> Void)?
+  private let builder = CheckoutSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
+  private var sections: [CheckoutSectionBuilder.Section] = []
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -29,7 +31,8 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     tableView.register(ChekoutTitleHeaderView.self)
     tableView.register(CheckoutPayloadSummaryFooterView.self)
     tableView.register(CheckoutPayloadCell.self)
-    tableView.register(CheckoutPayloadActionsFooterView.self)
+    tableView.register(CheckoutPaymentFooterView.self)
+    tableView.register(CheckoutPaymentMethodCell.self)
     return tableView
   }()
   
@@ -73,17 +76,15 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
 extension CheckoutViewController: UITableViewDataSource {
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 2
+    return sections.count
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return sections[section].numberOfRows
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeue(CheckoutPayloadCell.self, for: indexPath)
-    cell.configure(description: "description", product: "product", amount: "amount", isDividerHidden: false)
-    return cell
+    return sections[indexPath.section].cell(for: tableView, at: indexPath)
   }
   
 }
@@ -93,22 +94,14 @@ extension CheckoutViewController: UITableViewDataSource {
 extension CheckoutViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view = tableView.dequeue(ChekoutTitleHeaderView.self)
-    view.configure(title: L.choosePaymentMethod, subTitle: "subTitle")
-    return view
+    return sections[section].header(for: tableView, in: section)
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    switch section {
-    case 0:
-      let view = tableView.dequeue(CheckoutPayloadSummaryFooterView.self)
-      view.configure(title: "title", amount: "fsfs")
-      return view
-    default:
-      let view = tableView.dequeue(CheckoutPayloadActionsFooterView.self)
-      view.configure(roundedButtonTitle: "Cancel", isTextViewHidden: false, delegate: nil, textViewDelegate: nil)
-      return view
-    }
+    return sections[section].footer(for: tableView,
+                                    in: section,
+                                    delegate: self,
+                                    textViewDelegate: self)
   }
   
 }
@@ -119,6 +112,30 @@ extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     completion?(false)
+  }
+  
+}
+
+// MARK: - CheckoutPaymentFooterViewDelegate
+
+extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
+  
+  func checkoutPaymentFooterViewFullFilledButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+    
+  }
+  
+  func checkoutPaymentFooterViewRoundedButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+    
+  }
+  
+}
+
+// MARK: - TextViewWithLinkDelegate
+
+extension CheckoutViewController: TextViewWithLinkDelegate {
+  
+  func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
+    
   }
   
 }
@@ -163,6 +180,14 @@ private extension CheckoutViewController {
           self.router.dismiss { self.completion?(false) }
         }
       }
+    }.store(in: &subscriptions)
+    viewModel.content.sink { [weak self] in
+      guard let self = self, let content = $0 else { return }
+      self.sections = [
+        self.builder.summarySection(for: content.invoice),
+        self.builder.paymentSection(for: content.balance)
+      ]
+      self.tableView.reloadData()
     }.store(in: &subscriptions)
   }
   
