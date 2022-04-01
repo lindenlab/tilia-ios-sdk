@@ -67,6 +67,7 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
     self.presentationController?.delegate = self
+    self.overrideUserInterfaceStyle = .light
   }
   
   required init?(coder: NSCoder) {
@@ -163,8 +164,8 @@ private extension CheckoutViewController {
       tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
       tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       tableView.bottomAnchor.constraint(equalTo: divider.topAnchor),
-      divider.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-      divider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
+      divider.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+      divider.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
       divider.bottomAnchor.constraint(equalTo: logoImageView.topAnchor, constant: -16),
       logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       logoImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)

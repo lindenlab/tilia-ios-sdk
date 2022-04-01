@@ -90,6 +90,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
     self.presentationController?.delegate = self
+    self.overrideUserInterfaceStyle = .light
   }
   
   required init?(coder: NSCoder) {
