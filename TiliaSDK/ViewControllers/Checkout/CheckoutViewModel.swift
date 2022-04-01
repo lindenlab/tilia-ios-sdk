@@ -77,13 +77,13 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     loading.send(true)
     manager.payInvoice(withId: id, isEscrow: isEscrow) { [weak self] result in
       guard let self = self else { return }
-      self.loading.send(false)
       switch result {
       case .success:
         self.successfulPayment.send(true)
       case .failure(let error):
         self.error.send(error)
       }
+      self.loading.send(false)
     }
   }
   

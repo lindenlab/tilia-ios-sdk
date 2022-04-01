@@ -17,7 +17,11 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   private let router: CheckoutRoutingProtocol
   private let completion: ((Bool) -> Void)?
   private var subscriptions: Set<AnyCancellable> = []
-  private var sections: [CheckoutSectionBuilder.Section] = []
+  private var sections: [CheckoutSectionBuilder.Section] = [] {
+    didSet {
+      tableView.reloadData()
+    }
+  }
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -182,18 +186,16 @@ private extension CheckoutViewController {
       }
     }.store(in: &subscriptions)
     viewModel.content.sink { [weak self] in
-      guard let self = self, let content = $0 else { return }
+      guard let content = $0 else { return }
       let builder = CheckoutSectionBuilder()
-      self.sections = [
+      self?.sections = [
         builder.summarySection(for: content.invoice),
         builder.paymentSection(for: content.balance)
       ]
-      self.tableView.reloadData()
     }.store(in: &subscriptions)
     viewModel.successfulPayment.sink { [weak self] in
-      guard let self = self, $0 else { return }
-      self.sections[1] = .successfulPayment
-      self.tableView.reloadSections([1], with: .none)
+      guard $0 else { return }
+      self?.sections[1] = .successfulPayment
     }.store(in: &subscriptions)
   }
   
