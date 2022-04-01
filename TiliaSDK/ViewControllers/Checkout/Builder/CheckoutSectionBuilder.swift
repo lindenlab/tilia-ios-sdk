@@ -5,7 +5,6 @@
 //  Created by Serhii.Petrishenko on 01.04.2022.
 //
 
-import Foundation
 import UIKit
 
 struct CheckoutSectionBuilder {
