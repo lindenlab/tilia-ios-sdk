@@ -54,6 +54,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
                  delegate: CheckoutPaymentFooterViewDelegate?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
     roundedButton.setTitle(roundedButtonTitle, for: .normal)
+    fullFilledButton.isHidden = textViewDelegate == nil
     textView.isHidden = textViewDelegate == nil
     textView.linkDelegate = textViewDelegate
     self.delegate = delegate

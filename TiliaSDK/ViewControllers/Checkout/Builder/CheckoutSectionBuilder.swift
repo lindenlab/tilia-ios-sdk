@@ -21,6 +21,13 @@ struct CheckoutSectionBuilder {
       }
     }
     
+    var heightForHeader: CGFloat {
+      switch self {
+      case .successfulPayment: return .leastNormalMagnitude
+      default: return UITableView.automaticDimension
+      }
+    }
+    
     func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
       switch self {
       case let .summary(invoiceModel):
@@ -39,7 +46,7 @@ struct CheckoutSectionBuilder {
                        isSelected: true)
         return cell
       case .successfulPayment:
-        return UITableViewCell()
+        return tableView.dequeue(CheckoutSuccessfulPaymentCell.self, for: indexPath)
       }
     }
     
@@ -91,10 +98,6 @@ struct CheckoutSectionBuilder {
   
   func paymentSection(for balance: BalanceModel) -> Section {
     return .payment(balance)
-  }
-  
-  func successfulPaymentSection() -> Section {
-    return .successfulPayment
   }
   
 }

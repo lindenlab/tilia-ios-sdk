@@ -23,5 +23,7 @@ enum L {
   static let pay = "pay".localized
   static let done = "done".localized
   static let payAcceptDescription = "payAcceptDescription".localized
+  static let success = "success".localized
+  static let paymentProcessed = "paymentProcessed".localized
   
 }
