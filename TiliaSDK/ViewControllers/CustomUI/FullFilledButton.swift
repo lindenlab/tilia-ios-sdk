@@ -30,7 +30,7 @@ private extension FullFilledButton {
   
   func setup() {
     setTitleColor(.white, for: .normal)
-    setBackgroundImage(UIColor.royalBlue.image(), for: .normal)
+    setBackgroundImage(UIColor.buttonColor.image(), for: .normal)
     layer.cornerRadius = 6
     clipsToBounds = true
     titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)

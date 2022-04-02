@@ -34,8 +34,8 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     let text = TosAcceptModel.payTitle
     let links = [TosAcceptModel.termsOfService.description]
     textView.textData = (text, links)
-    textView.linkColor = .grayWithMediumTransparency
-    textView.textColor = .grayWithMediumTransparency
+    textView.linkColor = .subTitleColor2
+    textView.textColor = .subTitleColor2
     textView.font = UIFont.systemFont(ofSize: 12)
     textView.textAlignment = .justified
     return textView

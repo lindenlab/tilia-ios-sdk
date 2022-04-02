@@ -29,11 +29,11 @@ final class RoundedButton: UIButton {
 private extension RoundedButton {
   
   func setup() {
-    setTitleColor(.customBlack, for: .normal)
+    setTitleColor(.titleColor, for: .normal)
     setBackgroundImage(UIColor.white.image(), for: .normal)
     layer.cornerRadius = 6
     layer.borderWidth = 1
-    layer.borderColor = UIColor.blackWithLightTransparency.cgColor
+    layer.borderColor = UIColor.dividerColor.cgColor
     clipsToBounds = true
     titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
     isExclusiveTouch = true

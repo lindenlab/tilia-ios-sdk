@@ -43,7 +43,7 @@ class TestViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .white
+    view.backgroundColor = .backgroundColor
     stackView.addArrangedSubview(label)
     stackView.addArrangedSubview(accessTokenTextField)
     view.addSubview(stackView)

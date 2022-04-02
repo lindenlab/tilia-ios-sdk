@@ -25,7 +25,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     label.text = L.tiliaTos
     label.numberOfLines = 0
     label.font = UIFont.boldSystemFont(ofSize: 18)
-    label.textColor = .customBlack
+    label.textColor = .titleColor
     return label
   }()
   
@@ -124,7 +124,7 @@ extension TosViewController: TextViewWithLinkDelegate {
 private extension TosViewController {
   
   func setup() {
-    view.backgroundColor = .white
+    view.backgroundColor = .backgroundColor
     view.addSubview(stackView)
     
     NSLayoutConstraint.activate([

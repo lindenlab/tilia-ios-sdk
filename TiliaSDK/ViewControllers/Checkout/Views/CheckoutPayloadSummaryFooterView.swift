@@ -17,7 +17,7 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .customBlack
+    label.textColor = .titleColor
     label.font = UIFont.systemFont(ofSize: 16)
     label.text = L.total
     return label
@@ -25,7 +25,7 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
   
   private let amountLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .customBlack
+    label.textColor = .titleColor
     label.font = UIFont.systemFont(ofSize: 16)
     return label
   }()

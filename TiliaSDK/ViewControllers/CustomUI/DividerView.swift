@@ -15,7 +15,7 @@ final class DividerView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    backgroundColor = .blackWithLightTransparency
+    backgroundColor = .dividerColor
   }
   
   required init?(coder: NSCoder) {

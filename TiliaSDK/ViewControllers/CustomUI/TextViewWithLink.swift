@@ -25,7 +25,7 @@ final class TextViewWithLink: UITextView {
     }
   }
   
-  var linkColor: UIColor = .royalBlue {
+  var linkColor: UIColor = .buttonColor {
     didSet {
       updateLinkAttributes()
     }
@@ -114,7 +114,7 @@ private extension TextViewWithLink {
   func setTextData() {
     updateLinkAttributes()
     let font = self.font ?? .systemFont(ofSize: 16)
-    let textColor = self.textColor ?? .customBlack
+    let textColor = self.textColor ?? .titleColor
     let attributedText = NSMutableAttributedString(string: textData.text, attributes: [.font: font, .foregroundColor: textColor])
     textData.links.forEach { link in
       let nonBreakingLinkText = link.replacingOccurrences(of: " ", with: "\u{00a0}")
