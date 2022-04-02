@@ -11,7 +11,8 @@ final class CheckoutSuccessfulPaymentCell: UITableViewCell {
   
   private let iconImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = .logoImage
+    imageView.image = .successIcon
+    imageView.setContentHuggingPriority(.required, for: .horizontal)
     return imageView
   }()
   
@@ -49,11 +50,11 @@ private extension CheckoutSuccessfulPaymentCell {
   
   func setup() {
     let labelsStackView = UIStackView(arrangedSubviews: [titleLabel, messageLabel])
-    labelsStackView.spacing = 10
+    labelsStackView.spacing = 5
     labelsStackView.axis = .vertical
     
     let stackView = UIStackView(arrangedSubviews: [iconImageView, labelsStackView])
-    stackView.alignment = .top
+    stackView.alignment = .center
     stackView.spacing = 16
     stackView.translatesAutoresizingMaskIntoConstraints = false
     
@@ -70,10 +71,10 @@ private extension CheckoutSuccessfulPaymentCell {
       backgroundView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       backgroundView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
       backgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-      stackView.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 16),
+      stackView.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 12),
       stackView.leftAnchor.constraint(equalTo: backgroundView.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: backgroundView.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -16)
+      stackView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -12)
     ])
   }
   

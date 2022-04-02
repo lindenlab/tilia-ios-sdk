@@ -10,5 +10,6 @@ import UIKit
 extension UIImage {
   
   static let logoImage = UIImage(named: "logoIcon")
+  static let successIcon = UIImage(named: "successIcon")
   
 }
