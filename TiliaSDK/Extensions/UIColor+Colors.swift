@@ -21,8 +21,13 @@ extension UIColor {
   private static let grayWithDarkTransparency = UIColor(red: 0.106, green: 0.133, blue: 0.157, alpha: 0.75)
   private static let grayWithMediumTransparency = UIColor(red: 0.106, green: 0.133, blue: 0.157, alpha: 0.45)
   private static let customBlack = UIColor(red: 0.108, green: 0.133, blue: 0.158, alpha: 1)
-  private static let blackWithLightTransparency = UIColor(red: 0, green: 0, blue: 0, alpha: 0.08)
+  private static let blackWithLightTransparency = UIColor(white: 0, alpha: 0.08)
   private static let customGreen = UIColor(red: 0.22, green: 0.631, blue: 0.412, alpha: 1)
+  private static let whiteWithDarkTransparency = UIColor(white: 1, alpha: 0.75)
+  private static let whiteWithMediumTransparency = UIColor(white: 1, alpha: 0.45)
+  private static let whiteWithLightTransparency = UIColor(white: 1, alpha: 0.16)
+  private static let customOrange = UIColor(red: 0.929, green: 0.537, blue: 0.212, alpha: 1)
+  private static let customBlue = UIColor(white: 0.898, alpha: 1)
   
 }
 
