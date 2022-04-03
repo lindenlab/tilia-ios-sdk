@@ -38,6 +38,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     textView.textColor = .subTitleColor2
     textView.font = UIFont.systemFont(ofSize: 12)
     textView.textAlignment = .justified
+    textView.backgroundColor = .clear
     return textView
   }()
   
@@ -71,6 +72,8 @@ private extension CheckoutPaymentFooterView {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
     stackView.spacing = 16
+    
+    contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
     
     let topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)

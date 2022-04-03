@@ -154,7 +154,7 @@ extension CheckoutViewController: TextViewWithLinkDelegate {
 private extension CheckoutViewController {
   
   func setup() {
-    view.backgroundColor = .white
+    view.backgroundColor = .backgroundColor
     view.addSubview(logoImageView)
     view.addSubview(tableView)
     view.addSubview(divider)

@@ -64,6 +64,9 @@ private extension CheckoutSuccessfulPaymentCell {
     backgroundView.backgroundColor = .successColor
     backgroundView.translatesAutoresizingMaskIntoConstraints = false
     backgroundView.addSubview(stackView)
+    
+    backgroundColor = .clear
+    contentView.backgroundColor = .clear
     contentView.addSubview(backgroundView)
     
     NSLayoutConstraint.activate([

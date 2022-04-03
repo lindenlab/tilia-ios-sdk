@@ -49,6 +49,8 @@ private extension ChekoutTitleHeaderView {
     stackView.axis = .vertical
     stackView.spacing = 2
     stackView.translatesAutoresizingMaskIntoConstraints = false
+    
+    contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
     
     let topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)

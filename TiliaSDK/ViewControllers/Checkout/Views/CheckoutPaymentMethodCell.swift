@@ -66,6 +66,9 @@ private extension CheckoutPaymentMethodCell {
     stackView.spacing = 5
     stackView.distribution = .equalSpacing
     stackView.alignment = .center
+    
+    backgroundColor = .clear
+    contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
     
     NSLayoutConstraint.activate([

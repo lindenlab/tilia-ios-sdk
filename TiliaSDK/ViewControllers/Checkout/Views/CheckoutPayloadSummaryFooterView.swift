@@ -59,6 +59,8 @@ private extension CheckoutPayloadSummaryFooterView {
     let stackView = UIStackView(arrangedSubviews: [titleLabel, amountLabel])
     stackView.alignment = .center
     stackView.translatesAutoresizingMaskIntoConstraints = false
+    
+    contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
     contentView.addSubview(topDivider)
     contentView.addSubview(bottomDivider)

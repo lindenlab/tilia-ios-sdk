@@ -39,6 +39,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     let textView = TextViewWithLink()
     textView.linkDelegate = self
     textView.font = UIFont.systemFont(ofSize: 16)
+    textView.backgroundColor = .clear
     let text = TosAcceptModel.title
     let links = self.links.map { $0.description }
     textView.textData = (text, links)
