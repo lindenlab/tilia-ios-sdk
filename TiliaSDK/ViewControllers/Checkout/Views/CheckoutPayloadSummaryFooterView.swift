@@ -20,6 +20,7 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
     label.textColor = .titleColor
     label.font = UIFont.systemFont(ofSize: 16)
     label.text = L.total
+    label.setContentCompressionResistancePriority(UILayoutPriority(751), for: .vertical)
     return label
   }()
   
@@ -58,7 +59,9 @@ private extension CheckoutPayloadSummaryFooterView {
   func setup() {
     let stackView = UIStackView(arrangedSubviews: [titleLabel, amountLabel])
     stackView.alignment = .center
+    stackView.spacing = 5
     stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.distribution = .equalSpacing
     
     contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
