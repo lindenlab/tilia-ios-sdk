@@ -178,7 +178,19 @@ private extension CheckoutViewController {
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
     viewModel.error.sink { [weak self] in
-      self?.router.showAlert(title: $0.localizedDescription)
+      guard let self = self else { return }
+      let title = $0.error.localizedDescription
+      if $0.needToReload {
+        let reloadAction = UIAlertAction(title: L.reload, style: .default) { _ in
+          self.viewModel.checkIsTosRequired()
+        }
+        self.router.showAlert(title: title,
+                              otherActions: [reloadAction],
+                              cancelTitle: L.cancel,
+                              cancelAction: { self.dismiss() })
+      } else {
+        self.router.showAlert(title: title)
+      }
     }.store(in: &subscriptions)
     viewModel.needToAcceptTos.sink { [weak self] _ in
       guard let self = self else { return }

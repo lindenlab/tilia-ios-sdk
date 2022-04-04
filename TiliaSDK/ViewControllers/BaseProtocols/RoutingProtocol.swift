@@ -12,7 +12,7 @@ protocol RoutingProtocol {
   var viewController: UIViewController? { get }
   
   func dismiss(animated: Bool, completion: (() -> Void)?)
-  func showAlert(title: String, message: String?, cancelAction: (() -> Void)?, otherActions: [UIAlertAction])
+  func showAlert(title: String, message: String?, otherActions: [UIAlertAction], cancelTitle: String, cancelAction: (() -> Void)?)
   func showWebView(with link: String)
 }
 
@@ -24,9 +24,13 @@ extension RoutingProtocol {
     viewController?.dismiss(animated: animated, completion: completion)
   }
   
-  func showAlert(title: String, message: String? = nil, cancelAction: (() -> Void)? = nil, otherActions: [UIAlertAction] = []) {
+  func showAlert(title: String,
+                 message: String? = nil,
+                 otherActions: [UIAlertAction] = [],
+                 cancelTitle: String = L.ok,
+                 cancelAction: (() -> Void)? = nil) {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    let okAction = UIAlertAction(title: L.ok, style: .cancel) { _ in cancelAction?() }
+    let okAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in cancelAction?() }
     alertController.addAction(okAction)
     otherActions.forEach { alertController.addAction($0) }
     viewController?.present(alertController, animated: true)

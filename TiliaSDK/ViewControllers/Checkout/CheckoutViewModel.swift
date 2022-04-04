@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 typealias CheckoutContent = (invoice: InvoiceModel, balance: BalanceModel, invoiceDetails: InvoiceDetailsModel)
+typealias CheckoutError = (error: Error, needToReload: Bool)
 
 protocol CheckoutViewModelInputProtocol {
   func checkIsTosRequired()
@@ -18,7 +19,7 @@ protocol CheckoutViewModelInputProtocol {
 
 protocol CheckoutViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
-  var error: PassthroughSubject<Error, Never> { get }
+  var error: PassthroughSubject<CheckoutError, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var content: CurrentValueSubject<CheckoutContent?, Never> { get }
   var successfulPayment: CurrentValueSubject<Bool, Never> { get }
@@ -29,7 +30,7 @@ protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutView
 final class CheckoutViewModel: CheckoutViewModelProtocol {
   
   let loading = PassthroughSubject<Bool, Never>()
-  let error = PassthroughSubject<Error, Never>()
+  let error = PassthroughSubject<CheckoutError, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let content = CurrentValueSubject<CheckoutContent?, Never>(nil)
   let successfulPayment = CurrentValueSubject<Bool, Never>(false)
@@ -53,7 +54,8 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
           self.proceedCheckout()
         }
       case .failure(let error):
-        self.setFailed(with: error)
+        self.loading.send(false)
+        self.error.send((error, true))
       }
     }
   }
@@ -65,7 +67,8 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
       case .success(let model):
         self.createInvoice(with: model)
       case .failure(let error):
-        self.setFailed(with: error)
+        self.loading.send(false)
+        self.error.send((error, true))
       }
     }
   }
@@ -81,7 +84,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
       case .success:
         self.successfulPayment.send(true)
       case .failure(let error):
-        self.error.send(error)
+        self.error.send((error, false))
       }
       self.loading.send(false)
     }
@@ -125,15 +128,10 @@ private extension CheckoutViewModel {
       if let invoice = invoice, let balance = balance {
         self.content.send((invoice, balance, invoiceDetails))
       } else if let error = serverError {
-        self.error.send(error)
+        self.error.send((error, true))
       }
       self.loading.send(false)
     }
-  }
-  
-  func setFailed(with error: Error) {
-    loading.send(false)
-    self.error.send(error)
   }
   
 }
