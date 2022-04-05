@@ -49,10 +49,10 @@ private extension RadioButton {
   func setup() {
     if isRadioSelected {
       layer.borderWidth = 6
-      layer.borderColor = UIColor.buttonColor.cgColor
+      layer.borderColor = UIColor.primaryColor.cgColor
     } else {
       layer.borderWidth = 2
-      layer.borderColor = UIColor.dividerColor.cgColor
+      layer.borderColor = UIColor.borderColor.cgColor
     }
   }
   

@@ -8,24 +8,24 @@
 import UIKit
 
 protocol CheckoutPaymentFooterViewDelegate: AnyObject {
-  func checkoutPaymentFooterViewFullFilledButtonDidTap(_ footerView: CheckoutPaymentFooterView)
-  func checkoutPaymentFooterViewRoundedButtonDidTap(_ footerView: CheckoutPaymentFooterView)
+  func checkoutPaymentFooterViewPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView)
+  func checkoutPaymentFooterViewNonPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView)
 }
 
 final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   
   private weak var delegate: CheckoutPaymentFooterViewDelegate?
   
-  private lazy var fullFilledButton: FullFilledButton = {
-    let button = FullFilledButton()
+  private lazy var primaryButton: PrimaryButton = {
+    let button = PrimaryButton()
     button.setTitle(L.pay, for: .normal)
-    button.addTarget(self, action: #selector(fullFilledButtonDidTap), for: .touchUpInside)
+    button.addTarget(self, action: #selector(primaryButtonDidTap), for: .touchUpInside)
     return button
   }()
   
-  private lazy var roundedButton: RoundedButton = {
-    let button = RoundedButton()
-    button.addTarget(self, action: #selector(roundedButtonDidTap), for: .touchUpInside)
+  private lazy var nonPrimaryButton: NonPrimaryButton = {
+    let button = NonPrimaryButton()
+    button.addTarget(self, action: #selector(nonPrimaryButtonDidTap), for: .touchUpInside)
     return button
   }()
   
@@ -34,8 +34,8 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     let text = TosAcceptModel.payTitle
     let links = [TosAcceptModel.termsOfService.description]
     textView.textData = (text, links)
-    textView.linkColor = .subTitleColor2
-    textView.textColor = .subTitleColor2
+    textView.linkColor = .tertiaryTextColor
+    textView.textColor = .tertiaryTextColor
     textView.font = UIFont.systemFont(ofSize: 12)
     textView.textAlignment = .justified
     textView.backgroundColor = .clear
@@ -51,11 +51,11 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(roundedButtonTitle: String,
+  func configure(nonPrimaryButtonTitle: String,
                  delegate: CheckoutPaymentFooterViewDelegate?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
-    roundedButton.setTitle(roundedButtonTitle, for: .normal)
-    fullFilledButton.isHidden = textViewDelegate == nil
+    nonPrimaryButton.setTitle(nonPrimaryButtonTitle, for: .normal)
+    primaryButton.isHidden = textViewDelegate == nil
     textView.isHidden = textViewDelegate == nil
     textView.linkDelegate = textViewDelegate
     self.delegate = delegate
@@ -68,7 +68,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
 private extension CheckoutPaymentFooterView {
   
   func setup() {
-    let stackView = UIStackView(arrangedSubviews: [fullFilledButton, roundedButton, textView])
+    let stackView = UIStackView(arrangedSubviews: [primaryButton, nonPrimaryButton, textView])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
     stackView.spacing = 16
@@ -86,12 +86,12 @@ private extension CheckoutPaymentFooterView {
     ])
   }
   
-  @objc func fullFilledButtonDidTap() {
-    delegate?.checkoutPaymentFooterViewFullFilledButtonDidTap(self)
+  @objc func primaryButtonDidTap() {
+    delegate?.checkoutPaymentFooterViewPrimaryButtonDidTap(self)
   }
   
-  @objc func roundedButtonDidTap() {
-    delegate?.checkoutPaymentFooterViewRoundedButtonDidTap(self)
+  @objc func nonPrimaryButtonDidTap() {
+    delegate?.checkoutPaymentFooterViewNonPrimaryButtonDidTap(self)
   }
   
 }

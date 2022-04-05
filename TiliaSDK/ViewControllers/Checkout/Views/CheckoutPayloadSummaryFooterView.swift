@@ -17,7 +17,7 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .titleColor
+    label.textColor = .primaryTextColor
     label.font = UIFont.systemFont(ofSize: 16)
     label.text = L.total
     label.setContentCompressionResistancePriority(UILayoutPriority(751), for: .vertical)
@@ -26,7 +26,7 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
   
   private let amountLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .titleColor
+    label.textColor = .primaryTextColor
     label.font = UIFont.systemFont(ofSize: 16)
     return label
   }()

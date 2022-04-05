@@ -25,12 +25,14 @@ final class TosViewController: UIViewController, LoadableProtocol {
     label.text = L.tiliaTos
     label.numberOfLines = 0
     label.font = UIFont.boldSystemFont(ofSize: 18)
-    label.textColor = .titleColor
+    label.textColor = .primaryTextColor
     return label
   }()
   
   private lazy var acceptSwitch: UISwitch = {
     let uiSwitch = UISwitch()
+    uiSwitch.tintColor = .borderColor
+    uiSwitch.onTintColor = .primaryColor
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
     return uiSwitch
   }()
@@ -46,16 +48,16 @@ final class TosViewController: UIViewController, LoadableProtocol {
     return textView
   }()
   
-  private lazy var acceptButton: FullFilledButton = {
-    let button = FullFilledButton()
+  private lazy var acceptButton: PrimaryButton = {
+    let button = PrimaryButton()
     button.setTitle(L.accept, for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
     button.isEnabled = acceptSwitch.isOn
     return button
   }()
   
-  private lazy var cancelButton: RoundedButton = {
-    let button = RoundedButton()
+  private lazy var cancelButton: NonPrimaryButton = {
+    let button = NonPrimaryButton()
     button.setTitle(L.cancel, for: .normal)
     button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
     return button
@@ -91,7 +93,6 @@ final class TosViewController: UIViewController, LoadableProtocol {
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
     self.presentationController?.delegate = self
-    self.overrideUserInterfaceStyle = .light
   }
   
   required init?(coder: NSCoder) {

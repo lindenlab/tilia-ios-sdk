@@ -48,7 +48,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
       guard let self = self else { return }
       switch result {
       case .success(let isTosSigned):
-        if !isTosSigned {
+        if isTosSigned {
           self.needToAcceptTos.send(())
         } else {
           self.proceedCheckout()

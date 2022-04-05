@@ -1,5 +1,5 @@
 //
-//  RoundedButton.swift
+//  NonPrimaryButton.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 29.03.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class RoundedButton: UIButton {
+final class NonPrimaryButton: UIButton {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
@@ -26,14 +26,14 @@ final class RoundedButton: UIButton {
 
 // MARK: - Private Methods
 
-private extension RoundedButton {
+private extension NonPrimaryButton {
   
   func setup() {
-    setTitleColor(.titleColor, for: .normal)
-    setBackgroundImage(UIColor.white.image(), for: .normal)
+    setTitleColor(.primaryTextColor, for: .normal)
+    setBackgroundImage(UIColor.backgroundColor.image(), for: .normal)
     layer.cornerRadius = 6
     layer.borderWidth = 1
-    layer.borderColor = UIColor.dividerColor.cgColor
+    layer.borderColor = UIColor.borderColor.cgColor
     clipsToBounds = true
     titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
     isExclusiveTouch = true

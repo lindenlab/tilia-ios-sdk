@@ -16,6 +16,7 @@ public final class TLManager {
   var serverConfiguration: ServerConfiguration {
     return synchronizationQueue.sync { return _serverConfiguration }
   }
+  private(set) var colorsConfiguration = ColorsConfiguration()
   
   private var _serverConfiguration = ServerConfiguration()
   private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue", attributes: .concurrent)
@@ -47,6 +48,36 @@ public extension TLManager {
   ///   - environment: environment
   func setEnvironment(_ environment: TLEnvironment) {
     executeOnQueue { self._serverConfiguration.environment = environment }
+  }
+  
+}
+
+// MARK: - Colors Configuration
+
+public extension TLManager {
+  
+  func setBackgroundColor(forLightMode lightModeColor: UIColor,
+                          andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.backgroundColor = .init(lightModeColor: lightModeColor,
+                                                darkModeColor: darkModeColor)
+  }
+  
+  func setPrimaryColor(forLightMode lightModeColor: UIColor,
+                       andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.primaryColor = .init(lightModeColor: lightModeColor,
+                                             darkModeColor: darkModeColor)
+  }
+  
+  func setPrimaryButtonTextColor(forLightMode lightModeColor: UIColor,
+                                 andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.primaryButtonTextColor = .init(lightModeColor: lightModeColor,
+                                                       darkModeColor: darkModeColor)
+  }
+  
+  func setPrimaryTextColor(forLightMode lightModeColor: UIColor,
+                           andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.primaryTextColor = .init(lightModeColor: lightModeColor,
+                                                 darkModeColor: darkModeColor)
   }
   
 }

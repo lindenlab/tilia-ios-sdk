@@ -1,5 +1,5 @@
 //
-//  FullFilledButton.swift
+//  PrimaryButton.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 28.03.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class FullFilledButton: UIButton {
+final class PrimaryButton: UIButton {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
@@ -26,11 +26,11 @@ final class FullFilledButton: UIButton {
 
 // MARK: - Private Methods
 
-private extension FullFilledButton {
+private extension PrimaryButton {
   
   func setup() {
-    setTitleColor(.white, for: .normal)
-    setBackgroundImage(UIColor.buttonColor.image(), for: .normal)
+    setTitleColor(.primaryButtonTextColor, for: .normal)
+    setBackgroundImage(UIColor.primaryColor.image(), for: .normal)
     layer.cornerRadius = 6
     clipsToBounds = true
     titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)

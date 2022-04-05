@@ -67,7 +67,6 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
     self.presentationController?.delegate = self
-    self.overrideUserInterfaceStyle = .light
   }
   
   required init?(coder: NSCoder) {
@@ -129,11 +128,11 @@ extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
 
 extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
   
-  func checkoutPaymentFooterViewFullFilledButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+  func checkoutPaymentFooterViewPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
     viewModel.payInvoice()
   }
   
-  func checkoutPaymentFooterViewRoundedButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+  func checkoutPaymentFooterViewNonPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
     dismiss()
   }
   

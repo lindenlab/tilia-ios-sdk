@@ -11,14 +11,14 @@ final class ChekoutTitleHeaderView: UITableViewHeaderFooterView {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .titleColor
+    label.textColor = .primaryTextColor
     label.font = UIFont.boldSystemFont(ofSize: 20)
     return label
   }()
   
   private let subTitleLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .subTitleColor1
+    label.textColor = .secondaryTextColor
     label.font = UIFont.systemFont(ofSize: 14)
     return label
   }()
