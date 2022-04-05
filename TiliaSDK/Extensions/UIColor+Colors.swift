@@ -32,43 +32,50 @@ extension UIColor {
   }
   
   static var primaryButtonTextColor: UIColor {
-    if let primaryButtonTextColor = configuration.primaryButtonTextColor {
-      return UIColor {
+    return UIColor {
+      if let primaryButtonTextColor = configuration.primaryButtonTextColor {
         if $0.userInterfaceStyle == .dark {
           return primaryButtonTextColor.darkModeColor
         } else {
           return primaryButtonTextColor.lightModeColor
         }
+      } else {
+        return primaryColor.isColorDark() ? .white : .customBlack
       }
-    } else {
-      return primaryColor.isColorDark() ? .white : .customBlack
     }
   }
   
   static var primaryTextColor: UIColor {
-    if let primaryTextColor = configuration.primaryTextColor {
-      return UIColor {
+    return UIColor {
+      if let primaryTextColor = configuration.primaryTextColor {
         if $0.userInterfaceStyle == .dark {
           return primaryTextColor.darkModeColor
         } else {
           return primaryTextColor.lightModeColor
         }
+      } else {
+        return backgroundColor.isColorDark() ? .white : .customBlack
       }
-    } else {
-      return backgroundColor.isColorDark() ? .white : .customBlack
     }
+    
   }
   
   static var secondaryTextColor: UIColor {
-    return primaryTextColor.withAlphaComponent(0.75)
+    return UIColor { _ in
+      return primaryTextColor.withAlphaComponent(0.75)
+    }
   }
   
   static var tertiaryTextColor: UIColor {
-    return primaryTextColor.withAlphaComponent(0.45)
+    return UIColor { _ in
+      return primaryTextColor.withAlphaComponent(0.45)
+    }
   }
   
   static var borderColor: UIColor {
-    return backgroundColor.isColorDark() ? .customWhite : .customBlack.withAlphaComponent(0.18)
+    return UIColor { _ in
+      return backgroundColor.isColorDark() ? .customWhite : .customBlack.withAlphaComponent(0.18)
+    }
   }
   
   
