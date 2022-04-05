@@ -105,6 +105,7 @@ private extension TextViewWithLink {
     setContentCompressionResistancePriority(.required, for: .vertical)
     dataDetectorTypes = []
     delegate = self
+    isExclusiveTouch = true
   }
   
   func updateLinkAttributes() {
