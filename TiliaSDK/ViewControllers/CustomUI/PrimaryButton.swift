@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PrimaryButton: UIButton {
+final class PrimaryButton: ButtonWithBackgroundColor {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
@@ -30,11 +30,11 @@ private extension PrimaryButton {
   
   func setup() {
     setTitleColor(.primaryButtonTextColor, for: .normal)
-    setBackgroundImage(UIColor.primaryColor.image(), for: .normal)
+    setBackgroundColor(.primaryColor, for: .normal)
+    setBackgroundColor(.primaryColor.withAlphaComponent(0.5), for: .disabled)
+    setBackgroundColor(.primaryColor.withAlphaComponent(0.5), for: .highlighted)
     layer.cornerRadius = 6
-    clipsToBounds = true
     titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-    isExclusiveTouch = true
   }
   
 }

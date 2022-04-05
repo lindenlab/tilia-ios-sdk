@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NonPrimaryButton: UIButton {
+final class NonPrimaryButton: ButtonWithBackgroundColor {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
@@ -22,6 +22,11 @@ final class NonPrimaryButton: UIButton {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    setupBorderColor()
+  }
+  
 }
 
 // MARK: - Private Methods
@@ -30,13 +35,17 @@ private extension NonPrimaryButton {
   
   func setup() {
     setTitleColor(.primaryTextColor, for: .normal)
-    setBackgroundImage(UIColor.backgroundColor.image(), for: .normal)
+    setBackgroundColor(.backgroundColor, for: .normal)
+    setBackgroundColor(.borderColor, for: .disabled)
+    setBackgroundColor(.borderColor, for: .highlighted)
     layer.cornerRadius = 6
     layer.borderWidth = 1
-    layer.borderColor = UIColor.borderColor.cgColor
-    clipsToBounds = true
+    setupBorderColor()
     titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-    isExclusiveTouch = true
+  }
+  
+  func setupBorderColor() {
+    layer.borderColor = UIColor.borderColor.cgColor
   }
   
 }

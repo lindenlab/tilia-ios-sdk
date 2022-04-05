@@ -36,6 +36,11 @@ final class RadioButton: UIButton {
     setup()
   }
   
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    setup()
+  }
+  
   func setSelected(_ isSelected: Bool) {
     isRadioSelected = isSelected
   }

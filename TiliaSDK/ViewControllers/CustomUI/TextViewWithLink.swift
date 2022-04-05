@@ -115,7 +115,7 @@ private extension TextViewWithLink {
   func setTextData() {
     updateLinkAttributes()
     let font = self.font ?? .systemFont(ofSize: 16)
-    let textColor = self.textColor ?? .tertiaryTextColor
+    let textColor = self.textColor ?? .primaryTextColor
     let attributedText = NSMutableAttributedString(string: textData.text, attributes: [.font: font, .foregroundColor: textColor])
     textData.links.forEach { link in
       let nonBreakingLinkText = link.replacingOccurrences(of: " ", with: "\u{00a0}")

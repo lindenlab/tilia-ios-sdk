@@ -85,17 +85,6 @@ extension UIColor {
   
 }
 
-extension UIColor {
-  
-  func image(with size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
-    return UIGraphicsImageRenderer(size: size).image { context in
-      self.setFill()
-      context.fill(CGRect(origin: .zero, size: size))
-    }
-  }
-  
-}
-
 // MARK: - Private Methods
 
 private extension UIColor {
