@@ -25,7 +25,7 @@ final class CheckoutPayloadCell: UITableViewCell {
   
   private let amountLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .tertiaryTextColor
+    label.textColor = .primaryTextColor
     label.font = UIFont.systemFont(ofSize: 14)
     return label
   }()
