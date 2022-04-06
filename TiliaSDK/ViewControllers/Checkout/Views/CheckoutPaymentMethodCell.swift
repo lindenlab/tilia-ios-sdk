@@ -15,6 +15,11 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     return button
   }()
   
+  private let iconImageView: UIImageView = {
+    let imageView = UIImageView(image: .walletIcon)
+    return imageView
+  }()
+  
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textColor = .primaryTextColor
@@ -52,7 +57,8 @@ private extension CheckoutPaymentMethodCell {
   
   func setup() {
     selectionStyle = .none
-    let leadingStackView = UIStackView(arrangedSubviews: [radioButton])
+    let leadingStackView = UIStackView(arrangedSubviews: [radioButton, iconImageView])
+    leadingStackView.alignment = .center
     leadingStackView.spacing = 16
 
     let trailingStackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
