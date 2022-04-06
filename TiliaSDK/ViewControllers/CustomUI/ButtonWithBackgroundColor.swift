@@ -53,7 +53,7 @@ class ButtonWithBackgroundColor: UIButton {
   }
   
   func backgroundColor(for state: UIControl.State) -> UIColor? {
-    backgroundColorsByState[state.rawValue]
+    return backgroundColorsByState[state.rawValue]
   }
   
 }
