@@ -56,24 +56,40 @@ public extension TLManager {
 
 public extension TLManager {
   
+  /// Set background color for light and dark theme, default is Tilia background color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
   func setBackgroundColor(forLightMode lightModeColor: UIColor,
                           andDarkMode darkModeColor: UIColor) {
     colorsConfiguration.backgroundColor = .init(lightModeColor: lightModeColor,
                                                 darkModeColor: darkModeColor)
   }
   
+  /// Set primary color for light and dark theme, default is Tilia primary color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
   func setPrimaryColor(forLightMode lightModeColor: UIColor,
                        andDarkMode darkModeColor: UIColor) {
     colorsConfiguration.primaryColor = .init(lightModeColor: lightModeColor,
                                              darkModeColor: darkModeColor)
   }
   
+  /// Set primary button text color for light and dark theme, default is Tilia primary button text color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
   func setPrimaryButtonTextColor(forLightMode lightModeColor: UIColor,
                                  andDarkMode darkModeColor: UIColor) {
     colorsConfiguration.primaryButtonTextColor = .init(lightModeColor: lightModeColor,
                                                        darkModeColor: darkModeColor)
   }
   
+  /// Set primary text color for light and dark theme, default is Tilia primary text color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
   func setPrimaryTextColor(forLightMode lightModeColor: UIColor,
                            andDarkMode darkModeColor: UIColor) {
     colorsConfiguration.primaryTextColor = .init(lightModeColor: lightModeColor,

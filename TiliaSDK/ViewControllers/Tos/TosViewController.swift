@@ -31,7 +31,9 @@ final class TosViewController: UIViewController, LoadableProtocol {
   
   private lazy var acceptSwitch: UISwitch = {
     let uiSwitch = UISwitch()
-    uiSwitch.tintColor = .borderColor
+    uiSwitch.clipsToBounds = true
+    uiSwitch.layer.cornerRadius = uiSwitch.frame.height / 2
+    uiSwitch.backgroundColor = .borderColor
     uiSwitch.onTintColor = .primaryColor
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
     return uiSwitch
