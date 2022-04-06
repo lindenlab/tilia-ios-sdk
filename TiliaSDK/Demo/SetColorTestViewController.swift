@@ -1,28 +1,27 @@
 //
-//  TestViewController.swift
+//  SetColorTestViewController.swift
 //  TiliaSDK
 //
-//  Created by Serhii.Petrishenko on 28.03.2022.
+//  Created by Serhii.Petrishenko on 06.04.2022.
 //
 
 import UIKit
 
-class TestViewController: UIViewController {
+class SetColorTestViewController: UIViewController {
   
   let manager: TLManager = TLManager.shared
   
-  let label: UILabel = {
-    let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 18)
-    label.numberOfLines = 0
-    label.text = "Result will be here"
-    return label
-  }()
-  
-  let accessTokenTextField: UITextField = {
+  let lightModeTextField: UITextField = {
     let textField = UITextField()
     textField.borderStyle = .roundedRect
-    textField.placeholder = "Access token"
+    textField.placeholder = "Light mode hex, #ffffff"
+    return textField
+  }()
+  
+  let darkModeTextField: UITextField = {
+    let textField = UITextField()
+    textField.borderStyle = .roundedRect
+    textField.placeholder = "Dark mode hex, #ffffff"
     return textField
   }()
   
@@ -36,16 +35,24 @@ class TestViewController: UIViewController {
   
   let button: UIButton = {
     let button = UIButton(type: .system)
-    button.setTitle("DO SMTH", for: .normal)
+    button.setTitle("SET COLORS", for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
   
+  var lightModeColor: UIColor {
+    return UIColor(hexString: lightModeTextField.text ?? "")
+  }
+  
+  var darkModeColor: UIColor {
+    return UIColor(hexString: darkModeTextField.text ?? "")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
-    stackView.addArrangedSubview(label)
-    stackView.addArrangedSubview(accessTokenTextField)
+    stackView.addArrangedSubview(lightModeTextField)
+    stackView.addArrangedSubview(darkModeTextField)
     view.addSubview(stackView)
     view.addSubview(button)
     button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -66,8 +73,7 @@ class TestViewController: UIViewController {
   }
   
   @objc func buttonTapped() {
-    label.text = "Loading...."
-    manager.setToken(accessTokenTextField.text ?? "")
+    self.navigationController?.popViewController(animated: true)
   }
   
 }

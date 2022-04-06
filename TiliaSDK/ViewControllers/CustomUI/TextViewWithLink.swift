@@ -93,16 +93,12 @@ extension TextViewWithLink: UITextViewDelegate {
 private extension TextViewWithLink {
   
   func setup() {
-    clipsToBounds = false
     isEditable = false
-    isSelectable = true
     isScrollEnabled = false
     showsHorizontalScrollIndicator = false
     showsVerticalScrollIndicator = false
     textContainerInset = .zero
     self.textContainer.lineFragmentPadding = 0
-    setContentHuggingPriority(.required, for: .vertical)
-    setContentCompressionResistancePriority(.required, for: .vertical)
     dataDetectorTypes = []
     delegate = self
     isExclusiveTouch = true

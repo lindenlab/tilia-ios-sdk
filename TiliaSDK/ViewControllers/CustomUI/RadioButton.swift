@@ -21,7 +21,7 @@ final class RadioButton: UIButton {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    backgroundColor = .borderColor
+    backgroundColor = .backgroundColor
     isExclusiveTouch = true
     addTarget(self, action: #selector(didTap), for: .touchUpInside)
   }
