@@ -61,7 +61,7 @@ private extension CheckoutSuccessfulPaymentCell {
     let backgroundView = UIView()
     backgroundView.clipsToBounds = true
     backgroundView.layer.cornerRadius = 6
-    backgroundView.backgroundColor = .successScreen
+    backgroundView.backgroundColor = .successBackgroundColor
     backgroundView.translatesAutoresizingMaskIntoConstraints = false
     backgroundView.addSubview(stackView)
     

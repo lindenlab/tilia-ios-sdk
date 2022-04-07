@@ -32,16 +32,8 @@ extension UIColor {
   }
   
   static var primaryButtonTextColor: UIColor {
-    return UIColor {
-      if let primaryButtonTextColor = configuration.primaryButtonTextColor {
-        if $0.userInterfaceStyle == .dark {
-          return primaryButtonTextColor.darkModeColor
-        } else {
-          return primaryButtonTextColor.lightModeColor
-        }
-      } else {
-        return primaryColor.isColorDark() ? .white : .customBlack
-      }
+    return UIColor { _ in
+      return primaryColor.isColorDark() ? .white : .customBlack
     }
   }
   
@@ -78,7 +70,7 @@ extension UIColor {
     }
   }
   
-  static let successScreen = UIColor(red: 0.22, green: 0.631, blue: 0.412, alpha: 1)
+  static let successBackgroundColor = UIColor(red: 0.22, green: 0.631, blue: 0.412, alpha: 1)
   
   private static let royalBlue = UIColor(red: 0, green: 0.302, blue: 0.6, alpha: 1)
   private static let customBlack = UIColor(red: 0.108, green: 0.133, blue: 0.158, alpha: 1)

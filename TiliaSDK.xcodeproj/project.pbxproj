@@ -47,7 +47,6 @@
 		D1BA29E627FD9D5800F046E8 /* SetColorTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E527FD9D5800F046E8 /* SetColorTestViewController.swift */; };
 		D1BA29E827FD9EE000F046E8 /* SetBackgroundColorTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E727FD9EE000F046E8 /* SetBackgroundColorTestViewController.swift */; };
 		D1BA29EA27FD9F3400F046E8 /* SetPrimaryColorTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E927FD9F3400F046E8 /* SetPrimaryColorTestViewController.swift */; };
-		D1BA29EC27FD9F4B00F046E8 /* SetPrimaryButtonTextColorTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29EB27FD9F4B00F046E8 /* SetPrimaryButtonTextColorTestViewController.swift */; };
 		D1BA29EE27FD9F6200F046E8 /* SetPrimaryTextColorTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29ED27FD9F6200F046E8 /* SetPrimaryTextColorTestViewController.swift */; };
 		D1C8A83227F4ED7500BF2910 /* ChekoutTitleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83127F4ED7500BF2910 /* ChekoutTitleHeaderView.swift */; };
 		D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */; };
@@ -149,7 +148,6 @@
 		D1BA29E527FD9D5800F046E8 /* SetColorTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetColorTestViewController.swift; sourceTree = "<group>"; };
 		D1BA29E727FD9EE000F046E8 /* SetBackgroundColorTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetBackgroundColorTestViewController.swift; sourceTree = "<group>"; };
 		D1BA29E927FD9F3400F046E8 /* SetPrimaryColorTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrimaryColorTestViewController.swift; sourceTree = "<group>"; };
-		D1BA29EB27FD9F4B00F046E8 /* SetPrimaryButtonTextColorTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrimaryButtonTextColorTestViewController.swift; sourceTree = "<group>"; };
 		D1BA29ED27FD9F6200F046E8 /* SetPrimaryTextColorTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPrimaryTextColorTestViewController.swift; sourceTree = "<group>"; };
 		D1C8A83127F4ED7500BF2910 /* ChekoutTitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChekoutTitleHeaderView.swift; sourceTree = "<group>"; };
 		D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadCell.swift; sourceTree = "<group>"; };
@@ -440,7 +438,6 @@
 				D1BA29E527FD9D5800F046E8 /* SetColorTestViewController.swift */,
 				D1BA29E727FD9EE000F046E8 /* SetBackgroundColorTestViewController.swift */,
 				D1BA29E927FD9F3400F046E8 /* SetPrimaryColorTestViewController.swift */,
-				D1BA29EB27FD9F4B00F046E8 /* SetPrimaryButtonTextColorTestViewController.swift */,
 				D1BA29ED27FD9F6200F046E8 /* SetPrimaryTextColorTestViewController.swift */,
 			);
 			path = Demo;
@@ -733,7 +730,6 @@
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
-				D1BA29EC27FD9F4B00F046E8 /* SetPrimaryButtonTextColorTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
 				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
 				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,
