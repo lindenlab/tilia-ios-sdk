@@ -15,7 +15,7 @@ final class DemoViewController: UITableViewController {
   }
   
   let sections: [Section] = [
-    Section(name: "Configurable section", items: ["Is staging", "Set backgroundColor", "Set primaryColor", "Set primaryTextColor"]),
+    Section(name: "Configurable section", items: ["Is staging", "Set backgroundColor", "Set primaryColor", "Set primaryTextColor", "Set successBackgroundColor"]),
     Section(name: "Testable section", items: ["getTosRequiredForUser", "getUserBalanceByCurrency", "TOS flow","Checkout flow"])
   ]
   
@@ -61,6 +61,8 @@ final class DemoViewController: UITableViewController {
       viewController = SetPrimaryColorTestViewController()
     case (0, 3):
       viewController = SetPrimaryTextColorTestViewController()
+    case (0, 4):
+      viewController = SetSuccessBackgroundColorTestViewController()
     case (1, 0):
       viewController = TosRequiredForUserTestViewController()
     case (1, 1):

@@ -11,7 +11,8 @@ final class CheckoutSuccessfulPaymentCell: UITableViewCell {
   
   private let iconImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = .successIcon
+    imageView.image = .successIcon?.withRenderingMode(.alwaysTemplate)
+    imageView.tintColor = .successPrimaryColor
     imageView.setContentHuggingPriority(.required, for: .horizontal)
     return imageView
   }()
@@ -19,7 +20,7 @@ final class CheckoutSuccessfulPaymentCell: UITableViewCell {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.boldSystemFont(ofSize: 16)
-    label.textColor = .white
+    label.textColor = .successPrimaryColor
     label.text = L.success
     return label
   }()
@@ -27,7 +28,7 @@ final class CheckoutSuccessfulPaymentCell: UITableViewCell {
   private let messageLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 16)
-    label.textColor = .white
+    label.textColor = .successPrimaryColor
     label.numberOfLines = 0
     label.text = L.paymentProcessed
     return label

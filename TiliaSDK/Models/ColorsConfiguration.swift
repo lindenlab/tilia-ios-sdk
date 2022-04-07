@@ -17,5 +17,6 @@ struct ColorsConfiguration {
   var backgroundColor: Color?
   var primaryColor: Color?
   var primaryTextColor: Color?
+  var successBackgroundColor: Color?
   
 }

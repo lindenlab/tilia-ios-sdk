@@ -86,6 +86,16 @@ public extension TLManager {
                                                  darkModeColor: darkModeColor)
   }
   
+  /// Set success background color for light and dark theme, default is Tilia success background color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
+  func setSuccessBackgroundColor(forLightMode lightModeColor: UIColor,
+                                 andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.successBackgroundColor = .init(lightModeColor: lightModeColor,
+                                                       darkModeColor: darkModeColor)
+  }
+  
 }
 
 // MARK: - Get User Info
