@@ -90,10 +90,31 @@ extension UIColor {
     }
   }
   
+  static var failureBackgroundColor: UIColor {
+    return UIColor {
+      if let successBackgroundColor = configuration.failureBackgroundColor {
+        if $0.userInterfaceStyle == .dark {
+          return successBackgroundColor.darkModeColor
+        } else {
+          return successBackgroundColor.lightModeColor
+        }
+      } else {
+        return .customRed
+      }
+    }
+  }
+  
+  static var failurePrimaryColor: UIColor {
+    return UIColor { _ in
+      return failureBackgroundColor.isColorDark() ? .white : .customBlack
+    }
+  }
+  
   private static let royalBlue = UIColor(red: 0, green: 0.302, blue: 0.6, alpha: 1)
   private static let customBlack = UIColor(red: 0.108, green: 0.133, blue: 0.158, alpha: 1)
   private static let customWhite = UIColor(white: 1, alpha: 0.18)
   private static let customGreen = UIColor(red: 0.22, green: 0.631, blue: 0.412, alpha: 1)
+  private static let customRed = UIColor(red: 0.898, green: 0.243, blue: 0.243, alpha: 1)
   
 }
 
