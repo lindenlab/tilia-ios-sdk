@@ -21,7 +21,7 @@ final class RadioButton: UIButton {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    backgroundColor = .white
+    backgroundColor = .backgroundColor
     isExclusiveTouch = true
     addTarget(self, action: #selector(didTap), for: .touchUpInside)
   }
@@ -33,6 +33,11 @@ final class RadioButton: UIButton {
   override public func layoutSubviews() {
     super.layoutSubviews()
     layer.cornerRadius = bounds.height * 0.5
+    setup()
+  }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
     setup()
   }
   
@@ -49,10 +54,10 @@ private extension RadioButton {
   func setup() {
     if isRadioSelected {
       layer.borderWidth = 6
-      layer.borderColor = UIColor.buttonColor.cgColor
+      layer.borderColor = UIColor.primaryColor.cgColor
     } else {
       layer.borderWidth = 2
-      layer.borderColor = UIColor.dividerColor.cgColor
+      layer.borderColor = UIColor.borderColor.cgColor
     }
   }
   

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Tilia Logo.png",
+      "filename" : "Tilia.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Tilia Logo@2x.png",
+      "filename" : "Tilia@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Tilia Logo@3x.png",
+      "filename" : "Tilia@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

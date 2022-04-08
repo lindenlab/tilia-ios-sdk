@@ -28,7 +28,8 @@ struct CheckoutSectionBuilder {
       }
     }
     
-    func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+    func cell(for tableView: UITableView,
+              at indexPath: IndexPath) -> UITableViewCell {
       switch self {
       case let .summary(invoiceModel):
         let item = invoiceModel.items[indexPath.row]
@@ -50,7 +51,8 @@ struct CheckoutSectionBuilder {
       }
     }
     
-    func header(for tableView: UITableView, in section: Int) -> UIView? {
+    func header(for tableView: UITableView,
+                in section: Int) -> UIView? {
       switch self {
       case let .summary(invoiceModel):
         let view = tableView.dequeue(ChekoutTitleHeaderView.self)
@@ -77,13 +79,13 @@ struct CheckoutSectionBuilder {
         return view
       case .payment:
         let view = tableView.dequeue(CheckoutPaymentFooterView.self)
-        view.configure(roundedButtonTitle: L.cancel,
+        view.configure(nonPrimaryButtonTitle: L.cancel,
                        delegate: delegate,
                        textViewDelegate: textViewDelegate)
         return view
       case .successfulPayment:
         let view = tableView.dequeue(CheckoutPaymentFooterView.self)
-        view.configure(roundedButtonTitle: L.done,
+        view.configure(nonPrimaryButtonTitle: L.done,
                        delegate: delegate,
                        textViewDelegate: nil)
         return view

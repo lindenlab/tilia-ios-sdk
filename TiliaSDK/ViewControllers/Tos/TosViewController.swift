@@ -25,12 +25,16 @@ final class TosViewController: UIViewController, LoadableProtocol {
     label.text = L.tiliaTos
     label.numberOfLines = 0
     label.font = UIFont.boldSystemFont(ofSize: 18)
-    label.textColor = .titleColor
+    label.textColor = .primaryTextColor
     return label
   }()
   
   private lazy var acceptSwitch: UISwitch = {
     let uiSwitch = UISwitch()
+    uiSwitch.clipsToBounds = true
+    uiSwitch.layer.cornerRadius = uiSwitch.frame.height / 2
+    uiSwitch.backgroundColor = .borderColor
+    uiSwitch.onTintColor = .primaryColor
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
     return uiSwitch
   }()
@@ -40,22 +44,24 @@ final class TosViewController: UIViewController, LoadableProtocol {
     textView.linkDelegate = self
     textView.font = UIFont.systemFont(ofSize: 16)
     textView.backgroundColor = .clear
+    textView.textColor = .primaryTextColor
+    textView.linkColor = .primaryColor
     let text = TosAcceptModel.title
     let links = self.links.map { $0.description }
     textView.textData = (text, links)
     return textView
   }()
   
-  private lazy var acceptButton: FullFilledButton = {
-    let button = FullFilledButton()
+  private lazy var acceptButton: PrimaryButton = {
+    let button = PrimaryButton()
     button.setTitle(L.accept, for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
     button.isEnabled = acceptSwitch.isOn
     return button
   }()
   
-  private lazy var cancelButton: RoundedButton = {
-    let button = RoundedButton()
+  private lazy var cancelButton: NonPrimaryButton = {
+    let button = NonPrimaryButton()
     button.setTitle(L.cancel, for: .normal)
     button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
     return button
@@ -91,7 +97,6 @@ final class TosViewController: UIViewController, LoadableProtocol {
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
     self.presentationController?.delegate = self
-    self.overrideUserInterfaceStyle = .light
   }
   
   required init?(coder: NSCoder) {
@@ -144,8 +149,9 @@ private extension TosViewController {
       guard let self = self else { return }
       self.router.dismiss() { self.completion?(true) }
     }.store(in: &subscriptions)
-    viewModel.error.sink { [weak self] in
-      self?.router.showAlert(title: $0.localizedDescription)
+    viewModel.error.sink { [weak self] _ in
+      self?.router.showToast(title: L.errorTosTitle,
+                             message: L.errorTosMessage)
     }.store(in: &subscriptions)
   }
   

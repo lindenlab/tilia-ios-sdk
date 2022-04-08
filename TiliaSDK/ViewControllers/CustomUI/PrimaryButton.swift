@@ -1,13 +1,13 @@
 //
-//  RoundedButton.swift
+//  PrimaryButton.swift
 //  TiliaSDK
 //
-//  Created by Serhii.Petrishenko on 29.03.2022.
+//  Created by Serhii.Petrishenko on 28.03.2022.
 //
 
 import UIKit
 
-final class RoundedButton: UIButton {
+final class PrimaryButton: ButtonWithBackgroundColor {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
@@ -26,17 +26,15 @@ final class RoundedButton: UIButton {
 
 // MARK: - Private Methods
 
-private extension RoundedButton {
+private extension PrimaryButton {
   
   func setup() {
-    setTitleColor(.titleColor, for: .normal)
-    setBackgroundImage(UIColor.white.image(), for: .normal)
+    setTitleColor(.primaryButtonTextColor, for: .normal)
+    setBackgroundColor(.primaryColor, for: .normal)
+    setBackgroundColor(.primaryColor.withAlphaComponent(0.5), for: .disabled)
+    setBackgroundColor(.primaryColor.withAlphaComponent(0.5), for: .highlighted)
     layer.cornerRadius = 6
-    layer.borderWidth = 1
-    layer.borderColor = UIColor.dividerColor.cgColor
-    clipsToBounds = true
     titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-    isExclusiveTouch = true
   }
   
 }

@@ -16,6 +16,7 @@ public final class TLManager {
   var serverConfiguration: ServerConfiguration {
     return synchronizationQueue.sync { return _serverConfiguration }
   }
+  private(set) var colorsConfiguration = ColorsConfiguration()
   
   private var _serverConfiguration = ServerConfiguration()
   private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue", attributes: .concurrent)
@@ -47,6 +48,62 @@ public extension TLManager {
   ///   - environment: environment
   func setEnvironment(_ environment: TLEnvironment) {
     executeOnQueue { self._serverConfiguration.environment = environment }
+  }
+  
+}
+
+// MARK: - Colors Configuration
+
+public extension TLManager {
+  
+  /// Set background color for light and dark theme, default is Tilia background color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
+  func setBackgroundColor(forLightMode lightModeColor: UIColor,
+                          andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.backgroundColor = .init(lightModeColor: lightModeColor,
+                                                darkModeColor: darkModeColor)
+  }
+  
+  /// Set primary color for light and dark theme, default is Tilia primary color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
+  func setPrimaryColor(forLightMode lightModeColor: UIColor,
+                       andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.primaryColor = .init(lightModeColor: lightModeColor,
+                                             darkModeColor: darkModeColor)
+  }
+  
+  /// Set primary text color for light and dark theme, default is Tilia primary text color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
+  func setPrimaryTextColor(forLightMode lightModeColor: UIColor,
+                           andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.primaryTextColor = .init(lightModeColor: lightModeColor,
+                                                 darkModeColor: darkModeColor)
+  }
+  
+  /// Set success background color for light and dark theme, default is Tilia success background color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
+  func setSuccessBackgroundColor(forLightMode lightModeColor: UIColor,
+                                 andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.successBackgroundColor = .init(lightModeColor: lightModeColor,
+                                                       darkModeColor: darkModeColor)
+  }
+  
+  /// Set failure background color for light and dark theme, default is Tilia failure background color
+  /// - Parameters:
+  ///   - lightModeColor: color for light mode
+  ///   - darkModeColor: color for dark mode
+  func setFailureBackgroundColor(forLightMode lightModeColor: UIColor,
+                                 andDarkMode darkModeColor: UIColor) {
+    colorsConfiguration.failureBackgroundColor = .init(lightModeColor: lightModeColor,
+                                                       darkModeColor: darkModeColor)
   }
   
 }

@@ -12,7 +12,7 @@ protocol RoutingProtocol {
   var viewController: UIViewController? { get }
   
   func dismiss(animated: Bool, completion: (() -> Void)?)
-  func showAlert(title: String, message: String?, otherActions: [UIAlertAction], cancelTitle: String, cancelAction: (() -> Void)?)
+  func showToast(title: String, message: String)
   func showWebView(with link: String)
 }
 
@@ -24,22 +24,61 @@ extension RoutingProtocol {
     viewController?.dismiss(animated: animated, completion: completion)
   }
   
-  func showAlert(title: String,
-                 message: String? = nil,
-                 otherActions: [UIAlertAction] = [],
-                 cancelTitle: String = L.ok,
-                 cancelAction: (() -> Void)? = nil) {
-    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    let okAction = UIAlertAction(title: cancelTitle, style: .cancel) { _ in cancelAction?() }
-    alertController.addAction(okAction)
-    otherActions.forEach { alertController.addAction($0) }
-    viewController?.present(alertController, animated: true)
+  func showToast(title: String, message: String) {
+    if let transitionCoordinator = viewController?.transitionCoordinator {
+      transitionCoordinator.animate(alongsideTransition: nil) { _ in
+        self.viewController?.view.showToast(title: title, message: message)
+      }
+    } else {
+      viewController?.view.showToast(title: title, message: message)
+    }
   }
   
   func showWebView(with link: String) {
     guard let model = TosAcceptModel(str: link) else { return }
     let safariViewController = SFSafariViewController(url: model.url)
     viewController?.present(safariViewController, animated: true)
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension UIView {
+  
+  func showToast(title: String, message: String) {
+    let toast = ToastView(isSuccess: false)
+    toast.configure(title: title, message: message)
+    toast.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(toast)
+    
+    let hidden = toast.topAnchor.constraint(equalTo: bottomAnchor)
+    let visible = [
+      toast.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -(safeAreaInsets.bottom + 20))
+    ]
+
+    NSLayoutConstraint.activate([
+      hidden,
+      toast.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 16),
+      toast.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: -16)
+    ])
+
+    layoutIfNeeded()
+
+    hidden.isActive = false
+    NSLayoutConstraint.activate(visible)
+    
+    UIView.animate(withDuration: 0.3,
+                   animations: { self.layoutIfNeeded() },
+                   completion: { _ in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+        NSLayoutConstraint.deactivate(visible)
+        hidden.isActive = true
+        UIView.animate(withDuration: 0.3,
+                       animations: { self.layoutIfNeeded() },
+                       completion: { _ in toast.removeFromSuperview()})
+      }
+    })
   }
   
 }
