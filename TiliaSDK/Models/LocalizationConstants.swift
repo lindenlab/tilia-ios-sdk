@@ -26,5 +26,9 @@ enum L {
   static let success = "success".localized
   static let paymentProcessed = "paymentProcessed".localized
   static let reload = "reload".localized
+  static let errorPaymentTitle = "errorPaymentTitle".localized
+  static let errorPaymentMessage = "errorPaymentMessage".localized
+  static let errorTosTitle = "errorTosTitle".localized
+  static let errorTosMessage = "errorTosMessage".localized
   
 }

@@ -149,8 +149,9 @@ private extension TosViewController {
       guard let self = self else { return }
       self.router.dismiss() { self.completion?(true) }
     }.store(in: &subscriptions)
-    viewModel.error.sink { [weak self] in
-      self?.router.showAlert(title: $0.localizedDescription)
+    viewModel.error.sink { [weak self] _ in
+      self?.router.showToast(title: L.errorTosTitle,
+                             message: L.errorTosMessage)
     }.store(in: &subscriptions)
   }
   
