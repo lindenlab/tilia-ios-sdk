@@ -6,7 +6,10 @@
 //
 
 import UIKit
-import Combine
+
+protocol TextViewWithLinkDelegate: AnyObject {
+  func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String)
+}
 
 final class TextViewWithLink: UITextView {
   
@@ -14,7 +17,7 @@ final class TextViewWithLink: UITextView {
   
   private static let hyperlinkTapUrl = URL(string: "hyperlink_tap_url")!
   
-  let linkPublisher = PassthroughSubject<String, Never>()
+  weak var linkDelegate: TextViewWithLinkDelegate?
   
   var textData: TextData = ("", []) {
     didSet {
@@ -22,13 +25,19 @@ final class TextViewWithLink: UITextView {
     }
   }
   
-  var linkColor: UIColor = .blue {
+  var linkColor: UIColor = .buttonColor {
     didSet {
       updateLinkAttributes()
     }
   }
   
-  var mainTextColor: UIColor = .black {
+  override var font: UIFont? {
+    didSet {
+      setTextData()
+    }
+  }
+  
+  override var textColor: UIColor? {
     didSet {
       setTextData()
     }
@@ -40,8 +49,7 @@ final class TextViewWithLink: UITextView {
   }
   
   required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setup()
+    fatalError("init(coder:) has not been implemented")
   }
   
   /// Returns `false` so the user can't copy, paste, etc
@@ -68,15 +76,19 @@ final class TextViewWithLink: UITextView {
   
 }
 
+// MARK: - UITextFieldDelegate
+
 extension TextViewWithLink: UITextViewDelegate {
   
   func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
     let link = textView.attributedText.attributedSubstring(from: characterRange).string
-    linkPublisher.send(link)
+    linkDelegate?.textViewWithLink(self, didPressOn: link)
     return false
   }
   
 }
+
+// MARK: - Private Methods
 
 private extension TextViewWithLink {
   
@@ -93,15 +105,18 @@ private extension TextViewWithLink {
     setContentCompressionResistancePriority(.required, for: .vertical)
     dataDetectorTypes = []
     delegate = self
+    isExclusiveTouch = true
   }
   
   func updateLinkAttributes() {
-    linkTextAttributes = [.foregroundColor: linkColor]
+    linkTextAttributes = [.foregroundColor: linkColor, .underlineStyle: NSUnderlineStyle.single.rawValue]
   }
   
   func setTextData() {
     updateLinkAttributes()
-    let attributedText = NSMutableAttributedString(string: textData.text, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: mainTextColor])
+    let font = self.font ?? .systemFont(ofSize: 16)
+    let textColor = self.textColor ?? .titleColor
+    let attributedText = NSMutableAttributedString(string: textData.text, attributes: [.font: font, .foregroundColor: textColor])
     textData.links.forEach { link in
       let nonBreakingLinkText = link.replacingOccurrences(of: " ", with: "\u{00a0}")
       let textWithNonBreakingLink = textData.text.replacingOccurrences(of: link, with: nonBreakingLinkText)

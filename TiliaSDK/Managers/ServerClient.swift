@@ -11,12 +11,17 @@ typealias CompletionResultHandler<T> = (Result<T, Error>) -> Void
 
 enum ServerClient {
   
-  static func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TLTosModel>) {
+  static func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TosModel>) {
     let router = AccountRouter.getTosRequiredForUser
     Self.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
-  static func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<TLBalanceModel>) {
+  static func signTosForUser(completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = AccountRouter.signTosForUser
+    Self.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  static func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<BalanceModel>) {
     let completionHandler: CompletionResultHandler<BalancesModel> = { result in
       switch result {
       case .success(let model):
@@ -33,7 +38,24 @@ enum ServerClient {
     Self.performRequestWithDecodableModel(router: router, completion: completionHandler)
   }
   
+  static func getInvoiceDetails(with id: String, completion: @escaping CompletionResultHandler<InvoiceDetailsModel>) {
+    let router = InvoiceRouter.getInvoiceDetails(id: id)
+    Self.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  static func createInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<InvoiceModel>) {
+    let router = InvoiceRouter.createInvoice(id: id, isEscrow: isEscrow)
+    Self.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  static func payInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = InvoiceRouter.payInvoice(id: id, isEscrow: isEscrow)
+    Self.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
 }
+
+// MARK: - Private Methods
 
 private extension ServerClient {
   

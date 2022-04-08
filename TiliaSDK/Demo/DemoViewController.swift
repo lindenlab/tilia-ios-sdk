@@ -14,6 +14,7 @@ class DemoViewController: UITableViewController {
     "getTosRequiredForUser",
     "getUserBalanceByCurrency",
     "TOS flow",
+    "Checkout flow"
   ]
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -34,9 +35,12 @@ class DemoViewController: UITableViewController {
     return cell
   }
   
+  override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    return indexPath.row == 0 ? nil : indexPath
+  }
+  
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
-    guard indexPath.row != 0 else { return }
     
     var viewController: UIViewController?
     
@@ -47,6 +51,8 @@ class DemoViewController: UITableViewController {
       viewController = UserBalanceByCurrencyTestViewController()
     case 3:
       viewController = TosRequiredForUserFlowTestViewController()
+    case 4:
+      viewController = CheckoutFlowTestViewController()
     default:
       break
     }

@@ -7,8 +7,10 @@
 
 import UIKit
 
+/// Tilia manager
 public final class TLManager {
   
+  /// Use this instance for calling Tilia API or present user's flows
   public static let shared = TLManager()
   
   var serverConfiguration: ServerConfiguration {
@@ -26,14 +28,23 @@ public final class TLManager {
 
 public extension TLManager {
   
+  /// Sets user access token that used to call Tilia API, default is nil
+  /// - Parameters:
+  ///   - token: user access token
   func setToken(_ token: String) {
     executeOnQueue { self._serverConfiguration.token = token }
   }
   
+  /// Sets timeout interval (in seconds) for requests, default is 30 seconds
+  /// - Parameters:
+  ///   - timeoutInterval: timeout interval
   func setTimeoutInterval(_ timeoutInterval: Double) {
     executeOnQueue { self._serverConfiguration.timeoutInterval = timeoutInterval }
   }
   
+  /// Sets environment - staging or production, default is staging
+  /// - Parameters:
+  ///   - environment: environment
   func setEnvironment(_ environment: TLEnvironment) {
     executeOnQueue { self._serverConfiguration.environment = environment }
   }
@@ -44,26 +55,57 @@ public extension TLManager {
 
 public extension TLManager {
   
-  func getTosRequiredForUser(completion: @escaping (Result<TLTosModel, Error>) -> Void) {
-    ServerClient.getTosRequiredForUser(completion: completion)
+  /// Checks user needs to sign Terms Of Service, user access token is required
+  /// - Parameters:
+  ///   - completion: completion that returns user needs to sign TOS or error
+  func getTosRequiredForUser(completion: @escaping (Result<Bool, Error>) -> Void) {
+    getTos { completion($0.map { $0.isTosSigned }) }
   }
   
-  func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping (Result<TLBalanceModel, Error>) -> Void) {
-    ServerClient.getUserBalanceByCurrencyCode(currencyCode, completion: completion)
+  /// Checks user balance by currency code, user access token is required
+  /// - Parameters:
+  ///   - currencyCode: currency code, for example USD
+  ///   - completion: completion that returns user balance or error
+  func getUserBalanceByCurrencyCode(_ currencyCode: String,
+                                    completion: @escaping (Result<Double, Error>) -> Void) {
+    getBalanceByCurrencyCode(currencyCode) { completion($0.map { $0.balance }) }
   }
   
 }
 
-// MARK: - View Controllers
+// MARK: - User's flows
 
 public extension TLManager {
   
-  func presentTosIsRequiredViewController(on viewController: UIViewController, animated: Bool) {
-    let tosViewController = TosViewController()
+  /// Show flow to sign Terms Of Service for user, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting TOS flow
+  ///   - animated: animated flag
+  ///   - completion: completion that returns TOS is successfully accepted
+  func presentTosIsRequiredViewController(on viewController: UIViewController,
+                                          animated: Bool,
+                                          completion: ((Bool) -> Void)?) {
+    let tosViewController = TosViewController(completion: completion)
     viewController.present(tosViewController, animated: animated)
   }
   
+  /// Show Checkout flow, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting Checkout flow
+  ///   - invoiceId: authorized invoice id
+  ///   - animated: animated flag
+  ///   - completion: completion that returns Checkout is successfully completed
+  func presentCheckoutViewController(on viewController: UIViewController,
+                                     withInvoiceId invoiceId: String,
+                                     animated: Bool,
+                                     completion: ((Bool) -> Void)?) {
+    let checkoutViewController = CheckoutViewController(invoiceId: invoiceId, completion: completion)
+    viewController.present(checkoutViewController, animated: animated)
+  }
+  
 }
+
+// MARK: - Private Methods
 
 private extension TLManager {
   
