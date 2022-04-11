@@ -147,7 +147,7 @@ private extension TosViewController {
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
     viewModel.accept.sink { [weak self] accepted in
-      guard let self = self else { return }
+      guard let self = self, accepted else { return }
       self.router.dismiss() { self.completion?(accepted) }
     }.store(in: &subscriptions)
     viewModel.error.sink { [weak self] _ in
