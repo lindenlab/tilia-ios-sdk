@@ -26,3 +26,15 @@ enum PaymentRouter: RouterProtocol {
   }
   
 }
+
+// MARK: - For Unit Tests
+
+extension PaymentRouter {
+  
+  var testData: Data? {
+    switch self {
+    case .getUserBalanceByCurrencyCode: return readJSONFromFile("GetUserBalanceByCurrencyCodeResponse")
+    }
+  }
+  
+}

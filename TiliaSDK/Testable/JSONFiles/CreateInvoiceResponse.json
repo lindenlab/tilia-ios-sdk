@@ -1,0 +1,151 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "invoice_id": "a55ef8ed-174a-4910-b538-77fc0f0e3d90",
+        "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "invoice_type": "user_purchase_virtual",
+        "reference_type": "My test order",
+        "reference_id": "123456789",
+        "state": "OPEN",
+        "description": "",
+        "metadata": {
+            "authorized_invoice_id": "8d7bc778-e5e3-4f1a-b460-f57d2854b0be"
+        },
+        "summary": {
+            "total_amount": 6,
+            "currency": "TST",
+            "display_amount": "TST 6"
+        },
+        "failure_reason": "",
+        "created": "0001-01-01T00:00:00Z",
+        "updated": "0001-01-01T00:00:00Z",
+        "payment_methods": {
+            "3998dafa-3ed0-4493-b05f-76d4ed12615e": {
+                "payment_method_id": "3998dafa-3ed0-4493-b05f-76d4ed12615e",
+                "authorized_amount": 6,
+                "currency": "TST",
+                "display_amount": "TST 6",
+                "subitems": {
+                    "19f0938c-20cc-4970-94e6-fa369769d235": {
+                        "subitem_id": "19f0938c-20cc-4970-94e6-fa369769d235",
+                        "amount": 0,
+                        "currency": "TST",
+                        "display_amount": "TST 0",
+                        "reference_type": "",
+                        "reference_id": "",
+                        "subitem_type": "payment",
+                        "description": "",
+                        "metadata": {},
+                        "source_account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+                        "source_payment_method_id": "3998dafa-3ed0-4493-b05f-76d4ed12615e",
+                        "source_wallet_id": "72934b0b-3841-47cc-a732-6fd75780b037",
+                        "destination_account_id": "823a9953-1f2d-4ec4-8a0f-9d890d4dc2d5",
+                        "destination_payment_method_id": "",
+                        "destination_wallet_id": "9cf1dbc3-c4f1-4f9e-b7e8-ab5f2a97afb1"
+                    }
+                }
+            }
+        },
+        "line_items": {
+            "4f25cf33-0223-448c-a911-46f959f352b1": {
+                "line_item_id": "4f25cf33-0223-448c-a911-46f959f352b1",
+                "product_sku": "ABC123",
+                "amount": 1,
+                "currency": "TST",
+                "display_amount": "TST 1",
+                "reference_type": "",
+                "reference_id": "",
+                "transaction_type": "user_to_user_virtual",
+                "description": "Line item 1",
+                "metadata": null,
+                "sort_order": 0,
+                "subitems": {
+                    "d54d35a7-1fa4-49f0-aa32-33ec75558fd1": {
+                        "subitem_id": "d54d35a7-1fa4-49f0-aa32-33ec75558fd1",
+                        "amount": 1,
+                        "currency": "TST",
+                        "display_amount": "TST 1",
+                        "reference_type": "invoicing.invoice_line_item_v2.line_item_id",
+                        "reference_id": "4f25cf33-0223-448c-a911-46f959f352b1",
+                        "subitem_type": "user_recipient_virtual",
+                        "description": "",
+                        "metadata": null,
+                        "source_account_id": "823a9953-1f2d-4ec4-8a0f-9d890d4dc2d5",
+                        "source_payment_method_id": "",
+                        "source_wallet_id": "78d7c21d-2920-4432-810e-12529699acde",
+                        "destination_account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+                        "destination_payment_method_id": "",
+                        "destination_wallet_id": "0106a295-3b71-4753-af03-6e89b356cffd"
+                    }
+                }
+            },
+            "777e4d6e-74de-4eef-9cd7-7cf5a3a31ec5": {
+                "line_item_id": "777e4d6e-74de-4eef-9cd7-7cf5a3a31ec5",
+                "product_sku": "DEF456",
+                "amount": 2,
+                "currency": "TST",
+                "display_amount": "TST 2",
+                "reference_type": "",
+                "reference_id": "",
+                "transaction_type": "user_to_user_virtual",
+                "description": "Line item 2",
+                "metadata": null,
+                "sort_order": 1,
+                "subitems": {
+                    "3bff8d9a-50c7-41d6-b970-878119258af5": {
+                        "subitem_id": "3bff8d9a-50c7-41d6-b970-878119258af5",
+                        "amount": 2,
+                        "currency": "TST",
+                        "display_amount": "TST 2",
+                        "reference_type": "invoicing.invoice_line_item_v2.line_item_id",
+                        "reference_id": "777e4d6e-74de-4eef-9cd7-7cf5a3a31ec5",
+                        "subitem_type": "user_recipient_virtual",
+                        "description": "",
+                        "metadata": null,
+                        "source_account_id": "823a9953-1f2d-4ec4-8a0f-9d890d4dc2d5",
+                        "source_payment_method_id": "",
+                        "source_wallet_id": "78d7c21d-2920-4432-810e-12529699acde",
+                        "destination_account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+                        "destination_payment_method_id": "",
+                        "destination_wallet_id": "0106a295-3b71-4753-af03-6e89b356cffd"
+                    }
+                }
+            },
+            "e8f69992-d176-4dc0-95ba-ddd9c68e2a3d": {
+                "line_item_id": "e8f69992-d176-4dc0-95ba-ddd9c68e2a3d",
+                "product_sku": "GHI789",
+                "amount": 3,
+                "currency": "TST",
+                "display_amount": "TST 3",
+                "reference_type": "",
+                "reference_id": "",
+                "transaction_type": "user_to_user_virtual",
+                "description": "Line item 3",
+                "metadata": null,
+                "sort_order": 2,
+                "subitems": {
+                    "028a22fd-a151-4e3a-a0cf-aa8bdd3e8eb0": {
+                        "subitem_id": "028a22fd-a151-4e3a-a0cf-aa8bdd3e8eb0",
+                        "amount": 3,
+                        "currency": "TST",
+                        "display_amount": "TST 3",
+                        "reference_type": "invoicing.invoice_line_item_v2.line_item_id",
+                        "reference_id": "e8f69992-d176-4dc0-95ba-ddd9c68e2a3d",
+                        "subitem_type": "user_recipient_virtual",
+                        "description": "",
+                        "metadata": null,
+                        "source_account_id": "823a9953-1f2d-4ec4-8a0f-9d890d4dc2d5",
+                        "source_payment_method_id": "",
+                        "source_wallet_id": "78d7c21d-2920-4432-810e-12529699acde",
+                        "destination_account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+                        "destination_payment_method_id": "",
+                        "destination_wallet_id": "0106a295-3b71-4753-af03-6e89b356cffd"
+                    }
+                }
+            }
+        },
+        "subitems": {}
+    }
+}

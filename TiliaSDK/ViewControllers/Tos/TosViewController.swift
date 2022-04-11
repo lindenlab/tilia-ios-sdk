@@ -89,9 +89,10 @@ final class TosViewController: UIViewController, LoadableProtocol {
     bind()
   }
   
-  init(completion: ((Bool) -> Void)?) {
+  init(manager: NetworkManager<ServerClient>,
+       completion: ((Bool) -> Void)?) {
     let router = TosRouter()
-    self.viewModel = TosViewModel()
+    self.viewModel = TosViewModel(manager: manager)
     self.router = router
     self.completion = completion
     super.init(nibName: nil, bundle: nil)

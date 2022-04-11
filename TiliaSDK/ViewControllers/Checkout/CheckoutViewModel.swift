@@ -22,6 +22,7 @@ protocol CheckoutViewModelOutputProtocol {
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var content: CurrentValueSubject<CheckoutContent?, Never> { get }
   var successfulPayment: CurrentValueSubject<Bool, Never> { get }
+  var manager: NetworkManager<ServerClient> { get }
 }
 
 protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutViewModelOutputProtocol { }
@@ -34,11 +35,12 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
   let content = CurrentValueSubject<CheckoutContent?, Never>(nil)
   let successfulPayment = CurrentValueSubject<Bool, Never>(false)
   
+  let manager: NetworkManager<ServerClient>
   private let invoiceId: String
-  private let manager = TLManager.shared
   
-  init(invoiceId: String) {
+  init(invoiceId: String, manager: NetworkManager<ServerClient>) {
     self.invoiceId = invoiceId
+    self.manager = manager
   }
   
   func checkIsTosRequired() {
@@ -46,8 +48,8 @@ final class CheckoutViewModel: CheckoutViewModelProtocol {
     manager.getTosRequiredForUser { [weak self] result in
       guard let self = self else { return }
       switch result {
-      case .success(let isTosSigned):
-        if !isTosSigned {
+      case .success(let model):
+        if !model.isTosSigned {
           self.needToAcceptTos.send(())
         } else {
           self.proceedCheckout()
@@ -113,7 +115,7 @@ private extension CheckoutViewModel {
     }
     
     dispatchGroup.enter()
-    manager.getBalanceByCurrencyCode(invoiceDetails.currency) { result in
+    manager.getUserBalanceByCurrencyCode(invoiceDetails.currency) { result in
       dispatchGroup.leave()
       switch result {
       case .success(let model):

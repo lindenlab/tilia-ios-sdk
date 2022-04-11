@@ -13,12 +13,4 @@ struct ServerConfiguration {
   var timeoutInterval: Double
   var environment: TLEnvironment
   
-  init(token: String? = nil,
-       timeoutInterval: Double = 30,
-       environment: TLEnvironment = .staging) {
-    self.token = token
-    self.timeoutInterval = timeoutInterval
-    self.environment = environment
-  }
-  
 }

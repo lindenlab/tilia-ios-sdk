@@ -25,11 +25,15 @@ final class TosViewModel: TosViewModelProtocol {
   let accept = PassthroughSubject<Void, Never>()
   let error = PassthroughSubject<Error, Never>()
   
-  private let manager = TLManager.shared
+  private let manager: NetworkManager<ServerClient>
+  
+  init(manager: NetworkManager<ServerClient>) {
+    self.manager = manager
+  }
   
   func acceptTos() {
     loading.send(true)
-    manager.signTos { [weak self] result in
+    manager.signTosForUser { [weak self] result in
       guard let self = self else { return }
       self.loading.send(false)
       switch result {

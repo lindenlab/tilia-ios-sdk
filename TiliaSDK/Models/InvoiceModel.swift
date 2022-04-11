@@ -24,12 +24,22 @@ struct InvoiceModel: Decodable {
     case summary
   }
   
+  private enum RootCodingKeys: String, CodingKey {
+    case escrowInvoice = "escrow_invoice"
+  }
+  
   init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    let nestedContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .summary)
+    let rootContainer = try decoder.container(keyedBy: RootCodingKeys.self)
+    let container: KeyedDecodingContainer<CodingKeys>
+    if rootContainer.contains(.escrowInvoice) {
+      container = try rootContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .escrowInvoice)
+    } else {
+      container = try decoder.container(keyedBy: CodingKeys.self)
+    }
+    let summaryContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .summary)
     self.referenceType = try container.decode(String.self, forKey: .referenceType)
     self.referenceId = try container.decode(String.self, forKey: .referenceId)
-    self.displayAmount = try nestedContainer.decode(String.self, forKey: .displayAmount)
+    self.displayAmount = try summaryContainer.decode(String.self, forKey: .displayAmount)
     self.invoiceId = try container.decode(String.self, forKey: .invoiceId)
     let itemsDict = try container.decode([String: InvoiceItemModel].self, forKey: .items)
     self.items = Array(itemsDict.values)
