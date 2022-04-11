@@ -111,7 +111,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
 extension TosViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    completion?(false)
+    completion?(viewModel.accept.value)
   }
   
 }
@@ -146,9 +146,9 @@ private extension TosViewController {
       guard let self = self else { return }
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
-    viewModel.accept.sink { [weak self] _ in
+    viewModel.accept.sink { [weak self] accepted in
       guard let self = self else { return }
-      self.router.dismiss() { self.completion?(true) }
+      self.router.dismiss() { self.completion?(accepted) }
     }.store(in: &subscriptions)
     viewModel.error.sink { [weak self] _ in
       self?.router.showToast(title: L.errorTosTitle,
@@ -165,7 +165,7 @@ private extension TosViewController {
   }
   
   @objc func cancelButtonDidTap() {
-    router.dismiss { self.completion?(false) }
+    router.dismiss { self.completion?(self.viewModel.accept.value) }
   }
   
 }

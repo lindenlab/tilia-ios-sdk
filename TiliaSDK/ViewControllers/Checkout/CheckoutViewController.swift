@@ -62,8 +62,9 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   init(invoiceId: String,
        manager: NetworkManager<ServerClient>,
        completion: ((Bool) -> Void)?) {
-    let router = CheckoutRouter()
-    self.viewModel = CheckoutViewModel(invoiceId: invoiceId, manager: manager)
+    let viewModel = CheckoutViewModel(invoiceId: invoiceId, manager: manager)
+    let router = CheckoutRouter(dataStore: viewModel)
+    self.viewModel = viewModel
     self.router = router
     self.completion = completion
     super.init(nibName: nil, bundle: nil)
@@ -184,7 +185,7 @@ private extension CheckoutViewController {
     }.store(in: &subscriptions)
     viewModel.needToAcceptTos.sink { [weak self] _ in
       guard let self = self else { return }
-      self.router.routeToTosView(manager: self.viewModel.manager) { isTosSigned in
+      self.router.routeToTosView { isTosSigned in
         isTosSigned ? self.viewModel.proceedCheckout() : self.dismiss()
       }
     }.store(in: &subscriptions)

@@ -22,12 +22,15 @@ protocol CheckoutViewModelOutputProtocol {
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var content: CurrentValueSubject<CheckoutContent?, Never> { get }
   var successfulPayment: CurrentValueSubject<Bool, Never> { get }
+}
+
+protocol CheckoutDataStore {
   var manager: NetworkManager<ServerClient> { get }
 }
 
 protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutViewModelOutputProtocol { }
 
-final class CheckoutViewModel: CheckoutViewModelProtocol {
+final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   
   let loading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<Error, Never>()

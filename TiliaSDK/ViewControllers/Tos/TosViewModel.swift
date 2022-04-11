@@ -13,7 +13,7 @@ protocol TosViewModelInputProtocol {
 
 protocol TosViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
-  var accept: PassthroughSubject<Void, Never> { get }
+  var accept: CurrentValueSubject<Bool, Never> { get }
   var error: PassthroughSubject<Error, Never> { get }
 }
 
@@ -22,7 +22,7 @@ protocol TosViewModelProtocol: TosViewModelInputProtocol, TosViewModelOutputProt
 final class TosViewModel: TosViewModelProtocol {
   
   let loading = PassthroughSubject<Bool, Never>()
-  let accept = PassthroughSubject<Void, Never>()
+  let accept = CurrentValueSubject<Bool, Never>(false)
   let error = PassthroughSubject<Error, Never>()
   
   private let manager: NetworkManager<ServerClient>
@@ -38,7 +38,7 @@ final class TosViewModel: TosViewModelProtocol {
       self.loading.send(false)
       switch result {
       case .success:
-        self.accept.send(())
+        self.accept.send(true)
       case .failure(let error):
         self.error.send(error)
       }

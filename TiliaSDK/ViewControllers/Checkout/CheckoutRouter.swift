@@ -8,15 +8,20 @@
 import UIKit
 
 protocol CheckoutRoutingProtocol: RoutingProtocol {
-  func routeToTosView(manager: NetworkManager<ServerClient>, completion: @escaping (Bool) -> Void)
+  func routeToTosView(completion: @escaping (Bool) -> Void)
 }
 
 final class CheckoutRouter: CheckoutRoutingProtocol {
   
   weak var viewController: UIViewController?
+  private let dataStore: CheckoutDataStore
   
-  func routeToTosView(manager: NetworkManager<ServerClient>, completion: @escaping (Bool) -> Void) {
-    let tosViewController = TosViewController(manager: manager, completion: completion)
+  init(dataStore: CheckoutDataStore) {
+    self.dataStore = dataStore
+  }
+  
+  func routeToTosView(completion: @escaping (Bool) -> Void) {
+    let tosViewController = TosViewController(manager: dataStore.manager, completion: completion)
     viewController?.present(tosViewController, animated: true)
   }
   
