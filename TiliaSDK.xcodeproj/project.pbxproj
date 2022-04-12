@@ -34,6 +34,8 @@
 		D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165827E7C0AF0082A85B /* AccountRouter.swift */; };
 		D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165A27E7C0C50082A85B /* PaymentRouter.swift */; };
 		D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */; };
+		D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EC2806052200A25DBD /* TosFlowUITests.swift */; };
+		D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */; };
 		D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */; };
 		D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */; };
 		D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */; };
@@ -96,6 +98,13 @@
 			remoteGlobalIDString = D135DC7427E74A4A0009D888;
 			remoteInfo = TiliaSDK;
 		};
+		D1D358CF2805E5F10043FD86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D135DC6D27E74A4A0009D888 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D135DC7427E74A4A0009D888;
+			remoteInfo = TiliaSDK;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +143,8 @@
 		D188165827E7C0AF0082A85B /* AccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouter.swift; sourceTree = "<group>"; };
 		D188165A27E7C0C50082A85B /* PaymentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRouter.swift; sourceTree = "<group>"; };
 		D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouter.swift; sourceTree = "<group>"; };
+		D190A3EC2806052200A25DBD /* TosFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosFlowUITests.swift; sourceTree = "<group>"; };
+		D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowUITests.swift; sourceTree = "<group>"; };
 		D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
 		D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+DecodeObject.swift"; sourceTree = "<group>"; };
 		D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+EncodeData.swift"; sourceTree = "<group>"; };
@@ -183,6 +194,7 @@
 		D1CCE8D727F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBalanceByCurrencyTestViewController.swift; sourceTree = "<group>"; };
 		D1CCE8D927F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRequiredForUserFlowTestViewController.swift; sourceTree = "<group>"; };
 		D1CCE8DB27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowTestViewController.swift; sourceTree = "<group>"; };
+		D1D358C92805E5F00043FD86 /* TiliaSDKUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TiliaSDKUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1D5B53B27F759E000E04EE1 /* CheckoutSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutSectionBuilder.swift; sourceTree = "<group>"; };
 		D1D5B53F27F7654500E04EE1 /* CheckoutPaymentMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentMethodCell.swift; sourceTree = "<group>"; };
 		D1D5B54127F7675C00E04EE1 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
@@ -204,6 +216,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EB2150A50A139EE8FAFEC17 /* Pods_TiliaSDKTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1D358C62805E5F00043FD86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +301,7 @@
 			children = (
 				D135DC7727E74A4A0009D888 /* TiliaSDK */,
 				D135DC8E27E74A540009D888 /* TiliaSDKTests */,
+				D1D358CA2805E5F10043FD86 /* TiliaSDKUITests */,
 				D135DC7627E74A4A0009D888 /* Products */,
 				366110ED2071161A403CDB17 /* Pods */,
 				009D5433BF11C6821C00C0C0 /* Frameworks */,
@@ -293,6 +313,7 @@
 			children = (
 				D135DC7527E74A4A0009D888 /* TiliaSDK.app */,
 				D135DC8B27E74A540009D888 /* TiliaSDKTests.xctest */,
+				D1D358C92805E5F00043FD86 /* TiliaSDKUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -457,6 +478,15 @@
 			path = Demo;
 			sourceTree = "<group>";
 		};
+		D1D358CA2805E5F10043FD86 /* TiliaSDKUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D190A3EC2806052200A25DBD /* TosFlowUITests.swift */,
+				D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */,
+			);
+			path = TiliaSDKUITests;
+			sourceTree = "<group>";
+		};
 		D1D5B53A27F759CC00E04EE1 /* Builder */ = {
 			isa = PBXGroup;
 			children = (
@@ -506,6 +536,24 @@
 			productReference = D135DC8B27E74A540009D888 /* TiliaSDKTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D1D358C82805E5F00043FD86 /* TiliaSDKUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D1D358D32805E5F10043FD86 /* Build configuration list for PBXNativeTarget "TiliaSDKUITests" */;
+			buildPhases = (
+				D1D358C52805E5F00043FD86 /* Sources */,
+				D1D358C62805E5F00043FD86 /* Frameworks */,
+				D1D358C72805E5F00043FD86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D1D358D02805E5F10043FD86 /* PBXTargetDependency */,
+			);
+			name = TiliaSDKUITests;
+			productName = TiliaSDKUITests;
+			productReference = D1D358C92805E5F00043FD86 /* TiliaSDKUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -513,7 +561,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1320;
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					D135DC7427E74A4A0009D888 = {
@@ -521,6 +569,10 @@
 					};
 					D135DC8A27E74A540009D888 = {
 						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = D135DC7427E74A4A0009D888;
+					};
+					D1D358C82805E5F00043FD86 = {
+						CreatedOnToolsVersion = 13.3;
 						TestTargetID = D135DC7427E74A4A0009D888;
 					};
 				};
@@ -540,6 +592,7 @@
 			targets = (
 				D135DC7427E74A4A0009D888 /* TiliaSDK */,
 				D135DC8A27E74A540009D888 /* TiliaSDKTests */,
+				D1D358C82805E5F00043FD86 /* TiliaSDKUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -565,6 +618,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D135DC8927E74A540009D888 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1D358C72805E5F00043FD86 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -717,6 +777,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1D358C52805E5F00043FD86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */,
+				D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -724,6 +793,11 @@
 			isa = PBXTargetDependency;
 			target = D135DC7427E74A4A0009D888 /* TiliaSDK */;
 			targetProxy = D135DC8C27E74A540009D888 /* PBXContainerItemProxy */;
+		};
+		D1D358D02805E5F10043FD86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D135DC7427E74A4A0009D888 /* TiliaSDK */;
+			targetProxy = D1D358CF2805E5F10043FD86 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -963,6 +1037,40 @@
 			};
 			name = Release;
 		};
+		D1D358D12805E5F10043FD86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = in.TiliaSDKUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TiliaSDK;
+			};
+			name = Debug;
+		};
+		D1D358D22805E5F10043FD86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = in.TiliaSDKUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TiliaSDK;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -989,6 +1097,15 @@
 			buildConfigurations = (
 				D135DCA327E74A540009D888 /* Debug */,
 				D135DCA427E74A540009D888 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D1D358D32805E5F10043FD86 /* Build configuration list for PBXNativeTarget "TiliaSDKUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1D358D12805E5F10043FD86 /* Debug */,
+				D1D358D22805E5F10043FD86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

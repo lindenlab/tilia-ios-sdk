@@ -91,7 +91,7 @@ class TLManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertNotNil(tokenError)
   }
   
@@ -108,7 +108,7 @@ class TLManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertNotNil(tokenError)
   }
   

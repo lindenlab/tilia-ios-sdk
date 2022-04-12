@@ -10,7 +10,7 @@ import Foundation
 final class NetworkManager {
   
   let serverConfiguration: ServerConfiguration
-  private let serverClient: ServerClientProtocol
+  private var serverClient: ServerClientProtocol
   
   init(serverClient: ServerClientProtocol,
        token: String? = nil,
@@ -62,6 +62,16 @@ final class NetworkManager {
   func payInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<EmptyModel>) {
     let router = InvoiceRouter.payInvoice(id: id, isEscrow: isEscrow)
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+}
+
+// MARK: - For Testing
+
+extension NetworkManager {
+  
+  func setServerClient(_ serverClient: ServerClientProtocol) {
+    self.serverClient = serverClient
   }
   
 }

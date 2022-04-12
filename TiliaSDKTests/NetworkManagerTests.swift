@@ -29,7 +29,7 @@ class NetworkManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertFalse(isTosSigned)
   }
   
@@ -46,7 +46,7 @@ class NetworkManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertTrue(isSuccess)
   }
   
@@ -64,7 +64,7 @@ class NetworkManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertNotNil(balance)
     XCTAssertEqual(balance, 9701)
   }
@@ -83,7 +83,7 @@ class NetworkManagerTests: XCTestCase {
         currencyError = error
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertNotNil(currencyError)
     XCTAssertEqual(currencyError?.localizedDescription, TLError.userBalanceDoesNotExistForCurrency(currency).localizedDescription)
   }
@@ -101,7 +101,7 @@ class NetworkManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertNotNil(invoice)
     XCTAssertEqual(invoice?.currency, "TST")
     XCTAssertEqual(invoice?.isEscrow, false)
@@ -121,7 +121,7 @@ class NetworkManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertNotNil(invoice)
     XCTAssertEqual(invoice?.invoiceId, id)
   }
@@ -140,7 +140,7 @@ class NetworkManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertNotNil(invoice)
     XCTAssertEqual(invoice?.invoiceId, id)
   }
@@ -158,7 +158,7 @@ class NetworkManagerTests: XCTestCase {
         break
       }
     }
-    wait(for: [expactation], timeout: 1)
+    wait(for: [expactation], timeout: 2)
     XCTAssertTrue(isSuccess)
   }
 

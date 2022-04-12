@@ -94,8 +94,10 @@ class CheckoutViewModelTests: XCTestCase {
     
     let successfulPaymentExpactation = XCTestExpectation(description: "testSuccessPayInvoice_SuccessfulPayment")
     viewModel.successfulPayment.sink {
-      successfulPayment = $0
-      successfulPaymentExpactation.fulfill()
+      if $0 {
+        successfulPayment = $0
+        successfulPaymentExpactation.fulfill()
+      }
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
@@ -139,7 +141,6 @@ class CheckoutViewModelTests: XCTestCase {
   }
   
   func testErrorPayInvoice() {
-    
     var error: Error?
     
     let errorExpactation = XCTestExpectation(description: "testErrorPayInvoice_Error")

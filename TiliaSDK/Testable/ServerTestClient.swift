@@ -10,24 +10,26 @@ import Alamofire
 struct ServerTestClient: ServerClientProtocol {
   
   func performRequestWithDecodableModel<DataType>(router: RouterProtocol, completion: @escaping CompletionResultHandler<DataType>) where DataType : Decodable {
-    do {
-      let _ = try router.requestHeaders()
-      if let data = router.testData {
-        do {
-          let baseModel = try BaseResponse<DataType>.decodeObject(from: data)
-          if let model = baseModel.model {
-            completion(.success(model))
-          } else {
-            completion(.failure(TLError.decodableDataIsNil))
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      do {
+        let _ = try router.requestHeaders()
+        if let data = router.testData {
+          do {
+            let baseModel = try BaseResponse<DataType>.decodeObject(from: data)
+            if let model = baseModel.model {
+              completion(.success(model))
+            } else {
+              completion(.failure(TLError.decodableDataIsNil))
+            }
+          } catch {
+            completion(.failure(error))
           }
-        } catch {
-          completion(.failure(error))
+        } else {
+          completion(.failure(TLError.decodableDataIsNil))
         }
-      } else {
-        completion(.failure(TLError.decodableDataIsNil))
+      } catch {
+        completion(.failure(error))
       }
-    } catch {
-      completion(.failure(error))
     }
   }
   

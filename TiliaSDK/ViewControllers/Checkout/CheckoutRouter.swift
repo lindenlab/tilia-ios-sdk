@@ -22,7 +22,13 @@ final class CheckoutRouter: CheckoutRoutingProtocol {
   
   func routeToTosView(completion: @escaping (Bool) -> Void) {
     let tosViewController = TosViewController(manager: dataStore.manager, completion: completion)
-    viewController?.present(tosViewController, animated: true)
+    if let transitionCoordinator = viewController?.transitionCoordinator {
+      transitionCoordinator.animate(alongsideTransition: nil) { _ in
+        self.viewController?.present(tosViewController, animated: true)
+      }
+    } else {
+      viewController?.present(tosViewController, animated: true)
+    }
   }
   
 }
