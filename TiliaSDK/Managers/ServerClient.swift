@@ -10,12 +10,12 @@ import Alamofire
 typealias CompletionResultHandler<T> = (Result<T, Error>) -> Void
 
 protocol ServerClientProtocol {
-  static func performRequestWithDecodableModel<DataType: Decodable>(router: RouterProtocol, completion: @escaping CompletionResultHandler<DataType>)
+  func performRequestWithDecodableModel<DataType: Decodable>(router: RouterProtocol, completion: @escaping CompletionResultHandler<DataType>)
 }
 
-enum ServerClient: ServerClientProtocol {
+struct ServerClient: ServerClientProtocol {
   
-  static func performRequestWithDecodableModel<DataType: Decodable>(router: RouterProtocol, completion: @escaping CompletionResultHandler<DataType>) {
+  func performRequestWithDecodableModel<DataType: Decodable>(router: RouterProtocol, completion: @escaping CompletionResultHandler<DataType>) {
     AF.request(router).validate().responseDecodable(of: BaseResponse<DataType>.self) { response in
       switch response.result {
       case .success(let baseResponse):

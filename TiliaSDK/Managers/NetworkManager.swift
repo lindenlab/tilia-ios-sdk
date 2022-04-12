@@ -7,13 +7,16 @@
 
 import Foundation
 
-struct NetworkManager<T: ServerClientProtocol> {
+final class NetworkManager {
   
-  var serverConfiguration: ServerConfiguration
+  let serverConfiguration: ServerConfiguration
+  private let serverClient: ServerClientProtocol
   
-  init(token: String? = nil,
+  init(serverClient: ServerClientProtocol,
+       token: String? = nil,
        timeoutInterval: Double = 30,
        environment: TLEnvironment = .staging) {
+    self.serverClient = serverClient
     serverConfiguration = ServerConfiguration(token: token,
                                               timeoutInterval: timeoutInterval,
                                               environment: environment)
@@ -21,12 +24,12 @@ struct NetworkManager<T: ServerClientProtocol> {
   
   func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TosModel>) {
     let router = AccountRouter.getTosRequiredForUser
-    T.performRequestWithDecodableModel(router: router, completion: completion)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
   func signTosForUser(completion: @escaping CompletionResultHandler<EmptyModel>) {
     let router = AccountRouter.signTosForUser
-    T.performRequestWithDecodableModel(router: router, completion: completion)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
   func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<BalanceModel>) {
@@ -43,22 +46,22 @@ struct NetworkManager<T: ServerClientProtocol> {
       }
     }
     let router = PaymentRouter.getUserBalanceByCurrencyCode
-    T.performRequestWithDecodableModel(router: router, completion: completionHandler)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completionHandler)
   }
   
   func getInvoiceDetails(with id: String, completion: @escaping CompletionResultHandler<InvoiceDetailsModel>) {
     let router = InvoiceRouter.getInvoiceDetails(id: id)
-    T.performRequestWithDecodableModel(router: router, completion: completion)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
   func createInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<InvoiceModel>) {
     let router = InvoiceRouter.createInvoice(id: id, isEscrow: isEscrow)
-    T.performRequestWithDecodableModel(router: router, completion: completion)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
   func payInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<EmptyModel>) {
     let router = InvoiceRouter.payInvoice(id: id, isEscrow: isEscrow)
-    T.performRequestWithDecodableModel(router: router, completion: completion)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
 }

@@ -11,23 +11,18 @@ import XCTest
 class TLManagerTests: XCTestCase {
   
   func testSetToken() {
-    XCTAssertNil(TLManager.shared.networkManager.serverConfiguration.token)
     let token = UUID().uuidString
     TLManager.shared.setToken(token)
-    XCTAssertNotNil(TLManager.shared.networkManager.serverConfiguration.token)
+    XCTAssertEqual(TLManager.shared.networkManager.serverConfiguration.token, token)
   }
   
   func testSetTimeoutInterval() {
-    let defaultInterval = 30.0
-    XCTAssertEqual(TLManager.shared.networkManager.serverConfiguration.timeoutInterval, defaultInterval)
     let interval = 10.0
     TLManager.shared.setTimeoutInterval(interval)
     XCTAssertEqual(TLManager.shared.networkManager.serverConfiguration.timeoutInterval, interval)
   }
   
   func testSetEnvironment() {
-    let defaultEnvironment = TLEnvironment.staging
-    XCTAssertEqual(TLManager.shared.networkManager.serverConfiguration.environment.description, defaultEnvironment.description)
     let environment = TLEnvironment.production
     TLManager.shared.setEnvironment(environment)
     XCTAssertEqual(TLManager.shared.networkManager.serverConfiguration.environment.description, environment.description)
@@ -35,7 +30,6 @@ class TLManagerTests: XCTestCase {
   
   func testSetBackgroundColor() {
     let traitCollection = UITraitCollection()
-    XCTAssertNil(TLManager.shared.colorsConfiguration.backgroundColor)
     TLManager.shared.setBackgroundColor(forLightMode: .red, andDarkMode: .red)
     if traitCollection.userInterfaceStyle == .dark {
       XCTAssertEqual(TLManager.shared.colorsConfiguration.backgroundColor?.darkModeColor.cgColor, UIColor.backgroundColor.cgColor)
@@ -46,7 +40,6 @@ class TLManagerTests: XCTestCase {
   
   func testSetPrimaryColor() {
     let traitCollection = UITraitCollection()
-    XCTAssertNil(TLManager.shared.colorsConfiguration.primaryColor)
     TLManager.shared.setPrimaryColor(forLightMode: .green, andDarkMode: .green)
     if traitCollection.userInterfaceStyle == .dark {
       XCTAssertEqual(TLManager.shared.colorsConfiguration.primaryColor?.darkModeColor.cgColor, UIColor.primaryColor.cgColor)
@@ -57,7 +50,6 @@ class TLManagerTests: XCTestCase {
   
   func testSetPrimaryTextColor() {
     let traitCollection = UITraitCollection()
-    XCTAssertNil(TLManager.shared.colorsConfiguration.primaryTextColor)
     TLManager.shared.setPrimaryTextColor(forLightMode: .yellow, andDarkMode: .yellow)
     if traitCollection.userInterfaceStyle == .dark {
       XCTAssertEqual(TLManager.shared.colorsConfiguration.primaryTextColor?.darkModeColor.cgColor, UIColor.primaryTextColor.cgColor)
@@ -68,7 +60,6 @@ class TLManagerTests: XCTestCase {
   
   func testSetSuccessBackgroundColor() {
     let traitCollection = UITraitCollection()
-    XCTAssertNil(TLManager.shared.colorsConfiguration.successBackgroundColor)
     TLManager.shared.setSuccessBackgroundColor(forLightMode: .orange, andDarkMode: .orange)
     if traitCollection.userInterfaceStyle == .dark {
       XCTAssertEqual(TLManager.shared.colorsConfiguration.successBackgroundColor?.darkModeColor.cgColor, UIColor.successBackgroundColor.cgColor)
@@ -79,7 +70,6 @@ class TLManagerTests: XCTestCase {
   
   func testSetFailureBackgroundColor() {
     let traitCollection = UITraitCollection()
-    XCTAssertNil(TLManager.shared.colorsConfiguration.failureBackgroundColor)
     TLManager.shared.setFailureBackgroundColor(forLightMode: .gray, andDarkMode: .gray)
     if traitCollection.userInterfaceStyle == .dark {
       XCTAssertEqual(TLManager.shared.colorsConfiguration.failureBackgroundColor?.darkModeColor.cgColor, UIColor.failureBackgroundColor.cgColor)

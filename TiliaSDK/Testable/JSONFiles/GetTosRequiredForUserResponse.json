@@ -3,6 +3,6 @@
     "message": [],
     "codes": [],
     "payload": {
-        "signed_tos": true
+        "signed_tos": false
     }
 }

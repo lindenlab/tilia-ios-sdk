@@ -13,15 +13,15 @@ public final class TLManager {
   /// Use this instance for calling Tilia API or present user's flows
   public static let shared = TLManager()
   
-  var networkManager: NetworkManager<ServerClient> {
+  var networkManager: NetworkManager {
     return synchronizationQueue.sync { return _networkManager }
   }
   var colorsConfiguration: ColorsConfiguration {
     return synchronizationQueue.sync { return _colorsConfiguration }
   }
   
-  private var _networkManager = NetworkManager<ServerClient>()
-  private var _colorsConfiguration = ColorsConfiguration()
+  private let _networkManager = NetworkManager(serverClient: ServerClient())
+  private let _colorsConfiguration = ColorsConfiguration()
   private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue", attributes: .concurrent)
   
   private init() { }

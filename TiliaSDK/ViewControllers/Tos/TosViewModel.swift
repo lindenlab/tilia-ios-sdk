@@ -25,9 +25,9 @@ final class TosViewModel: TosViewModelProtocol {
   let accept = CurrentValueSubject<Bool, Never>(false)
   let error = PassthroughSubject<Error, Never>()
   
-  private let manager: NetworkManager<ServerClient>
+  private let manager: NetworkManager
   
-  init(manager: NetworkManager<ServerClient>) {
+  init(manager: NetworkManager) {
     self.manager = manager
   }
   

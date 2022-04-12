@@ -25,7 +25,7 @@ protocol CheckoutViewModelOutputProtocol {
 }
 
 protocol CheckoutDataStore {
-  var manager: NetworkManager<ServerClient> { get }
+  var manager: NetworkManager { get }
 }
 
 protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutViewModelOutputProtocol { }
@@ -38,10 +38,10 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   let content = CurrentValueSubject<CheckoutContent?, Never>(nil)
   let successfulPayment = CurrentValueSubject<Bool, Never>(false)
   
-  let manager: NetworkManager<ServerClient>
+  let manager: NetworkManager
   private let invoiceId: String
   
-  init(invoiceId: String, manager: NetworkManager<ServerClient>) {
+  init(invoiceId: String, manager: NetworkManager) {
     self.invoiceId = invoiceId
     self.manager = manager
   }
@@ -50,6 +50,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     loading.send(true)
     manager.getTosRequiredForUser { [weak self] result in
       guard let self = self else { return }
+      self.loading.send(false)
       switch result {
       case .success(let model):
         if !model.isTosSigned {
@@ -58,13 +59,13 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
           self.proceedCheckout()
         }
       case .failure(let error):
-        self.loading.send(false)
         self.error.send(error)
       }
     }
   }
   
   func proceedCheckout() {
+    loading.send(true)
     manager.getInvoiceDetails(with: invoiceId) { [weak self] result in
       guard let self = self else { return }
       switch result {

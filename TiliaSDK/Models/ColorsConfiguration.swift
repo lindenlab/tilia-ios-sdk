@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct ColorsConfiguration {
+final class ColorsConfiguration {
   
   struct Color {
     let lightModeColor: UIColor

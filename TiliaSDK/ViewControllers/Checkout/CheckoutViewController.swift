@@ -60,7 +60,7 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   }
   
   init(invoiceId: String,
-       manager: NetworkManager<ServerClient>,
+       manager: NetworkManager,
        completion: ((Bool) -> Void)?) {
     let viewModel = CheckoutViewModel(invoiceId: invoiceId, manager: manager)
     let router = CheckoutRouter(dataStore: viewModel)

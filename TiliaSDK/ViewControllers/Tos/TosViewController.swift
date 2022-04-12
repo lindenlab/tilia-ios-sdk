@@ -89,7 +89,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     bind()
   }
   
-  init(manager: NetworkManager<ServerClient>,
+  init(manager: NetworkManager,
        completion: ((Bool) -> Void)?) {
     let router = TosRouter()
     self.viewModel = TosViewModel(manager: manager)
