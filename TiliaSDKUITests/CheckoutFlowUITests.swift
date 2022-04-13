@@ -14,7 +14,7 @@ class CheckoutFlowUITests: XCTestCase {
   }
   
   func testSuccessCheckout() throws {
-    
+            
   }
   
   func testErrorCheckout() throws {

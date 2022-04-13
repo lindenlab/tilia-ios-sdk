@@ -15,7 +15,7 @@ final class DemoViewController: UITableViewController {
   }
   
   let sections: [Section] = [
-    Section(name: "Configurable section", items: ["Is staging", "Use mocks (only for UI Tests)", "Set colors"]),
+    Section(name: "Configurable section", items: ["Is staging", "Set colors"]),
     Section(name: "Testable section", items: ["getTosRequiredForUser", "getUserBalanceByCurrency", "TOS flow","Checkout flow"])
   ]
   
@@ -29,19 +29,11 @@ final class DemoViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = UITableViewCell()
-    if indexPath.section == 0 {
-      if indexPath.row == 0 || indexPath.row == 1 {
-        let uiSwitch = UISwitch()
-        if indexPath.row == 0 {
-          uiSwitch.isOn = true
-          uiSwitch.addTarget(self, action: #selector(environmentSwitchChanged(_:)), for: .valueChanged)
-        } else {
-          uiSwitch.addTarget(self, action: #selector(mocksSwitchChanged(_:)), for: .valueChanged)
-        }
-        cell.accessoryView = uiSwitch
-      } else {
-        cell.accessoryView = nil
-      }
+    if indexPath.section == 0 && indexPath.row == 0 {
+      let uiSwitch = UISwitch()
+      uiSwitch.isOn = true
+      uiSwitch.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
+      cell.accessoryView = uiSwitch
     } else {
       cell.accessoryView = nil
     }
@@ -54,7 +46,7 @@ final class DemoViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-    return indexPath.section == 0 && (indexPath.row == 0 || indexPath.row == 1) ? nil : indexPath
+    return indexPath.section == 0 && indexPath.row == 0 ? nil : indexPath
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -63,7 +55,7 @@ final class DemoViewController: UITableViewController {
     var viewController: UIViewController?
     
     switch (indexPath.section, indexPath.row) {
-    case (0, 2):
+    case (0, 1):
       viewController = SetColorsTestViewController()
     case (1, 0):
       viewController = TosRequiredForUserTestViewController()
@@ -82,12 +74,9 @@ final class DemoViewController: UITableViewController {
     navigationController?.pushViewController(viewController, animated: true)
   }
   
-  @objc func environmentSwitchChanged(_ sender: UISwitch) {
+  @objc func switchChanged(_ sender: UISwitch) {
     TLManager.shared.setEnvironment(sender.isOn ? .staging : .production)
   }
   
-  @objc func mocksSwitchChanged(_ sender: UISwitch) {
-    TLManager.shared.setIsTestServer(sender.isOn)
-  }
-  
 }
+

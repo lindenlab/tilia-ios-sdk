@@ -14,7 +14,7 @@ class TosFlowUITests: XCTestCase {
   }
   
   func testSuccessTos() throws {
-            
+    
   }
   
   func testErrorTos() throws {
