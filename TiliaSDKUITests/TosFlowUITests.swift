@@ -14,37 +14,35 @@ class TosFlowUITests: XCTestCase {
     continueAfterFailure = false
   }
   
-  func testSuccessTos() throws {
+  func testAcceptTos() {
     let app = XCUIApplication()
     app.launch()
+        
+    let useMocksSwitch = app.switches["useMocksSwitch"]
+    XCTAssert(useMocksSwitch.exists)
+    useMocksSwitch.tap()
     
     let cell = app.tables.staticTexts["TOS flow"]
-    XCTAssert(cell.isHittable)
+    XCTAssert(cell.exists)
     cell.tap()
     
     let accessTokenTextField = app.textFields["accessTokenTextField"]
-    XCTAssert(accessTokenTextField.isHittable)
+    XCTAssert(accessTokenTextField.exists)
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
     app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
     
     let doSmthButton = app.buttons["doSmthButton"]
-    XCTAssert(doSmthButton.isHittable)
-    doSmthButton.tap()
-    
-    let cancelButton = app.buttons["cancelButton"]
-    XCTAssert(cancelButton.isHittable)
-    cancelButton.tap()
-    
+    XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
     
     let acceptSwitch = app.switches["acceptSwitch"]
-    XCTAssert(acceptSwitch.isHittable)
+    XCTAssert(acceptSwitch.waitForExistence(timeout: 2))
     acceptSwitch.tap()
     
     let acceptButton = app.buttons["acceptButton"]
-    XCTAssert(acceptButton.isHittable)
+    XCTAssert(acceptButton.waitForExistence(timeout: 2))
     acceptButton.tap()
     
     let backButton = app.navigationBars["TOS flow"].buttons["Demo App"]
@@ -52,30 +50,36 @@ class TosFlowUITests: XCTestCase {
     backButton.tap()
   }
   
-  func testErrorTos() throws {
+  func testCancelTos() {
     let app = XCUIApplication()
     app.launch()
+        
+    let useMocksSwitch = app.switches["useMocksSwitch"]
+    XCTAssert(useMocksSwitch.exists)
+    useMocksSwitch.tap()
     
     let cell = app.tables.staticTexts["TOS flow"]
-    XCTAssert(cell.isHittable)
+    XCTAssert(cell.exists)
     cell.tap()
     
     let accessTokenTextField = app.textFields["accessTokenTextField"]
-    XCTAssert(accessTokenTextField.isHittable)
+    XCTAssert(accessTokenTextField.exists)
     accessTokenTextField.tap()
-    accessTokenTextField.typeText("")
+    accessTokenTextField.typeText(UUID().uuidString)
     
     app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
     
     let doSmthButton = app.buttons["doSmthButton"]
-    XCTAssert(doSmthButton.isHittable)
+    XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
     
-    sleep(1)
+    let cancelButton = app.buttons["cancelButton"]
+    XCTAssert(cancelButton.waitForExistence(timeout: 2))
+    cancelButton.tap()
+    
     let backButton = app.navigationBars["TOS flow"].buttons["Demo App"]
     XCTAssert(backButton.exists)
     backButton.tap()
-    
   }
   
 }
