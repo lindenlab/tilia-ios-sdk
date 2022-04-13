@@ -19,6 +19,11 @@ final class DemoViewController: UITableViewController {
     Section(name: "Testable section", items: ["getTosRequiredForUser", "getUserBalanceByCurrency", "TOS flow","Checkout flow"])
   ]
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    TLManager.shared.setIsTestServer(true)
+  }
+  
   override func numberOfSections(in tableView: UITableView) -> Int {
     return sections.count
   }
@@ -29,7 +34,9 @@ final class DemoViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = UITableViewCell()
-    if indexPath.section == 0 && indexPath.row == 0 {
+    let section = indexPath.section
+    let row = indexPath.row
+    if section == 0 && row == 0 {
       let uiSwitch = UISwitch()
       uiSwitch.isOn = true
       uiSwitch.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)

@@ -23,6 +23,7 @@ class TestViewController: UIViewController {
     let textField = UITextField()
     textField.borderStyle = .roundedRect
     textField.placeholder = "Access token"
+    textField.accessibilityIdentifier = "accessTokenTextField"
     return textField
   }()
   
@@ -38,6 +39,7 @@ class TestViewController: UIViewController {
     let button = UIButton(type: .system)
     button.setTitle("DO SMTH", for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.accessibilityIdentifier = "doSmthButton"
     return button
   }()
   

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4EB2150A50A139EE8FAFEC17 /* Pods_TiliaSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5263EBCF7E0ECCEC353A1C3 /* Pods_TiliaSDKTests.framework */; };
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
+		B61E965AE76DAD61DAE2BC55 /* Pods_TiliaSDKUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A29A6A70C20718EEEBF593FB /* Pods_TiliaSDKUITests.framework */; };
 		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
 		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
 		D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */; };
@@ -113,7 +114,10 @@
 		4805CAC9E4F2314CA919F648 /* Pods-TiliaSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		79419D22540D98A1C1E567BB /* Pods-TiliaSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7BD7BDACC70EF057DF9DB4B1 /* Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDK-TiliaSDKUITests/Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		84A64EB132DC2583CA222673 /* Pods-TiliaSDKUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKUITests.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDKUITests/Pods-TiliaSDKUITests.release.xcconfig"; sourceTree = "<group>"; };
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
+		A29A6A70C20718EEEBF593FB /* Pods_TiliaSDKUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDKUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACB62D50E07F050FD8D3E5E9 /* Pods-TiliaSDKUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKUITests.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDKUITests/Pods-TiliaSDKUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C5263EBCF7E0ECCEC353A1C3 /* Pods_TiliaSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
 		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B61E965AE76DAD61DAE2BC55 /* Pods_TiliaSDKUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,6 +240,7 @@
 				F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */,
 				D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */,
 				C5263EBCF7E0ECCEC353A1C3 /* Pods_TiliaSDKTests.framework */,
+				A29A6A70C20718EEEBF593FB /* Pods_TiliaSDKUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -248,6 +254,8 @@
 				4801AF83E70591F9F4B3617F /* Pods-TiliaSDK-TiliaSDKUITests.release.xcconfig */,
 				79419D22540D98A1C1E567BB /* Pods-TiliaSDKTests.debug.xcconfig */,
 				4805CAC9E4F2314CA919F648 /* Pods-TiliaSDKTests.release.xcconfig */,
+				ACB62D50E07F050FD8D3E5E9 /* Pods-TiliaSDKUITests.debug.xcconfig */,
+				84A64EB132DC2583CA222673 /* Pods-TiliaSDKUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -540,6 +548,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D1D358D32805E5F10043FD86 /* Build configuration list for PBXNativeTarget "TiliaSDKUITests" */;
 			buildPhases = (
+				59F689506231382FBDCAC3A2 /* [CP] Check Pods Manifest.lock */,
 				D1D358C52805E5F00043FD86 /* Sources */,
 				D1D358C62805E5F00043FD86 /* Frameworks */,
 				D1D358C72805E5F00043FD86 /* Resources */,
@@ -650,6 +659,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-TiliaSDK-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		59F689506231382FBDCAC3A2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TiliaSDKUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1039,6 +1070,7 @@
 		};
 		D1D358D12805E5F10043FD86 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ACB62D50E07F050FD8D3E5E9 /* Pods-TiliaSDKUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1056,6 +1088,7 @@
 		};
 		D1D358D22805E5F10043FD86 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 84A64EB132DC2583CA222673 /* Pods-TiliaSDKUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

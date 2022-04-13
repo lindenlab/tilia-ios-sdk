@@ -36,6 +36,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     uiSwitch.backgroundColor = .borderColor
     uiSwitch.onTintColor = .primaryColor
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
+    uiSwitch.accessibilityIdentifier = "acceptSwitch"
     return uiSwitch
   }()
   
@@ -57,6 +58,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     button.setTitle(L.accept, for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
     button.isEnabled = acceptSwitch.isOn
+    button.accessibilityIdentifier = "acceptButton"
     return button
   }()
   
@@ -64,6 +66,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     let button = NonPrimaryButton()
     button.setTitle(L.cancel, for: .normal)
     button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "cancelButton"
     return button
   }()
   
