@@ -63,7 +63,7 @@ class TosFlowUITests: XCTestCase {
     let accessTokenTextField = app.textFields["accessTokenTextField"]
     XCTAssert(accessTokenTextField.isHittable)
     accessTokenTextField.tap()
-    accessTokenTextField.typeText(UUID().uuidString)
+    accessTokenTextField.typeText("")
     
     app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
     
@@ -71,21 +71,10 @@ class TosFlowUITests: XCTestCase {
     XCTAssert(doSmthButton.isHittable)
     doSmthButton.tap()
     
-    let acceptSwitch = app.switches["acceptSwitch"]
-    XCTAssert(acceptSwitch.isHittable)
-    acceptSwitch.tap()
-    
-    TLManager.shared.setToken("")
-    
-    let acceptButton = app.buttons["acceptButton"]
-    XCTAssert(acceptButton.isHittable)
-    acceptButton.tap()
-    
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      let backButton = app.navigationBars["TOS flow"].buttons["Demo App"]
-      XCTAssert(backButton.exists)
-      backButton.tap()
-    }
+    sleep(1)
+    let backButton = app.navigationBars["TOS flow"].buttons["Demo App"]
+    XCTAssert(backButton.exists)
+    backButton.tap()
     
   }
   
