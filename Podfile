@@ -13,7 +13,6 @@ target 'TiliaSDK' do
   end
   
   target 'TiliaSDKUITests' do
-    inherit! :search_paths
     # Pods for testing
   end
   
