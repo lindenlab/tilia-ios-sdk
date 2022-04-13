@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 typealias CheckoutContent = (invoice: InvoiceModel, balance: BalanceModel, invoiceDetails: InvoiceDetailsModel)
+typealias CheckoutError = (error: Error, needToShowCancelButton: Bool)
 
 protocol CheckoutViewModelInputProtocol {
   func checkIsTosRequired()
@@ -18,7 +19,7 @@ protocol CheckoutViewModelInputProtocol {
 
 protocol CheckoutViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
-  var error: PassthroughSubject<Error, Never> { get }
+  var error: PassthroughSubject<CheckoutError, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var content: CurrentValueSubject<CheckoutContent?, Never> { get }
   var successfulPayment: CurrentValueSubject<Bool, Never> { get }
@@ -33,7 +34,7 @@ protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutView
 final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   
   let loading = PassthroughSubject<Bool, Never>()
-  let error = PassthroughSubject<Error, Never>()
+  let error = PassthroughSubject<CheckoutError, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let content = CurrentValueSubject<CheckoutContent?, Never>(nil)
   let successfulPayment = CurrentValueSubject<Bool, Never>(false)
@@ -50,7 +51,6 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     loading.send(true)
     manager.getTosRequiredForUser { [weak self] result in
       guard let self = self else { return }
-      self.loading.send(false)
       switch result {
       case .success(let model):
         if !model.isTosSigned {
@@ -59,13 +59,13 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
           self.proceedCheckout()
         }
       case .failure(let error):
-        self.error.send(error)
+        self.loading.send(false)
+        self.error.send((error, true))
       }
     }
   }
   
   func proceedCheckout() {
-    loading.send(true)
     manager.getInvoiceDetails(with: invoiceId) { [weak self] result in
       guard let self = self else { return }
       switch result {
@@ -73,7 +73,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
         self.createInvoice(with: model)
       case .failure(let error):
         self.loading.send(false)
-        self.error.send(error)
+        self.error.send((error, true))
       }
     }
   }
@@ -89,7 +89,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
       case .success:
         self.successfulPayment.send(true)
       case .failure(let error):
-        self.error.send(error)
+        self.error.send((error, false))
       }
       self.loading.send(false)
     }
@@ -133,7 +133,7 @@ private extension CheckoutViewModel {
       if let invoice = invoice, let balance = balance {
         self.content.send((invoice, balance, invoiceDetails))
       } else if let error = serverError {
-        self.error.send(error)
+        self.error.send((error, true))
       }
       self.loading.send(false)
     }

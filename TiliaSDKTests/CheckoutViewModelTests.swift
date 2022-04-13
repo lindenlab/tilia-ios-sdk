@@ -27,9 +27,7 @@ class CheckoutViewModelTests: XCTestCase {
     let loadingExpactation = XCTestExpectation(description: "testSuccessCheckIsTosRequired_Loading")
     viewModel.loading.sink {
       loading = $0
-      if !$0 {
-        loadingExpactation.fulfill()
-      }
+      loadingExpactation.fulfill()
     }.store(in: &subscriptions)
     
     let needToAcceptTosExpactation = XCTestExpectation(description: "testSuccessCheckIsTosRequired_NeedToAcceptTos")
@@ -42,7 +40,7 @@ class CheckoutViewModelTests: XCTestCase {
     viewModel.checkIsTosRequired()
     
     wait(for: [loadingExpactation, needToAcceptTosExpactation], timeout: 2)
-    XCTAssertEqual(loading, false)
+    XCTAssertNotNil(loading)
     XCTAssertNotNil(needToAcceptTos)
   }
   
@@ -53,9 +51,7 @@ class CheckoutViewModelTests: XCTestCase {
     let loadingExpactation = XCTestExpectation(description: "testSuccessProceedCheckout_Loading")
     viewModel.loading.sink {
       loading = $0
-      if !$0 {
-        loadingExpactation.fulfill()
-      }
+      loadingExpactation.fulfill()
     }.store(in: &subscriptions)
     
     let contentExpactation = XCTestExpectation(description: "testSuccessProceedCheckout_Content")
@@ -68,7 +64,7 @@ class CheckoutViewModelTests: XCTestCase {
     viewModel.proceedCheckout()
     
     wait(for: [loadingExpactation, contentExpactation], timeout: 2)
-    XCTAssertEqual(loading, false)
+    XCTAssertNotNil(loading)
     XCTAssertNotNil(content)
   }
   
@@ -79,9 +75,7 @@ class CheckoutViewModelTests: XCTestCase {
     let loadingExpactation = XCTestExpectation(description: "testSuccessPayInvoice_Loading")
     viewModel.loading.sink {
       loading = $0
-      if !$0 {
-        loadingExpactation.fulfill()
-      }
+      loadingExpactation.fulfill()
     }.store(in: &subscriptions)
     
     let contentExpactation = XCTestExpectation(description: "testSuccessPayInvoice_Content")
@@ -104,7 +98,7 @@ class CheckoutViewModelTests: XCTestCase {
     viewModel.proceedCheckout()
     
     wait(for: [loadingExpactation, contentExpactation, successfulPaymentExpactation], timeout: 2)
-    XCTAssertEqual(loading, false)
+    XCTAssertNotNil(loading)
     XCTAssertEqual(successfulPayment, true)
   }
   
@@ -113,7 +107,7 @@ class CheckoutViewModelTests: XCTestCase {
     
     let expactation = XCTestExpectation(description: "testErrorCheckIsTosRequired")
     viewModel.error.sink {
-      error = $0
+      error = $0.error
       expactation.fulfill()
     }.store(in: &subscriptions)
     
@@ -129,7 +123,7 @@ class CheckoutViewModelTests: XCTestCase {
     
     let expactation = XCTestExpectation(description: "testErrorProceedCheckout")
     viewModel.error.sink {
-      error = $0
+      error = $0.error
       expactation.fulfill()
     }.store(in: &subscriptions)
     
@@ -145,7 +139,7 @@ class CheckoutViewModelTests: XCTestCase {
     
     let errorExpactation = XCTestExpectation(description: "testErrorPayInvoice_Error")
     viewModel.error.sink {
-      error = $0
+      error = $0.error
       errorExpactation.fulfill()
     }.store(in: &subscriptions)
     

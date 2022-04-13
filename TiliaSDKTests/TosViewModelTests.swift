@@ -35,9 +35,7 @@ class TosViewModelTests: XCTestCase {
     let loadingExpactation = XCTestExpectation(description: "testSuccessAcceptTos_Loading")
     viewModel.loading.sink {
       loading = $0
-      if !$0 {
-        loadingExpactation.fulfill()
-      }
+      loadingExpactation.fulfill()
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
@@ -45,7 +43,7 @@ class TosViewModelTests: XCTestCase {
     
     wait(for: [acceptExpactation, loadingExpactation], timeout: 2)
     XCTAssertEqual(accept, true)
-    XCTAssertEqual(loading, false)
+    XCTAssertNotNil(loading)
   }
   
   func testErrorAcceptTos() {

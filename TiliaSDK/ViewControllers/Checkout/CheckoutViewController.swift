@@ -52,6 +52,15 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     return divider
   }()
   
+  private lazy var cancelButton: NonPrimaryButton = {
+    let button = NonPrimaryButton()
+    button.setTitle(L.cancel, for: .normal)
+    button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "cancelButton"
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setup()
@@ -179,9 +188,13 @@ private extension CheckoutViewController {
       guard let self = self else { return }
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
-    viewModel.error.sink { [weak self] _ in
-      self?.router.showToast(title: L.errorPaymentTitle,
-                             message: L.errorPaymentMessage)
+    viewModel.error.sink { [weak self] in
+      guard let self = self else { return }
+      if $0.needToShowCancelButton {
+        self.showCancelButton()
+      }
+      self.router.showToast(title: L.errorPaymentTitle,
+                            message: L.errorPaymentMessage)
     }.store(in: &subscriptions)
     viewModel.needToAcceptTos.sink { [weak self] _ in
       guard let self = self else { return }
@@ -206,6 +219,19 @@ private extension CheckoutViewController {
   func dismiss() {
     let isPaid = viewModel.successfulPayment.value
     router.dismiss { self.completion?(isPaid) }
+  }
+  
+  func showCancelButton() {
+    view.addSubview(cancelButton)
+    NSLayoutConstraint.activate([
+      cancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      cancelButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      cancelButton.widthAnchor.constraint(equalToConstant: 100)
+    ])
+  }
+  
+  @objc func cancelButtonDidTap() {
+    dismiss()
   }
   
 }
