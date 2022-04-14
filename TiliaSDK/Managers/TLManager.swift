@@ -142,6 +142,14 @@ public extension TLManager {
                                           animated: Bool,
                                           onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                           onError: ((TLErrorCallback) -> Void)? = nil) {
+    guard let token = networkManager.serverConfiguration.token, !token.isEmpty else {
+      let errorCallback = TLErrorCallback(event: TLEvent(flow: .tos, action: .missingRequiredData),
+                                          error: L.errorTosTitle,
+                                          message: L.missedRequiredData)
+      onError?(errorCallback)
+      return
+    }
+    
     let tosViewController = TosViewController(manager: networkManager,
                                               onComplete: onComplete,
                                               onError: onError)
@@ -162,6 +170,14 @@ public extension TLManager {
                                      onUpdate: ((TLUpdateCallback) -> Void)? = nil,
                                      onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                      onError: ((TLErrorCallback) -> Void)? = nil) {
+    guard let token = networkManager.serverConfiguration.token, !token.isEmpty, !invoiceId.isEmpty else {
+      let errorCallback = TLErrorCallback(event: TLEvent(flow: .checkout, action: .missingRequiredData),
+                                          error: L.errorPaymentTitle,
+                                          message: L.missedRequiredData)
+      onError?(errorCallback)
+      return
+    }
+    
     let checkoutViewController = CheckoutViewController(invoiceId: invoiceId,
                                                         manager: networkManager,
                                                         onUpdate: onUpdate,

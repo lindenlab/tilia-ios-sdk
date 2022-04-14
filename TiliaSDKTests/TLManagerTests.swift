@@ -112,4 +112,26 @@ class TLManagerTests: XCTestCase {
     XCTAssertNotNil(currencyCodeError)
   }
   
+  func testMissedRequiredDataForTosFlow() {
+    TLManager.shared.setToken("")
+    var errorCallback: TLErrorCallback?
+    let expactation = XCTestExpectation(description: "testMissedRequiredDataForTosFlow")
+    TLManager.shared.presentTosIsRequiredViewController(on: UIViewController(),
+                                                        animated: true,
+                                                        onError: { errorCallback = $0; expactation.fulfill() })
+    wait(for: [expactation], timeout: 1)
+    XCTAssertNotNil(errorCallback)
+  }
+  
+  func testMissedRequiredDataForTosCheckout() {
+    var errorCallback: TLErrorCallback?
+    let expactation = XCTestExpectation(description: "testMissedRequiredDataForTosCheckout")
+    TLManager.shared.presentCheckoutViewController(on: UIViewController(),
+                                                   withInvoiceId: "",
+                                                   animated: true,
+                                                   onError: { errorCallback = $0; expactation.fulfill() })
+    wait(for: [expactation], timeout: 1)
+    XCTAssertNotNil(errorCallback)
+  }
+  
 }

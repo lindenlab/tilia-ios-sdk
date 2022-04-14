@@ -31,5 +31,6 @@ enum L {
   static let errorTosTitle = "errorTosTitle".localized
   static let errorTosMessage = "errorTosMessage".localized
   static let close = "close".localized
+  static let missedRequiredData = "missedRequiredData".localized
   
 }

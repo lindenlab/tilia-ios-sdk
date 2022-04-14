@@ -20,3 +20,4 @@
 "errorTosTitle" =  "Error accepting TOS";
 "errorTosMessage" =  "Sorry, we were unable to accept Terms Of Service. Please try again later.";
 "close" = "Close";
+"missedRequiredData" = "Missed required data.";
