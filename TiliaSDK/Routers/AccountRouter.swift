@@ -24,3 +24,16 @@ enum AccountRouter: RouterProtocol {
   var endpoint: String { return "/v1/user-info/tos/tilia" }
   
 }
+
+// MARK: - For Unit Tests
+
+extension AccountRouter {
+  
+  var testData: Data? {
+    switch self {
+    case .getTosRequiredForUser: return readJSONFromFile("GetTosRequiredForUserResponse")
+    case .signTosForUser: return readJSONFromFile("SignTosForUserResponse")
+    }
+  }
+  
+}

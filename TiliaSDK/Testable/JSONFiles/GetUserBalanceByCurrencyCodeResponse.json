@@ -1,0 +1,99 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "balances": {
+            "TST": {
+                "spendable": {
+                    "balance": 9701,
+                    "display": "TST 9701.00"
+                },
+                "convertible": {
+                    "balance": 0,
+                    "display": "TST 0.00"
+                }
+            },
+            "USD": {
+                "spendable": {
+                    "balance": 99898,
+                    "display": "$998.98"
+                }
+            }
+        },
+        "capabilities": {
+            "deposit": [],
+            "payout": [],
+            "purchase": [
+                "383509e6-f5de-45c0-a646-66d6017cca15",
+                "08c978cb-31bb-4177-88c5-c175b6965f18"
+            ]
+        },
+        "payment_methods": {
+            "08c978cb-31bb-4177-88c5-c175b6965f18": {
+                "id": "08c978cb-31bb-4177-88c5-c175b6965f18",
+                "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+                "method_class": "registration",
+                "display_string": "Default USD Wallet",
+                "provider": "wallet",
+                "psp_reference": "8f215a74-4459-47ff-8ec4-7dcf2c6f9860",
+                "psp_hash_code": "",
+                "processing_currency": "USD",
+                "pm_state": "ACTIVE",
+                "integrator": "tilia-sdks",
+                "created": "2022-03-01 01:00:49",
+                "updated": "2022-03-01 01:00:49",
+                "tags": [
+                    {
+                        "tag_id": "paytag_25lKthflXyNLndhZhBnC1crOxJB",
+                        "resource_type": "payments.payment_method.id",
+                        "resource_id": "08c978cb-31bb-4177-88c5-c175b6965f18",
+                        "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+                        "namespace": "payment_method",
+                        "tag": "registration",
+                        "status": "ACTIVE",
+                        "integrator": "tilia-sdks",
+                        "created": "2022-03-01T01:00:49.342779Z",
+                        "updated": "2022-03-01T01:00:49.342779Z"
+                    }
+                ],
+                "wallet_balance": "99898",
+                "payment_method_id": "",
+                "provider_data": {
+                    "wallet_id": "8f215a74-4459-47ff-8ec4-7dcf2c6f9860",
+                    "wallet_balance": "99898",
+                    "balance": 99898
+                }
+            },
+            "383509e6-f5de-45c0-a646-66d6017cca15": {
+                "id": "383509e6-f5de-45c0-a646-66d6017cca15",
+                "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+                "method_class": "visa",
+                "display_string": "Visa ending in 1111",
+                "provider": "rebilly",
+                "psp_reference": "b5faa5f7-2e1b-49ff-a50f-99affee27f30",
+                "psp_hash_code": "",
+                "processing_currency": "USD",
+                "pm_state": "ACTIVE",
+                "integrator": "tilia-sdks",
+                "created": "2022-03-28 19:19:36",
+                "updated": "2022-03-28 19:19:36",
+                "tags": [],
+                "payment_method_id": "383509e6-f5de-45c0-a646-66d6017cca15",
+                "first_name": "Jane",
+                "last_name": "Smith",
+                "full_name": "Jane Smith",
+                "psp_provided_email": "janesmith@fakeemail.com",
+                "expiration": "1/23",
+                "address1": "123 Main St.",
+                "city": "San Francisco",
+                "state": "CA",
+                "country_iso": "US",
+                "zip": "94111",
+                "bin": "411111",
+                "last_four": "1111"
+            }
+        }
+    }
+}

@@ -13,6 +13,7 @@ final class CheckoutFlowTestViewController: TestViewController {
     let textField = UITextField()
     textField.borderStyle = .roundedRect
     textField.placeholder = "Invoice id"
+    textField.accessibilityIdentifier = "invoiceIdTextField"
     return textField
   }()
   

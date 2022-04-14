@@ -15,7 +15,7 @@ final class DemoViewController: UITableViewController {
   }
   
   let sections: [Section] = [
-    Section(name: "Configurable section", items: ["Is staging", "Set colors"]),
+    Section(name: "Configurable section", items: ["Is staging", "Use Mocks (only for UI Tests)", "Set colors"]),
     Section(name: "Testable section", items: ["getTosRequiredForUser", "getUserBalanceByCurrency", "TOS flow","Checkout flow"])
   ]
   
@@ -29,9 +29,17 @@ final class DemoViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = UITableViewCell()
-    if indexPath.section == 0 && indexPath.row == 0 {
+    let section = indexPath.section
+    let row = indexPath.row
+    if section == 0 && (row == 0 || row == 1) {
       let uiSwitch = UISwitch()
-      uiSwitch.isOn = true
+      if row == 0 {
+        uiSwitch.isOn = true
+        uiSwitch.accessibilityIdentifier = nil
+      } else {
+        uiSwitch.isOn = false
+        uiSwitch.accessibilityIdentifier = "useMocksSwitch"
+      }
       uiSwitch.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
       cell.accessoryView = uiSwitch
     } else {
@@ -46,7 +54,8 @@ final class DemoViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-    return indexPath.section == 0 && indexPath.row == 0 ? nil : indexPath
+    let row = indexPath.row
+    return indexPath.section == 0 && (row == 0 || row == 1) ? nil : indexPath
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -75,7 +84,11 @@ final class DemoViewController: UITableViewController {
   }
   
   @objc func switchChanged(_ sender: UISwitch) {
-    TLManager.shared.setEnvironment(sender.isOn ? .staging : .production)
+    if sender.accessibilityIdentifier == "useMocksSwitch" {
+      TLManager.shared.setIsTestServer(sender.isOn)
+    } else {
+      TLManager.shared.setEnvironment(sender.isOn ? .staging : .production)
+    }
   }
   
 }

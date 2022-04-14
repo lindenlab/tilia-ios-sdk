@@ -36,6 +36,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     uiSwitch.backgroundColor = .borderColor
     uiSwitch.onTintColor = .primaryColor
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
+    uiSwitch.accessibilityIdentifier = "acceptSwitch"
     return uiSwitch
   }()
   
@@ -57,6 +58,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     button.setTitle(L.accept, for: .normal)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
     button.isEnabled = acceptSwitch.isOn
+    button.accessibilityIdentifier = "acceptButton"
     return button
   }()
   
@@ -64,6 +66,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     let button = NonPrimaryButton()
     button.setTitle(L.cancel, for: .normal)
     button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "cancelButton"
     return button
   }()
   
@@ -89,9 +92,10 @@ final class TosViewController: UIViewController, LoadableProtocol {
     bind()
   }
   
-  init(completion: ((Bool) -> Void)?) {
+  init(manager: NetworkManager,
+       completion: ((Bool) -> Void)?) {
     let router = TosRouter()
-    self.viewModel = TosViewModel()
+    self.viewModel = TosViewModel(manager: manager)
     self.router = router
     self.completion = completion
     super.init(nibName: nil, bundle: nil)
@@ -110,7 +114,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
 extension TosViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    completion?(false)
+    completion?(viewModel.accept.value)
   }
   
 }
@@ -145,9 +149,9 @@ private extension TosViewController {
       guard let self = self else { return }
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
-    viewModel.accept.sink { [weak self] _ in
-      guard let self = self else { return }
-      self.router.dismiss() { self.completion?(true) }
+    viewModel.accept.sink { [weak self] accepted in
+      guard let self = self, accepted else { return }
+      self.router.dismiss() { self.completion?(accepted) }
     }.store(in: &subscriptions)
     viewModel.error.sink { [weak self] _ in
       self?.router.showToast(title: L.errorTosTitle,
@@ -164,7 +168,7 @@ private extension TosViewController {
   }
   
   @objc func cancelButtonDidTap() {
-    router.dismiss { self.completion?(false) }
+    router.dismiss { self.completion?(self.viewModel.accept.value) }
   }
   
 }

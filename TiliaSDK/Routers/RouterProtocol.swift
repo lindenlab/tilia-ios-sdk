@@ -13,6 +13,7 @@ protocol RouterProtocol: URLRequestConvertible {
   var bodyParameters: Parameters? { get }
   var service: String { get }
   var endpoint: String { get }
+  var testData: Data? { get } // Only for Unit Tests
   
   func requestHeaders() throws -> [String: String?]
 }
@@ -22,7 +23,7 @@ protocol RouterProtocol: URLRequestConvertible {
 extension RouterProtocol {
   
   var serverConfiguration: ServerConfiguration {
-    return TLManager.shared.serverConfiguration
+    return TLManager.shared.networkManager.serverConfiguration
   }
   
   var bodyParameters: Parameters? { return nil }
@@ -52,6 +53,23 @@ extension RouterProtocol {
     }
     
     return urlRequest
+  }
+  
+}
+
+// MARK: - Helpers for Unit Tests
+
+extension RouterProtocol {
+  
+  var testData: Data? {
+    return nil
+  }
+  
+  func readJSONFromFile(_ fileName: String) -> Data? {
+    guard
+      let path = Bundle.main.path(forResource: fileName, ofType: "json"),
+      let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) else { return nil }
+    return data
   }
   
 }

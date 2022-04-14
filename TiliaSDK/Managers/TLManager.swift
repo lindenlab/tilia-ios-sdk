@@ -13,12 +13,15 @@ public final class TLManager {
   /// Use this instance for calling Tilia API or present user's flows
   public static let shared = TLManager()
   
-  var serverConfiguration: ServerConfiguration {
-    return synchronizationQueue.sync { return _serverConfiguration }
+  var networkManager: NetworkManager {
+    return synchronizationQueue.sync { return _networkManager }
   }
-  private(set) var colorsConfiguration = ColorsConfiguration()
+  var colorsConfiguration: ColorsConfiguration {
+    return synchronizationQueue.sync { return _colorsConfiguration }
+  }
   
-  private var _serverConfiguration = ServerConfiguration()
+  private let _networkManager = NetworkManager(serverClient: ServerClient())
+  private let _colorsConfiguration = ColorsConfiguration()
   private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue", attributes: .concurrent)
   
   private init() { }
@@ -33,21 +36,21 @@ public extension TLManager {
   /// - Parameters:
   ///   - token: user access token
   func setToken(_ token: String) {
-    executeOnQueue { self._serverConfiguration.token = token }
+    executeOnQueue { self._networkManager.serverConfiguration.token = token }
   }
   
   /// Sets timeout interval (in seconds) for requests, default is 30 seconds
   /// - Parameters:
   ///   - timeoutInterval: timeout interval
   func setTimeoutInterval(_ timeoutInterval: Double) {
-    executeOnQueue { self._serverConfiguration.timeoutInterval = timeoutInterval }
+    executeOnQueue { self._networkManager.serverConfiguration.timeoutInterval = timeoutInterval }
   }
   
   /// Sets environment - staging or production, default is staging
   /// - Parameters:
   ///   - environment: environment
   func setEnvironment(_ environment: TLEnvironment) {
-    executeOnQueue { self._serverConfiguration.environment = environment }
+    executeOnQueue { self._networkManager.serverConfiguration.environment = environment }
   }
   
 }
@@ -62,8 +65,7 @@ public extension TLManager {
   ///   - darkModeColor: color for dark mode
   func setBackgroundColor(forLightMode lightModeColor: UIColor,
                           andDarkMode darkModeColor: UIColor) {
-    colorsConfiguration.backgroundColor = .init(lightModeColor: lightModeColor,
-                                                darkModeColor: darkModeColor)
+    executeOnQueue { self._colorsConfiguration.backgroundColor = .init(lightModeColor: lightModeColor, darkModeColor: darkModeColor) }
   }
   
   /// Set primary color for light and dark theme, default is Tilia primary color
@@ -72,8 +74,7 @@ public extension TLManager {
   ///   - darkModeColor: color for dark mode
   func setPrimaryColor(forLightMode lightModeColor: UIColor,
                        andDarkMode darkModeColor: UIColor) {
-    colorsConfiguration.primaryColor = .init(lightModeColor: lightModeColor,
-                                             darkModeColor: darkModeColor)
+    executeOnQueue { self._colorsConfiguration.primaryColor = .init(lightModeColor: lightModeColor, darkModeColor: darkModeColor) }
   }
   
   /// Set primary text color for light and dark theme, default is Tilia primary text color
@@ -82,8 +83,7 @@ public extension TLManager {
   ///   - darkModeColor: color for dark mode
   func setPrimaryTextColor(forLightMode lightModeColor: UIColor,
                            andDarkMode darkModeColor: UIColor) {
-    colorsConfiguration.primaryTextColor = .init(lightModeColor: lightModeColor,
-                                                 darkModeColor: darkModeColor)
+    executeOnQueue { self._colorsConfiguration.primaryTextColor = .init(lightModeColor: lightModeColor, darkModeColor: darkModeColor) }
   }
   
   /// Set success background color for light and dark theme, default is Tilia success background color
@@ -92,8 +92,7 @@ public extension TLManager {
   ///   - darkModeColor: color for dark mode
   func setSuccessBackgroundColor(forLightMode lightModeColor: UIColor,
                                  andDarkMode darkModeColor: UIColor) {
-    colorsConfiguration.successBackgroundColor = .init(lightModeColor: lightModeColor,
-                                                       darkModeColor: darkModeColor)
+    executeOnQueue { self._colorsConfiguration.successBackgroundColor = .init(lightModeColor: lightModeColor, darkModeColor: darkModeColor) }
   }
   
   /// Set failure background color for light and dark theme, default is Tilia failure background color
@@ -102,8 +101,7 @@ public extension TLManager {
   ///   - darkModeColor: color for dark mode
   func setFailureBackgroundColor(forLightMode lightModeColor: UIColor,
                                  andDarkMode darkModeColor: UIColor) {
-    colorsConfiguration.failureBackgroundColor = .init(lightModeColor: lightModeColor,
-                                                       darkModeColor: darkModeColor)
+    executeOnQueue { self._colorsConfiguration.failureBackgroundColor = .init(lightModeColor: lightModeColor, darkModeColor: darkModeColor) }
   }
   
 }
@@ -116,7 +114,7 @@ public extension TLManager {
   /// - Parameters:
   ///   - completion: completion that returns user needs to sign TOS or error
   func getTosRequiredForUser(completion: @escaping (Result<Bool, Error>) -> Void) {
-    getTos { completion($0.map { $0.isTosSigned }) }
+    networkManager.getTosRequiredForUser { completion($0.map { $0.isTosSigned }) }
   }
   
   /// Checks user balance by currency code, user access token is required
@@ -125,7 +123,7 @@ public extension TLManager {
   ///   - completion: completion that returns user balance or error
   func getUserBalanceByCurrencyCode(_ currencyCode: String,
                                     completion: @escaping (Result<Double, Error>) -> Void) {
-    getBalanceByCurrencyCode(currencyCode) { completion($0.map { $0.balance }) }
+    networkManager.getUserBalanceByCurrencyCode(currencyCode) { completion($0.map { $0.balance }) }
   }
   
 }
@@ -142,7 +140,7 @@ public extension TLManager {
   func presentTosIsRequiredViewController(on viewController: UIViewController,
                                           animated: Bool,
                                           completion: ((Bool) -> Void)?) {
-    let tosViewController = TosViewController(completion: completion)
+    let tosViewController = TosViewController(manager: networkManager, completion: completion)
     viewController.present(tosViewController, animated: animated)
   }
   
@@ -156,8 +154,20 @@ public extension TLManager {
                                      withInvoiceId invoiceId: String,
                                      animated: Bool,
                                      completion: ((Bool) -> Void)?) {
-    let checkoutViewController = CheckoutViewController(invoiceId: invoiceId, completion: completion)
+    let checkoutViewController = CheckoutViewController(invoiceId: invoiceId,
+                                                        manager: networkManager,
+                                                        completion: completion)
     viewController.present(checkoutViewController, animated: animated)
+  }
+  
+}
+
+// MARK: - For Testing
+
+extension TLManager {
+  
+  func setIsTestServer(_ isTest: Bool) {
+    networkManager.setServerClient(isTest ? ServerTestClient() : ServerClient())
   }
   
 }

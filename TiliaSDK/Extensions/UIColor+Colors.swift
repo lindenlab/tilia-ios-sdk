@@ -138,12 +138,6 @@ extension UIColor {
     self.init(red:red, green:green, blue:blue, alpha:alpha)
   }
   
-}
-
-// MARK: - Private Methods
-
-private extension UIColor {
-  
   func isColorDark() -> Bool {
     var r: CGFloat = 0.0
     var g: CGFloat = 0.0

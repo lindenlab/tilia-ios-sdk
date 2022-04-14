@@ -38,3 +38,20 @@ enum InvoiceRouter: RouterProtocol {
   }
   
 }
+
+// MARK: - For Unit Tests
+
+extension InvoiceRouter {
+  
+  var testData: Data? {
+    switch self {
+    case .getInvoiceDetails:
+      return readJSONFromFile("GetInvoiceDetailsResponse")
+    case let .createInvoice(_, isEscrow):
+      return isEscrow ? readJSONFromFile("CreateEscrowInvoiceResponse") : readJSONFromFile("CreateInvoiceResponse")
+    case .payInvoice:
+      return readJSONFromFile("PayInvoiceResponse")
+    }
+  }
+  
+}

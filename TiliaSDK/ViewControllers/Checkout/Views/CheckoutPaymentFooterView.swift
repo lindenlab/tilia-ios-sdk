@@ -20,12 +20,14 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     let button = PrimaryButton()
     button.setTitle(L.pay, for: .normal)
     button.addTarget(self, action: #selector(primaryButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "primaryButton"
     return button
   }()
   
   private lazy var nonPrimaryButton: NonPrimaryButton = {
     let button = NonPrimaryButton()
     button.addTarget(self, action: #selector(nonPrimaryButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "nonPrimaryButton"
     return button
   }()
   
