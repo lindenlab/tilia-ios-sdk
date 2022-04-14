@@ -13,6 +13,9 @@ public enum TLError: Error {
   /// Invalid or empty token
   case invalidToken
   
+  /// Invalid or empty parameters
+  case invalidParameters
+  
   /// Decodable data is nil
   case decodableDataIsNil
   
@@ -36,6 +39,8 @@ extension TLError: LocalizedError {
     switch self {
     case .invalidToken:
       return "Invalid or empty token"
+    case .invalidParameters:
+      return "Invalid or empty parameters"
     case .decodableDataIsNil:
       return "Something went wrong"
     case .serverError(let error):

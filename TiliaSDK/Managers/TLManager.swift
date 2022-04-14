@@ -139,8 +139,11 @@ public extension TLManager {
   ///   - completion: completion that returns TOS is successfully accepted
   func presentTosIsRequiredViewController(on viewController: UIViewController,
                                           animated: Bool,
-                                          completion: ((Bool) -> Void)?) {
-    let tosViewController = TosViewController(manager: networkManager, completion: completion)
+                                          onComplete: ((TLCompleteCallback) -> Void)? = nil,
+                                          onError: ((TLErrorCallback) -> Void)? = nil) {
+    let tosViewController = TosViewController(manager: networkManager,
+                                              onComplete: onComplete,
+                                              onError: onError)
     viewController.present(tosViewController, animated: animated)
   }
   
@@ -153,10 +156,14 @@ public extension TLManager {
   func presentCheckoutViewController(on viewController: UIViewController,
                                      withInvoiceId invoiceId: String,
                                      animated: Bool,
-                                     completion: ((Bool) -> Void)?) {
+                                     onUpdate: ((TLUpdateCallback) -> Void)? = nil,
+                                     onComplete: ((TLCompleteCallback) -> Void)? = nil,
+                                     onError: ((TLErrorCallback) -> Void)? = nil) {
     let checkoutViewController = CheckoutViewController(invoiceId: invoiceId,
                                                         manager: networkManager,
-                                                        completion: completion)
+                                                        onUpdate: onUpdate,
+                                                        onComplete: onComplete,
+                                                        onError: onError)
     viewController.present(checkoutViewController, animated: animated)
   }
   

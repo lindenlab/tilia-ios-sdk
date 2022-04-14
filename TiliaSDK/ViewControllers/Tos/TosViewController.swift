@@ -15,7 +15,6 @@ final class TosViewController: UIViewController, LoadableProtocol {
   
   private let viewModel: TosViewModelProtocol
   private let router: TosRoutingProtocol
-  private let completion: ((Bool) -> Void)?
   private var subscriptions: Set<AnyCancellable> = []
   private var links: [TosAcceptModel] { return TosAcceptModel.allCases }
   
@@ -93,11 +92,13 @@ final class TosViewController: UIViewController, LoadableProtocol {
   }
   
   init(manager: NetworkManager,
-       completion: ((Bool) -> Void)?) {
+       onComplete: ((TLCompleteCallback) -> Void)?,
+       onError: ((TLErrorCallback) -> Void)?) {
     let router = TosRouter()
-    self.viewModel = TosViewModel(manager: manager)
+    self.viewModel = TosViewModel(manager: manager,
+                                  onComplete: onComplete,
+                                  onError: onError)
     self.router = router
-    self.completion = completion
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
     self.presentationController?.delegate = self
@@ -114,7 +115,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
 extension TosViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    completion?(viewModel.accept.value)
+    viewModel.didDismiss()
   }
   
 }
@@ -149,9 +150,9 @@ private extension TosViewController {
       guard let self = self else { return }
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
-    viewModel.accept.sink { [weak self] accepted in
-      guard let self = self, accepted else { return }
-      self.router.dismiss() { self.completion?(accepted) }
+    viewModel.accept.sink { [weak self] in
+      guard let self = self, $0 else { return }
+      self.router.dismiss { self.viewModel.didDismiss() }
     }.store(in: &subscriptions)
     viewModel.error.sink { [weak self] _ in
       self?.router.showToast(title: L.errorTosTitle,
@@ -168,7 +169,7 @@ private extension TosViewController {
   }
   
   @objc func cancelButtonDidTap() {
-    router.dismiss { self.completion?(self.viewModel.accept.value) }
+    router.dismiss { self.viewModel.didDismiss() }
   }
   
 }
