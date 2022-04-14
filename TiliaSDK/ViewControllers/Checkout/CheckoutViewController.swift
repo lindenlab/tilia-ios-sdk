@@ -56,6 +56,7 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     button.setTitle(L.close, for: .normal)
     button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.accessibilityIdentifier = "closeButton"
     return button
   }()
   
@@ -134,7 +135,7 @@ extension CheckoutViewController: UITableViewDelegate {
 extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    viewModel.didDismiss(isFromCloseAction: false)
+    viewModel.complete(isFromCloseAction: false)
   }
   
 }
@@ -220,7 +221,7 @@ private extension CheckoutViewController {
   }
   
   func dismiss(isFromCloseAction: Bool) {
-    router.dismiss { self.viewModel.didDismiss(isFromCloseAction: isFromCloseAction) }
+    router.dismiss { self.viewModel.complete(isFromCloseAction: isFromCloseAction) }
   }
   
   func showCancelButton() {

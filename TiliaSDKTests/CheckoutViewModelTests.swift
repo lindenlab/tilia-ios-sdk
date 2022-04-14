@@ -11,18 +11,24 @@ import Combine
 
 class CheckoutViewModelTests: XCTestCase {
   
-  var viewModel: CheckoutViewModelProtocol!
   var subscriptions: Set<AnyCancellable>!
   
   override func setUpWithError() throws {
-    let networkManager = NetworkManager(serverClient: ServerTestClient())
-    viewModel = CheckoutViewModel(invoiceId: "", manager: networkManager)
     subscriptions = []
   }
   
   func testSuccessCheckIsTosRequired() {
     var loading: Bool?
     var needToAcceptTos: Void?
+    var completeCallback: TLCompleteCallback?
+    
+    let completeCallbackExpactation = XCTestExpectation(description: "testSuccessCheckIsTosRequired_CompleteCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = CheckoutViewModel(invoiceId: "",
+                                      manager: networkManager,
+                                      onUpdate: nil,
+                                      onComplete: { completeCallback = $0; completeCallbackExpactation.fulfill() },
+                                      onError: nil)
     
     let loadingExpactation = XCTestExpectation(description: "testSuccessCheckIsTosRequired_Loading")
     viewModel.loading.sink {
@@ -31,9 +37,12 @@ class CheckoutViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let needToAcceptTosExpactation = XCTestExpectation(description: "testSuccessCheckIsTosRequired_NeedToAcceptTos")
-    viewModel.needToAcceptTos.sink {
+    viewModel.needToAcceptTos.sink { [weak viewModel] in
       needToAcceptTos = $0
       needToAcceptTosExpactation.fulfill()
+      let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                     state: .completed)
+      viewModel?.onTosComplete(event)
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
@@ -42,35 +51,21 @@ class CheckoutViewModelTests: XCTestCase {
     wait(for: [loadingExpactation, needToAcceptTosExpactation], timeout: 2)
     XCTAssertNotNil(loading)
     XCTAssertNotNil(needToAcceptTos)
-  }
-  
-  func testSuccessProceedCheckout() {
-    var loading: Bool?
-    var content: CheckoutContent?
-    
-    let loadingExpactation = XCTestExpectation(description: "testSuccessProceedCheckout_Loading")
-    viewModel.loading.sink {
-      loading = $0
-      loadingExpactation.fulfill()
-    }.store(in: &subscriptions)
-    
-    let contentExpactation = XCTestExpectation(description: "testSuccessProceedCheckout_Content")
-    viewModel.content.sink {
-      content = $0
-      contentExpactation.fulfill()
-    }.store(in: &subscriptions)
-    
-    TLManager.shared.setToken(UUID().uuidString)
-    viewModel.proceedCheckout()
-    
-    wait(for: [loadingExpactation, contentExpactation], timeout: 2)
-    XCTAssertNotNil(loading)
-    XCTAssertNotNil(content)
+    XCTAssertEqual(completeCallback?.state, .completed)
   }
   
   func testSuccessPayInvoice() {
     var loading: Bool?
     var successfulPayment: Bool?
+    var updateCallback: TLUpdateCallback?
+    
+    let updateCallbackExpactation = XCTestExpectation(description: "testSuccessPayInvoice_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = CheckoutViewModel(invoiceId: "",
+                                      manager: networkManager,
+                                      onUpdate: { updateCallback = $0; updateCallbackExpactation.fulfill() },
+                                      onComplete: nil,
+                                      onError: nil)
     
     let loadingExpactation = XCTestExpectation(description: "testSuccessPayInvoice_Loading")
     viewModel.loading.sink {
@@ -79,9 +74,9 @@ class CheckoutViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let contentExpactation = XCTestExpectation(description: "testSuccessPayInvoice_Content")
-    viewModel.content.sink { [weak self] in
+    viewModel.content.sink { [weak viewModel] in
       if $0 != nil {
-        self?.viewModel.payInvoice()
+        viewModel?.payInvoice()
         contentExpactation.fulfill()
       }
     }.store(in: &subscriptions)
@@ -95,48 +90,54 @@ class CheckoutViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
-    viewModel.proceedCheckout()
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
     
-    wait(for: [loadingExpactation, contentExpactation, successfulPaymentExpactation], timeout: 2)
+    wait(for: [loadingExpactation, contentExpactation, successfulPaymentExpactation, updateCallbackExpactation], timeout: 2)
     XCTAssertNotNil(loading)
     XCTAssertEqual(successfulPayment, true)
+    XCTAssertNotNil(updateCallback)
   }
   
   func testErrorCheckIsTosRequired() {
     var error: Error?
+    var errorCallback: TLErrorCallback?
     
-    let expactation = XCTestExpectation(description: "testErrorCheckIsTosRequired")
+    let errorCallbackExpactation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = CheckoutViewModel(invoiceId: "",
+                                      manager: networkManager,
+                                      onUpdate: nil,
+                                      onComplete: nil,
+                                      onError: { errorCallback = $0; errorCallbackExpactation.fulfill() })
+    
+    let errorExpactation = XCTestExpectation(description: "testErrorCheckIsTosRequired_Error")
     viewModel.error.sink {
       error = $0.error
-      expactation.fulfill()
+      errorExpactation.fulfill()
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken("")
     viewModel.checkIsTosRequired()
     
-    wait(for: [expactation], timeout: 2)
+    wait(for: [errorExpactation, errorCallbackExpactation], timeout: 2)
     XCTAssertNotNil(error)
-  }
-  
-  func testErrorProceedCheckout() {
-    var error: Error?
-    
-    let expactation = XCTestExpectation(description: "testErrorProceedCheckout")
-    viewModel.error.sink {
-      error = $0.error
-      expactation.fulfill()
-    }.store(in: &subscriptions)
-    
-    TLManager.shared.setToken("")
-    viewModel.proceedCheckout()
-    
-    wait(for: [expactation], timeout: 2)
-    XCTAssertNotNil(error)
+    XCTAssertNotNil(errorCallback)
   }
   
   func testErrorPayInvoice() {
     var error: Error?
+    var errorCallback: TLErrorCallback?
     
+    let errorCallbackExpactation = XCTestExpectation(description: "testErrorPayInvoice_ErrorCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = CheckoutViewModel(invoiceId: "",
+                                      manager: networkManager,
+                                      onUpdate: nil,
+                                      onComplete: nil,
+                                      onError: { errorCallback = $0; errorCallbackExpactation.fulfill() })
+        
     let errorExpactation = XCTestExpectation(description: "testErrorPayInvoice_Error")
     viewModel.error.sink {
       error = $0.error
@@ -144,19 +145,22 @@ class CheckoutViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let contentExpactation = XCTestExpectation(description: "testErrorPayInvoice_Content")
-    viewModel.content.sink { [weak self] in
+    viewModel.content.sink { [weak viewModel] in
       if $0 != nil {
         TLManager.shared.setToken("")
-        self?.viewModel.payInvoice()
+        viewModel?.payInvoice()
         contentExpactation.fulfill()
       }
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
-    viewModel.proceedCheckout()
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
     
     wait(for: [errorExpactation, contentExpactation], timeout: 2)
     XCTAssertNotNil(error)
+    XCTAssertNotNil(errorCallback)
   }
   
 }

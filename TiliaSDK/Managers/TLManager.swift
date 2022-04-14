@@ -136,7 +136,8 @@ public extension TLManager {
   /// - Parameters:
   ///   - viewController: view controller that is used for presenting TOS flow
   ///   - animated: animated flag
-  ///   - completion: completion that returns TOS is successfully accepted
+  ///   - onComplete: completion that returns TOS flow state
+  ///   - onError: completion that returns TOS flow error
   func presentTosIsRequiredViewController(on viewController: UIViewController,
                                           animated: Bool,
                                           onComplete: ((TLCompleteCallback) -> Void)? = nil,
@@ -152,7 +153,9 @@ public extension TLManager {
   ///   - viewController: view controller that is used for presenting Checkout flow
   ///   - invoiceId: authorized invoice id
   ///   - animated: animated flag
-  ///   - completion: completion that returns Checkout is successfully completed
+  ///   - onUpdate: completion that returns Checkout payment is processed
+  ///   - onComplete: completion that returns Checkout flow state
+  ///   - onError: completion that returns Checkout flow error
   func presentCheckoutViewController(on viewController: UIViewController,
                                      withInvoiceId invoiceId: String,
                                      animated: Bool,

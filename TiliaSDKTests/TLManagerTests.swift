@@ -96,20 +96,20 @@ class TLManagerTests: XCTestCase {
   }
   
   func testGetUserBalanceByCurrencyCodeIsEmpty() {
-    TLManager.shared.setToken("")
-    var tokenError: Error?
+    TLManager.shared.setToken(UUID().uuidString)
+    var currencyCodeError: Error?
     let expactation = XCTestExpectation(description: "testGetUserBalanceByCurrencyCodeIsEmpty")
     TLManager.shared.getUserBalanceByCurrencyCode("") { result in
       expactation.fulfill()
       switch result {
       case .failure(let error):
-        tokenError = error
+        currencyCodeError = error
       case .success:
         break
       }
     }
     wait(for: [expactation], timeout: 2)
-    XCTAssertNotNil(tokenError)
+    XCTAssertNotNil(currencyCodeError)
   }
   
 }

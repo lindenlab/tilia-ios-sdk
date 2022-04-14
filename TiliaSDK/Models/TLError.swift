@@ -13,9 +13,6 @@ public enum TLError: Error {
   /// Invalid or empty token
   case invalidToken
   
-  /// Invalid or empty parameters
-  case invalidParameters
-  
   /// Decodable data is nil
   case decodableDataIsNil
   
@@ -23,6 +20,9 @@ public enum TLError: Error {
   /// - Parameters:
   ///   - error: localized description
   case serverError(String)
+  
+  /// Invalid or empty currency code
+  case invalidCurrencyCode
   
   /// User balance does not exist for currency code
   /// - Parameters:
@@ -39,7 +39,7 @@ extension TLError: LocalizedError {
     switch self {
     case .invalidToken:
       return "Invalid or empty token"
-    case .invalidParameters:
+    case .invalidCurrencyCode:
       return "Invalid or empty parameters"
     case .decodableDataIsNil:
       return "Something went wrong"

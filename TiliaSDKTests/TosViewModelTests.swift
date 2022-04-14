@@ -11,23 +11,28 @@ import Combine
 
 class TosViewModelTests: XCTestCase {
   
-  var viewModel: TosViewModelProtocol!
   var subscriptions: Set<AnyCancellable>!
   
   override func setUpWithError() throws {
-    let networkManager = NetworkManager(serverClient: ServerTestClient())
-    viewModel = TosViewModel(manager: networkManager)
     subscriptions = []
   }
   
   func testSuccessAcceptTos() {
     var accept: Bool?
     var loading: Bool?
+    var completeCallback: TLCompleteCallback?
+    
+    let completeCallbackExpactation = XCTestExpectation(description: "testSuccessAcceptTos_CompleteCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = TosViewModel(manager: networkManager,
+                                 onComplete: { completeCallback = $0; completeCallbackExpactation.fulfill() },
+                                 onError: nil)
     
     let acceptExpactation = XCTestExpectation(description: "testSuccessAcceptTos_Accept")
-    viewModel.accept.sink {
+    viewModel.accept.sink { [weak viewModel] in
       accept = $0
       if $0 {
+        viewModel?.complete()
         acceptExpactation.fulfill()
       }
     }.store(in: &subscriptions)
@@ -41,25 +46,34 @@ class TosViewModelTests: XCTestCase {
     TLManager.shared.setToken(UUID().uuidString)
     viewModel.acceptTos()
     
-    wait(for: [acceptExpactation, loadingExpactation], timeout: 2)
+    wait(for: [acceptExpactation, loadingExpactation, completeCallbackExpactation], timeout: 2)
     XCTAssertEqual(accept, true)
     XCTAssertNotNil(loading)
+    XCTAssertEqual(completeCallback?.state, .completed)
   }
   
   func testErrorAcceptTos() {
     var error: Error?
+    var errorCallback: TLErrorCallback?
     
-    let expactation = XCTestExpectation(description: "testErrorAcceptTos")
+    let errorCallbackExpactation = XCTestExpectation(description: "testErrorAcceptTos_ErrorCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = TosViewModel(manager: networkManager,
+                                 onComplete: nil,
+                                 onError: { errorCallback = $0; errorCallbackExpactation.fulfill() })
+    
+    let errorExpactation = XCTestExpectation(description: "testErrorAcceptTos_Error")
     viewModel.error.sink {
       error = $0
-      expactation.fulfill()
+      errorExpactation.fulfill()
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken("")
     viewModel.acceptTos()
     
-    wait(for: [expactation], timeout: 2)
+    wait(for: [errorExpactation, errorCallbackExpactation], timeout: 2)
     XCTAssertNotNil(error)
+    XCTAssertNotNil(errorCallback)
   }
   
 }

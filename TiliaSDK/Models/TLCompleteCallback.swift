@@ -31,3 +31,13 @@ public struct TLCompleteCallback {
   public let state: State
   
 }
+
+// MARK: - CustomStringConvertible
+
+extension TLCompleteCallback: CustomStringConvertible {
+  
+  public var description: String {
+    return "Event: \(event.description)\nState: \(state.rawValue)"
+  }
+  
+}

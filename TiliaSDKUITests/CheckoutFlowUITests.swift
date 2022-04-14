@@ -144,4 +144,25 @@ class CheckoutFlowUITests: XCTestCase {
     backButton.tap()
   }
   
+  func testCloseCheckout() {
+    let app = XCUIApplication()
+    app.launch()
+    
+    let cell = app.tables.staticTexts["Checkout flow"]
+    XCTAssert(cell.exists)
+    cell.tap()
+    
+    let doSmthButton = app.buttons["doSmthButton"]
+    XCTAssert(doSmthButton.exists)
+    doSmthButton.tap()
+    
+    let closeButton = app.buttons["closeButton"]
+    XCTAssert(closeButton.waitForExistence(timeout: 2))
+    closeButton.tap()
+
+    let backButton = app.navigationBars["Checkout flow"].buttons["Demo App"]
+    XCTAssert(backButton.exists)
+    backButton.tap()
+  }
+  
 }

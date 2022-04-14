@@ -359,8 +359,8 @@
 				D135DC8F27E74A540009D888 /* NetworkManagerTests.swift */,
 				D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */,
 				D1B872D22804C27300DD1F7B /* UIColorTests.swift */,
-				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
 				D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */,
+				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";

@@ -17,3 +17,13 @@ public struct TLUpdateCallback {
   public let message: String
   
 }
+
+// MARK: - CustomStringConvertible
+
+extension TLUpdateCallback: CustomStringConvertible {
+  
+  public var description: String {
+    return "Event: \(event.description)\nMessage: \(message)"
+  }
+  
+}

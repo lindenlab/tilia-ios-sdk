@@ -14,7 +14,7 @@ typealias CheckoutError = (error: Error, needToShowCancelButton: Bool)
 protocol CheckoutViewModelInputProtocol {
   func checkIsTosRequired()
   func payInvoice()
-  func didDismiss(isFromCloseAction: Bool)
+  func complete(isFromCloseAction: Bool)
 }
 
 protocol CheckoutViewModelOutputProtocol {
@@ -111,7 +111,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     }
   }
   
-  func didDismiss(isFromCloseAction: Bool) {
+  func complete(isFromCloseAction: Bool) {
     let isCompleted = successfulPayment.value
     let event = TLEvent(flow: .checkout,
                         action: isCompleted ? .completed : .cancelledByUser)

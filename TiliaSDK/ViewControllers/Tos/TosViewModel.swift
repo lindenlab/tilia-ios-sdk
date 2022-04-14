@@ -9,7 +9,7 @@ import Combine
 
 protocol TosViewModelInputProtocol {
   func acceptTos()
-  func didDismiss()
+  func complete()
 }
 
 protocol TosViewModelOutputProtocol {
@@ -53,7 +53,7 @@ final class TosViewModel: TosViewModelProtocol {
     }
   }
   
-  func didDismiss() {
+  func complete() {
     let isAccepted = accept.value
     let event = TLEvent(flow: .tos,
                         action: isAccepted ? .completed : .cancelledByUser)

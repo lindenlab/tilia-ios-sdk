@@ -20,3 +20,13 @@ public struct TLErrorCallback {
   public let message: String
   
 }
+
+// MARK: - CustomStringConvertible
+
+extension TLErrorCallback: CustomStringConvertible {
+  
+  public var description: String {
+    return "Event: \(event.description)\nError: \(error)\nMessage: \(message)"
+  }
+  
+}
