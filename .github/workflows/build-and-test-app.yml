@@ -8,6 +8,10 @@ jobs:
       XC_WORKSPACE: ${{ 'TiliaSDK.xcworkspace' }}
       XC_SCHEME: ${{ 'TiliaSDK' }}
     steps:
+    - name: setup-cocoapods
+      uses: maxim-lobanov/setup-cocoapods@v1
+      with:
+        podfile-path: tilia-ios-sdk/Podfile.lock
     - name: Select latest Xcode
       run: "sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app"
     - uses: actions/checkout@v2
