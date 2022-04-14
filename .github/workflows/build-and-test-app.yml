@@ -4,7 +4,7 @@ jobs:
   build:
     runs-on: [macos-latest]
     env:
-      XC_VERSION: ${{ '11.4' }}
+      XC_VERSION: ${{ '13.2.1' }}
       XC_WORKSPACE: ${{ 'TiliaSDK.xcworkspace' }}
       XC_SCHEME: ${{ 'TiliaSDK' }}
     steps:
