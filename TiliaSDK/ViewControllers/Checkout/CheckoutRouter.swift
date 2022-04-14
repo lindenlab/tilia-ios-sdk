@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CheckoutRoutingProtocol: RoutingProtocol {
-  func routeToTosView(completion: @escaping (Bool) -> Void)
+  func routeToTosView()
 }
 
 final class CheckoutRouter: CheckoutRoutingProtocol {
@@ -20,8 +20,10 @@ final class CheckoutRouter: CheckoutRoutingProtocol {
     self.dataStore = dataStore
   }
   
-  func routeToTosView(completion: @escaping (Bool) -> Void) {
-    let tosViewController = TosViewController(manager: dataStore.manager, completion: completion)
+  func routeToTosView() {
+    let tosViewController = TosViewController(manager: dataStore.manager,
+                                              onComplete: dataStore.onTosComplete,
+                                              onError: dataStore.onTosError)
     if let transitionCoordinator = viewController?.transitionCoordinator {
       transitionCoordinator.animate(alongsideTransition: nil) { _ in
         self.viewController?.present(tosViewController, animated: true)

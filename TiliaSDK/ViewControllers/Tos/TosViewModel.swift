@@ -9,6 +9,7 @@ import Combine
 
 protocol TosViewModelInputProtocol {
   func acceptTos()
+  func complete()
 }
 
 protocol TosViewModelOutputProtocol {
@@ -24,11 +25,17 @@ final class TosViewModel: TosViewModelProtocol {
   let loading = PassthroughSubject<Bool, Never>()
   let accept = CurrentValueSubject<Bool, Never>(false)
   let error = PassthroughSubject<Error, Never>()
+  let onComplete: ((TLCompleteCallback) -> Void)?
+  let onError: ((TLErrorCallback) -> Void)?
   
   private let manager: NetworkManager
   
-  init(manager: NetworkManager) {
+  init(manager: NetworkManager,
+       onComplete: ((TLCompleteCallback) -> Void)?,
+       onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
+    self.onComplete = onComplete
+    self.onError = onError
   }
   
   func acceptTos() {
@@ -41,8 +48,32 @@ final class TosViewModel: TosViewModelProtocol {
         self.accept.send(true)
       case .failure(let error):
         self.error.send(error)
+        self.didFail(with: error)
       }
     }
+  }
+  
+  func complete() {
+    let isAccepted = accept.value
+    let event = TLEvent(flow: .tos,
+                        action: isAccepted ? .completed : .cancelledByUser)
+    let model = TLCompleteCallback(event: event,
+                                   state: isAccepted ? .completed : .cancelled)
+    onComplete?(model)
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension TosViewModel {
+  
+  func didFail(with error: Error) {
+    let event = TLEvent(flow: .tos, action: .error)
+    let model = TLErrorCallback(event: event,
+                                error: L.errorTosTitle,
+                                message: error.localizedDescription)
+    onError?(model)
   }
   
 }

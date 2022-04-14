@@ -15,7 +15,6 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   
   private let viewModel: CheckoutViewModelProtocol
   private let router: CheckoutRoutingProtocol
-  private let completion: ((Bool) -> Void)?
   private var subscriptions: Set<AnyCancellable> = []
   private var sections: [CheckoutSectionBuilder.Section] = [] {
     didSet {
@@ -52,12 +51,12 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     return divider
   }()
   
-  private lazy var cancelButton: NonPrimaryButton = {
+  private lazy var closeButton: NonPrimaryButton = {
     let button = NonPrimaryButton()
-    button.setTitle(L.cancel, for: .normal)
-    button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
-    button.accessibilityIdentifier = "cancelButton"
+    button.setTitle(L.close, for: .normal)
+    button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.accessibilityIdentifier = "closeButton"
     return button
   }()
   
@@ -70,12 +69,17 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   
   init(invoiceId: String,
        manager: NetworkManager,
-       completion: ((Bool) -> Void)?) {
-    let viewModel = CheckoutViewModel(invoiceId: invoiceId, manager: manager)
+       onUpdate: ((TLUpdateCallback) -> Void)?,
+       onComplete: ((TLCompleteCallback) -> Void)?,
+       onError: ((TLErrorCallback) -> Void)?) {
+    let viewModel = CheckoutViewModel(invoiceId: invoiceId,
+                                      manager: manager,
+                                      onUpdate: onUpdate,
+                                      onComplete: onComplete,
+                                      onError: onError)
     let router = CheckoutRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    self.completion = completion
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
     self.presentationController?.delegate = self
@@ -131,7 +135,7 @@ extension CheckoutViewController: UITableViewDelegate {
 extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    completion?(viewModel.successfulPayment.value)
+    viewModel.complete(isFromCloseAction: false)
   }
   
 }
@@ -145,7 +149,7 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
   }
   
   func checkoutPaymentFooterViewNonPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
-    dismiss()
+    dismiss(isFromCloseAction: false)
   }
   
 }
@@ -197,10 +201,7 @@ private extension CheckoutViewController {
                             message: L.errorPaymentMessage)
     }.store(in: &subscriptions)
     viewModel.needToAcceptTos.sink { [weak self] _ in
-      guard let self = self else { return }
-      self.router.routeToTosView { isTosSigned in
-        isTosSigned ? self.viewModel.proceedCheckout() : self.dismiss()
-      }
+      self?.router.routeToTosView()
     }.store(in: &subscriptions)
     viewModel.content.sink { [weak self] in
       guard let content = $0 else { return }
@@ -214,24 +215,26 @@ private extension CheckoutViewController {
       guard $0 else { return }
       self?.sections[1] = .successfulPayment
     }.store(in: &subscriptions)
+    viewModel.dismiss.sink { [weak self] _ in
+      self?.dismiss(isFromCloseAction: false)
+    }.store(in: &subscriptions)
   }
   
-  func dismiss() {
-    let isPaid = viewModel.successfulPayment.value
-    router.dismiss { self.completion?(isPaid) }
+  func dismiss(isFromCloseAction: Bool) {
+    router.dismiss { self.viewModel.complete(isFromCloseAction: isFromCloseAction) }
   }
   
   func showCancelButton() {
-    view.addSubview(cancelButton)
+    view.addSubview(closeButton)
     NSLayoutConstraint.activate([
-      cancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      cancelButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      cancelButton.widthAnchor.constraint(equalToConstant: 100)
+      closeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      closeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      closeButton.widthAnchor.constraint(equalToConstant: 100)
     ])
   }
   
-  @objc func cancelButtonDidTap() {
-    dismiss()
+  @objc func closeButtonDidTap() {
+    dismiss(isFromCloseAction: true)
   }
   
 }

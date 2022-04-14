@@ -15,7 +15,7 @@ protocol RouterProtocol: URLRequestConvertible {
   var endpoint: String { get }
   var testData: Data? { get } // Only for Unit Tests
   
-  func requestHeaders() throws -> [String: String?]
+  func requestHeaders() throws -> [String: String]
 }
 
 // MARK: - Default Implementation
@@ -28,7 +28,7 @@ extension RouterProtocol {
   
   var bodyParameters: Parameters? { return nil }
   
-  func requestHeaders() throws -> [String: String?] {
+  func requestHeaders() throws -> [String: String] {
     guard let token = serverConfiguration.token, !token.isEmpty else { throw TLError.invalidToken }
     let headers = [
       "Content-Type": "application/json",

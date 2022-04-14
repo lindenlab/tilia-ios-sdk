@@ -33,6 +33,10 @@ final class NetworkManager {
   }
   
   func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<BalanceModel>) {
+    guard !currencyCode.isEmpty else {
+      completion(.failure(TLError.invalidCurrencyCode))
+      return
+    }
     let completionHandler: CompletionResultHandler<BalancesModel> = { result in
       switch result {
       case .success(let model):

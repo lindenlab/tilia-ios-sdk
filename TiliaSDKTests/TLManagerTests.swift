@@ -96,20 +96,42 @@ class TLManagerTests: XCTestCase {
   }
   
   func testGetUserBalanceByCurrencyCodeIsEmpty() {
-    TLManager.shared.setToken("")
-    var tokenError: Error?
+    TLManager.shared.setToken(UUID().uuidString)
+    var currencyCodeError: Error?
     let expactation = XCTestExpectation(description: "testGetUserBalanceByCurrencyCodeIsEmpty")
     TLManager.shared.getUserBalanceByCurrencyCode("") { result in
       expactation.fulfill()
       switch result {
       case .failure(let error):
-        tokenError = error
+        currencyCodeError = error
       case .success:
         break
       }
     }
     wait(for: [expactation], timeout: 2)
-    XCTAssertNotNil(tokenError)
+    XCTAssertNotNil(currencyCodeError)
+  }
+  
+  func testMissedRequiredDataForTosFlow() {
+    TLManager.shared.setToken("")
+    var errorCallback: TLErrorCallback?
+    let expactation = XCTestExpectation(description: "testMissedRequiredDataForTosFlow")
+    TLManager.shared.presentTosIsRequiredViewController(on: UIViewController(),
+                                                        animated: true,
+                                                        onError: { errorCallback = $0; expactation.fulfill() })
+    wait(for: [expactation], timeout: 1)
+    XCTAssertNotNil(errorCallback)
+  }
+  
+  func testMissedRequiredDataForTosCheckout() {
+    var errorCallback: TLErrorCallback?
+    let expactation = XCTestExpectation(description: "testMissedRequiredDataForTosCheckout")
+    TLManager.shared.presentCheckoutViewController(on: UIViewController(),
+                                                   withInvoiceId: "",
+                                                   animated: true,
+                                                   onError: { errorCallback = $0; expactation.fulfill() })
+    wait(for: [expactation], timeout: 1)
+    XCTAssertNotNil(errorCallback)
   }
   
 }
