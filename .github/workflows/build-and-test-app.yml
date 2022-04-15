@@ -8,10 +8,10 @@ jobs:
       XC_WORKSPACE: ${{ 'TiliaSDK.xcworkspace' }}
       XC_SCHEME: ${{ 'TiliaSDK' }}
     steps:
-    - name: CocoaPod Install
-      run: pod install
     - name: Select latest Xcode
       run: "sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app"
     - uses: actions/checkout@v2
+    - name: CocoaPod Install
+      run: pod install
     - name: Run Unit and UI Tests
       run: /usr/bin/xcodebuild test -workspace "$XC_WORKSPACE" -scheme "$XC_SCHEME" -destination 'platform=iOS Simulator,name=iPhone 11'
