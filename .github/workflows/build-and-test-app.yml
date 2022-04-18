@@ -35,6 +35,8 @@ jobs:
         security list-keychains
     - name: Configure Code Signing
       run: | 
+        echo "------------===============>"
+        gpg --version
         gpg -d -o "$DECRYPTED_CERTS_FILE_PATH" --pinentry-mode=loopback --passphrase "$ENCRYPTION_PWD" "$ENCRYPTED_CERTS_FILE_PATH"
         gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$ENCRYPTION_PWD" "$ENCRYPTED_PROVISION_FILE_PATH" 
         security import "$DECRYPTED_CERTS_FILE_PATH" -k "$KEYCHAIN" -P "$ENCRYPTION_PWD" -A        
@@ -43,6 +45,7 @@ jobs:
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
         for PROVISION in `ls ./*.mobileprovision`
         do
+          echo "in loop...."
           UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
           cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
         done
