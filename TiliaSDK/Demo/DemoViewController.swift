@@ -64,7 +64,7 @@ final class DemoViewController: UITableViewController {
     var viewController: UIViewController?
     
     switch (indexPath.section, indexPath.row) {
-    case (0, 1):
+    case (0, 2):
       viewController = SetColorsTestViewController()
     case (1, 0):
       viewController = TosRequiredForUserTestViewController()
