@@ -1,6 +1,8 @@
 /**
- * A script that gets used within a Github Action to upload a file to TestProject, and run integration tests there.
- * Based on script in this TestProject article: https://blog.testproject.io/2019/08/27/test-automation-ci-testproject-api/
+ * A script that gets used within the build-and-test-app Github Action to upload a file to TestProject, and run integration tests there.
+ * One major thing to note is that this just triggers tests to be run, but does not wait for the test to finish successfully.
+ * For now, we'll set up Slack alerts from TestProject to let us know if tests passed/failed.
+ * This script is based on this TestProject article: https://blog.testproject.io/2019/08/27/test-automation-ci-testproject-api/
 */
 
 require("es6-promise").polyfill();

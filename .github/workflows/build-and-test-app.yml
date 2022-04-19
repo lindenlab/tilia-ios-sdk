@@ -1,5 +1,5 @@
 name: Build and Test app
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   build:
     runs-on: [macos-latest]
@@ -27,9 +27,10 @@ jobs:
         xcode-version: latest-stable
     - name: CocoaPod Install
       run: pod install
-    # - name: Run Unit and UI Tests
-    #   run: /usr/bin/xcodebuild test -workspace "$XC_WORKSPACE" -scheme "$XC_SCHEME" -destination 'platform=iOS Simulator,name=iPhone 11'
-    - name: Configure Keychain
+    - name: Run Unit and UI Tests
+      run: /usr/bin/xcodebuild test -workspace "$XC_WORKSPACE" -scheme "$XC_SCHEME" -destination 'platform=iOS Simulator,name=iPhone 13'
+    # Next 4 sections on generating archive and exporting ipa file are mostly based off this article: https://medium.com/@karaiskc/archive-and-export-ios-app-with-github-actions-b44f676e4bf9
+    - name: Configure Keychain for ipa generation
       run: |
         security create-keychain -p "" "$KEYCHAIN"
         security list-keychains -s "$KEYCHAIN"
