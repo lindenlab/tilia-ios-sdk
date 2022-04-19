@@ -7,7 +7,7 @@ jobs:
       XC_WORKSPACE: ${{ 'TiliaSDK.xcworkspace' }}
       XC_SCHEME: ${{ 'TiliaSDK' }}
       XC_CONFIGURATION: ${{ 'CICD' }}
-      XC_EXPORT_OPTIONS_FILE_PATH: ${{ './ExportOptions.plist' }}
+      XC_EXPORT_OPTIONS_FILE_PATH: ${{ './.github/build-files/ExportOptions.plist' }}
       XC_ARCHIVE_PATH: ${{ './TiliaSDK.xcarchive' }}
       XC_EXPORT_PATH: ${{ './artifacts/' }}
       ENCRYPTED_CERTS_FILE_PATH: ${{ './.github/build-files/certs.p12.gpg' }}
@@ -60,7 +60,7 @@ jobs:
     - name: Export archive
       run: |
         /usr/bin/xcodebuild -exportArchive -archivePath "$XC_ARCHIVE_PATH" -exportOptionsPlist "$XC_EXPORT_OPTIONS_FILE_PATH" -exportPath "$XC_EXPORT_PATH"
-    - name: Upload to TestProject using Node script
+    - name: Upload to TestProject and run tests
       run: |
         cd .github/scripts/upload-to-testproject && npm install
         cd $GITHUB_WORKSPACE

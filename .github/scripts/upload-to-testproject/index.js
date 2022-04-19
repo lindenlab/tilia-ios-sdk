@@ -1,3 +1,8 @@
+/**
+ * A script that gets used within a Github Action to upload a file to TestProject, and run integration tests there.
+ * Based on script in this TestProject article: https://blog.testproject.io/2019/08/27/test-automation-ci-testproject-api/
+*/
+
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
 const fs = require("fs");
