@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-typealias CheckoutContent = (invoice: InvoiceModel, balance: BalanceModel, invoiceDetails: InvoiceDetailsModel)
+typealias CheckoutContent = (invoiceDetails: InvoiceDetailsModel, balanceModel: BalanceModel, paymentMethods: [PaymentMethodModel])
 typealias CheckoutError = (error: Error, needToShowCancelButton: Bool)
 
 protocol CheckoutViewModelInputProtocol {
@@ -21,9 +21,11 @@ protocol CheckoutViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<CheckoutError, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
-  var content: CurrentValueSubject<CheckoutContent?, Never> { get }
+  var content: PassthroughSubject<CheckoutContent, Never> { get }
   var successfulPayment: CurrentValueSubject<Bool, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
+  var createInvoiceLoading: PassthroughSubject<Bool, Never> { get }
+  var payButtonIsEnabled: PassthroughSubject<Bool, Never> { get }
 }
 
 protocol CheckoutDataStore {
@@ -39,15 +41,17 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   let loading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<CheckoutError, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
-  let content = CurrentValueSubject<CheckoutContent?, Never>(nil)
+  let content = PassthroughSubject<CheckoutContent, Never>()
   let successfulPayment = CurrentValueSubject<Bool, Never>(false)
   let dismiss = PassthroughSubject<Void, Never>()
+  let createInvoiceLoading = PassthroughSubject<Bool, Never>()
+  let payButtonIsEnabled = PassthroughSubject<Bool, Never>()
   
   let manager: NetworkManager
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
     guard let self = self else { return }
     if $0.state == .completed {
-      self.proceedCheckout()
+      self.getInvoiceDetails()
     } else {
       self.dismiss.send(())
     }
@@ -61,6 +65,10 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   private let onError: ((TLErrorCallback) -> Void)?
   private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let invoiceId: String
+  private var invoice: InvoiceModel?
+  private var balance: BalanceInfoModel?
+  private var invoiceDetails: InvoiceDetailsModel?
+  private var selectedPaymentMethod: PaymentMethodModel?
   
   init(invoiceId: String,
        manager: NetworkManager,
@@ -83,19 +91,19 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
         if !model.isTosSigned {
           self.needToAcceptTos.send(())
         } else {
-          self.proceedCheckout()
+          self.getInvoiceDetails()
         }
       case .failure(let error):
-        self.loading.send(false)
         self.didFail(with: (error, true))
+        self.loading.send(false)
       }
     }
   }
   
   func payInvoice() {
-    guard let content = content.value else { return }
-    let id = content.invoice.invoiceId
-    let isEscrow = content.invoiceDetails.isEscrow
+    guard
+      let isEscrow = invoiceDetails?.isEscrow,
+      let id = invoice?.invoiceId else { return }
     loading.send(true)
     manager.payInvoice(withId: id, isEscrow: isEscrow) { [weak self] result in
       guard let self = self else { return }
@@ -114,7 +122,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   func complete(isFromCloseAction: Bool) {
     let isCompleted = successfulPayment.value
     let event = TLEvent(flow: .checkout,
-                        action: isCompleted ? .completed : .cancelledByUser)
+                        action: isFromCloseAction ? .closedByUser : isCompleted ? .completed : .cancelledByUser)
     let model = TLCompleteCallback(event: event,
                                    state: isFromCloseAction ? .error : isCompleted ? .completed : .cancelled)
     onComplete?(model)
@@ -126,38 +134,25 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
 
 private extension CheckoutViewModel {
   
-  func proceedCheckout() {
-    manager.getInvoiceDetails(with: invoiceId) { [weak self] result in
-      guard let self = self else { return }
-      switch result {
-      case .success(let model):
-        self.createInvoice(with: model)
-      case .failure(let error):
-        self.loading.send(false)
-        self.didFail(with: (error, true))
-      }
-    }
-  }
-  
-  func createInvoice(with invoiceDetails: InvoiceDetailsModel) {
+  func getInvoiceDetails() {
     var serverError: Error?
-    var invoice: InvoiceModel?
-    var balance: BalanceModel?
+    var balance: BalanceInfoModel?
+    var invoiceDetails: InvoiceDetailsModel?
     let dispatchGroup = DispatchGroup()
     
     dispatchGroup.enter()
-    manager.createInvoice(withId: invoiceId, isEscrow: invoiceDetails.isEscrow) { result in
+    manager.getInvoiceDetails(with: invoiceId) { result in
       dispatchGroup.leave()
       switch result {
       case .success(let model):
-        invoice = model
+        invoiceDetails = model
       case .failure(let error):
         serverError = error
       }
     }
     
     dispatchGroup.enter()
-    manager.getUserBalanceByCurrencyCode(invoiceDetails.currency) { result in
+    manager.getUserBalance { result in
       dispatchGroup.leave()
       switch result {
       case .success(let model):
@@ -168,9 +163,32 @@ private extension CheckoutViewModel {
     }
     
     dispatchGroup.notify(queue: .main) {
-      if let invoice = invoice, let balance = balance {
-        self.content.send((invoice, balance, invoiceDetails))
+      if let balance = balance, let invoiceDetails = invoiceDetails {
+        self.invoiceDetails = invoiceDetails
+        self.balance = balance
+        if invoiceDetails.isVirtual {
+          self.createInvoice()
+        } else {
+          self.setContent()
+          self.loading.send(false)
+        }
       } else if let error = serverError {
+        self.didFail(with: (error, true))
+        self.loading.send(false)
+      }
+    }
+    
+  }
+  
+  func createInvoice() {
+    guard let invoiceDetails = invoiceDetails else { return }
+    manager.createInvoice(withId: invoiceId, isEscrow: invoiceDetails.isEscrow, paymentMethodId: selectedPaymentMethod?.id) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let model):
+        self.invoice = model
+        self.setContent()
+      case .failure(let error):
         self.didFail(with: (error, true))
       }
       self.loading.send(false)
@@ -184,6 +202,14 @@ private extension CheckoutViewModel {
                                 error: L.errorPaymentTitle,
                                 message: error.error.localizedDescription)
     onError?(model)
+  }
+  
+  func setContent() {
+    guard
+      let invoiceDetails = invoiceDetails,
+      let balance = balance,
+      let balanceModel = balance.balances[invoiceDetails.currency]?.spendable else { return }
+    self.content.send((invoiceDetails, balanceModel, balance.paymentMethods))
   }
   
 }

@@ -37,7 +37,7 @@ final class NetworkManager {
       completion(.failure(TLError.invalidCurrencyCode))
       return
     }
-    let completionHandler: CompletionResultHandler<BalancesModel> = { result in
+    getUserBalance { result in
       switch result {
       case .success(let model):
         if let balanceModel = model.balances[currencyCode] {
@@ -49,8 +49,11 @@ final class NetworkManager {
         completion(.failure(error))
       }
     }
+  }
+  
+  func getUserBalance(completion: @escaping CompletionResultHandler<BalanceInfoModel>) {
     let router = PaymentRouter.getUserBalanceByCurrencyCode
-    serverClient.performRequestWithDecodableModel(router: router, completion: completionHandler)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
   func getInvoiceDetails(with id: String, completion: @escaping CompletionResultHandler<InvoiceDetailsModel>) {
@@ -58,8 +61,8 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
-  func createInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<InvoiceModel>) {
-    let router = InvoiceRouter.createInvoice(id: id, isEscrow: isEscrow)
+  func createInvoice(withId id: String, isEscrow: Bool, paymentMethodId: String?, completion: @escaping CompletionResultHandler<InvoiceModel>) {
+    let router = InvoiceRouter.createInvoice(id: id, isEscrow: isEscrow, paymentMethodId: paymentMethodId)
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   

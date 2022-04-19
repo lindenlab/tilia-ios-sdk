@@ -9,15 +9,44 @@ import UIKit
 
 struct CheckoutSectionBuilder {
   
+  struct Summary {
+    
+    struct Item {
+      let description: String
+      let product: String
+      let amount: String
+    }
+    
+    let referenceType: String
+    let referenceId: String
+    let amount: String
+    let items: [Item]
+    let isLoading: Bool
+  }
+  
+  struct Payment {
+    
+    struct Item {
+      let title: String
+      let subTitle: String?
+      let isSelected: Bool
+      let canSelect: Bool
+    }
+    
+    let items: [Item]
+    let isPayButtonEnabled: Bool
+  }
+  
   enum Section {
-    case summary(InvoiceModel)
-    case payment(BalanceModel)
+    case summary(Summary)
+    case payment(Payment)
     case successfulPayment
     
     var numberOfRows: Int {
       switch self {
-      case .summary(let model): return model.items.count
-      default: return 1
+      case let .summary(model): return model.items.count
+      case let .payment(model): return model.items.count
+      case .successfulPayment: return 1
       }
     }
     
@@ -29,22 +58,26 @@ struct CheckoutSectionBuilder {
     }
     
     func cell(for tableView: UITableView,
-              at indexPath: IndexPath) -> UITableViewCell {
+              at indexPath: IndexPath,
+              delegate: CheckoutPaymentMethodCellDelegate?) -> UITableViewCell {
       switch self {
       case let .summary(invoiceModel):
         let item = invoiceModel.items[indexPath.row]
         let cell = tableView.dequeue(CheckoutPayloadCell.self, for: indexPath)
         let lastItemIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
         cell.configure(description: item.description,
-                       product: item.productSku,
-                       amount: item.displayAmount,
+                       product: item.product,
+                       amount: item.amount,
                        isDividerHidden: lastItemIndex == indexPath.row)
         return cell
-      case let .payment(balanceModel):
+      case let .payment(model):
+        let item = model.items[indexPath.row]
         let cell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
-        cell.configure(title: L.walletBalance,
-                       subTitle: balanceModel.display,
-                       isSelected: true)
+        cell.configure(title: item.title,
+                       subTitle: item.subTitle,
+                       isSelected: item.isSelected,
+                       canSelect: item.canSelect,
+                       delegate: delegate)
         return cell
       case .successfulPayment:
         return tableView.dequeue(CheckoutSuccessfulPaymentCell.self, for: indexPath)
@@ -73,9 +106,9 @@ struct CheckoutSectionBuilder {
                 delegate: CheckoutPaymentFooterViewDelegate?,
                 textViewDelegate: TextViewWithLinkDelegate?) -> UIView {
       switch self {
-      case let .summary(invoiceModel):
+      case let .summary(model):
         let view = tableView.dequeue(CheckoutPayloadSummaryFooterView.self)
-        view.configure(amount: invoiceModel.displayAmount)
+        view.configure(amount: model.amount, isLoading: model.isLoading)
         return view
       case .payment:
         let view = tableView.dequeue(CheckoutPaymentFooterView.self)
@@ -94,12 +127,43 @@ struct CheckoutSectionBuilder {
     
   }
   
-  func summarySection(for invoice: InvoiceModel) -> Section {
-    return .summary(invoice)
+  func successfulPaymentSection() -> Section {
+    return .successfulPayment
   }
   
-  func paymentSection(for balance: BalanceModel) -> Section {
-    return .payment(balance)
+  func sections(with model: CheckoutContent) -> [Section] {
+    let invoiceDetails = model.invoiceDetails
+    let balanceModel = model.balanceModel
+    let paymentMethods = model.paymentMethods
+    let items: [Summary.Item] = invoiceDetails.items.map { Summary.Item(description: $0.description,
+                                                                        product: $0.productSku,
+                                                                        amount: $0.displayAmount) }
+    let summary = Summary(referenceType: invoiceDetails.referenceType,
+                          referenceId: invoiceDetails.referenceId,
+                          amount: invoiceDetails.displayAmount,
+                          items: items,
+                          isLoading: false)
+    
+    let payment: Payment
+    if invoiceDetails.isVirtual {
+      let items: [Payment.Item] = [
+        Payment.Item(title: L.walletBalance,
+                     subTitle: balanceModel.display,
+                     isSelected: true,
+                     canSelect: false)
+      ]
+      payment = Payment(items: items, isPayButtonEnabled: true)
+    } else {
+      let items: [Payment.Item] = paymentMethods.enumerated().map { index, value in
+        return Payment.Item(title: value.display,
+                            subTitle: nil,
+                            isSelected: false,
+                            canSelect: true)
+      }
+      payment = Payment(items: items, isPayButtonEnabled: false)
+    }
+    
+    return [.summary(summary), .payment(payment)]
   }
   
 }

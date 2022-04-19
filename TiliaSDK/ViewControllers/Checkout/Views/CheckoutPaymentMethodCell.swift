@@ -7,11 +7,16 @@
 
 import UIKit
 
+protocol CheckoutPaymentMethodCellDelegate: AnyObject {
+  func checkoutPaymentMethodCellRadioButtonDidTap(_ cell: CheckoutPaymentMethodCell)
+}
+
 final class CheckoutPaymentMethodCell: UITableViewCell {
+  
+  private weak var delegate: CheckoutPaymentMethodCellDelegate?
   
   private let radioButton: RadioButton = {
     let button = RadioButton()
-    button.isUserInteractionEnabled = false
     return button
   }()
   
@@ -43,9 +48,16 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String, subTitle: String, isSelected: Bool) {
+  func configure(title: String, subTitle: String?, isSelected: Bool, canSelect: Bool, delegate: CheckoutPaymentMethodCellDelegate?) {
     titleLabel.text = title
     subTitleLabel.text = subTitle
+    subTitleLabel.isHidden = subTitle == nil
+    radioButton.isUserInteractionEnabled = canSelect
+    radioButton.setSelected(isSelected)
+    self.delegate = delegate
+  }
+  
+  func configure(isSelected: Bool) {
     radioButton.setSelected(isSelected)
   }
   

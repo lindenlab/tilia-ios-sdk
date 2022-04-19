@@ -10,9 +10,6 @@ import UIKit
 protocol LoadableProtocol {
   var hideableView: UIView { get }
   var spinnerPosition: CGPoint { get }
-  
-  func startLoading()
-  func stopLoading()
 }
 
 // MARK: - Default Implementation
@@ -20,6 +17,9 @@ protocol LoadableProtocol {
 extension LoadableProtocol {
   
   func startLoading() {
+    guard
+      let subviews = hideableView.superview?.subviews,
+      subviews.filter({ $0 is UIActivityIndicatorView }).isEmpty else { return }
     let spinner = UIActivityIndicatorView(style: .large)
     spinner.startAnimating()
     spinner.center = spinnerPosition

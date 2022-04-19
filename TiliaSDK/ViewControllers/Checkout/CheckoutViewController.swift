@@ -16,11 +16,8 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   private let viewModel: CheckoutViewModelProtocol
   private let router: CheckoutRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
-  private var sections: [CheckoutSectionBuilder.Section] = [] {
-    didSet {
-      tableView.reloadData()
-    }
-  }
+  private var sections: [CheckoutSectionBuilder.Section] = []
+  private let builder = CheckoutSectionBuilder()
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -104,7 +101,9 @@ extension CheckoutViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return sections[indexPath.section].cell(for: tableView, at: indexPath)
+    return sections[indexPath.section].cell(for: tableView,
+                                            at: indexPath,
+                                            delegate: self)
   }
   
 }
@@ -164,6 +163,16 @@ extension CheckoutViewController: TextViewWithLinkDelegate {
   
 }
 
+// MARK: - CheckoutPaymentMethodCellDelegate
+
+extension CheckoutViewController: CheckoutPaymentMethodCellDelegate {
+  
+  func checkoutPaymentMethodCellRadioButtonDidTap(_ cell: CheckoutPaymentMethodCell) {
+    
+  }
+  
+}
+
 // MARK: - Private Methods
 
 private extension CheckoutViewController {
@@ -204,16 +213,14 @@ private extension CheckoutViewController {
       self?.router.routeToTosView()
     }.store(in: &subscriptions)
     viewModel.content.sink { [weak self] in
-      guard let content = $0 else { return }
-      let builder = CheckoutSectionBuilder()
-      self?.sections = [
-        builder.summarySection(for: content.invoice),
-        builder.paymentSection(for: content.balance)
-      ]
+      guard let self = self else { return }
+      self.sections = self.builder.sections(with: $0)
+      self.tableView.reloadData()
     }.store(in: &subscriptions)
     viewModel.successfulPayment.sink { [weak self] in
-      guard $0 else { return }
-      self?.sections[1] = .successfulPayment
+      guard let self = self, $0 else { return }
+      self.sections[1] = self.builder.successfulPaymentSection()
+      self.tableView.reloadData()
     }.store(in: &subscriptions)
     viewModel.dismiss.sink { [weak self] _ in
       self?.dismiss(isFromCloseAction: false)

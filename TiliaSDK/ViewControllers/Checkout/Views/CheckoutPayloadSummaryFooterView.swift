@@ -31,6 +31,12 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
     return label
   }()
   
+  private let spinner: UIActivityIndicatorView = {
+    let view = UIActivityIndicatorView(style: .medium)
+    view.isHidden = true
+    return view
+  }()
+  
   private let bottomDivider: DividerView = {
     let view = DividerView()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -46,8 +52,13 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(amount: String) {
+  func configure(amount: String, isLoading: Bool) {
     amountLabel.text = amount
+    spinner.isHidden = !isLoading
+  }
+  
+  func configure(isLoading: Bool) {
+    spinner.isHidden = !isLoading
   }
   
 }
@@ -57,7 +68,9 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
 private extension CheckoutPayloadSummaryFooterView {
   
   func setup() {
-    let stackView = UIStackView(arrangedSubviews: [titleLabel, amountLabel])
+    let trailingStackView = UIStackView(arrangedSubviews: [amountLabel, spinner])
+    
+    let stackView = UIStackView(arrangedSubviews: [titleLabel, trailingStackView])
     stackView.alignment = .center
     stackView.spacing = 5
     stackView.translatesAutoresizingMaskIntoConstraints = false

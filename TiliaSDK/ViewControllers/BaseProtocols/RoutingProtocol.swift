@@ -12,8 +12,6 @@ protocol RoutingProtocol {
   var viewController: UIViewController? { get }
   
   func dismiss(animated: Bool, completion: (() -> Void)?)
-  func showToast(title: String, message: String)
-  func showWebView(with link: String)
 }
 
 // MARK: - Default Implementation
