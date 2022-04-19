@@ -61,4 +61,5 @@ jobs:
       run: |
         cd .github/scripts/upload-ipa && npm install
         cd $GITHUB_WORKSPACE
-        node .github/scripts/upload-ipa "$GITHUB_WORKSPACE/TiliaSDK.xcarchive"
+        ls artifacts
+        node .github/scripts/upload-ipa "$GITHUB_WORKSPACE/artifacts/TiliaSDK.ipa"
