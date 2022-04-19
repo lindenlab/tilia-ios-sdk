@@ -74,11 +74,9 @@ class CheckoutViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let contentExpactation = XCTestExpectation(description: "testSuccessPayInvoice_Content")
-    viewModel.content.sink { [weak viewModel] in
-      if $0 != nil {
-        viewModel?.payInvoice()
-        contentExpactation.fulfill()
-      }
+    viewModel.content.sink { [weak viewModel] _ in
+      viewModel?.payInvoice()
+      contentExpactation.fulfill()
     }.store(in: &subscriptions)
     
     let successfulPaymentExpactation = XCTestExpectation(description: "testSuccessPayInvoice_SuccessfulPayment")
@@ -145,12 +143,10 @@ class CheckoutViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let contentExpactation = XCTestExpectation(description: "testErrorPayInvoice_Content")
-    viewModel.content.sink { [weak viewModel] in
-      if $0 != nil {
-        TLManager.shared.setToken("")
-        viewModel?.payInvoice()
-        contentExpactation.fulfill()
-      }
+    viewModel.content.sink { [weak viewModel] _ in
+      TLManager.shared.setToken("")
+      viewModel?.payInvoice()
+      contentExpactation.fulfill()
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)

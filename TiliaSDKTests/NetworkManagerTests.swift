@@ -69,6 +69,23 @@ class NetworkManagerTests: XCTestCase {
     XCTAssertEqual(balance, 9701)
   }
   
+  func testGetUserBalanceSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var balance: BalanceInfoModel?
+    let expactation = XCTestExpectation(description: "testGetUserBalanceSuccess")
+    networkManager.getUserBalance { result in
+      expactation.fulfill()
+      switch result {
+      case .success(let model):
+        balance = model
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expactation], timeout: 2)
+    XCTAssertNotNil(balance)
+  }
+  
   func testGetUserBalanceByCurrencyCodeFailure() {
     TLManager.shared.setToken(UUID().uuidString)
     let currency = "UAH"
@@ -112,7 +129,7 @@ class NetworkManagerTests: XCTestCase {
     let id = "a55ef8ed-174a-4910-b538-77fc0f0e3d90"
     var invoice: InvoiceModel?
     let expactation = XCTestExpectation(description: "testCreateInvoiceSuccess")
-    networkManager.createInvoice(withId: id, isEscrow: false) { result in
+    networkManager.createInvoice(withId: id, isEscrow: false, paymentMethod: nil) { result in
       expactation.fulfill()
       switch result {
       case .success(let model):
@@ -131,7 +148,7 @@ class NetworkManagerTests: XCTestCase {
     let id = "be193753-21fe-4b28-810a-9a04462b6cbf"
     var invoice: InvoiceModel?
     let expactation = XCTestExpectation(description: "testCreateExcrowInvoiceSuccess")
-    networkManager.createInvoice(withId: id, isEscrow: true) { result in
+    networkManager.createInvoice(withId: id, isEscrow: true, paymentMethod: nil) { result in
       expactation.fulfill()
       switch result {
       case .success(let model):
