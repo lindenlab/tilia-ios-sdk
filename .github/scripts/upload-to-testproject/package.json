@@ -9,6 +9,7 @@
   "author": "BMacLinden",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.26.1"
+    "es6-promise": "^4.2.8",
+    "isomorphic-fetch": "^3.0.0"
   }
 }
