@@ -39,6 +39,12 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     return label
   }()
   
+  private let divider: DividerView = {
+    let view = DividerView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setup()
@@ -48,13 +54,19 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String, subTitle: String?, isSelected: Bool, canSelect: Bool, delegate: CheckoutPaymentMethodCellDelegate?) {
+  func configure(title: String,
+                 subTitle: String?,
+                 isSelected: Bool,
+                 canSelect: Bool,
+                 isDividerHidden: Bool,
+                 delegate: CheckoutPaymentMethodCellDelegate?) {
     titleLabel.text = title
     subTitleLabel.text = subTitle
     subTitleLabel.isHidden = subTitle == nil
     radioButton.isUserInteractionEnabled = canSelect
     radioButton.setSelected(isSelected)
     self.delegate = delegate
+    divider.isHidden = isDividerHidden
   }
   
   func configure(isSelected: Bool) {
@@ -90,12 +102,16 @@ private extension CheckoutPaymentMethodCell {
     backgroundColor = .clear
     contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
+    contentView.addSubview(divider)
     
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+      divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+      divider.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+      divider.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
     ])
   }
   

@@ -45,7 +45,10 @@ final class CheckoutPayloadCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(description: String, product: String, amount: String, isDividerHidden: Bool) {
+  func configure(description: String,
+                 product: String,
+                 amount: String,
+                 isDividerHidden: Bool) {
     descriptionLabel.text = description
     productLabel.text = product
     amountLabel.text = amount

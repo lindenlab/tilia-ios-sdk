@@ -76,10 +76,12 @@ struct CheckoutSectionBuilder {
     case let .payment(model):
       let item = model.items[indexPath.row]
       let cell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
+      let lastItemIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
       cell.configure(title: item.title,
                      subTitle: item.subTitle,
                      isSelected: item.isSelected,
                      canSelect: item.canSelect,
+                     isDividerHidden: lastItemIndex == indexPath.row,
                      delegate: delegate)
       return cell
     case .successfulPayment:
