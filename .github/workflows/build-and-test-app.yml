@@ -16,6 +16,7 @@ jobs:
       DECRYPTED_PROVISION_FILE_PATH: ${{ './.github/build-files/provisioning.tar.gz' }}
       ENCRYPTION_PWD: ${{ secrets.ENCRYPTION_PWD }}
       KEYCHAIN: ${{ 'test.keychain' }}
+      TEST_PROJECT_API_KEY: ${{ secrets.TEST_PROJECT_API_KEY }}
     steps:
     - uses: actions/checkout@v2
     - uses: maxim-lobanov/setup-xcode@v1
@@ -56,3 +57,8 @@ jobs:
     - name: Export archive
       run: |
         /usr/bin/xcodebuild -exportArchive -archivePath "$XC_ARCHIVE_PATH" -exportOptionsPlist "$XC_EXPORT_OPTIONS_FILE_PATH" -exportPath "$XC_EXPORT_PATH"
+    - name: Upload to TestProject using Node script
+      run: |
+        cd .github/scripts/upload-ipa && npm install
+        cd $GITHUB_WORKSPACE
+        node .github/scripts/upload-ipa "$GITHUB_WORKSPACE/TiliaSDK.xcarchive"
