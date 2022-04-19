@@ -30,6 +30,8 @@ jobs:
     - name: Run Unit and UI Tests
       run: /usr/bin/xcodebuild test -workspace "$XC_WORKSPACE" -scheme "$XC_SCHEME" -destination 'platform=iOS Simulator,name=iPhone 13'
     # Next 4 sections on generating archive and exporting ipa file are mostly based off this article: https://medium.com/@karaiskc/archive-and-export-ios-app-with-github-actions-b44f676e4bf9
+    # TODO: The certificate and provisioning profile that allow the server to build the .ipa file will expire around March/April of 2022 
+    #   and need to be regenerated, re-encrypted with gpg using the same password that is stored in the repo secrets and uploaded to .github/build-files/
     - name: Configure Keychain for ipa generation
       run: |
         security create-keychain -p "" "$KEYCHAIN"
