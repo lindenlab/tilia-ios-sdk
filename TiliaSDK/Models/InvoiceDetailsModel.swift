@@ -37,7 +37,10 @@ struct InvoiceDetailsItemModel: Decodable {
   let currency: String
   
   var displayAmount: String {
-    return "" // TODO: - Fix this
+    let formatter = NumberFormatter()
+    formatter.maximumFractionDigits = 2
+    let amountString = formatter.string(from: NSNumber(value: amount)) ?? ""
+    return "\(currency) \(amountString)"
   }
   
   private enum CodingKeys: String, CodingKey {
