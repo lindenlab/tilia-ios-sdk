@@ -150,10 +150,12 @@ private extension TosViewController {
       guard let self = self else { return }
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
+    
     viewModel.accept.sink { [weak self] in
       guard let self = self, $0 else { return }
       self.router.dismiss { self.viewModel.complete() }
     }.store(in: &subscriptions)
+    
     viewModel.error.sink { [weak self] _ in
       self?.router.showToast(title: L.errorTosTitle,
                              message: L.errorTosMessage)

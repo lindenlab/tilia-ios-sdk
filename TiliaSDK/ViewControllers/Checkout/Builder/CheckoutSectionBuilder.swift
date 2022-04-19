@@ -21,7 +21,7 @@ struct CheckoutSectionBuilder {
     let referenceId: String
     let amount: String
     let items: [Item]
-    let isLoading: Bool
+    var isLoading: Bool
   }
   
   struct Payment {
@@ -29,12 +29,12 @@ struct CheckoutSectionBuilder {
     struct Item {
       let title: String
       let subTitle: String?
-      let isSelected: Bool
+      var isSelected: Bool
       let canSelect: Bool
     }
     
-    let items: [Item]
-    let isPayButtonEnabled: Bool
+    var items: [Item]
+    var isPayButtonEnabled: Bool
   }
   
   enum Section {
@@ -57,78 +57,77 @@ struct CheckoutSectionBuilder {
       }
     }
     
-    func cell(for tableView: UITableView,
-              at indexPath: IndexPath,
-              delegate: CheckoutPaymentMethodCellDelegate?) -> UITableViewCell {
-      switch self {
-      case let .summary(invoiceModel):
-        let item = invoiceModel.items[indexPath.row]
-        let cell = tableView.dequeue(CheckoutPayloadCell.self, for: indexPath)
-        let lastItemIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
-        cell.configure(description: item.description,
-                       product: item.product,
-                       amount: item.amount,
-                       isDividerHidden: lastItemIndex == indexPath.row)
-        return cell
-      case let .payment(model):
-        let item = model.items[indexPath.row]
-        let cell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
-        cell.configure(title: item.title,
-                       subTitle: item.subTitle,
-                       isSelected: item.isSelected,
-                       canSelect: item.canSelect,
-                       delegate: delegate)
-        return cell
-      case .successfulPayment:
-        return tableView.dequeue(CheckoutSuccessfulPaymentCell.self, for: indexPath)
-      }
-    }
-    
-    func header(for tableView: UITableView,
-                in section: Int) -> UIView? {
-      switch self {
-      case let .summary(invoiceModel):
-        let view = tableView.dequeue(ChekoutTitleHeaderView.self)
-        view.configure(title: L.transactionSummary,
-                       subTitle: "\(invoiceModel.referenceType) \(invoiceModel.referenceId)")
-        return view
-      case .payment:
-        let view = tableView.dequeue(ChekoutTitleHeaderView.self)
-        view.configure(title: L.choosePaymentMethod, subTitle: nil)
-        return view
-      case .successfulPayment:
-        return nil
-      }
-    }
-    
-    func footer(for tableView: UITableView,
-                in section: Int,
-                delegate: CheckoutPaymentFooterViewDelegate?,
-                textViewDelegate: TextViewWithLinkDelegate?) -> UIView {
-      switch self {
-      case let .summary(model):
-        let view = tableView.dequeue(CheckoutPayloadSummaryFooterView.self)
-        view.configure(amount: model.amount, isLoading: model.isLoading)
-        return view
-      case .payment:
-        let view = tableView.dequeue(CheckoutPaymentFooterView.self)
-        view.configure(nonPrimaryButtonTitle: L.cancel,
-                       delegate: delegate,
-                       textViewDelegate: textViewDelegate)
-        return view
-      case .successfulPayment:
-        let view = tableView.dequeue(CheckoutPaymentFooterView.self)
-        view.configure(nonPrimaryButtonTitle: L.done,
-                       delegate: delegate,
-                       textViewDelegate: nil)
-        return view
-      }
-    }
-    
   }
   
-  func successfulPaymentSection() -> Section {
-    return .successfulPayment
+  func cell(for section: Section,
+            in tableView: UITableView,
+            at indexPath: IndexPath,
+            delegate: CheckoutPaymentMethodCellDelegate?) -> UITableViewCell {
+    switch section {
+    case let .summary(invoiceModel):
+      let item = invoiceModel.items[indexPath.row]
+      let cell = tableView.dequeue(CheckoutPayloadCell.self, for: indexPath)
+      let lastItemIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
+      cell.configure(description: item.description,
+                     product: item.product,
+                     amount: item.amount,
+                     isDividerHidden: lastItemIndex == indexPath.row)
+      return cell
+    case let .payment(model):
+      let item = model.items[indexPath.row]
+      let cell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
+      cell.configure(title: item.title,
+                     subTitle: item.subTitle,
+                     isSelected: item.isSelected,
+                     canSelect: item.canSelect,
+                     delegate: delegate)
+      return cell
+    case .successfulPayment:
+      return tableView.dequeue(CheckoutSuccessfulPaymentCell.self, for: indexPath)
+    }
+  }
+  
+  func header(for section: Section,
+              in tableView: UITableView) -> UIView? {
+    switch section {
+    case let .summary(invoiceModel):
+      let view = tableView.dequeue(ChekoutTitleHeaderView.self)
+      view.configure(title: L.transactionSummary,
+                     subTitle: "\(invoiceModel.referenceType) \(invoiceModel.referenceId)")
+      return view
+    case .payment:
+      let view = tableView.dequeue(ChekoutTitleHeaderView.self)
+      view.configure(title: L.choosePaymentMethod, subTitle: nil)
+      return view
+    case .successfulPayment:
+      return nil
+    }
+  }
+  
+  func footer(for section: Section,
+              in tableView: UITableView,
+              delegate: CheckoutPaymentFooterViewDelegate?,
+              textViewDelegate: TextViewWithLinkDelegate?) -> UIView {
+    switch section {
+    case let .summary(model):
+      let view = tableView.dequeue(CheckoutPayloadSummaryFooterView.self)
+      view.configure(amount: model.amount, isLoading: model.isLoading)
+      return view
+    case let .payment(model):
+      let view = tableView.dequeue(CheckoutPaymentFooterView.self)
+      view.configure(nonPrimaryButtonTitle: L.cancel,
+                     isPrimaryButtonEnabled: model.isPayButtonEnabled,
+                     delegate: delegate,
+                     textViewDelegate: textViewDelegate)
+      return view
+    case .successfulPayment:
+      let view = tableView.dequeue(CheckoutPaymentFooterView.self)
+      view.configure(nonPrimaryButtonTitle: L.done,
+                     isPrimaryButtonEnabled: true,
+                     delegate: delegate,
+                     textViewDelegate: nil)
+      return view
+    }
   }
   
   func sections(with model: CheckoutContent) -> [Section] {
@@ -164,6 +163,55 @@ struct CheckoutSectionBuilder {
     }
     
     return [.summary(summary), .payment(payment)]
+  }
+  
+  func successfulPaymentSection() -> Section {
+    return .successfulPayment
+  }
+  
+  func updatedSummarySection(for section: Section,
+                             in tableView: UITableView,
+                             at sectionIndex: Int,
+                             isLoading: Bool) -> Section {
+    switch section {
+    case var .summary(model):
+      model.isLoading = isLoading
+      let footerView = tableView.footerView(forSection: sectionIndex) as? CheckoutPayloadSummaryFooterView
+      footerView?.configure(isLoading: isLoading)
+      return .summary(model)
+    default:
+      return section
+    }
+  }
+  
+  func updatedPaymentSection(for section: Section,
+                             in tableView: UITableView,
+                             at indexPath: IndexPath,
+                             isSelected: Bool) -> Section {
+    switch section {
+    case var .payment(model):
+      model.items[indexPath.row].isSelected = isSelected
+      let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell
+      cell?.configure(isSelected: isSelected)
+      return .payment(model)
+    default:
+      return section
+    }
+  }
+  
+  func updatedPaymentSection(for section: Section,
+                             in tableView: UITableView,
+                             at sectionIndex: Int,
+                             isPayButtonEnabled: Bool) -> Section {
+    switch section {
+    case var .payment(model):
+      model.isPayButtonEnabled = isPayButtonEnabled
+      let footer = tableView.footerView(forSection: sectionIndex) as? CheckoutPaymentFooterView
+      footer?.configure(isPrimaryButtonEnabled: isPayButtonEnabled)
+      return .payment(model)
+    default:
+      return section
+    }
   }
   
 }

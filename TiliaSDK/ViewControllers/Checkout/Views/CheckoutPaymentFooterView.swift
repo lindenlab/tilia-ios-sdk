@@ -54,13 +54,19 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   }
   
   func configure(nonPrimaryButtonTitle: String,
+                 isPrimaryButtonEnabled: Bool,
                  delegate: CheckoutPaymentFooterViewDelegate?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
     nonPrimaryButton.setTitle(nonPrimaryButtonTitle, for: .normal)
+    primaryButton.isEnabled = isPrimaryButtonEnabled
     primaryButton.isHidden = textViewDelegate == nil
     textView.isHidden = textViewDelegate == nil
     textView.linkDelegate = textViewDelegate
     self.delegate = delegate
+  }
+  
+  func configure(isPrimaryButtonEnabled: Bool) {
+    primaryButton.isEnabled = isPrimaryButtonEnabled
   }
   
 }

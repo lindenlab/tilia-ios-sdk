@@ -39,14 +39,29 @@ struct BalanceModel: Decodable {
   
 }
 
-struct PaymentMethodModel: Decodable {
+struct PaymentMethodModel: Codable, Equatable {
   
   let id: String
   let display: String
   
-  private enum CodingKeys: String, CodingKey {
+  private enum DecodingKeys: String, CodingKey {
     case id
     case display = "display_string"
+  }
+  
+  private enum EncodingKeys: String, CodingKey {
+    case id = "payment_method_id"
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: DecodingKeys.self)
+    self.id = try container.decode(String.self, forKey: .id)
+    self.display = try container.decode(String.self, forKey: .display)
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: EncodingKeys.self)
+    try container.encode(id, forKey: .id)
   }
   
 }

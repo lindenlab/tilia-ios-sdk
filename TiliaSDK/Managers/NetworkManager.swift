@@ -61,8 +61,9 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
-  func createInvoice(withId id: String, isEscrow: Bool, paymentMethodId: String?, completion: @escaping CompletionResultHandler<InvoiceModel>) {
-    let router = InvoiceRouter.createInvoice(id: id, isEscrow: isEscrow, paymentMethodId: paymentMethodId)
+  func createInvoice(withId id: String, isEscrow: Bool, paymentMethod: PaymentMethodModel?, completion: @escaping CompletionResultHandler<InvoiceModel>) {
+    let model = CreateInvoiceModel(invoiceId: id, paymentMethods: paymentMethod.map { [$0] })
+    let router = InvoiceRouter.createInvoice(isEscrow: isEscrow, model: model)
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   

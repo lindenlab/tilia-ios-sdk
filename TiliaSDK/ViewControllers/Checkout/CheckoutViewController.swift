@@ -101,9 +101,10 @@ extension CheckoutViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return sections[indexPath.section].cell(for: tableView,
-                                            at: indexPath,
-                                            delegate: self)
+    return builder.cell(for: sections[indexPath.section],
+                        in: tableView,
+                        at: indexPath,
+                        delegate: self)
   }
   
 }
@@ -113,14 +114,15 @@ extension CheckoutViewController: UITableViewDataSource {
 extension CheckoutViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return sections[section].header(for: tableView, in: section)
+    return builder.header(for: sections[section],
+                          in: tableView)
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return sections[section].footer(for: tableView,
-                                    in: section,
-                                    delegate: self,
-                                    textViewDelegate: self)
+    return builder.footer(for: sections[section],
+                          in: tableView,
+                          delegate: self,
+                          textViewDelegate: self)
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -168,7 +170,8 @@ extension CheckoutViewController: TextViewWithLinkDelegate {
 extension CheckoutViewController: CheckoutPaymentMethodCellDelegate {
   
   func checkoutPaymentMethodCellRadioButtonDidTap(_ cell: CheckoutPaymentMethodCell) {
-    
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    viewModel.selectPaymentMethod(at: indexPath.row)
   }
   
 }
@@ -201,6 +204,7 @@ private extension CheckoutViewController {
       guard let self = self else { return }
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
+    
     viewModel.error.sink { [weak self] in
       guard let self = self else { return }
       if $0.needToShowCancelButton {
@@ -209,21 +213,59 @@ private extension CheckoutViewController {
       self.router.showToast(title: L.errorPaymentTitle,
                             message: L.errorPaymentMessage)
     }.store(in: &subscriptions)
+    
     viewModel.needToAcceptTos.sink { [weak self] _ in
       self?.router.routeToTosView()
     }.store(in: &subscriptions)
+    
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
       self.sections = self.builder.sections(with: $0)
       self.tableView.reloadData()
     }.store(in: &subscriptions)
+    
     viewModel.successfulPayment.sink { [weak self] in
       guard let self = self, $0 else { return }
       self.sections[1] = self.builder.successfulPaymentSection()
       self.tableView.reloadData()
     }.store(in: &subscriptions)
+    
     viewModel.dismiss.sink { [weak self] _ in
       self?.dismiss(isFromCloseAction: false)
+    }.store(in: &subscriptions)
+    
+    viewModel.createInvoiceLoading.sink { [weak self] in
+      guard let self = self else { return }
+      self.sections[0] = self.builder.updatedSummarySection(for: self.sections[0],
+                                                            in: self.tableView,
+                                                            at: 0,
+                                                            isLoading: $0)
+    }.store(in: &subscriptions)
+    
+    viewModel.payButtonIsEnabled.sink { [weak self] in
+      guard let self = self else { return }
+      self.sections[1] = self.builder.updatedPaymentSection(for: self.sections[1],
+                                                            in: self.tableView,
+                                                            at: 1,
+                                                            isPayButtonEnabled: $0)
+    }.store(in: &subscriptions)
+    
+    viewModel.deselectIndex.sink { [weak self] in
+      guard let self = self else { return }
+      let indexPath = IndexPath(row: $0, section: 1)
+      self.sections[1] = self.builder.updatedPaymentSection(for: self.sections[1],
+                                                            in: self.tableView,
+                                                            at: indexPath,
+                                                            isSelected: false)
+    }.store(in: &subscriptions)
+    
+    viewModel.selectIndex.sink { [weak self] in
+      guard let self = self else { return }
+      let indexPath = IndexPath(row: $0, section: 1)
+      self.sections[1] = self.builder.updatedPaymentSection(for: self.sections[1],
+                                                            in: self.tableView,
+                                                            at: indexPath,
+                                                            isSelected: true)
     }.store(in: &subscriptions)
   }
   

@@ -68,6 +68,8 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
 private extension CheckoutPaymentMethodCell {
   
   func setup() {
+    radioButton.addTarget(self, action: #selector(radioButtonDidTap), for: .touchUpInside)
+    
     selectionStyle = .none
     let leadingStackView = UIStackView(arrangedSubviews: [radioButton, iconImageView])
     leadingStackView.alignment = .center
@@ -95,6 +97,10 @@ private extension CheckoutPaymentMethodCell {
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
       stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
     ])
+  }
+  
+  @objc func radioButtonDidTap() {
+    delegate?.checkoutPaymentMethodCellRadioButtonDidTap(self)
   }
   
 }
