@@ -64,5 +64,4 @@ jobs:
       run: |
         cd .github/scripts/upload-to-testproject && npm install
         cd $GITHUB_WORKSPACE
-        ls artifacts
         node .github/scripts/upload-to-testproject "$TEST_PROJECT_APP_ID" "$TEST_PROJECT_PROJECT_ID" "$TEST_PROJECT_API_KEY" "TiliaSDK.ipa" "$GITHUB_WORKSPACE/artifacts/TiliaSDK.ipa" "$TEST_PROJECT_JOB_ID"

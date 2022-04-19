@@ -28,6 +28,7 @@ const uploadFileData = {
 };
 
 // Get an upload URL for an application
+console.log('about to get upload link...');
 fetch(
   apiUrl + `v2/projects/${projectId}/applications/${appId}/file/upload-link`,
   uploadUrlData
@@ -45,6 +46,7 @@ fetch(
 
 // Upload the new file to AWS S3
 async function uploadFile() {
+  console.log('about to get uploadFile...');
   fetch(newURL, uploadFileData)
     .then((result) => {
       confirmNewFile();
@@ -56,6 +58,7 @@ async function uploadFile() {
 
 // Confirm the new file upload
 async function confirmNewFile() {
+  console.log('about to get confirmNewFile...');
   const newFileName = process.argv[5];
   const data = {
     headers: {
@@ -80,6 +83,7 @@ async function confirmNewFile() {
 
 // Runs a job in TestProject
 async function runJob() {
+  console.log('about to get runJob...');
   const jobId = process.argv[7];
 
   const data = {
