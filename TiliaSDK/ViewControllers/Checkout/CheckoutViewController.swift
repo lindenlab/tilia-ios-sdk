@@ -37,7 +37,7 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   }()
   
   private let logoImageView: UIImageView = {
-    let imageView = UIImageView(image: .logoImage)
+    let imageView = UIImageView(image: .logoIcon)
     imageView.translatesAutoresizingMaskIntoConstraints = false
     return imageView
   }()

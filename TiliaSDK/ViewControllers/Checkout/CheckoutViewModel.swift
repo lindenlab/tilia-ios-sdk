@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-typealias CheckoutContent = (invoiceDetails: InvoiceDetailsModel, balanceModel: BalanceModel, paymentMethods: [PaymentMethodModel])
+typealias CheckoutContent = (invoiceDetails: InvoiceDetailsModel, walletBalance: BalanceModel?, paymentMethods: [PaymentMethodModel])
 typealias CheckoutError = (error: Error, needToShowCancelButton: Bool)
 
 protocol CheckoutViewModelInputProtocol {
@@ -243,9 +243,9 @@ private extension CheckoutViewModel {
   func setContent() {
     guard
       let invoiceDetails = invoiceDetails,
-      let balance = balance,
-      let balanceModel = balance.balances[invoiceDetails.currency]?.spendable else { return }
-    content.send((invoiceDetails, balanceModel, balance.paymentMethods))
+      let balance = balance else { return }
+    let walletBalance = balance.balances[invoiceDetails.currency]?.spendable
+    content.send((invoiceDetails, walletBalance, balance.paymentMethods))
   }
   
 }

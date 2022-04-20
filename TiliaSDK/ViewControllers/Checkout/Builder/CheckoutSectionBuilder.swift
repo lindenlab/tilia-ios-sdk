@@ -30,11 +30,12 @@ struct CheckoutSectionBuilder {
       let title: String
       let subTitle: String?
       var isSelected: Bool
-      let canSelect: Bool
+      let icon: UIImage?
     }
     
     var items: [Item]
     var isPayButtonEnabled: Bool
+    let canSelect: Bool
   }
   
   enum Section {
@@ -80,8 +81,9 @@ struct CheckoutSectionBuilder {
       cell.configure(title: item.title,
                      subTitle: item.subTitle,
                      isSelected: item.isSelected,
-                     canSelect: item.canSelect,
+                     canSelect: model.canSelect,
                      isDividerHidden: lastItemIndex == indexPath.row,
+                     icon: item.icon,
                      delegate: delegate)
       return cell
     case .successfulPayment:
@@ -134,7 +136,7 @@ struct CheckoutSectionBuilder {
   
   func sections(with model: CheckoutContent) -> [Section] {
     let invoiceDetails = model.invoiceDetails
-    let balanceModel = model.balanceModel
+    let walletBalance = model.walletBalance
     let paymentMethods = model.paymentMethods
     let items: [Summary.Item] = invoiceDetails.items.map { Summary.Item(description: $0.description,
                                                                         product: $0.productSku,
@@ -149,19 +151,23 @@ struct CheckoutSectionBuilder {
     if invoiceDetails.isVirtual {
       let items: [Payment.Item] = [
         Payment.Item(title: L.walletBalance,
-                     subTitle: balanceModel.display,
+                     subTitle: walletBalance?.display,
                      isSelected: true,
-                     canSelect: false)
+                     icon: .walletIcon)
       ]
-      payment = Payment(items: items, isPayButtonEnabled: true)
+      payment = Payment(items: items,
+                        isPayButtonEnabled: true,
+                        canSelect: false)
     } else {
       let items: [Payment.Item] = paymentMethods.enumerated().map { index, value in
-        return Payment.Item(title: value.display,
-                            subTitle: nil,
+        return Payment.Item(title: value.type.isWallet ? L.walletBalance : value.display,
+                            subTitle: value.type.isWallet ? walletBalance?.display : nil,
                             isSelected: false,
-                            canSelect: true)
+                            icon: value.type.icon)
       }
-      payment = Payment(items: items, isPayButtonEnabled: false)
+      payment = Payment(items: items,
+                        isPayButtonEnabled: false,
+                        canSelect: true)
     }
     
     return [.summary(summary), .payment(payment)]
@@ -213,6 +219,28 @@ struct CheckoutSectionBuilder {
       return .payment(model)
     default:
       return section
+    }
+  }
+  
+}
+
+// MARK: - Helpers
+
+private extension PaymentTypeModel {
+  
+  var icon: UIImage? {
+    switch self {
+    case .wallet: return .walletIcon
+    case .paypal: return nil
+    case .americanExpress: return .americanExpressIcon
+    case .discover: return .discoverIcon
+    case .dinersClub: return .dinersClubIcon
+    case .jcb: return .jcbIcon
+    case .maestro: return .maestroIcon
+    case .electron: return nil
+    case .masterCard: return .masterCardIcon
+    case .visa: return .visaIcon
+    case .chinaUnionpay: return .chinaUnionpayIcon
     }
   }
   

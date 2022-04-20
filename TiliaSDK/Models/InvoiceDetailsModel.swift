@@ -36,6 +36,7 @@ struct InvoiceDetailsItemModel: Decodable {
   let amount: Double
   let currency: String
   
+  // TODO: - Fix this when server will send this property
   var displayAmount: String {
     let formatter = NumberFormatter()
     formatter.maximumFractionDigits = 2

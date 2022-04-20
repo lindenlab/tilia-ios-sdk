@@ -18,6 +18,7 @@ struct InvoiceModel: Decodable {
   
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
+    // Check if invoice is non escrow or escrow
     if container.contains(.invoiceId) {
       self.invoiceId = try container.decode(String.self, forKey: .invoiceId)
     } else {

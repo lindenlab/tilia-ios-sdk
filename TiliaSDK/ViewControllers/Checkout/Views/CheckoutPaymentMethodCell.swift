@@ -21,7 +21,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
   }()
   
   private let iconImageView: UIImageView = {
-    let imageView = UIImageView(image: .walletIcon)
+    let imageView = UIImageView()
     return imageView
   }()
   
@@ -59,6 +59,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
                  isSelected: Bool,
                  canSelect: Bool,
                  isDividerHidden: Bool,
+                 icon: UIImage?,
                  delegate: CheckoutPaymentMethodCellDelegate?) {
     titleLabel.text = title
     subTitleLabel.text = subTitle
@@ -67,6 +68,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     radioButton.setSelected(isSelected)
     self.delegate = delegate
     divider.isHidden = isDividerHidden
+    iconImageView.image = icon
   }
   
   func configure(isSelected: Bool) {
