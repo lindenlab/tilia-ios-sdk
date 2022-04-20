@@ -15,6 +15,7 @@ final class TosRequiredForUserFlowTestViewController: TestViewController {
       guard let self = self else { return }
       switch result {
       case .success(let isTosSigned):
+        self.label.text = "State is \(isTosSigned)"
         if !isTosSigned {
           self.manager.presentTosIsRequiredViewController(on: self, animated: true) {
             self.label.text = $0.description
