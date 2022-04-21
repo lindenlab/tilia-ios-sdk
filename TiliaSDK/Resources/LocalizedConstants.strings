@@ -22,3 +22,5 @@
 "errorTosMessage" =  "Sorry, we were unable to accept Terms Of Service. Please try again later.";
 "close" = "Close";
 "missedRequiredData" = "Missed required data.";
+"addPaymentMethodTitle" = "Add a payment method to your account";
+"addCreditCard" = "Add Credit Card";

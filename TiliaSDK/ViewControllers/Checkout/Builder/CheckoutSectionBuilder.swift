@@ -36,6 +36,7 @@ struct CheckoutSectionBuilder {
     var items: [Item]
     var isPayButtonEnabled: Bool
     let payButtonTitle: String
+    let isCreditCardButtonHidden: Bool
     let canSelect: Bool
   }
   
@@ -122,7 +123,8 @@ struct CheckoutSectionBuilder {
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)
       view.configure(payButtonTitle: model.payButtonTitle,
                      closeButtonTitle: L.cancel,
-                     isPrimaryButtonEnabled: model.isPayButtonEnabled,
+                     isPayButtonEnabled: model.isPayButtonEnabled,
+                     isCreditCardButtonHidden: model.isCreditCardButtonHidden,
                      delegate: delegate,
                      textViewDelegate: textViewDelegate)
       return view
@@ -130,7 +132,8 @@ struct CheckoutSectionBuilder {
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)
       view.configure(payButtonTitle: nil,
                      closeButtonTitle: L.done,
-                     isPrimaryButtonEnabled: true,
+                     isPayButtonEnabled: true,
+                     isCreditCardButtonHidden: true,
                      delegate: delegate,
                      textViewDelegate: nil)
       return view
@@ -161,6 +164,7 @@ struct CheckoutSectionBuilder {
       payment = Payment(items: items,
                         isPayButtonEnabled: true,
                         payButtonTitle: L.pay,
+                        isCreditCardButtonHidden: true,
                         canSelect: false)
     } else {
       let items: [Payment.Item] = paymentMethods.enumerated().map { index, value in
@@ -172,6 +176,7 @@ struct CheckoutSectionBuilder {
       payment = Payment(items: items,
                         isPayButtonEnabled: false,
                         payButtonTitle: L.usePaymentMethods,
+                        isCreditCardButtonHidden: false,
                         canSelect: true)
     }
     

@@ -10,6 +10,7 @@ import UIKit
 protocol CheckoutPaymentFooterViewDelegate: AnyObject {
   func checkoutPaymentFooterViewPayButtonDidTap(_ footerView: CheckoutPaymentFooterView)
   func checkoutPaymentFooterViewCloseButtonDidTap(_ footerView: CheckoutPaymentFooterView)
+  func checkoutPaymentFooterViewAddCreditCardButtonDidTap(_ footerView: CheckoutPaymentFooterView)
 }
 
 final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
@@ -20,6 +21,22 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     let button = PrimaryButton()
     button.addTarget(self, action: #selector(payButtonDidTap), for: .touchUpInside)
     button.accessibilityIdentifier = "payButton"
+    return button
+  }()
+  
+  private let addPaymentMethodLabel: UILabel = {
+    let label = UILabel()
+    label.text = L.addPaymentMethodTitle.localized
+    label.textColor = .primaryTextColor
+    label.font = UIFont.systemFont(ofSize: 16)
+    return label
+  }()
+  
+  private lazy var addCreditCardButton: NonPrimaryButton = {
+    let button = NonPrimaryButton()
+    button.setTitle(L.addCreditCard, for: .normal)
+    button.addTarget(self, action: #selector(addCreditCardButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "addCreditCardButton"
     return button
   }()
   
@@ -43,6 +60,21 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     return textView
   }()
   
+  private lazy var stackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [
+      payButton,
+      addPaymentMethodLabel,
+      addCreditCardButton,
+      closeButton,
+      textView
+    ])
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .vertical
+    stackView.spacing = 8
+    stackView.setCustomSpacing(16, after: closeButton)
+    return stackView
+  }()
+  
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     setup()
@@ -54,15 +86,19 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   
   func configure(payButtonTitle: String?,
                  closeButtonTitle: String,
-                 isPrimaryButtonEnabled: Bool,
+                 isPayButtonEnabled: Bool,
+                 isCreditCardButtonHidden: Bool,
                  delegate: CheckoutPaymentFooterViewDelegate?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
     payButton.setTitle(payButtonTitle, for: .normal)
-    payButton.isEnabled = isPrimaryButtonEnabled
+    payButton.isEnabled = isPayButtonEnabled
     payButton.isHidden = payButtonTitle == nil
     closeButton.setTitle(closeButtonTitle, for: .normal)
+    addCreditCardButton.isHidden = isCreditCardButtonHidden
+    addPaymentMethodLabel.isHidden = isCreditCardButtonHidden
     textView.isHidden = textViewDelegate == nil
     textView.linkDelegate = textViewDelegate
+    stackView.setCustomSpacing(isCreditCardButtonHidden ? 8 : 32, after: payButton)
     self.delegate = delegate
   }
   
@@ -77,11 +113,6 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
 private extension CheckoutPaymentFooterView {
   
   func setup() {
-    let stackView = UIStackView(arrangedSubviews: [payButton, closeButton, textView])
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.axis = .vertical
-    stackView.spacing = 16
-    
     contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
     
@@ -97,6 +128,10 @@ private extension CheckoutPaymentFooterView {
   
   @objc func payButtonDidTap() {
     delegate?.checkoutPaymentFooterViewPayButtonDidTap(self)
+  }
+  
+  @objc func addCreditCardButtonDidTap() {
+    delegate?.checkoutPaymentFooterViewAddCreditCardButtonDidTap(self)
   }
   
   @objc func closeButtonDidTap() {

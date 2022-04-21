@@ -149,6 +149,10 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
     viewModel.payInvoice()
   }
   
+  func checkoutPaymentFooterViewAddCreditCardButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+    
+  }
+  
   func checkoutPaymentFooterViewCloseButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
     dismiss(isFromCloseAction: false)
   }

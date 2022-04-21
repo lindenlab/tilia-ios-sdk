@@ -33,5 +33,7 @@ enum L {
   static let errorTosMessage = "errorTosMessage".localized
   static let close = "close".localized
   static let missedRequiredData = "missedRequiredData".localized
+  static let addPaymentMethodTitle = "addPaymentMethodTitle".localized
+  static let addCreditCard = "addCreditCard".localized
   
 }
