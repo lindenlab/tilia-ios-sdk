@@ -145,11 +145,11 @@ extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
 
 extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
   
-  func checkoutPaymentFooterViewPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+  func checkoutPaymentFooterViewPayButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
     viewModel.payInvoice()
   }
   
-  func checkoutPaymentFooterViewNonPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+  func checkoutPaymentFooterViewCloseButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
     dismiss(isFromCloseAction: false)
   }
   

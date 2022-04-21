@@ -49,11 +49,11 @@ class CheckoutFlowUITests: XCTestCase {
     XCTAssert(acceptButton.waitForExistence(timeout: 2))
     acceptButton.tap()
     
-    let payButton = app.tables.otherElements.buttons["primaryButton"]
+    let payButton = app.tables.otherElements.buttons["payButton"]
     XCTAssert(payButton.waitForExistence(timeout: 3))
     payButton.tap()
     
-    let doneButton = app.tables.otherElements.buttons["nonPrimaryButton"]
+    let doneButton = app.tables.otherElements.buttons["closeButton"]
     XCTAssert(doneButton.waitForExistence(timeout: 2))
     doneButton.tap()
 
@@ -98,7 +98,7 @@ class CheckoutFlowUITests: XCTestCase {
     XCTAssert(acceptButton.waitForExistence(timeout: 2))
     acceptButton.tap()
     
-    let cancelButton = app.tables.otherElements.buttons["nonPrimaryButton"]
+    let cancelButton = app.tables.otherElements.buttons["closeButton"]
     XCTAssert(cancelButton.waitForExistence(timeout: 3))
     cancelButton.tap()
 

@@ -8,26 +8,25 @@
 import UIKit
 
 protocol CheckoutPaymentFooterViewDelegate: AnyObject {
-  func checkoutPaymentFooterViewPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView)
-  func checkoutPaymentFooterViewNonPrimaryButtonDidTap(_ footerView: CheckoutPaymentFooterView)
+  func checkoutPaymentFooterViewPayButtonDidTap(_ footerView: CheckoutPaymentFooterView)
+  func checkoutPaymentFooterViewCloseButtonDidTap(_ footerView: CheckoutPaymentFooterView)
 }
 
 final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   
   private weak var delegate: CheckoutPaymentFooterViewDelegate?
   
-  private lazy var primaryButton: PrimaryButton = {
+  private lazy var payButton: PrimaryButton = {
     let button = PrimaryButton()
-    button.setTitle(L.pay, for: .normal)
-    button.addTarget(self, action: #selector(primaryButtonDidTap), for: .touchUpInside)
-    button.accessibilityIdentifier = "primaryButton"
+    button.addTarget(self, action: #selector(payButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "payButton"
     return button
   }()
   
-  private lazy var nonPrimaryButton: NonPrimaryButton = {
+  private lazy var closeButton: NonPrimaryButton = {
     let button = NonPrimaryButton()
-    button.addTarget(self, action: #selector(nonPrimaryButtonDidTap), for: .touchUpInside)
-    button.accessibilityIdentifier = "nonPrimaryButton"
+    button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "closeButton"
     return button
   }()
   
@@ -53,20 +52,22 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(nonPrimaryButtonTitle: String,
+  func configure(payButtonTitle: String?,
+                 closeButtonTitle: String,
                  isPrimaryButtonEnabled: Bool,
                  delegate: CheckoutPaymentFooterViewDelegate?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
-    nonPrimaryButton.setTitle(nonPrimaryButtonTitle, for: .normal)
-    primaryButton.isEnabled = isPrimaryButtonEnabled
-    primaryButton.isHidden = textViewDelegate == nil
+    payButton.setTitle(payButtonTitle, for: .normal)
+    payButton.isEnabled = isPrimaryButtonEnabled
+    payButton.isHidden = payButtonTitle == nil
+    closeButton.setTitle(closeButtonTitle, for: .normal)
     textView.isHidden = textViewDelegate == nil
     textView.linkDelegate = textViewDelegate
     self.delegate = delegate
   }
   
   func configure(isPrimaryButtonEnabled: Bool) {
-    primaryButton.isEnabled = isPrimaryButtonEnabled
+    payButton.isEnabled = isPrimaryButtonEnabled
   }
   
 }
@@ -76,7 +77,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
 private extension CheckoutPaymentFooterView {
   
   func setup() {
-    let stackView = UIStackView(arrangedSubviews: [primaryButton, nonPrimaryButton, textView])
+    let stackView = UIStackView(arrangedSubviews: [payButton, closeButton, textView])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
     stackView.spacing = 16
@@ -94,12 +95,12 @@ private extension CheckoutPaymentFooterView {
     ])
   }
   
-  @objc func primaryButtonDidTap() {
-    delegate?.checkoutPaymentFooterViewPrimaryButtonDidTap(self)
+  @objc func payButtonDidTap() {
+    delegate?.checkoutPaymentFooterViewPayButtonDidTap(self)
   }
   
-  @objc func nonPrimaryButtonDidTap() {
-    delegate?.checkoutPaymentFooterViewNonPrimaryButtonDidTap(self)
+  @objc func closeButtonDidTap() {
+    delegate?.checkoutPaymentFooterViewCloseButtonDidTap(self)
   }
   
 }
