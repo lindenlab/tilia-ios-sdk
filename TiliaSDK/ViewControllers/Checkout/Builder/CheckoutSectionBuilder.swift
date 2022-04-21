@@ -38,6 +38,7 @@ struct CheckoutSectionBuilder {
     let payButtonTitle: String
     let isCreditCardButtonHidden: Bool
     let canSelect: Bool
+    var isEmpty: Bool { return items.isEmpty }
   }
   
   enum Section {
@@ -56,6 +57,8 @@ struct CheckoutSectionBuilder {
     var heightForHeader: CGFloat {
       switch self {
       case .successfulPayment: return .leastNormalMagnitude
+      case let .payment(model):
+        return model.isEmpty ? 20 : UITableView.automaticDimension
       default: return UITableView.automaticDimension
       }
     }
@@ -101,11 +104,11 @@ struct CheckoutSectionBuilder {
       view.configure(title: L.transactionSummary,
                      subTitle: "\(invoiceModel.referenceType) \(invoiceModel.referenceId)")
       return view
-    case .payment:
+    case let .payment(model) where !model.isEmpty:
       let view = tableView.dequeue(ChekoutTitleHeaderView.self)
       view.configure(title: L.choosePaymentMethod, subTitle: nil)
       return view
-    case .successfulPayment:
+    default:
       return nil
     }
   }
@@ -121,12 +124,12 @@ struct CheckoutSectionBuilder {
       return view
     case let .payment(model):
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)
-      view.configure(payButtonTitle: model.payButtonTitle,
+      view.configure(payButtonTitle: model.isEmpty ? nil : model.payButtonTitle,
                      closeButtonTitle: L.cancel,
                      isPayButtonEnabled: model.isPayButtonEnabled,
                      isCreditCardButtonHidden: model.isCreditCardButtonHidden,
                      delegate: delegate,
-                     textViewDelegate: textViewDelegate)
+                     textViewDelegate: model.isEmpty ? nil : textViewDelegate)
       return view
     case .successfulPayment:
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)

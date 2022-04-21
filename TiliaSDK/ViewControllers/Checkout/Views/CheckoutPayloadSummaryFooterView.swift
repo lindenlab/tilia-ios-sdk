@@ -54,7 +54,7 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
   
   func configure(amount: String, isLoading: Bool) {
     amountLabel.text = amount
-    spinner.isHidden = !isLoading
+    configure(isLoading: isLoading)
   }
   
   func configure(isLoading: Bool) {

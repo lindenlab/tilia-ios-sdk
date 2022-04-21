@@ -70,8 +70,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     ])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
-    stackView.spacing = 8
-    stackView.setCustomSpacing(16, after: closeButton)
+    stackView.spacing = 16
     return stackView
   }()
   
@@ -98,7 +97,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     addPaymentMethodLabel.isHidden = isCreditCardButtonHidden
     textView.isHidden = textViewDelegate == nil
     textView.linkDelegate = textViewDelegate
-    stackView.setCustomSpacing(isCreditCardButtonHidden ? 8 : 32, after: payButton)
+    stackView.setCustomSpacing(isCreditCardButtonHidden ? 16 : 32, after: payButton)
     self.delegate = delegate
   }
   

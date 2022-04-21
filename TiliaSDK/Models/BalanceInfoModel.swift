@@ -20,8 +20,8 @@ struct BalanceInfoModel: Decodable {
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.balances = try container.decode([String: SpendableModel].self, forKey: .balances)
-    let paymentMethods = try container.decode([String: PaymentMethodModel].self, forKey: .paymentMethods)
-    let array = Array(paymentMethods.values)
+    let paymentMethods = try? container.decode([String: PaymentMethodModel].self, forKey: .paymentMethods)
+    let array = paymentMethods.map { Array($0.values) } ?? []
     self.paymentMethods = array.sorted { $0.type.isWallet && !$1.type.isWallet }
   }
   
