@@ -23,4 +23,9 @@
 "close" = "Close";
 "missedRequiredData" = "Missed required data.";
 "addPaymentMethodTitle" = "Add a payment method to your account";
-"addCreditCard" = "Add Credit Card";
+"addCreditCardTitle" = "Add credit card";
+"addCreditCardMessage" = "In order to add a credit card we need to move over to a browser. Tap the button below to open your browser and securely provide your credit card information. When you’re done, that card will show up in your list of payment methods.";
+"openBrowser" = "Open browser";
+"goBack" = "Go back";
+"errorAddCreditTitle" =  "Error processing adding credit card";
+"errorAddCreditMessage" =  "Sorry, we were unable to process adding your credit card. Please try again later.";

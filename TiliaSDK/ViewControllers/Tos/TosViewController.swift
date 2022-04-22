@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class TosViewController: UIViewController, LoadableProtocol {
+final class TosViewController: BaseViewController, LoadableProtocol {
   
   var hideableView: UIView { return stackView }
   var spinnerPosition: CGPoint { return stackView.center }
@@ -80,16 +80,10 @@ final class TosViewController: UIViewController, LoadableProtocol {
                                                    acceptButton,
                                                    cancelButton])
     stackView.axis = .vertical
-    stackView.spacing = 20
+    stackView.spacing = 16
     stackView.translatesAutoresizingMaskIntoConstraints = false
     return stackView
   }()
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    setup()
-    bind()
-  }
   
   init(manager: NetworkManager,
        onComplete: ((TLCompleteCallback) -> Void)?,
@@ -106,6 +100,12 @@ final class TosViewController: UIViewController, LoadableProtocol {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setup()
+    bind()
   }
   
 }
@@ -135,7 +135,6 @@ extension TosViewController: TextViewWithLinkDelegate {
 private extension TosViewController {
   
   func setup() {
-    view.backgroundColor = .backgroundColor
     view.addSubview(stackView)
     
     NSLayoutConstraint.activate([

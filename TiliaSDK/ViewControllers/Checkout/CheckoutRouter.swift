@@ -9,6 +9,7 @@ import UIKit
 
 protocol CheckoutRoutingProtocol: RoutingProtocol {
   func routeToTosView()
+  func routeToAddCreditCard()
 }
 
 final class CheckoutRouter: CheckoutRoutingProtocol {
@@ -31,6 +32,11 @@ final class CheckoutRouter: CheckoutRoutingProtocol {
     } else {
       viewController?.present(tosViewController, animated: true)
     }
+  }
+  
+  func routeToAddCreditCard() {
+    let addCreditCardViewController = AddCreditCardViewController(manager: dataStore.manager)
+    viewController?.present(addCreditCardViewController, animated: true)
   }
   
 }

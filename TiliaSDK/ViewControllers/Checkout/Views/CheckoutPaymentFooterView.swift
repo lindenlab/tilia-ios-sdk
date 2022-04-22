@@ -34,7 +34,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   
   private lazy var addCreditCardButton: NonPrimaryButton = {
     let button = NonPrimaryButton()
-    button.setTitle(L.addCreditCard, for: .normal)
+    button.setTitle(L.addCreditCardTitle, for: .normal)
     button.addTarget(self, action: #selector(addCreditCardButtonDidTap), for: .touchUpInside)
     button.accessibilityIdentifier = "addCreditCardButton"
     return button

@@ -33,6 +33,10 @@
 		D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB727E771100009D888 /* ServerConfiguration.swift */; };
 		D135DCBA27E777030009D888 /* ServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB927E777030009D888 /* ServerClient.swift */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
+		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
+		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
+		D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD482811E320003976CB /* AddCreditCardViewController.swift */; };
+		D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD4A2811E785003976CB /* BaseViewController.swift */; };
 		D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */; };
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
@@ -149,6 +153,10 @@
 		D135DCB727E771100009D888 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 		D135DCB927E777030009D888 /* ServerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClient.swift; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
+		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
+		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
+		D154AD482811E320003976CB /* AddCreditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewController.swift; sourceTree = "<group>"; };
+		D154AD4A2811E785003976CB /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLErrorCallback.swift; sourceTree = "<group>"; };
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
@@ -273,6 +281,7 @@
 			children = (
 				D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */,
 				D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */,
+				D154AD4A2811E785003976CB /* BaseViewController.swift */,
 			);
 			path = BaseProtocols;
 			sourceTree = "<group>";
@@ -284,6 +293,7 @@
 				D12443E327EB9EE700C68811 /* CustomUI */,
 				D12443E227EB9C8800C68811 /* Tos */,
 				D1CCE8C527F4872F00FD0E25 /* Checkout */,
+				D154AD432811E2D5003976CB /* AddCreditCard */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -410,6 +420,16 @@
 				D1B872D02804A22F00DD1F7B /* NetworkManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		D154AD432811E2D5003976CB /* AddCreditCard */ = {
+			isa = PBXGroup;
+			children = (
+				D154AD442811E302003976CB /* AddCreditCardViewModel.swift */,
+				D154AD462811E313003976CB /* AddCreditCardRouter.swift */,
+				D154AD482811E320003976CB /* AddCreditCardViewController.swift */,
+			);
+			path = AddCreditCard;
 			sourceTree = "<group>";
 		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
@@ -790,7 +810,9 @@
 				D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */,
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
+				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
 				D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */,
+				D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */,
 				D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */,
 				D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */,
 				D135DCAC27E762460009D888 /* RouterProtocol.swift in Sources */,
@@ -813,6 +835,7 @@
 				D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */,
 				D1CCE8DC27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift in Sources */,
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,
+				D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */,
 				D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */,
 				D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
@@ -829,6 +852,7 @@
 				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,
+				D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

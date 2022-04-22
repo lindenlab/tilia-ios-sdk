@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class CheckoutViewController: UIViewController, LoadableProtocol {
+final class CheckoutViewController: BaseViewController, LoadableProtocol {
   
   var hideableView: UIView { return tableView }
   var spinnerPosition: CGPoint { return view.center }
@@ -36,18 +36,6 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     return tableView
   }()
   
-  private let logoImageView: UIImageView = {
-    let imageView = UIImageView(image: .logoIcon)
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-    return imageView
-  }()
-  
-  private let divider: DividerView = {
-    let divider = DividerView()
-    divider.translatesAutoresizingMaskIntoConstraints = false
-    return divider
-  }()
-  
   private lazy var closeButton: NonPrimaryButton = {
     let button = NonPrimaryButton()
     button.setTitle(L.close, for: .normal)
@@ -56,13 +44,6 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
     button.accessibilityIdentifier = "closeButton"
     return button
   }()
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    setup()
-    bind()
-    viewModel.checkIsTosRequired()
-  }
   
   init(invoiceId: String,
        manager: NetworkManager,
@@ -84,6 +65,13 @@ final class CheckoutViewController: UIViewController, LoadableProtocol {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setup()
+    bind()
+    viewModel.checkIsTosRequired()
   }
   
 }
@@ -150,7 +138,7 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
   }
   
   func checkoutPaymentFooterViewAddCreditCardButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
-    
+    router.routeToAddCreditCard()
   }
   
   func checkoutPaymentFooterViewCloseButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
@@ -185,21 +173,13 @@ extension CheckoutViewController: CheckoutPaymentMethodCellDelegate {
 private extension CheckoutViewController {
   
   func setup() {
-    view.backgroundColor = .backgroundColor
-    view.addSubview(logoImageView)
     view.addSubview(tableView)
-    view.addSubview(divider)
     
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
       tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
       tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       tableView.bottomAnchor.constraint(equalTo: divider.topAnchor),
-      divider.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
-      divider.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-      divider.bottomAnchor.constraint(equalTo: logoImageView.topAnchor, constant: -16),
-      logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      logoImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
     ])
   }
   
