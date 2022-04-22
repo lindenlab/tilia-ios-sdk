@@ -11,7 +11,7 @@ const fs = require("fs");
 
 const path = process.argv[6];
 const fileSize = fs.statSync(path).size;
-let readStream = fs.createReadStream(path);
+const readStream = fs.createReadStream(path);
 
 let newURL = "";
 const appId = process.argv[2];
@@ -54,7 +54,7 @@ fetch(
 // Upload the new file to AWS S3
 async function uploadFile() {
   console.log('about to get uploadFile...');
-  fetch(newURL, uploadFileData)
+  await fetch(newURL, uploadFileData)
     .then((result) => {
       confirmNewFile();
     })
@@ -79,7 +79,7 @@ async function confirmNewFile() {
     method: "POST",
   };
 
-  fetch(apiUrl + `v2/projects/${projectId}/applications/${appId}/file`, data)
+  await fetch(apiUrl + `v2/projects/${projectId}/applications/${appId}/file`, data)
     .then((result) => {
       runJob();
     })
@@ -102,7 +102,7 @@ async function runJob() {
     method: "POST",
   };
 
-  fetch(apiUrl + `v2/projects/${projectId}/jobs/${jobId}/run`, data)
+  await fetch(apiUrl + `v2/projects/${projectId}/jobs/${jobId}/run`, data)
     .then((result) => {
       console.log("The CI process completed successfully!");
     })
