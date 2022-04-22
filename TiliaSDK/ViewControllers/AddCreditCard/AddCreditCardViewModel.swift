@@ -42,6 +42,7 @@ final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
     loading.send(true)
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.loading.send(false)
+      self.openUrl.send(URL(string: "https://www.google.com")!)
       self.needToReload = true
     }
   }
