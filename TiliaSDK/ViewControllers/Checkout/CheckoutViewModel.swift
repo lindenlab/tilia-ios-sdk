@@ -35,6 +35,7 @@ protocol CheckoutDataStore {
   var manager: NetworkManager { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
   var onTosError: ((TLErrorCallback) -> Void)? { get }
+  var onReload: (Bool) -> Void { get }
 }
 
 protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutViewModelOutputProtocol { }
@@ -64,6 +65,10 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   }
   var onTosError: ((TLErrorCallback) -> Void)? {
     return onError
+  }
+  private(set) lazy var onReload: (Bool) -> Void = { [weak self] in
+    guard $0 else { return }
+    self?.getUserBalance()
   }
   
   private let onComplete: ((TLCompleteCallback) -> Void)?
@@ -223,6 +228,22 @@ private extension CheckoutViewModel {
       switch result {
       case .success(let model):
         self.invoice = model
+        self.setContent()
+      case .failure(let error):
+        self.didFail(with: (error, true))
+      }
+      self.loading.send(false)
+    }
+  }
+  
+  func getUserBalance() {
+    selectedPaymentMethod = nil
+    loading.send(true)
+    manager.getUserBalance { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let model):
+        self.balance = model
         self.setContent()
       case .failure(let error):
         self.didFail(with: (error, true))

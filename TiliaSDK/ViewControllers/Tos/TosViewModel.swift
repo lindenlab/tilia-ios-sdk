@@ -25,8 +25,8 @@ final class TosViewModel: TosViewModelProtocol {
   let loading = PassthroughSubject<Bool, Never>()
   let accept = CurrentValueSubject<Bool, Never>(false)
   let error = PassthroughSubject<Error, Never>()
-  let onComplete: ((TLCompleteCallback) -> Void)?
-  let onError: ((TLErrorCallback) -> Void)?
+  private let onComplete: ((TLCompleteCallback) -> Void)?
+  private let onError: ((TLErrorCallback) -> Void)?
   
   private let manager: NetworkManager
   

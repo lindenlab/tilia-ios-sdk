@@ -35,7 +35,8 @@ final class CheckoutRouter: CheckoutRoutingProtocol {
   }
   
   func routeToAddCreditCard() {
-    let addCreditCardViewController = AddCreditCardViewController(manager: dataStore.manager)
+    let addCreditCardViewController = AddCreditCardViewController(manager: dataStore.manager,
+                                                                  onReload: dataStore.onReload)
     viewController?.present(addCreditCardViewController, animated: true)
   }
   

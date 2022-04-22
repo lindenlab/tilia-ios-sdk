@@ -59,6 +59,7 @@ final class AddCreditCardViewController: BaseViewController, LoadableProtocol {
     stackView.spacing = 16
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.setCustomSpacing(32, after: subTitleLabel)
+    stackView.setCustomSpacing(8, after: titleLabel)
     return stackView
   }()
   
@@ -68,16 +69,29 @@ final class AddCreditCardViewController: BaseViewController, LoadableProtocol {
     bind()
   }
   
-  init(manager: NetworkManager) {
+  init(manager: NetworkManager,
+       onReload: @escaping (Bool) -> Void) {
     let router = AddCreditCardRouter()
-    self.viewModel = AddCreditCardViewModel(manager: manager)
+    self.viewModel = AddCreditCardViewModel(manager: manager,
+                                            onReload: onReload)
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
+    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension AddCreditCardViewController: UIAdaptivePresentationControllerDelegate {
+  
+  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    viewModel.complete()
   }
   
 }
@@ -117,7 +131,7 @@ private extension AddCreditCardViewController {
   }
   
   @objc func goBackButtonDidTap() {
-    router.dismiss()
+    router.dismiss { self.viewModel.complete() }
   }
   
 }

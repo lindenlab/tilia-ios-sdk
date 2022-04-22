@@ -10,13 +10,13 @@ import Combine
 
 protocol AddCreditCardViewModelInputProtocol {
   func openBrowser()
+  func complete()
 }
 
 protocol AddCreditCardViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<Error, Never> { get }
   var openUrl: PassthroughSubject<URL, Never> { get }
-  var needToReload: Bool { get }
 }
 
 protocol AddCreditCardViewModelProtocol: AddCreditCardViewModelInputProtocol, AddCreditCardViewModelOutputProtocol { }
@@ -26,12 +26,15 @@ final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
   let loading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<Error, Never>()
   let openUrl = PassthroughSubject<URL, Never>()
-  private(set) var needToReload = false
   
   private let manager: NetworkManager
+  private let onReload: (Bool) -> Void
+  private var needToReload = false
   
-  init(manager: NetworkManager) {
+  init(manager: NetworkManager,
+       onReload: @escaping (Bool) -> Void) {
     self.manager = manager
+    self.onReload = onReload
   }
   
   func openBrowser() {
@@ -41,6 +44,10 @@ final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
       self.loading.send(false)
       self.needToReload = true
     }
+  }
+  
+  func complete() {
+    onReload(needToReload)
   }
   
 }
