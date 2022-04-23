@@ -115,8 +115,11 @@
 
 /* Begin PBXFileReference section */
 		17015F9D98A8CC831972F763 /* Pods-TiliaSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		2B2D70CDEA446128D8210CC9 /* Pods-TiliaSDK-TiliaSDKUITests.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK-TiliaSDKUITests.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDK-TiliaSDKUITests/Pods-TiliaSDK-TiliaSDKUITests.cicd.xcconfig"; sourceTree = "<group>"; };
+		34896647544121E98FBF7C86 /* Pods-TiliaSDKTests.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.cicd.xcconfig"; sourceTree = "<group>"; };
 		4801AF83E70591F9F4B3617F /* Pods-TiliaSDK-TiliaSDKUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK-TiliaSDKUITests.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK-TiliaSDKUITests/Pods-TiliaSDK-TiliaSDKUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4805CAC9E4F2314CA919F648 /* Pods-TiliaSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.release.xcconfig"; sourceTree = "<group>"; };
+		67A0E480FF265BAE1A0957EA /* Pods-TiliaSDK.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.cicd.xcconfig"; sourceTree = "<group>"; };
 		79419D22540D98A1C1E567BB /* Pods-TiliaSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7BD7BDACC70EF057DF9DB4B1 /* Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDK-TiliaSDKUITests/Pods-TiliaSDK-TiliaSDKUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		84A64EB132DC2583CA222673 /* Pods-TiliaSDKUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKUITests.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDKUITests/Pods-TiliaSDKUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -264,6 +267,9 @@
 				4805CAC9E4F2314CA919F648 /* Pods-TiliaSDKTests.release.xcconfig */,
 				ACB62D50E07F050FD8D3E5E9 /* Pods-TiliaSDKUITests.debug.xcconfig */,
 				84A64EB132DC2583CA222673 /* Pods-TiliaSDKUITests.release.xcconfig */,
+				67A0E480FF265BAE1A0957EA /* Pods-TiliaSDK.cicd.xcconfig */,
+				2B2D70CDEA446128D8210CC9 /* Pods-TiliaSDK-TiliaSDKUITests.cicd.xcconfig */,
+				34896647544121E98FBF7C86 /* Pods-TiliaSDKTests.cicd.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -888,6 +894,131 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		818C64F5280A1FEB009FD3A7 /* CICD */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = CICD;
+		};
+		818C64F6280A1FEB009FD3A7 /* CICD */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 67A0E480FF265BAE1A0957EA /* Pods-TiliaSDK.cicd.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J2NS7P3W5Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TiliaSDK/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.tilia.ios.sdk;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = TestProject;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = CICD;
+		};
+		818C64F7280A1FEB009FD3A7 /* CICD */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 34896647544121E98FBF7C86 /* Pods-TiliaSDKTests.cicd.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PHKQX3FHH9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = in.TiliaSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TiliaSDK.app/TiliaSDK";
+			};
+			name = CICD;
+		};
+		818C64F8280A1FEB009FD3A7 /* CICD */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B2D70CDEA446128D8210CC9 /* Pods-TiliaSDK-TiliaSDKUITests.cicd.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = in.TiliaSDKUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TiliaSDK;
+			};
+			name = CICD;
+		};
 		D135DC9D27E74A540009D888 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1010,9 +1141,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = PHKQX3FHH9;
+				DEVELOPMENT_TEAM = J2NS7P3W5Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TiliaSDK/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1025,8 +1157,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = in.TiliaSDK;
+				PRODUCT_BUNDLE_IDENTIFIER = io.tilia.ios.sdk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = TestProject;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1039,9 +1172,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = PHKQX3FHH9;
+				DEVELOPMENT_TEAM = J2NS7P3W5Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TiliaSDK/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1054,8 +1188,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = in.TiliaSDK;
+				PRODUCT_BUNDLE_IDENTIFIER = io.tilia.ios.sdk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = TestProject;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1148,6 +1283,7 @@
 			buildConfigurations = (
 				D135DC9D27E74A540009D888 /* Debug */,
 				D135DC9E27E74A540009D888 /* Release */,
+				818C64F5280A1FEB009FD3A7 /* CICD */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1157,6 +1293,7 @@
 			buildConfigurations = (
 				D135DCA027E74A540009D888 /* Debug */,
 				D135DCA127E74A540009D888 /* Release */,
+				818C64F6280A1FEB009FD3A7 /* CICD */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1166,6 +1303,7 @@
 			buildConfigurations = (
 				D135DCA327E74A540009D888 /* Debug */,
 				D135DCA427E74A540009D888 /* Release */,
+				818C64F7280A1FEB009FD3A7 /* CICD */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1175,6 +1313,7 @@
 			buildConfigurations = (
 				D1D358D12805E5F10043FD86 /* Debug */,
 				D1D358D22805E5F10043FD86 /* Release */,
+				818C64F8280A1FEB009FD3A7 /* CICD */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

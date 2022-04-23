@@ -1,0 +1,70 @@
+name: Build and Test app
+on: [pull_request]
+jobs:
+  build:
+    runs-on: [macos-latest]
+    env:
+      XC_WORKSPACE: ${{ 'TiliaSDK.xcworkspace' }}
+      XC_SCHEME: ${{ 'TiliaSDK' }}
+      XC_CONFIGURATION: ${{ 'CICD' }}
+      XC_EXPORT_OPTIONS_FILE_PATH: ${{ './.github/build-files/ExportOptions.plist' }}
+      XC_ARCHIVE_PATH: ${{ './TiliaSDK.xcarchive' }}
+      XC_EXPORT_PATH: ${{ './artifacts/' }}
+      ENCRYPTED_CERTS_FILE_PATH: ${{ './.github/build-files/certs.p12.gpg' }}
+      DECRYPTED_CERTS_FILE_PATH: ${{ './.github/build-files/certs.p12' }}
+      ENCRYPTED_PROVISION_FILE_PATH: ${{ './.github/build-files/provisioning.tar.gz.gpg' }}
+      DECRYPTED_PROVISION_FILE_PATH: ${{ './.github/build-files/provisioning.tar.gz' }}
+      ENCRYPTION_PWD: ${{ secrets.ENCRYPTION_PWD }}
+      KEYCHAIN: ${{ 'test.keychain' }}
+      TEST_PROJECT_API_KEY: ${{ secrets.TEST_PROJECT_API_KEY }}
+      TEST_PROJECT_PROJECT_ID: ${{ secrets.TEST_PROJECT_PROJECT_ID }}
+      TEST_PROJECT_APP_ID: ${{ secrets.TEST_PROJECT_APP_ID }}
+      TEST_PROJECT_JOB_ID: ${{ secrets.TEST_PROJECT_JOB_ID }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    - name: CocoaPod Install
+      run: pod install
+    - name: Run Unit and UI Tests
+      run: /usr/bin/xcodebuild test -workspace "$XC_WORKSPACE" -scheme "$XC_SCHEME" -destination 'platform=iOS Simulator,name=iPhone 13'
+    # Next 4 sections on generating archive and exporting ipa file are mostly based off this article: https://medium.com/@karaiskc/archive-and-export-ios-app-with-github-actions-b44f676e4bf9
+    # TODO: The certificate and provisioning profile that allow the server to build the .ipa file will expire around March/April of 2022 
+    #   and need to be regenerated, re-encrypted with gpg using the same password that is stored in the repo secrets and uploaded to .github/build-files/
+    - name: Configure Keychain for ipa generation
+      run: |
+        security create-keychain -p "" "$KEYCHAIN"
+        security list-keychains -s "$KEYCHAIN"
+        security default-keychain -s "$KEYCHAIN"
+        security unlock-keychain -p "" "$KEYCHAIN"
+        security set-keychain-settings
+        security list-keychains
+    - name: Configure Code Signing
+      run: | 
+        echo "------------===============>"
+        gpg --version
+        gpg -d -o "$DECRYPTED_CERTS_FILE_PATH" --pinentry-mode=loopback --passphrase "$ENCRYPTION_PWD" "$ENCRYPTED_CERTS_FILE_PATH"
+        gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$ENCRYPTION_PWD" "$ENCRYPTED_PROVISION_FILE_PATH" 
+        security import "$DECRYPTED_CERTS_FILE_PATH" -k "$KEYCHAIN" -P "$ENCRYPTION_PWD" -A        
+        security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
+        tar xzvf $DECRYPTED_PROVISION_FILE_PATH
+        mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+        for PROVISION in `ls ./*.mobileprovision`
+        do
+          echo "in loop...."
+          UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
+          cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+        done
+    - name: Run archive
+      run: |
+        mkdir artifacts
+        /usr/bin/xcodebuild archive -workspace "$XC_WORKSPACE" -scheme "$XC_SCHEME" -configuration "$XC_CONFIGURATION" -archivePath "$XC_ARCHIVE_PATH" "OTHER_CODE_SIGN_FLAGS=--keychain '$KEYCHAIN'"
+    - name: Export archive
+      run: |
+        /usr/bin/xcodebuild -exportArchive -archivePath "$XC_ARCHIVE_PATH" -exportOptionsPlist "$XC_EXPORT_OPTIONS_FILE_PATH" -exportPath "$XC_EXPORT_PATH"
+    - name: Upload to TestProject and run tests
+      run: |
+        cd .github/scripts/upload-to-testproject && npm install
+        cd $GITHUB_WORKSPACE
+        node .github/scripts/upload-to-testproject "$TEST_PROJECT_APP_ID" "$TEST_PROJECT_PROJECT_ID" "$TEST_PROJECT_API_KEY" "TiliaSDK.ipa" "$GITHUB_WORKSPACE/artifacts/TiliaSDK.ipa" "$TEST_PROJECT_JOB_ID"
