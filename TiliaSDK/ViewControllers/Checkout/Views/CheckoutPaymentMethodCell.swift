@@ -17,6 +17,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
   
   private let radioButton: RadioButton = {
     let button = RadioButton()
+    button.accessibilityIdentifier = "choosePaymentMethodButton"
     return button
   }()
   
@@ -85,6 +86,7 @@ private extension CheckoutPaymentMethodCell {
     radioButton.addTarget(self, action: #selector(radioButtonDidTap), for: .touchUpInside)
     
     selectionStyle = .none
+    accessibilityIdentifier = "checkoutPaymentMethodCell"
     let leadingStackView = UIStackView(arrangedSubviews: [radioButton, iconImageView])
     leadingStackView.alignment = .center
     leadingStackView.spacing = 16

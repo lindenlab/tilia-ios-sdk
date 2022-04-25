@@ -41,7 +41,7 @@
         "reference_type": "My test order",
         "reference_id": "123456789",
         "description": "",
-        "is_virtual": true,
+        "is_virtual": false,
         "is_escrow": false
     }
 }
