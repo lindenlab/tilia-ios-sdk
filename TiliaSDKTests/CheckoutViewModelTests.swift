@@ -58,13 +58,16 @@ class CheckoutViewModelTests: XCTestCase {
     var loading: Bool?
     var successfulPayment: Bool?
     var updateCallback: TLUpdateCallback?
+    var completeCallback: TLCompleteCallback?
+    var selectIndex: Int?
     
     let updateCallbackExpactation = XCTestExpectation(description: "testSuccessPayInvoice_UpdateCallback")
+    let completeCallbackExpactation = XCTestExpectation(description: "testSuccessPayInvoice_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = CheckoutViewModel(invoiceId: "",
                                       manager: networkManager,
                                       onUpdate: { updateCallback = $0; updateCallbackExpactation.fulfill() },
-                                      onComplete: nil,
+                                      onComplete: { completeCallback = $0; completeCallbackExpactation.fulfill() },
                                       onError: nil)
     
     let loadingExpactation = XCTestExpectation(description: "testSuccessPayInvoice_Loading")
@@ -75,8 +78,22 @@ class CheckoutViewModelTests: XCTestCase {
     
     let contentExpactation = XCTestExpectation(description: "testSuccessPayInvoice_Content")
     viewModel.content.sink { [weak viewModel] _ in
-      viewModel?.payInvoice()
+      viewModel?.selectPaymentMethod(at: 0)
       contentExpactation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let selectIndexExpactation = XCTestExpectation(description: "testSuccessPayInvoice_SelectIndex")
+    viewModel.selectIndex.sink {
+      selectIndex = $0
+      selectIndexExpactation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let payButtonIsEnabledExpactation = XCTestExpectation(description: "testSuccessPayInvoice_PayButtonIsEnabled")
+    viewModel.payButtonIsEnabled.sink { [weak viewModel] in
+      if $0 {
+        viewModel?.payInvoice()
+        payButtonIsEnabledExpactation.fulfill()
+      }
     }.store(in: &subscriptions)
     
     let successfulPaymentExpactation = XCTestExpectation(description: "testSuccessPayInvoice_SuccessfulPayment")
@@ -92,10 +109,20 @@ class CheckoutViewModelTests: XCTestCase {
                                    state: .completed)
     viewModel.onTosComplete(event)
     
-    wait(for: [loadingExpactation, contentExpactation, successfulPaymentExpactation, updateCallbackExpactation], timeout: 2)
+    let expectations = [
+      loadingExpactation,
+      contentExpactation,
+      successfulPaymentExpactation,
+      updateCallbackExpactation,
+      selectIndexExpactation,
+      payButtonIsEnabledExpactation
+    ]
+    wait(for: expectations, timeout: 6)
     XCTAssertNotNil(loading)
     XCTAssertEqual(successfulPayment, true)
-    XCTAssertNotNil(updateCallback)
+    XCTAssertEqual(updateCallback?.event.action, .paymentProcessed)
+    XCTAssertEqual(completeCallback?.state, .completed)
+    XCTAssertEqual(selectIndex, 0)
   }
   
   func testErrorCheckIsTosRequired() {
@@ -144,9 +171,17 @@ class CheckoutViewModelTests: XCTestCase {
     
     let contentExpactation = XCTestExpectation(description: "testErrorPayInvoice_Content")
     viewModel.content.sink { [weak viewModel] _ in
-      TLManager.shared.setToken("")
-      viewModel?.payInvoice()
+      viewModel?.selectPaymentMethod(at: 0)
       contentExpactation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let payButtonIsEnabledExpactation = XCTestExpectation(description: "testSuccessPayInvoice_PayButtonIsEnabled")
+    viewModel.payButtonIsEnabled.sink { [weak viewModel] in
+      if $0 {
+        TLManager.shared.setToken("")
+        viewModel?.payInvoice()
+        payButtonIsEnabledExpactation.fulfill()
+      }
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
@@ -154,7 +189,12 @@ class CheckoutViewModelTests: XCTestCase {
                                    state: .completed)
     viewModel.onTosComplete(event)
     
-    wait(for: [errorExpactation, contentExpactation], timeout: 2)
+    let expectations = [
+      errorExpactation,
+      contentExpactation,
+      payButtonIsEnabledExpactation
+    ]
+    wait(for: expectations, timeout: 4)
     XCTAssertNotNil(error)
     XCTAssertNotNil(errorCallback)
   }
