@@ -46,6 +46,7 @@
 		D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */; };
 		D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EC2806052200A25DBD /* TosFlowUITests.swift */; };
 		D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */; };
+		D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */; };
 		D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */; };
 		D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */; };
 		D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */; };
@@ -169,6 +170,7 @@
 		D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouter.swift; sourceTree = "<group>"; };
 		D190A3EC2806052200A25DBD /* TosFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosFlowUITests.swift; sourceTree = "<group>"; };
 		D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowUITests.swift; sourceTree = "<group>"; };
+		D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModelTests.swift; sourceTree = "<group>"; };
 		D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
 		D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+DecodeObject.swift"; sourceTree = "<group>"; };
 		D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+EncodeData.swift"; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				D1B872D22804C27300DD1F7B /* UIColorTests.swift */,
 				D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */,
 				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
+				D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";
@@ -869,6 +872,7 @@
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
+				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
 				D1B872D32804C27300DD1F7B /* UIColorTests.swift in Sources */,
 			);
