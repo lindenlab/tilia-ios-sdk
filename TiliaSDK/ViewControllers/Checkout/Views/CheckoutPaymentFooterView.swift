@@ -119,7 +119,7 @@ private extension CheckoutPaymentFooterView {
     topConstraint.priority = UILayoutPriority(999)
     NSLayoutConstraint.activate([
       topConstraint,
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
     ])
