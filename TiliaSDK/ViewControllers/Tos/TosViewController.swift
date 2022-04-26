@@ -36,6 +36,7 @@ final class TosViewController: UIViewController, LoadableProtocol {
     uiSwitch.onTintColor = .primaryColor
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
     uiSwitch.accessibilityIdentifier = "acceptSwitch"
+    uiSwitch.setContentHuggingPriority(.required, for: .horizontal)
     return uiSwitch
   }()
   
