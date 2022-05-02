@@ -186,6 +186,16 @@ public extension TLManager {
     viewController.present(checkoutViewController, animated: animated)
   }
   
+  /// Show KYC flow, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting KYC flow
+  ///   - animated: animated flag
+  func presentKycViewController(on viewController: UIViewController,
+                                animated: Bool) {
+    let userInfoViewController = UserInfoViewController(manager: networkManager)
+    viewController.present(userInfoViewController, animated: animated)
+  }
+  
 }
 
 // MARK: - For Testing

@@ -21,4 +21,10 @@ protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoView
 
 final class UserInfoViewModel: UserInfoViewModelProtocol {
   
+  private let manager: NetworkManager
+  
+  init(manager: NetworkManager) {
+    self.manager = manager
+  }
+  
 }

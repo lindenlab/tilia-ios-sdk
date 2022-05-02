@@ -13,6 +13,10 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
   var hideableView: UIView { return tableView }
   var spinnerPosition: CGPoint { return view.center }
   
+  private let viewModel: UserInfoViewModelProtocol
+  private let router: UserInfoRoutingProtocol
+  private var subscriptions: Set<AnyCancellable> = []
+  
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
     tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +28,30 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.register(TitleInfoHeaderFooterView.self)
     return tableView
   }()
+  
+  init(manager: NetworkManager) {
+    let viewModel = UserInfoViewModel(manager: manager)
+    let router = UserInfoRouter()
+    self.viewModel = viewModel
+    self.router = router
+    super.init(nibName: nil, bundle: nil)
+    router.viewController = self
+    self.presentationController?.delegate = self
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension UserInfoViewController: UIAdaptivePresentationControllerDelegate {
+  
+  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    
+  }
   
 }
 
