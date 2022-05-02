@@ -55,6 +55,9 @@
 		D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */; };
 		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
 		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
+		D19A0D9B281FEC4F00483DDC /* UserInfoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D9A281FEC4F00483DDC /* UserInfoRouter.swift */; };
+		D19A0D9D281FEC6400483DDC /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D9C281FEC6400483DDC /* UserInfoViewController.swift */; };
+		D19A0D9F281FEC8E00483DDC /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D9E281FEC8E00483DDC /* UserInfoViewModel.swift */; };
 		D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872B92804498500DD1F7B /* ServerTestClient.swift */; };
 		D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */; };
 		D1B872C528044CC900DD1F7B /* PayInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */; };
@@ -180,6 +183,9 @@
 		D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceInfoModel.swift; sourceTree = "<group>"; };
 		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
 		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
+		D19A0D9A281FEC4F00483DDC /* UserInfoRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoRouter.swift; sourceTree = "<group>"; };
+		D19A0D9C281FEC6400483DDC /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
+		D19A0D9E281FEC8E00483DDC /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
 		D1B872B92804498500DD1F7B /* ServerTestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTestClient.swift; sourceTree = "<group>"; };
 		D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CreateInvoiceResponse.json; sourceTree = "<group>"; };
 		D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PayInvoiceResponse.json; sourceTree = "<group>"; };
@@ -303,6 +309,7 @@
 				D12443E327EB9EE700C68811 /* CustomUI */,
 				D12443E227EB9C8800C68811 /* Tos */,
 				D1CCE8C527F4872F00FD0E25 /* Checkout */,
+				D19A0D99281FEBF400483DDC /* KYC */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -458,6 +465,24 @@
 				D1C8A84327F5E49600BF2910 /* String+Localization.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D19A0D99281FEBF400483DDC /* KYC */ = {
+			isa = PBXGroup;
+			children = (
+				D19A0DA0281FECA700483DDC /* UserInfo */,
+			);
+			path = KYC;
+			sourceTree = "<group>";
+		};
+		D19A0DA0281FECA700483DDC /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				D19A0D9E281FEC8E00483DDC /* UserInfoViewModel.swift */,
+				D19A0D9A281FEC4F00483DDC /* UserInfoRouter.swift */,
+				D19A0D9C281FEC6400483DDC /* UserInfoViewController.swift */,
+			);
+			path = UserInfo;
 			sourceTree = "<group>";
 		};
 		D1B872B8280442E400DD1F7B /* Testable */ = {
@@ -818,6 +843,7 @@
 				D1C8A84C27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift in Sources */,
 				D1B872D12804A22F00DD1F7B /* NetworkManager.swift in Sources */,
 				D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */,
+				D19A0D9B281FEC4F00483DDC /* UserInfoRouter.swift in Sources */,
 				D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */,
 				D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */,
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
@@ -841,9 +867,11 @@
 				D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */,
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
+				D19A0D9F281FEC8E00483DDC /* UserInfoViewModel.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
+				D19A0D9D281FEC6400483DDC /* UserInfoViewController.swift in Sources */,
 				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
 				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,
 				D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */,
