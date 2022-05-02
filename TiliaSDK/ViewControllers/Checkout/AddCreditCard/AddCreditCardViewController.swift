@@ -24,30 +24,20 @@ final class AddCreditCardViewController: BaseViewController, LoadableProtocol {
     return view
   }()
   
-  private lazy var openButton: PrimaryButton = {
-    let button = PrimaryButton()
-    button.setTitle(L.openBrowser, for: .normal)
-    button.addTarget(self, action: #selector(openButtonDidTap), for: .touchUpInside)
-    button.accessibilityIdentifier = "openButton"
-    return button
-  }()
-  
-  private lazy var goBackButton: NonPrimaryButton = {
-    let button = NonPrimaryButton()
-    button.setTitle(L.goBack, for: .normal)
-    button.addTarget(self, action: #selector(goBackButtonDidTap), for: .touchUpInside)
-    button.accessibilityIdentifier = "goBackButton"
-    return button
+  private lazy var buttonsView: ButtonsView = {
+    let view = ButtonsView()
+    view.primaryButtonText = L.openBrowser
+    view.nonPrimaryButtonText = L.goBack
+    view.delegate = self
+    return view
   }()
   
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [titleInfoView,
-                                                   openButton,
-                                                   goBackButton])
+                                                   buttonsView])
     stackView.axis = .vertical
-    stackView.spacing = 16
+    stackView.spacing = 32
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.setCustomSpacing(32, after: titleInfoView)
     return stackView
   }()
   
@@ -84,6 +74,20 @@ extension AddCreditCardViewController: UIAdaptivePresentationControllerDelegate 
   
 }
 
+// MARK: - ButtonsViewDelegate
+
+extension AddCreditCardViewController: ButtonsViewDelegate {
+  
+  func buttonsViewPrimaryButtonDidTap(_ view: ButtonsView) {
+    viewModel.openBrowser()
+  }
+  
+  func buttonsViewPrimaryNonButtonDidTap(_ view: ButtonsView) {
+    router.dismiss { self.viewModel.complete() }
+  }
+  
+}
+
 // MARK: - Private Methods
 
 private extension AddCreditCardViewController {
@@ -112,14 +116,6 @@ private extension AddCreditCardViewController {
     viewModel.openUrl.sink { [weak self] in
       self?.router.showWebView(with: $0)
     }.store(in: &subscriptions)
-  }
-  
-  @objc func openButtonDidTap() {
-    viewModel.openBrowser()
-  }
-  
-  @objc func goBackButtonDidTap() {
-    router.dismiss { self.viewModel.complete() }
   }
   
 }
