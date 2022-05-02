@@ -460,6 +460,18 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		D19A0DA1281FED0500483DDC /* Checkout */ = {
+			isa = PBXGroup;
+			children = (
+				D1D5B53A27F759CC00E04EE1 /* Builder */,
+				D1CCE8CF27F4A6C200FD0E25 /* Views */,
+				D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */,
+				D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */,
+				D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */,
+			);
+			path = Checkout;
+			sourceTree = "<group>";
+		};
 		D1B872B8280442E400DD1F7B /* Testable */ = {
 			isa = PBXGroup;
 			children = (
@@ -486,12 +498,8 @@
 		D1CCE8C527F4872F00FD0E25 /* Checkout */ = {
 			isa = PBXGroup;
 			children = (
+				D19A0DA1281FED0500483DDC /* Checkout */,
 				D154AD432811E2D5003976CB /* AddCreditCard */,
-				D1D5B53A27F759CC00E04EE1 /* Builder */,
-				D1CCE8CF27F4A6C200FD0E25 /* Views */,
-				D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */,
-				D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */,
-				D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */,
 			);
 			path = Checkout;
 			sourceTree = "<group>";
