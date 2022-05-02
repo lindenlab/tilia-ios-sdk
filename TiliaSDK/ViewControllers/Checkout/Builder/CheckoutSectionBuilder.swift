@@ -100,12 +100,13 @@ struct CheckoutSectionBuilder {
               in tableView: UITableView) -> UIView? {
     switch section {
     case let .summary(invoiceModel):
-      let view = tableView.dequeue(ChekoutTitleHeaderView.self)
+      let view = tableView.dequeue(TitleInfoHeaderFooterView.self)
       view.configure(title: L.transactionSummary,
-                     subTitle: "\(invoiceModel.referenceType) \(invoiceModel.referenceId)")
+                     subTitle: "\(invoiceModel.referenceType) \(invoiceModel.referenceId)",
+                     spacing: 4)
       return view
     case let .payment(model) where !model.isEmpty:
-      let view = tableView.dequeue(ChekoutTitleHeaderView.self)
+      let view = tableView.dequeue(TitleInfoHeaderFooterView.self)
       view.configure(title: L.choosePaymentMethod, subTitle: nil)
       return view
     default:

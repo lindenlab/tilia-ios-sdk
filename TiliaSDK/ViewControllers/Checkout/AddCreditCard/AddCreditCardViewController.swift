@@ -17,21 +17,11 @@ final class AddCreditCardViewController: BaseViewController, LoadableProtocol {
   private let router: AddCreditCardRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
   
-  private let titleLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .primaryTextColor
-    label.text = L.addCreditCardTitle
-    label.font = UIFont.boldSystemFont(ofSize: 20)
-    return label
-  }()
-  
-  private let subTitleLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .primaryTextColor
-    label.text = L.addCreditCardMessage
-    label.font = UIFont.systemFont(ofSize: 16)
-    label.numberOfLines = 0
-    return label
+  private let titleInfoView: TitleInfoView = {
+    let view = TitleInfoView()
+    view.title = L.addCreditCardTitle
+    view.subTitle = L.addCreditCardMessage
+    return view
   }()
   
   private lazy var openButton: PrimaryButton = {
@@ -51,15 +41,13 @@ final class AddCreditCardViewController: BaseViewController, LoadableProtocol {
   }()
   
   private lazy var stackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [titleLabel,
-                                                   subTitleLabel,
+    let stackView = UIStackView(arrangedSubviews: [titleInfoView,
                                                    openButton,
                                                    goBackButton])
     stackView.axis = .vertical
     stackView.spacing = 16
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.setCustomSpacing(32, after: subTitleLabel)
-    stackView.setCustomSpacing(8, after: titleLabel)
+    stackView.setCustomSpacing(32, after: titleInfoView)
     return stackView
   }()
   

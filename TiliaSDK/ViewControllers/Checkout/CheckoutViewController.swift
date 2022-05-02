@@ -27,7 +27,7 @@ final class CheckoutViewController: BaseViewController, LoadableProtocol {
     tableView.separatorStyle = .none
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.register(ChekoutTitleHeaderView.self)
+    tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(CheckoutPayloadSummaryFooterView.self)
     tableView.register(CheckoutPayloadCell.self)
     tableView.register(CheckoutPaymentFooterView.self)

@@ -102,6 +102,7 @@ private extension TextViewWithLink {
     dataDetectorTypes = []
     delegate = self
     isExclusiveTouch = true
+    backgroundColor = .clear
   }
   
   func updateLinkAttributes() {

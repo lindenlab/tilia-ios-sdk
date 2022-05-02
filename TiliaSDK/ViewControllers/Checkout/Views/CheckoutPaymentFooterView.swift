@@ -56,7 +56,6 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     textView.textColor = .tertiaryTextColor
     textView.font = UIFont.systemFont(ofSize: 12)
     textView.textAlignment = .justified
-    textView.backgroundColor = .clear
     return textView
   }()
   
