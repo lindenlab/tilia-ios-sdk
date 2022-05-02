@@ -25,6 +25,7 @@ final class CheckoutViewController: BaseViewController, LoadableProtocol {
     tableView.showsVerticalScrollIndicator = false
     tableView.backgroundColor = .clear
     tableView.separatorStyle = .none
+    tableView.delaysContentTouches = false
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(TitleInfoHeaderFooterView.self)
