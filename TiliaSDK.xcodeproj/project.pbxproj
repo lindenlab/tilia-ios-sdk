@@ -33,6 +33,9 @@
 		D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB727E771100009D888 /* ServerConfiguration.swift */; };
 		D135DCBA27E777030009D888 /* ServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB927E777030009D888 /* ServerClient.swift */; };
 		D13BDD6E28207C5400A31F2D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD6D28207C5400A31F2D /* ButtonsView.swift */; };
+		D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */; };
+		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
+		D13BDD7828227FCA00A31F2D /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD7728227FCA00A31F2D /* SelectableView.swift */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
 		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
@@ -163,6 +166,9 @@
 		D135DCB727E771100009D888 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 		D135DCB927E777030009D888 /* ServerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClient.swift; sourceTree = "<group>"; };
 		D13BDD6D28207C5400A31F2D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
+		D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionBuilder.swift; sourceTree = "<group>"; };
+		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
+		D13BDD7728227FCA00A31F2D /* SelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableView.swift; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
 		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
@@ -341,6 +347,7 @@
 				D19A0D95281FD9F700483DDC /* TitleInfoView.swift */,
 				D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */,
 				D13BDD6D28207C5400A31F2D /* ButtonsView.swift */,
+				D13BDD7728227FCA00A31F2D /* SelectableView.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -446,6 +453,22 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		D13BDD6F2822795100A31F2D /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */,
+			);
+			path = Builder;
+			sourceTree = "<group>";
+		};
+		D13BDD702822795C00A31F2D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		D154AD432811E2D5003976CB /* AddCreditCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -495,6 +518,8 @@
 		D19A0DA3281FED4900483DDC /* UserInfo */ = {
 			isa = PBXGroup;
 			children = (
+				D13BDD6F2822795100A31F2D /* Builder */,
+				D13BDD702822795C00A31F2D /* Views */,
 				D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */,
 				D19A0DA6281FED6600483DDC /* UserInfoRouter.swift */,
 				D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */,
@@ -836,6 +861,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1C8A83E27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift in Sources */,
+				D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */,
 				D16EDD4C2808481D00A1E413 /* TLUpdateCallback.swift in Sources */,
 				D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */,
 				D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */,
@@ -894,6 +920,7 @@
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,
 				D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */,
 				D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */,
+				D13BDD7828227FCA00A31F2D /* SelectableView.swift in Sources */,
 				D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
 				D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */,
@@ -905,6 +932,7 @@
 				D135DCB327E76E090009D888 /* TLError.swift in Sources */,
 				D192AD8827E8F53900E3DC2A /* TosModel.swift in Sources */,
 				D120F2D627F21082009B30DD /* PrimaryButton.swift in Sources */,
+				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */,
 				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
