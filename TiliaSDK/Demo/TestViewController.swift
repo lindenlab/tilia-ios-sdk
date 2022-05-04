@@ -73,7 +73,7 @@ class TestViewController: UIViewController {
   
   static func attributedString(text: String, message: String) -> NSAttributedString? {
     guard !text.isEmpty && !message.isEmpty else { return nil }
-    let str = text + ": " + message
+    let str = text + ":\n" + message
     let attributedString = NSMutableAttributedString(string: str)
     attributedString.addAttribute(.foregroundColor,
                                   value: UIColor.black,
