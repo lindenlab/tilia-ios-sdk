@@ -37,16 +37,20 @@ final class TosRequiredForUserFlowTestViewController: TestViewController {
       guard let self = self else { return }
       switch result {
       case .success(let isTosSigned):
-        self.label.text = "State is \(isTosSigned)"
+        self.label.attributedText = Self.attributedString(text: "getTosRequiredForUser result",
+                                                          message: "\(isTosSigned)")
         if !isTosSigned {
           self.manager.presentTosIsRequiredViewController(on: self, animated: true) {
-            self.onCompleteLabel.text = $0.description
+            self.onCompleteLabel.attributedText = Self.attributedString(text: "onComplete callback",
+                                                                        message: $0.description)
           } onError: {
-            self.onErrorLabel.text = $0.description
+            self.onErrorLabel.attributedText = Self.attributedString(text: "onError callback",
+                                                                     message: $0.description)
           }
         }
       case .failure(let error):
-        self.label.text = error.localizedDescription
+        self.label.attributedText = Self.attributedString(text: "getTosRequiredForUser result",
+                                                          message: error.localizedDescription)
       }
     }
   }

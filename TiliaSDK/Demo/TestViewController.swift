@@ -71,4 +71,17 @@ class TestViewController: UIViewController {
     manager.setToken(accessTokenTextField.text ?? "")
   }
   
+  static func attributedString(text: String, message: String) -> NSAttributedString? {
+    guard !text.isEmpty && !message.isEmpty else { return nil }
+    let str = text + ": " + message
+    let attributedString = NSMutableAttributedString(string: str)
+    attributedString.addAttribute(.foregroundColor,
+                                  value: UIColor.black,
+                                  range: NSRange(location: 0, length: text.count + 1))
+    attributedString.addAttribute(.foregroundColor,
+                                  value: UIColor.lightGray,
+                                  range: NSRange(location: text.count + 2, length: message.count))
+    return attributedString
+  }
+  
 }
