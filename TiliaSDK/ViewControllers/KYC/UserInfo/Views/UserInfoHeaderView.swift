@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UserInfoHeaderViewDelegate: AnyObject {
-  func userInfoHeaderView(didSelect isSelected: Bool)
+  func userInfoHeaderView(didSelect isExpanded: Bool)
 }
 
 final class UserInfoHeaderView: UITableViewHeaderFooterView {
@@ -58,10 +58,6 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    return super.hitTest(point, with: event)
-  }
-  
   func configure(title: String,
                  mode: Mode,
                  delegate: UserInfoHeaderViewDelegate?) {
@@ -106,7 +102,7 @@ private extension UserInfoHeaderView {
   
   func setupMode() {
     isUserInteractionEnabled = mode.isEnabled
-    backgroundColor = mode.backgroundColor
+    contentView.backgroundColor = mode.backgroundColor
     isExpanded = mode.isExpanded
     divider.isHidden = mode.isDividerHidden
     titleLabel.textColor = mode.titleColor
