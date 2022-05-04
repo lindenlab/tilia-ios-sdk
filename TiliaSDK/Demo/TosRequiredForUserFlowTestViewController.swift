@@ -9,9 +9,26 @@ import UIKit
 
 final class TosRequiredForUserFlowTestViewController: TestViewController {
   
+  let onCompleteLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.text = "onComplete callback will be here"
+    return label
+  }()
+  
+  let onErrorLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.text = "onError callback will be here"
+    return label
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    label.text = "getTosRequiredForUser result will be here"
     button.setTitle("Run TOS flow", for: .normal)
+    stackView.addArrangedSubview(onCompleteLabel)
+    stackView.addArrangedSubview(onErrorLabel)
   }
   
   override func buttonTapped() {
@@ -23,9 +40,9 @@ final class TosRequiredForUserFlowTestViewController: TestViewController {
         self.label.text = "State is \(isTosSigned)"
         if !isTosSigned {
           self.manager.presentTosIsRequiredViewController(on: self, animated: true) {
-            self.label.text = $0.description
+            self.onCompleteLabel.text = $0.description
           } onError: {
-            self.label.text = $0.description
+            self.onErrorLabel.text = $0.description
           }
         }
       case .failure(let error):

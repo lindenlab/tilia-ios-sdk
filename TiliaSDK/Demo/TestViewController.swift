@@ -13,7 +13,6 @@ class TestViewController: UIViewController {
   
   let label: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 18)
     label.numberOfLines = 0
     label.text = "Result will be here"
     return label

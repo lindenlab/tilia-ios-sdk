@@ -17,22 +17,39 @@ final class CheckoutFlowTestViewController: TestViewController {
     return textField
   }()
   
+  let onCompleteLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.text = "onComplete callback will be here"
+    return label
+  }()
+  
+  let onErrorLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.text = "onError callback will be here"
+    return label
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
+    label.text = "onUpdate callback will be here"
     button.setTitle("Run Checkout flow", for: .normal)
     stackView.insertArrangedSubview(invoiceIdTextField, at: 1)
+    stackView.addArrangedSubview(onCompleteLabel)
+    stackView.addArrangedSubview(onErrorLabel)
   }
   
   override func buttonTapped() {
-    super.buttonTapped()
+    manager.setToken(accessTokenTextField.text ?? "")
     manager.presentCheckoutViewController(on: self,
                                           withInvoiceId: invoiceIdTextField.text ?? "",
                                           animated: true) { [weak self] in
       self?.label.text = $0.description
     } onComplete: { [weak self] in
-      self?.label.text = $0.description
+      self?.onCompleteLabel.text = $0.description
     } onError: { [weak self] in
-      self?.label.text = $0.description
+      self?.onErrorLabel.text = $0.description
     }
   }
   
