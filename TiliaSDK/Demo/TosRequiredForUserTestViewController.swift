@@ -9,6 +9,11 @@ import UIKit
 
 final class TosRequiredForUserTestViewController: TestViewController {
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    button.setTitle("Run getTosRequiredForUser", for: .normal)
+  }
+  
   override func buttonTapped() {
     super.buttonTapped()
     manager.getTosRequiredForUser { [weak self] result in
