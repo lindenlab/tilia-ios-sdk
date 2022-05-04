@@ -12,26 +12,47 @@ final class CheckoutFlowTestViewController: TestViewController {
   let invoiceIdTextField: UITextField = {
     let textField = UITextField()
     textField.borderStyle = .roundedRect
-    textField.placeholder = "Invoice id"
+    textField.placeholder = "Authorized invoice id"
     textField.accessibilityIdentifier = "invoiceIdTextField"
     return textField
   }()
   
+  let onCompleteLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.text = "onComplete callback will be here"
+    return label
+  }()
+  
+  let onErrorLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.text = "onError callback will be here"
+    return label
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    stackView.addArrangedSubview(invoiceIdTextField)
+    label.text = "onUpdate callback will be here"
+    button.setTitle("Run Checkout flow", for: .normal)
+    stackView.insertArrangedSubview(invoiceIdTextField, at: 1)
+    stackView.addArrangedSubview(onCompleteLabel)
+    stackView.addArrangedSubview(onErrorLabel)
   }
   
   override func buttonTapped() {
-    super.buttonTapped()
+    manager.setToken(accessTokenTextField.text ?? "")
     manager.presentCheckoutViewController(on: self,
                                           withInvoiceId: invoiceIdTextField.text ?? "",
                                           animated: true) { [weak self] in
-      self?.label.text = $0.description
+      self?.label.attributedText = Self.attributedString(text: "onUpdate callback",
+                                                         message: $0.description)
     } onComplete: { [weak self] in
-      self?.label.text = $0.description
+      self?.onCompleteLabel.attributedText = Self.attributedString(text: "onComplete callback",
+                                                                   message: $0.description)
     } onError: { [weak self] in
-      self?.label.text = $0.description
+      self?.onErrorLabel.attributedText = Self.attributedString(text: "onError callback",
+                                                                message: $0.description)
     }
   }
   

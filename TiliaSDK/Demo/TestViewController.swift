@@ -13,7 +13,6 @@ class TestViewController: UIViewController {
   
   let label: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 18)
     label.numberOfLines = 0
     label.text = "Result will be here"
     return label
@@ -22,7 +21,7 @@ class TestViewController: UIViewController {
   let accessTokenTextField: UITextField = {
     let textField = UITextField()
     textField.borderStyle = .roundedRect
-    textField.placeholder = "Access token"
+    textField.placeholder = "User access token"
     textField.accessibilityIdentifier = "accessTokenTextField"
     return textField
   }()
@@ -46,8 +45,8 @@ class TestViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
-    stackView.addArrangedSubview(label)
     stackView.addArrangedSubview(accessTokenTextField)
+    stackView.addArrangedSubview(label)
     view.addSubview(stackView)
     view.addSubview(button)
     button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -70,6 +69,27 @@ class TestViewController: UIViewController {
   @objc func buttonTapped() {
     label.text = "Loading...."
     manager.setToken(accessTokenTextField.text ?? "")
+  }
+  
+  static func attributedString(text: String, message: String) -> NSAttributedString? {
+    guard !text.isEmpty && !message.isEmpty else { return nil }
+    let date = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "YY, MMM d, HH:mm:ss"
+    let dateStr = dateFormatter.string(from: date)
+    let str = "\(text):\n\(dateStr)\n\(message)"
+    let attributedString = NSMutableAttributedString(string: str)
+    
+    attributedString.addAttribute(.foregroundColor,
+                                  value: UIColor.black,
+                                  range: (str as NSString).range(of: text))
+    attributedString.addAttribute(.foregroundColor,
+                                  value: UIColor.lightGray,
+                                  range: (str as NSString).range(of: dateStr))
+    attributedString.addAttribute(.foregroundColor,
+                                  value: UIColor.lightGray,
+                                  range: (str as NSString).range(of: message))
+    return attributedString
   }
   
 }
