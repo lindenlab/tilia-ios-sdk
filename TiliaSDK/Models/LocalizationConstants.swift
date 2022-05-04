@@ -40,5 +40,7 @@ enum L {
   static let goBack = "goBack".localized
   static let errorAddCreditTitle = "errorAddCreditTitle".localized
   static let errorAddCreditMessage = "errorAddCreditMessage".localized
+  static let userInfoTitle = "userInfoTitle".localized
+  static let userInfoMessage = "userInfoMessage".localized
   
 }
