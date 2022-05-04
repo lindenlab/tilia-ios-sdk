@@ -22,7 +22,7 @@ class TestViewController: UIViewController {
   let accessTokenTextField: UITextField = {
     let textField = UITextField()
     textField.borderStyle = .roundedRect
-    textField.placeholder = "Access token"
+    textField.placeholder = "User access token"
     textField.accessibilityIdentifier = "accessTokenTextField"
     return textField
   }()
@@ -46,8 +46,8 @@ class TestViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
-    stackView.addArrangedSubview(label)
     stackView.addArrangedSubview(accessTokenTextField)
+    stackView.addArrangedSubview(label)
     view.addSubview(stackView)
     view.addSubview(button)
     button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)

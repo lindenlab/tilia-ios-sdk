@@ -12,14 +12,15 @@ final class CheckoutFlowTestViewController: TestViewController {
   let invoiceIdTextField: UITextField = {
     let textField = UITextField()
     textField.borderStyle = .roundedRect
-    textField.placeholder = "Invoice id"
+    textField.placeholder = "Authorized invoice id"
     textField.accessibilityIdentifier = "invoiceIdTextField"
     return textField
   }()
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    stackView.addArrangedSubview(invoiceIdTextField)
+    button.setTitle("Run Checkout flow", for: .normal)
+    stackView.insertArrangedSubview(invoiceIdTextField, at: 1)
   }
   
   override func buttonTapped() {

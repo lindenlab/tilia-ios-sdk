@@ -9,6 +9,11 @@ import UIKit
 
 final class TosRequiredForUserFlowTestViewController: TestViewController {
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    button.setTitle("Run TOS flow", for: .normal)
+  }
+  
   override func buttonTapped() {
     super.buttonTapped()
     manager.getTosRequiredForUser { [weak self] result in
