@@ -35,7 +35,6 @@
 		D13BDD6E28207C5400A31F2D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD6D28207C5400A31F2D /* ButtonsView.swift */; };
 		D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */; };
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
-		D13BDD7828227FCA00A31F2D /* SelectableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD7728227FCA00A31F2D /* SelectableView.swift */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
 		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
@@ -168,7 +167,6 @@
 		D13BDD6D28207C5400A31F2D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionBuilder.swift; sourceTree = "<group>"; };
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
-		D13BDD7728227FCA00A31F2D /* SelectableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableView.swift; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
 		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
@@ -347,7 +345,6 @@
 				D19A0D95281FD9F700483DDC /* TitleInfoView.swift */,
 				D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */,
 				D13BDD6D28207C5400A31F2D /* ButtonsView.swift */,
-				D13BDD7728227FCA00A31F2D /* SelectableView.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -920,7 +917,6 @@
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,
 				D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */,
 				D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */,
-				D13BDD7828227FCA00A31F2D /* SelectableView.swift in Sources */,
 				D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
 				D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */,

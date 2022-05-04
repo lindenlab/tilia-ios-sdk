@@ -27,6 +27,7 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.register(TitleInfoHeaderFooterView.self)
+    tableView.register(UserInfoHeaderView.self)
     return tableView
   }()
   
@@ -42,6 +43,11 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setup()
   }
   
 }
@@ -61,7 +67,7 @@ extension UserInfoViewController: UIAdaptivePresentationControllerDelegate {
 extension UserInfoViewController: UITableViewDataSource {
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 0
+    return 1
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,7 +84,11 @@ extension UserInfoViewController: UITableViewDataSource {
 
 extension UserInfoViewController: UITableViewDelegate {
   
-  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view = tableView.dequeue(UserInfoHeaderView.self)
+    view.configure(title: "Title", mode: .normal, delegate: nil)
+    return view
+  }
   
 }
 
@@ -93,7 +103,7 @@ private extension UserInfoViewController {
       tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
       tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
       tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-      tableView.bottomAnchor.constraint(equalTo: divider.topAnchor),
+      tableView.bottomAnchor.constraint(equalTo: divider.topAnchor)
     ])
   }
   
