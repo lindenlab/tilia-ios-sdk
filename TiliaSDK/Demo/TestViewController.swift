@@ -73,14 +73,22 @@ class TestViewController: UIViewController {
   
   static func attributedString(text: String, message: String) -> NSAttributedString? {
     guard !text.isEmpty && !message.isEmpty else { return nil }
-    let str = text + ":\n" + message
+    let date = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "YY, MMM d, HH:mm:ss"
+    let dateStr = dateFormatter.string(from: date)
+    let str = "\(text):\n\(dateStr)\n\(message)"
     let attributedString = NSMutableAttributedString(string: str)
+    
     attributedString.addAttribute(.foregroundColor,
                                   value: UIColor.black,
-                                  range: NSRange(location: 0, length: text.count + 1))
+                                  range: (str as NSString).range(of: text))
     attributedString.addAttribute(.foregroundColor,
                                   value: UIColor.lightGray,
-                                  range: NSRange(location: text.count + 2, length: message.count))
+                                  range: (str as NSString).range(of: dateStr))
+    attributedString.addAttribute(.foregroundColor,
+                                  value: UIColor.lightGray,
+                                  range: (str as NSString).range(of: message))
     return attributedString
   }
   
