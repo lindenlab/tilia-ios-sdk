@@ -52,15 +52,21 @@ final class TosViewController: BaseViewController, LoadableProtocol {
     return textView
   }()
   
-  private lazy var buttonsView: ButtonsView = {
-    let view = ButtonsView()
-    view.primaryButtonText = L.accept
-    view.isPrimaryButtonEnabled = acceptSwitch.isOn
-    view.primaryButtonAccessibilityIdentifier = "acceptButton"
-    view.nonPrimaryButtonText = L.cancel
-    view.nonPrimaryButtonAccessibilityIdentifier = "cancelButton"
-    view.delegate = self
-    return view
+  private lazy var acceptButton: PrimaryButton = {
+    let button = PrimaryButton()
+    button.setTitle(L.accept, for: .normal)
+    button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
+    button.isEnabled = acceptSwitch.isOn
+    button.accessibilityIdentifier = "acceptButton"
+    return button
+  }()
+  
+  private lazy var cancelButton: NonPrimaryButton = {
+    let button = NonPrimaryButton()
+    button.setTitle(L.cancel, for: .normal)
+    button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "cancelButton"
+    return button
   }()
   
   private lazy var stackView: UIStackView = {
@@ -71,7 +77,8 @@ final class TosViewController: BaseViewController, LoadableProtocol {
     
     let stackView = UIStackView(arrangedSubviews: [titleLabel,
                                                    messageStackView,
-                                                   buttonsView])
+                                                   acceptButton,
+                                                   cancelButton])
     stackView.axis = .vertical
     stackView.spacing = 16
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -123,20 +130,6 @@ extension TosViewController: TextViewWithLinkDelegate {
   
 }
 
-// MARK: - ButtonsViewDelegate
-
-extension TosViewController: ButtonsViewDelegate {
-  
-  func buttonsViewPrimaryButtonDidTap(_ view: ButtonsView) {
-    viewModel.acceptTos()
-  }
-  
-  func buttonsViewPrimaryNonButtonDidTap(_ view: ButtonsView) {
-    router.dismiss { self.viewModel.complete() }
-  }
-  
-}
-
 // MARK: - Private Methods
 
 private extension TosViewController {
@@ -169,7 +162,15 @@ private extension TosViewController {
   }
   
   @objc func switchDidChange() {
-    buttonsView.isPrimaryButtonEnabled = acceptSwitch.isOn
+    acceptButton.isEnabled = acceptSwitch.isOn
+  }
+  
+  @objc func acceptButtonDidTap() {
+    viewModel.acceptTos()
+  }
+  
+  @objc func cancelButtonDidTap() {
+    router.dismiss { self.viewModel.complete() }
   }
   
 }
