@@ -9,6 +9,9 @@ import UIKit
 
 struct CheckoutSectionBuilder {
   
+  typealias CellDelegate = CheckoutPaymentMethodCellDelegate
+  typealias FooterDelegate = CheckoutPaymentFooterViewDelegate & TextViewWithLinkDelegate
+  
   struct Summary {
     
     struct Item {
@@ -68,7 +71,7 @@ struct CheckoutSectionBuilder {
   func cell(for section: Section,
             in tableView: UITableView,
             at indexPath: IndexPath,
-            delegate: CheckoutPaymentMethodCellDelegate?) -> UITableViewCell {
+            delegate: CellDelegate) -> UITableViewCell {
     switch section {
     case let .summary(invoiceModel):
       let item = invoiceModel.items[indexPath.row]
@@ -116,8 +119,7 @@ struct CheckoutSectionBuilder {
   
   func footer(for section: Section,
               in tableView: UITableView,
-              delegate: CheckoutPaymentFooterViewDelegate?,
-              textViewDelegate: TextViewWithLinkDelegate?) -> UIView {
+              delegate: FooterDelegate) -> UIView {
     switch section {
     case let .summary(model):
       let view = tableView.dequeue(CheckoutPayloadSummaryFooterView.self)
@@ -130,7 +132,7 @@ struct CheckoutSectionBuilder {
                      isPayButtonEnabled: model.isPayButtonEnabled,
                      isCreditCardButtonHidden: model.isCreditCardButtonHidden,
                      delegate: delegate,
-                     textViewDelegate: model.isEmpty ? nil : textViewDelegate)
+                     textViewDelegate: model.isEmpty ? nil : delegate)
       return view
     case .successfulPayment:
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)

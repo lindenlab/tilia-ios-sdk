@@ -45,7 +45,7 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
   
   private let imageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = .rowIcon?.withRenderingMode(.alwaysTemplate)
+    imageView.image = .bottomArrowIcon?.withRenderingMode(.alwaysTemplate)
     return imageView
   }()
   

@@ -110,8 +110,7 @@ extension CheckoutViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections[section],
                           in: tableView,
-                          delegate: self,
-                          textViewDelegate: self)
+                          delegate: self)
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

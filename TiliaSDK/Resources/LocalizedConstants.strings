@@ -31,3 +31,7 @@
 "errorAddCreditMessage" =  "Sorry, we were unable to process adding your credit card. Please try again later.";
 "userInfoTitle" = "We need a few things";
 "userInfoMessage" = "Before we’re able to complete this request, we need to get to know you a bit better. Please fill out the form below, it should only take a few minutes.";
+"location" = "Location";
+"countryOfResidence" = "Country of residence";
+"selectCountry" = "Select a country";
+"continueTitle" = "Continue";

@@ -15,7 +15,9 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
   
   private let viewModel: UserInfoViewModelProtocol
   private let router: UserInfoRoutingProtocol
+  private let builder = UserInfoSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
+  private var sections: [UserInfoSectionBuilder.Section] = []
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -28,6 +30,9 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.dataSource = self
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(UserInfoHeaderView.self)
+    tableView.register(NonPrimaryButtonWithImageCell.self)
+    tableView.tableHeaderView = builder.tableHeader()
+    tableView.tableFooterView = builder.tableFooter(delegate: self)
     return tableView
   }()
   
@@ -48,6 +53,14 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
   override func viewDidLoad() {
     super.viewDidLoad()
     setup()
+    bind()
+    viewModel.viewDidLoad()
+  }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    tableView.updateTableHeaderHeight()
+    tableView.updateTableFooterHeight()
   }
   
 }
@@ -57,7 +70,7 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
 extension UserInfoViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    
+    // TODO: - Add logic
   }
   
 }
@@ -67,15 +80,18 @@ extension UserInfoViewController: UIAdaptivePresentationControllerDelegate {
 extension UserInfoViewController: UITableViewDataSource {
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
+    return sections.count
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 0
+    return sections[section].numberOfRows
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return UITableViewCell()
+    return builder.cell(for: sections[indexPath.section],
+                        in: tableView,
+                        at: indexPath,
+                        delegate: self)
   }
   
 }
@@ -85,9 +101,49 @@ extension UserInfoViewController: UITableViewDataSource {
 extension UserInfoViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view = tableView.dequeue(UserInfoHeaderView.self)
-    view.configure(title: "Title", mode: .normal, delegate: nil)
-    return view
+    return builder.header(for: sections[section],
+                          in: tableView,
+                          delegate: self)
+  }
+  
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return builder.footer(for: sections[section],
+                          in: tableView,
+                          delegate: self)
+  }
+  
+}
+
+// MARK: - NonPrimaryButtonWithImageCellDelegate
+
+extension UserInfoViewController: NonPrimaryButtonWithImageCellDelegate {
+  
+  func nonPrimaryButtonWithImageCellButtonDidTap(_ cell: NonPrimaryButtonWithImageCell) {
+    // TODO: - Add logic
+  }
+  
+}
+
+// MARK: - UserInfoHeaderViewDelegate
+
+extension UserInfoViewController: UserInfoHeaderViewDelegate {
+  
+  func userInfoHeaderView(didSelect isExpanded: Bool) {
+    // TODO: - Add logic
+  }
+  
+}
+
+// MARK: - ButtonsViewDelegate
+
+extension UserInfoViewController: ButtonsViewDelegate {
+  
+  func buttonsViewPrimaryButtonDidTap(_ view: ButtonsView) {
+    
+  }
+  
+  func buttonsViewPrimaryNonButtonDidTap(_ view: ButtonsView) {
+    
   }
   
 }
@@ -105,6 +161,25 @@ private extension UserInfoViewController {
       tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       tableView.bottomAnchor.constraint(equalTo: divider.topAnchor)
     ])
+  }
+  
+  func bind() {
+    viewModel.loading.sink { [weak self] in
+      guard let self = self else { return }
+      $0 ? self.startLoading() : self.stopLoading()
+    }.store(in: &subscriptions)
+    
+    viewModel.error.sink { [weak self] _ in
+      guard let self = self else { return }
+      self.router.showToast(title: L.errorPaymentTitle,
+                            message: L.errorPaymentMessage)
+    }.store(in: &subscriptions)
+    
+    viewModel.content.sink { [weak self] _ in
+      guard let self = self else { return }
+      self.sections = self.builder.sections()
+      self.tableView.reloadData()
+    }.store(in: &subscriptions)
   }
   
 }

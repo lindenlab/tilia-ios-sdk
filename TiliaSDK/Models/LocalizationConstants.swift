@@ -42,5 +42,9 @@ enum L {
   static let errorAddCreditMessage = "errorAddCreditMessage".localized
   static let userInfoTitle = "userInfoTitle".localized
   static let userInfoMessage = "userInfoMessage".localized
+  static let location = "location".localized
+  static let countryOfResidence = "countryOfResidence".localized
+  static let selectCountry = "selectCountry".localized
+  static let continueTitle = "continueTitle".localized
   
 }
