@@ -40,6 +40,9 @@
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
 		D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD482811E320003976CB /* AddCreditCardViewController.swift */; };
 		D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD4A2811E785003976CB /* BaseViewController.swift */; };
+		D16D569F28251CDD0088FB3D /* NonPrimaryButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithImage.swift */; };
+		D16D56A1282537F70088FB3D /* NonPrimaryButtonWithImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A0282537F70088FB3D /* NonPrimaryButtonWithImageCell.swift */; };
+		D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A2282538F00088FB3D /* TitleBaseCell.swift */; };
 		D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */; };
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
@@ -172,6 +175,9 @@
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
 		D154AD482811E320003976CB /* AddCreditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewController.swift; sourceTree = "<group>"; };
 		D154AD4A2811E785003976CB /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPrimaryButtonWithImage.swift; sourceTree = "<group>"; };
+		D16D56A0282537F70088FB3D /* NonPrimaryButtonWithImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPrimaryButtonWithImageCell.swift; sourceTree = "<group>"; };
+		D16D56A2282538F00088FB3D /* TitleBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBaseCell.swift; sourceTree = "<group>"; };
 		D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLErrorCallback.swift; sourceTree = "<group>"; };
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
@@ -339,12 +345,15 @@
 				D1BA29E127FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift */,
 				D120F2D527F21082009B30DD /* PrimaryButton.swift */,
 				D1CCE8BF27F3927F00FD0E25 /* NonPrimaryButton.swift */,
+				D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithImage.swift */,
 				D1C8A83527F4F5D100BF2910 /* DividerView.swift */,
 				D1D5B54127F7675C00E04EE1 /* RadioButton.swift */,
 				D1BA29F628009D5700F046E8 /* ToastView.swift */,
 				D19A0D95281FD9F700483DDC /* TitleInfoView.swift */,
 				D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */,
 				D13BDD6D28207C5400A31F2D /* ButtonsView.swift */,
+				D16D56A2282538F00088FB3D /* TitleBaseCell.swift */,
+				D16D56A0282537F70088FB3D /* NonPrimaryButtonWithImageCell.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -869,6 +878,7 @@
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */,
+				D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */,
 				D124DA1727F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift in Sources */,
 				D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */,
 				D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */,
@@ -907,6 +917,7 @@
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,
+				D16D569F28251CDD0088FB3D /* NonPrimaryButtonWithImage.swift in Sources */,
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
 				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
@@ -926,6 +937,7 @@
 				D135DCAF27E763130009D888 /* TLEnvironment.swift in Sources */,
 				D1BA29E227FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift in Sources */,
 				D135DCB327E76E090009D888 /* TLError.swift in Sources */,
+				D16D56A1282537F70088FB3D /* NonPrimaryButtonWithImageCell.swift in Sources */,
 				D192AD8827E8F53900E3DC2A /* TosModel.swift in Sources */,
 				D120F2D627F21082009B30DD /* PrimaryButton.swift in Sources */,
 				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
