@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UserInfoHeaderViewDelegate: AnyObject {
-  func userInfoHeaderView(didSelect isExpanded: Bool)
+  func userInfoHeaderView(didExpand isExpanded: Bool)
 }
 
 final class UserInfoHeaderView: UITableViewHeaderFooterView {
@@ -122,6 +122,7 @@ private extension UserInfoHeaderView {
       self.imageView.transform = self.isExpanded ? CGAffineTransform(rotationAngle: CGFloat.pi) : .identity
     }
     mode = isExpanded ? .expanded : .normal
+    delegate?.userInfoHeaderView(didExpand: isExpanded)
   }
   
 }

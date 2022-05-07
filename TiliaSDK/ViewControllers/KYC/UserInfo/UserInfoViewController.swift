@@ -31,6 +31,7 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(UserInfoHeaderView.self)
     tableView.register(NonPrimaryButtonWithImageCell.self)
+    tableView.register(UserInfoFooterView.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.tableFooterView = builder.tableFooter(delegate: self)
     return tableView
@@ -128,8 +129,18 @@ extension UserInfoViewController: NonPrimaryButtonWithImageCellDelegate {
 
 extension UserInfoViewController: UserInfoHeaderViewDelegate {
   
-  func userInfoHeaderView(didSelect isExpanded: Bool) {
+  func userInfoHeaderView(didExpand isExpanded: Bool) {
     // TODO: - Add logic
+  }
+  
+}
+
+// MARK: - UserInfoFooterViewDelegate
+
+extension UserInfoViewController: UserInfoFooterViewDelegate {
+  
+  func userInfoFooterViewButtonDidTap(_ footer: UserInfoFooterView) {
+    
   }
   
 }

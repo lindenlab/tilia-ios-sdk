@@ -11,7 +11,7 @@ struct UserInfoSectionBuilder {
   
   typealias CellDelegate = NonPrimaryButtonWithImageCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
-  typealias SectionFooterDelegate = Any
+  typealias SectionFooterDelegate = UserInfoFooterViewDelegate
   typealias TableFooterDelegate = ButtonsViewDelegate
   
   struct Section {
@@ -49,10 +49,10 @@ struct UserInfoSectionBuilder {
     
     let title: String
     let mode: UserInfoHeaderView.Mode
+    let isNextButtonEnabled: Bool
     let items: [Item]
     
     var isExpanded: Bool { return mode == .expanded }
-    
     var numberOfRows: Int { return isExpanded ? items.count : 0 }
   }
   
@@ -85,7 +85,14 @@ struct UserInfoSectionBuilder {
   func footer(for section: Section,
               in tableView: UITableView,
               delegate: SectionFooterDelegate) -> UIView? {
-    return nil // TODO: - Add logic
+    if section.isExpanded {
+      let view = tableView.dequeue(UserInfoFooterView.self)
+      view.configure(isButtonEnabled: section.isNextButtonEnabled,
+                     delegate: delegate)
+      return view
+    } else {
+      return nil
+    }
   }
   
   func tableHeader() -> UIView {
@@ -140,6 +147,7 @@ private extension UserInfoSectionBuilder {
                                      buttonTitle: nil)
     return Section(title: L.location,
                    mode: .normal,
+                   isNextButtonEnabled: true,
                    items: [.button(button)])
   }
   

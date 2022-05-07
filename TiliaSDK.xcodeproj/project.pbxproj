@@ -44,6 +44,7 @@
 		D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A2282538F00088FB3D /* TitleBaseCell.swift */; };
 		D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A4282560DC0088FB3D /* ButtonsView.swift */; };
 		D16D56A7282593D20088FB3D /* PrimaryButtonWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A6282593D20088FB3D /* PrimaryButtonWithImage.swift */; };
+		D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */; };
 		D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */; };
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
@@ -180,6 +181,7 @@
 		D16D56A2282538F00088FB3D /* TitleBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBaseCell.swift; sourceTree = "<group>"; };
 		D16D56A4282560DC0088FB3D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		D16D56A6282593D20088FB3D /* PrimaryButtonWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonWithImage.swift; sourceTree = "<group>"; };
+		D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoFooterView.swift; sourceTree = "<group>"; };
 		D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLErrorCallback.swift; sourceTree = "<group>"; };
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
@@ -474,6 +476,7 @@
 			isa = PBXGroup;
 			children = (
 				D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */,
+				D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -947,6 +950,7 @@
 				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */,
 				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,
+				D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,
 				D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */,
