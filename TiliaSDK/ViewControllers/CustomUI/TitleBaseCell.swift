@@ -33,11 +33,11 @@ class TitleBaseCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String) {
+  final func configure(title: String) {
     titleLabel.text = title
   }
   
-  func addChildView(_ view: UIView, spacing: CGFloat = 8) {
+  final func addChildView(_ view: UIView, spacing: CGFloat = 8) {
     stackView.addArrangedSubview(view)
     stackView.setCustomSpacing(spacing, after: view)
   }

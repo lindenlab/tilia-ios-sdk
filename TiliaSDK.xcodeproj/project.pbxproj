@@ -53,6 +53,8 @@
 		D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165A27E7C0C50082A85B /* PaymentRouter.swift */; };
 		D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */; };
 		D18855E1282700D400BAC86F /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18855E0282700D400BAC86F /* UserInfoModel.swift */; };
+		D18855E3282910A200BAC86F /* TextFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18855E2282910A200BAC86F /* TextFieldsCell.swift */; };
+		D18855E9282912B400BAC86F /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18855E8282912B400BAC86F /* RoundedTextField.swift */; };
 		D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EC2806052200A25DBD /* TosFlowUITests.swift */; };
 		D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */; };
 		D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */; };
@@ -191,6 +193,8 @@
 		D188165A27E7C0C50082A85B /* PaymentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRouter.swift; sourceTree = "<group>"; };
 		D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouter.swift; sourceTree = "<group>"; };
 		D18855E0282700D400BAC86F /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
+		D18855E2282910A200BAC86F /* TextFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldsCell.swift; sourceTree = "<group>"; };
+		D18855E8282912B400BAC86F /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
 		D190A3EC2806052200A25DBD /* TosFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosFlowUITests.swift; sourceTree = "<group>"; };
 		D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowUITests.swift; sourceTree = "<group>"; };
 		D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModelTests.swift; sourceTree = "<group>"; };
@@ -361,6 +365,8 @@
 				D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */,
 				D16D56A2282538F00088FB3D /* TitleBaseCell.swift */,
 				D16D56A0282537F70088FB3D /* NonPrimaryButtonWithImageCell.swift */,
+				D18855E8282912B400BAC86F /* RoundedTextField.swift */,
+				D18855E2282910A200BAC86F /* TextFieldsCell.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -881,6 +887,7 @@
 				D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */,
 				D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */,
 				D1C8A84227F5E42500BF2910 /* LocalizationConstants.swift in Sources */,
+				D18855E3282910A200BAC86F /* TextFieldsCell.swift in Sources */,
 				D18855E1282700D400BAC86F /* UserInfoModel.swift in Sources */,
 				D1CCE8D627F4C5CF00FD0E25 /* TosRequiredForUserTestViewController.swift in Sources */,
 				D1C8A84427F5E49600BF2910 /* String+Localization.swift in Sources */,
@@ -916,6 +923,7 @@
 				D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */,
 				D1BA29E027FCA96B00F046E8 /* ColorsConfiguration.swift in Sources */,
 				D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */,
+				D18855E9282912B400BAC86F /* RoundedTextField.swift in Sources */,
 				D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */,
 				D1C8A84027F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift in Sources */,
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
