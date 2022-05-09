@@ -20,23 +20,36 @@ final class NonPrimaryButtonWithImage: NonPrimaryButton {
       setTitle(title(for: .normal), for: .normal)
     }
   }
-    
+  
+  private let style: Style
+  
   init(frame: CGRect = .zero, style: Style) {
+    self.style = style
     super.init(frame: frame)
     switch style {
     case .titleAndImageFill:
-      contentHorizontalAlignment = .fill
+      contentHorizontalAlignment = .left
+      semanticContentAttribute = .forceRightToLeft
     case .titleAndImageCenter:
       semanticContentAttribute = .forceRightToLeft
       imageEdgeInsets.left = 12
     case .imageAndTitleCenter:
       imageEdgeInsets.right = 12
-      semanticContentAttribute = .forceLeftToRight
     }
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    guard style == .titleAndImageFill else { return }
+    let contentHorizontalInset = contentEdgeInsets.left + contentEdgeInsets.right
+    let titleLabelWidth = titleLabel?.frame.width ?? 0
+    let imageViewWidth = imageView?.frame.width ?? 0
+    let inset = frame.width - contentHorizontalInset - titleLabelWidth - imageViewWidth
+    imageEdgeInsets.left = inset
   }
   
   override func setTitle(_ title: String?, for state: UIControl.State) {

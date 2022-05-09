@@ -22,7 +22,6 @@ final class PrimaryButtonWithImage: PrimaryButton {
       imageEdgeInsets.left = 12
     case .imageAndTitleCenter:
       imageEdgeInsets.right = 12
-      semanticContentAttribute = .forceLeftToRight
     }
   }
   
