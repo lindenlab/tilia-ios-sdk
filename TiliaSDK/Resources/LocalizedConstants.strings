@@ -50,6 +50,7 @@
 "apartment" = "Apt., ste., bldg.";
 "city" = "City";
 "state" = "State";
+"stateOrRegion" = "State / Region";
 "selectState" = "Select a state";
 "postalCode" = "Postal code";
 "useAddressFor1099" = "Can we use this address for your 1099?";

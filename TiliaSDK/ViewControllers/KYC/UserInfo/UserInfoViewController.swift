@@ -36,6 +36,7 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.register(TextFieldCell.self)
     tableView.register(TwoTextFieldsCell.self)
     tableView.register(ThreeTextFieldsCell.self)
+    tableView.register(LabelCell.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.tableFooterView = builder.tableFooter(delegate: self)
     return tableView
@@ -149,7 +150,7 @@ extension UserInfoViewController: UserInfoHeaderViewDelegate {
   
   func userInfoHeaderView(_ header: UserInfoHeaderView, willExpand isExpanded: Bool) {
     guard let index = getHeaderIndex(header) else { return }
-    viewModel.expandSection(at: index,
+    viewModel.updateSection(at: index,
                             isExpanded: isExpanded)
   }
   

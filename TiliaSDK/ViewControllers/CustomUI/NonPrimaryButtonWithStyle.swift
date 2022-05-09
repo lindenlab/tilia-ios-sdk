@@ -1,5 +1,5 @@
 //
-//  NonPrimaryButtonWithImage.swift
+//  NonPrimaryButtonWithStyle.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 06.05.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NonPrimaryButtonWithImage: NonPrimaryButton {
+final class NonPrimaryButtonWithStyle: NonPrimaryButton {
   
   enum Style {
     case titleAndImageFill
@@ -23,7 +23,7 @@ final class NonPrimaryButtonWithImage: NonPrimaryButton {
   
   private let style: Style
   
-  init(frame: CGRect = .zero, style: Style) {
+  init(_ style: Style, frame: CGRect = .zero) {
     self.style = style
     super.init(frame: frame)
     switch style {
@@ -55,6 +55,7 @@ final class NonPrimaryButtonWithImage: NonPrimaryButton {
   override func setTitle(_ title: String?, for state: UIControl.State) {
     super.setTitle(title ?? placeholder, for: state)
     setTitleColor(title == nil ? .borderColor : .primaryTextColor, for: .normal)
+    titleLabel?.font = title == nil ? .systemFont(ofSize: 16) : .boldSystemFont(ofSize: 16)
   }
   
 }

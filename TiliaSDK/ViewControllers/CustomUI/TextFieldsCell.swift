@@ -13,7 +13,7 @@ protocol TextFieldsCellDelegate: AnyObject {
 
 class TextFieldsCell: TitleBaseCell {
   
-  typealias Content = (placeholder: String, text: String?)
+  typealias Content = (placeholder: String?, text: String?)
   
   var textFields: [RoundedTextField] { return [] } // Need to override in child class, default is empty
   

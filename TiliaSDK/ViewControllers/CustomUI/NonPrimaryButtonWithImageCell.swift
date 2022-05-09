@@ -15,10 +15,18 @@ final class NonPrimaryButtonWithImageCell: TitleBaseCell {
   
   private weak var delegate: NonPrimaryButtonWithImageCellDelegate?
   
-  private let button: NonPrimaryButtonWithImage = {
-    let button = NonPrimaryButtonWithImage(style: .titleAndImageFill)
+  private let button: NonPrimaryButtonWithStyle = {
+    let button = NonPrimaryButtonWithStyle(.titleAndImageFill)
     button.setImage(.bottomArrowIcon, for: .normal)
     return button
+  }()
+  
+  private let label: UILabel = {
+    let label = UILabel()
+    label.font = .systemFont(ofSize: 14)
+    label.textColor = .tertiaryTextColor
+    label.numberOfLines = 0
+    return label
   }()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -32,9 +40,12 @@ final class NonPrimaryButtonWithImageCell: TitleBaseCell {
   
   func configure(buttonPlaceholder: String,
                  buttonTitle: String?,
+                 description: String?,
                  delegate: NonPrimaryButtonWithImageCellDelegate?) {
     button.placeholder = buttonPlaceholder
     button.setTitle(buttonTitle, for: .normal)
+    label.text = description
+    label.isHidden = description == nil
     self.delegate = delegate
   }
   
@@ -47,6 +58,7 @@ private extension NonPrimaryButtonWithImageCell {
   func setup() {
     button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
     addChildView(button)
+    addChildView(label)
   }
   
   @objc func buttonDidTap() {

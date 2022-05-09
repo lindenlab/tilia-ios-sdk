@@ -15,8 +15,8 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
   
   private weak var delegate: UserInfoFooterViewDelegate?
   
-  private lazy var button: NonPrimaryButtonWithImage = {
-    let button = NonPrimaryButtonWithImage(style: .titleAndImageCenter)
+  private lazy var button: NonPrimaryButtonWithStyle = {
+    let button = NonPrimaryButtonWithStyle(.titleAndImageCenter)
     button.setTitle(L.next,
                     for: .normal)
     button.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),

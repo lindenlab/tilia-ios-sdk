@@ -61,6 +61,7 @@ enum L {
   static let apartment = "apartment".localized
   static let city = "city".localized
   static let state = "state".localized
+  static let stateOrRegion = "stateOrRegion".localized
   static let selectState = "selectState".localized
   static let postalCode = "postalCode".localized
   static let useAddressFor1099 = "useAddressFor1099".localized

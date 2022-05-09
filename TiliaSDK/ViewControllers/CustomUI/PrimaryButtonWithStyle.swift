@@ -1,5 +1,5 @@
 //
-//  PrimaryButtonWithImage.swift
+//  PrimaryButtonWithStyle.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 06.05.2022.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-final class PrimaryButtonWithImage: PrimaryButton {
+final class PrimaryButtonWithStyle: PrimaryButton {
   
   enum Style {
     case titleAndImageCenter
     case imageAndTitleCenter
   }
   
-  init(frame: CGRect = .zero, style: Style) {
+  init(_ style: Style, frame: CGRect = .zero) {
     super.init(frame: frame)
     switch style {
     case .titleAndImageCenter:

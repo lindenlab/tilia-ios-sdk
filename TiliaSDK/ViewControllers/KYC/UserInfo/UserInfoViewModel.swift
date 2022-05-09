@@ -11,7 +11,7 @@ typealias UserInfoSection = (index: Int, isExpanded: Bool, model: UserInfoModel)
 
 protocol UserInfoViewModelInputProtocol {
   func viewDidLoad()
-  func expandSection(at index: Int, isExpanded: Bool)
+  func updateSection(at index: Int, isExpanded: Bool)
 }
 
 protocol UserInfoViewModelOutputProtocol {
@@ -43,7 +43,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
     content.send(())// TODO: - Fix this
   }
   
-  func expandSection(at index: Int, isExpanded: Bool) {
+  func updateSection(at index: Int, isExpanded: Bool) {
     section.send((index, isExpanded, userInfoModel))
   }
   
