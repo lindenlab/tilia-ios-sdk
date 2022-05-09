@@ -56,5 +56,14 @@ enum L {
   static let dateOfBirth = "dateOfBirth".localized
   static let ssn = "ssn".localized
   static let fullName = "fullName".localized
-  
+  static let address = "address".localized
+  static let streetAddress = "streetAddress".localized
+  static let apartment = "apartment".localized
+  static let city = "city".localized
+  static let state = "state".localized
+  static let selectState = "selectState".localized
+  static let postalCode = "postalCode".localized
+  static let useAddressFor1099 = "useAddressFor1099".localized
+  static let useAddressFor1099Description = "useAddressFor1099Description".localized
+  static let selectAnswer = "selectAnswer".localized
 }
