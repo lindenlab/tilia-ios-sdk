@@ -28,10 +28,14 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.delaysContentTouches = false
     tableView.delegate = self
     tableView.dataSource = self
+    tableView.addClosingKeyboardOnTap()
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(UserInfoHeaderView.self)
     tableView.register(NonPrimaryButtonWithImageCell.self)
     tableView.register(UserInfoFooterView.self)
+    tableView.register(TextFieldCell.self)
+    tableView.register(TwoTextFieldsCell.self)
+    tableView.register(ThreeTextFieldsCell.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.tableFooterView = builder.tableFooter(delegate: self)
     return tableView
@@ -129,6 +133,16 @@ extension UserInfoViewController: NonPrimaryButtonWithImageCellDelegate {
   
 }
 
+// MARK: - TextFieldsCellDelegate
+
+extension UserInfoViewController: TextFieldsCellDelegate {
+  
+  func textFieldsCell(_ cell: TextFieldsCell, didEndEditingWith text: String?, at index: Int) {
+    
+  }
+  
+}
+
 // MARK: - UserInfoHeaderViewDelegate
 
 extension UserInfoViewController: UserInfoHeaderViewDelegate {
@@ -160,7 +174,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
   }
   
   func buttonsViewPrimaryNonButtonDidTap(_ view: ButtonsView) {
-    
+    router.dismiss()
   }
   
 }

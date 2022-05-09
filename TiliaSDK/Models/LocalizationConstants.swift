@@ -49,5 +49,12 @@ enum L {
   static let personal = "personal".localized
   static let contact = "contact".localized
   static let next = "next".localized
+  static let firstName = "firstName".localized
+  static let middleName = "middleName".localized
+  static let lastName = "lastName".localized
+  static let selectDateOfBirth = "selectDateOfBirth".localized
+  static let dateOfBirth = "dateOfBirth".localized
+  static let ssn = "ssn".localized
+  static let fullName = "fullName".localized
   
 }

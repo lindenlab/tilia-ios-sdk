@@ -88,11 +88,15 @@ private extension UserInfoHeaderView {
     
     let topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
     topConstraint.priority = UILayoutPriority(999)
+    
+    let rightConstraint = stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
+    rightConstraint.priority = UILayoutPriority(999)
+    
     NSLayoutConstraint.activate([
       topConstraint,
+      rightConstraint,
       stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-      stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
       divider.topAnchor.constraint(equalTo: topAnchor),
       divider.leftAnchor.constraint(equalTo: leftAnchor),
       divider.rightAnchor.constraint(equalTo: rightAnchor)

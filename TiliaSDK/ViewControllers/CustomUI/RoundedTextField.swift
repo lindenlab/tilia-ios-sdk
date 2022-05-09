@@ -9,6 +9,10 @@ import UIKit
 
 final class RoundedTextField: UITextField {
   
+  override var intrinsicContentSize: CGSize {
+    return CGSize(width: super.intrinsicContentSize.width, height: 44)
+  }
+  
   override var placeholder: String? {
     didSet {
       setupAttributedPlaceholder()
@@ -25,11 +29,11 @@ final class RoundedTextField: UITextField {
   }
   
   override func textRect(forBounds bounds: CGRect) -> CGRect {
-    return bounds.insetBy(dx: 16, dy: 16)
+    return bounds.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
   }
   
   override func editingRect(forBounds bounds: CGRect) -> CGRect {
-    return bounds.insetBy(dx: 16, dy: 16)
+    return bounds.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
   }
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

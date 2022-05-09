@@ -30,6 +30,10 @@ struct UserInfoModel {
   var address: Address
   var canUseAddressFor1099: Bool?
   
+  var isUsResident: Bool {
+    return true
+  }
+  
   init(countryOfResidence: String? = nil,
        fullName: FullName = FullName(),
        dateOfBirth: Date? = nil,

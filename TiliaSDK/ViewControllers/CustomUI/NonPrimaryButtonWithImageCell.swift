@@ -30,11 +30,9 @@ final class NonPrimaryButtonWithImageCell: TitleBaseCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String,
-                 buttonPlaceholder: String,
+  func configure(buttonPlaceholder: String,
                  buttonTitle: String?,
                  delegate: NonPrimaryButtonWithImageCellDelegate?) {
-    configure(title: title)
     button.placeholder = buttonPlaceholder
     button.setTitle(buttonTitle, for: .normal)
     self.delegate = delegate

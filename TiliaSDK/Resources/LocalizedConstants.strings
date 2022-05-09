@@ -38,3 +38,10 @@
 "personal" = "Personal";
 "contact" = "Contact";
 "next" = "Next";
+"firstName" = "First name";
+"middleName" = "M.I.";
+"lastName" = "Last name";
+"selectDateOfBirth" = "Select date of birth";
+"dateOfBirth" = "Date of birth";
+"ssn" = "SSN";
+"fullName" = "Full name";
