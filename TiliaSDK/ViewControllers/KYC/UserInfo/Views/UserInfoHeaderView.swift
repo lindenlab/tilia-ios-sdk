@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UserInfoHeaderViewDelegate: AnyObject {
-  func userInfoHeaderView(didExpand isExpanded: Bool)
+  func userInfoHeaderView(_ header: UserInfoHeaderView, willExpand isExpanded: Bool)
 }
 
 final class UserInfoHeaderView: UITableViewHeaderFooterView {
@@ -64,7 +64,6 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
     self.mode = mode
     titleLabel.text = title
     self.delegate = delegate
-    setupImageView()
   }
   
 }
@@ -107,9 +106,6 @@ private extension UserInfoHeaderView {
     divider.isHidden = mode.isDividerHidden
     titleLabel.textColor = mode.titleColor
     imageView.tintColor = mode.iconColor
-  }
-  
-  func setupImageView() {
     imageView.transform = .identity
     if isExpanded {
       imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
@@ -117,12 +113,7 @@ private extension UserInfoHeaderView {
   }
   
   @objc func didTap() {
-    isExpanded.toggle()
-    UIView.animate(withDuration: 0.3) {
-      self.imageView.transform = self.isExpanded ? CGAffineTransform(rotationAngle: CGFloat.pi) : .identity
-    }
-    mode = isExpanded ? .expanded : .normal
-    delegate?.userInfoHeaderView(didExpand: isExpanded)
+    delegate?.userInfoHeaderView(self, willExpand: !isExpanded)
   }
   
 }

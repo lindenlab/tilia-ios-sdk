@@ -46,5 +46,8 @@ enum L {
   static let countryOfResidence = "countryOfResidence".localized
   static let selectCountry = "selectCountry".localized
   static let continueTitle = "continueTitle".localized
+  static let personal = "personal".localized
+  static let contact = "contact".localized
+  static let next = "next".localized
   
 }

@@ -17,10 +17,12 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
   
   private lazy var button: NonPrimaryButtonWithImage = {
     let button = NonPrimaryButtonWithImage(style: .titleAndImageCenter)
-    button.setTitle(L.cancel,
+    button.setTitle(L.next,
                     for: .normal)
     button.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
+    button.setBackgroundColor(.backgroundColor, for: .disabled)
+    button.setTitleColor(.borderColor, for: .disabled)
     button.imageView?.tintColor = .primaryTextColor
     button.translatesAutoresizingMaskIntoConstraints = false
     button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
@@ -30,6 +32,15 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
   func configure(isButtonEnabled: Bool, delegate: UserInfoFooterViewDelegate?) {
     button.isEnabled = isButtonEnabled
     self.delegate = delegate
+  }
+  
+  override init(reuseIdentifier: String?) {
+    super.init(reuseIdentifier: reuseIdentifier)
+    setup()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
 }

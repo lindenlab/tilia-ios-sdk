@@ -16,6 +16,20 @@ struct UserInfoSectionBuilder {
   
   struct Section {
     
+    enum SectionType: CaseIterable {
+      case location
+      case personal
+      case contact
+      
+      var title: String {
+        switch self {
+        case .location: return L.location
+        case .personal: return L.personal
+        case .contact: return L.contact
+        }
+      }
+    }
+    
     enum Item {
       
       struct Button {
@@ -44,16 +58,19 @@ struct UserInfoSectionBuilder {
       case threeFields(ThreeFields)
       case twoFields(TwoFields)
       case field(Field)
-      
     }
     
-    let title: String
-    let mode: UserInfoHeaderView.Mode
+    let type: SectionType
+    var mode: UserInfoHeaderView.Mode
     let isNextButtonEnabled: Bool
-    let items: [Item]
+    var items: [Item]
     
     var isExpanded: Bool { return mode == .expanded }
-    var numberOfRows: Int { return isExpanded ? items.count : 0 }
+    var numberOfRows: Int { return items.count }
+    
+    var heightForFooter: CGFloat {
+      return isExpanded ? UITableView.automaticDimension : .leastNormalMagnitude
+    }
   }
   
   func cell(for section: Section,
@@ -76,7 +93,7 @@ struct UserInfoSectionBuilder {
               in tableView: UITableView,
               delegate: SectionHeaderDelegate) -> UIView {
     let view = tableView.dequeue(UserInfoHeaderView.self)
-    view.configure(title: section.title,
+    view.configure(title: section.type.title,
                    mode: section.mode,
                    delegate: delegate)
     return view
@@ -130,25 +147,30 @@ struct UserInfoSectionBuilder {
   }
   
   func sections() -> [Section] {
-    return [
-      locationSection()
-    ]
+    return Section.SectionType.allCases.map {
+      return Section(type: $0,
+                     mode: .normal,
+                     isNextButtonEnabled: false,
+                     items: [])
+    }
   }
   
-}
-
-// MARK: - Private Methods
-
-private extension UserInfoSectionBuilder {
-  
-  func locationSection() -> Section {
-    let button = Section.Item.Button(title: L.countryOfResidence,
-                                     buttonPlaceholder: L.selectCountry,
-                                     buttonTitle: nil)
-    return Section(title: L.location,
-                   mode: .normal,
-                   isNextButtonEnabled: true,
-                   items: [.button(button)])
+  func updateSection(_ section: inout Section, with model: UserInfoModel, isExpanded: Bool) {
+    if isExpanded {
+      section.mode = .expanded
+      switch section.type {
+      case .location:
+        let button = Section.Item.Button(title: L.countryOfResidence,
+                                         buttonPlaceholder: L.selectCountry,
+                                         buttonTitle: model.countryOfResidence)
+        section.items = [.button(button)]
+      case .personal: ()
+      case .contact: ()
+      }
+    } else {
+      section.mode = .normal
+      section.items = []
+    }
   }
   
 }

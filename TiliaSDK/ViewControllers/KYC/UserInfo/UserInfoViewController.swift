@@ -113,6 +113,10 @@ extension UserInfoViewController: UITableViewDelegate {
                           delegate: self)
   }
   
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return sections[section].heightForFooter
+  }
+  
 }
 
 // MARK: - NonPrimaryButtonWithImageCellDelegate
@@ -129,8 +133,10 @@ extension UserInfoViewController: NonPrimaryButtonWithImageCellDelegate {
 
 extension UserInfoViewController: UserInfoHeaderViewDelegate {
   
-  func userInfoHeaderView(didExpand isExpanded: Bool) {
-    // TODO: - Add logic
+  func userInfoHeaderView(_ header: UserInfoHeaderView, willExpand isExpanded: Bool) {
+    guard let index = getHeaderIndex(header) else { return }
+    viewModel.expandSection(at: index,
+                            isExpanded: isExpanded)
   }
   
 }
@@ -191,6 +197,20 @@ private extension UserInfoViewController {
       self.sections = self.builder.sections()
       self.tableView.reloadData()
     }.store(in: &subscriptions)
+    
+    viewModel.section.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.sections[$0.index],
+                                 with: $0.model,
+                                 isExpanded: $0.isExpanded)
+      self.tableView.reloadSections([$0.index], with: .fade)
+    }.store(in: &subscriptions)
+  }
+  
+  func getHeaderIndex(_ header: UITableViewHeaderFooterView) -> Int? {
+    sections.indices.firstIndex {
+      return tableView.headerView(forSection: $0) === header
+    }
   }
   
 }
