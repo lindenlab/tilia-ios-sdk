@@ -212,12 +212,18 @@ private extension UserInfoViewController {
       self.tableView.reloadData()
     }.store(in: &subscriptions)
     
-    viewModel.section.sink { [weak self] in
+    viewModel.section.sink { [weak self] item in
       guard let self = self else { return }
-      self.builder.updateSection(&self.sections[$0.index],
-                                 with: $0.model,
-                                 isExpanded: $0.isExpanded)
-      self.tableView.reloadSections([$0.index], with: .fade)
+      self.builder.updateSection(&self.sections[item.index],
+                                 with: item.model,
+                                 isExpanded: item.isExpanded)
+      self.tableView.performBatchUpdates {
+        self.tableView.reloadSections([item.index], with: .fade)
+      } completion: { _ in
+        if item.isExpanded {
+          self.scrollToSection(at: item.index)
+        }
+      }
     }.store(in: &subscriptions)
   }
   
@@ -225,6 +231,12 @@ private extension UserInfoViewController {
     sections.indices.firstIndex {
       return tableView.headerView(forSection: $0) === header
     }
+  }
+  
+  func scrollToSection(at index: Int) {
+    tableView.scrollToRow(at: IndexPath(row: NSNotFound, section: index),
+                          at: .top,
+                          animated: true)
   }
   
 }
