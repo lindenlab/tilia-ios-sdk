@@ -13,7 +13,7 @@ protocol TextFieldsCellDelegate: AnyObject {
 
 class TextFieldsCell: TitleBaseCell {
   
-  typealias FieldsContent = (placeholder: String?, text: String?)
+  typealias FieldContent = (placeholder: String?, text: String?)
   
   var textFields: [RoundedTextField] { return [] } // Need to override in child class, default is empty
   
@@ -37,7 +37,7 @@ class TextFieldsCell: TitleBaseCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  final func configure(fieldsContent: FieldsContent...,
+  final func configure(fieldsContent: [FieldContent],
                        description: String?,
                        delegate: TextFieldsCellDelegate?) {
     zip(fieldsContent, textFields).forEach { content, textField in
