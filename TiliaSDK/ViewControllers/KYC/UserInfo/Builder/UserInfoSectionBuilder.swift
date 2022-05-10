@@ -187,13 +187,9 @@ struct UserInfoSectionBuilder {
                            for: .normal)
     primaryButton.imageView?.tintColor = .primaryButtonTextColor
     
-    let nonPrimaryButton = NonPrimaryButtonWithStyle(.imageAndTitleCenter)
+    let nonPrimaryButton = NonPrimaryButton()
     nonPrimaryButton.setTitle(L.cancel,
                               for: .normal)
-    nonPrimaryButton.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
-                              for: .normal)
-    nonPrimaryButton.imageView?.tintColor = .primaryTextColor
-    nonPrimaryButton.imageView?.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
     
     let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     let view = ButtonsView(primaryButton: primaryButton,
