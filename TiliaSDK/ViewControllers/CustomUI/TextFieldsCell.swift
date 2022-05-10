@@ -46,6 +46,7 @@ class TextFieldsCell: TitleBaseCell {
     }
     descriptionLabel.text = description
     descriptionLabel.isHidden = description == nil
+    self.delegate = delegate
   }
   
 }
