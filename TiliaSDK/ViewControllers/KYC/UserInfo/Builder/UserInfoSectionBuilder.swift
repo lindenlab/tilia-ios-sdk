@@ -9,7 +9,7 @@ import UIKit
 
 struct UserInfoSectionBuilder {
   
-  typealias CellDelegate = NonPrimaryButtonWithImageCellDelegate & TextFieldsCellDelegate
+  typealias CellDelegate = TextFieldsCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
   typealias SectionFooterDelegate = UserInfoFooterViewDelegate
   typealias TableFooterDelegate = ButtonsViewDelegate
@@ -60,27 +60,25 @@ struct UserInfoSectionBuilder {
       
       enum Mode {
         
-        struct Button {
-          let buttonPlaceholder: String
-          let buttonTitle: String?
-          let description: String?
-        }
-        
         struct ThreeFields {
-          let first: TextFieldsCell.Content
-          let second: TextFieldsCell.Content
-          let third: TextFieldsCell.Content
+          let first: TextFieldsCell.FieldsContent
+          let second: TextFieldsCell.FieldsContent
+          let third: TextFieldsCell.FieldsContent
         }
         
         struct TwoFields {
-          let first: TextFieldsCell.Content
-          let second: TextFieldsCell.Content
+          let first: TextFieldsCell.FieldsContent
+          let second: TextFieldsCell.FieldsContent
         }
         
-        case button(Button)
+        struct Field {
+          let field: TextFieldsCell.FieldsContent
+          let description: String?
+        }
+        
         case threeFields(ThreeFields)
         case twoFields(TwoFields)
-        case field(TextFieldsCell.Content)
+        case field(Field)
         case label(String)
       }
       
@@ -107,29 +105,25 @@ struct UserInfoSectionBuilder {
             delegate: CellDelegate) -> UITableViewCell {
     let item = section.items[indexPath.row]
     switch item.mode {
-    case let .button(model):
-      let cell = tableView.dequeue(NonPrimaryButtonWithImageCell.self, for: indexPath)
-      cell.configure(title: item.type.title)
-      cell.configure(buttonPlaceholder: model.buttonPlaceholder,
-                     buttonTitle: model.buttonTitle,
-                     description: model.description,
-                     delegate: delegate)
-      return cell
     case let .field(model):
       let cell = tableView.dequeue(TextFieldCell.self, for: indexPath)
       cell.configure(title: item.type.title)
-      cell.configure(content: model, delegate: delegate)
+      cell.configure(fieldsContent: model.field,
+                     description: model.description,
+                     delegate: delegate)
       return cell
     case let .twoFields(model):
       let cell = tableView.dequeue(TwoTextFieldsCell.self, for: indexPath)
       cell.configure(title: item.type.title)
-      cell.configure(content: model.first, model.second,
+      cell.configure(fieldsContent: model.first, model.second,
+                     description: nil,
                      delegate: delegate)
       return cell
     case let .threeFields(model):
       let cell = tableView.dequeue(TwoTextFieldsCell.self, for: indexPath)
       cell.configure(title: item.type.title)
-      cell.configure(content: model.first, model.second, model.third,
+      cell.configure(fieldsContent: model.first, model.second, model.third,
+                     description: nil,
                      delegate: delegate)
       return cell
     case let .label(model):
@@ -232,11 +226,10 @@ struct UserInfoSectionBuilder {
 private extension UserInfoSectionBuilder {
   
   func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {
-    let button = Section.Item.Mode.Button(buttonPlaceholder: L.selectCountry,
-                                          buttonTitle: model.countryOfResidence,
-                                          description: nil)
+    let countryOfResidenceField = Section.Item.Mode.Field(field: (L.selectCountry, model.countryOfResidence),
+                                                          description: nil)
     return [
-      Section.Item(type: .countryOfResidance, mode: .button(button))
+      Section.Item(type: .countryOfResidance, mode: .field(countryOfResidenceField))
     ]
   }
   
@@ -245,17 +238,17 @@ private extension UserInfoSectionBuilder {
                                                       second: (L.middleName, model.fullName.middle),
                                                       third: (L.lastName, model.fullName.last))
     
-    let dateOfBirthButton = Section.Item.Mode.Button(buttonPlaceholder: L.selectDateOfBirth,
-                                                     buttonTitle: nil,
-                                                     description: nil) // TODO: - Add here logic
+    let dateOfBirthField = Section.Item.Mode.Field(field: (L.selectDateOfBirth, nil),
+                                                   description: nil) // TODO: - Add here logic
     
     var items: [Section.Item] = [
       Section.Item(type: .fullName, mode: .threeFields(fullNameField)),
-      Section.Item(type: .dateOfBirth, mode: .button(dateOfBirthButton))
+      Section.Item(type: .dateOfBirth, mode: .field(dateOfBirthField))
     ]
     
     if model.isUsResident {
-      let ssnField = ("xxx-xx-xxxx", model.ssn)
+      let ssnField = Section.Item.Mode.Field(field: ("xxx-xx-xxxx", model.ssn),
+                                             description: nil)
       items.append(Section.Item(type: .ssn, mode: .field(ssnField)))
     }
     
@@ -266,36 +259,29 @@ private extension UserInfoSectionBuilder {
     let addressField = Section.Item.Mode.TwoFields(first: (L.streetAddress, model.address.street),
                                                    second: (L.apartment, model.address.apartment))
     
-    let cityField: (String?, String?) = (nil, model.address.city)
+    let cityField = Section.Item.Mode.Field(field: (nil, model.address.city),
+                                            description: nil)
     
-    let regionMode: Section.Item.Mode
-    if model.isUsResident {
-      let stateButton = Section.Item.Mode.Button(buttonPlaceholder: L.selectState,
-                                                 buttonTitle: model.address.region,
-                                                 description: nil)
-      regionMode = .button(stateButton)
-    } else {
-      let regionField: (String?, String?) = (nil, model.address.region)
-      regionMode = .field(regionField)
-    }
+    let regionField = Section.Item.Mode.Field(field: (model.isUsResident ? L.selectState : nil, model.address.region),
+                                              description: nil)
     
-    let postalCode: (String?, String?) = (nil, model.address.postalCode)
+    let postalCodeField = Section.Item.Mode.Field(field: (nil, model.address.postalCode),
+                                                  description: nil)
     
-    let countryOfResidense = model.countryOfResidence ?? "Here will be country of residence" // TODO: - Add logic
+    let countryOfResidenseLabel = model.countryOfResidence ?? "Here will be country of residence" // TODO: - Add logic
     
     var items: [Section.Item] = [
       Section.Item(type: .address, mode: .twoFields(addressField)),
       Section.Item(type: .city, mode: .field(cityField)),
-      Section.Item(type: .region(isUsResident: model.isUsResident), mode: regionMode),
-      Section.Item(type: .postalCode, mode: .field(postalCode)),
-      Section.Item(type: .countryOfResidance, mode: .label(countryOfResidense))
+      Section.Item(type: .region(isUsResident: model.isUsResident), mode: .field(regionField)),
+      Section.Item(type: .postalCode, mode: .field(postalCodeField)),
+      Section.Item(type: .countryOfResidance, mode: .label(countryOfResidenseLabel))
     ]
     
     if model.isUsResident {
-      let canUseAddressFor1099Button = Section.Item.Mode.Button(buttonPlaceholder: L.selectAnswer,
-                                                                buttonTitle: nil, // TODO: - Add logic
-                                                                description: L.useAddressFor1099Description)
-      items.append(Section.Item(type: .useAddressFor1099, mode: .button(canUseAddressFor1099Button)))
+      let canUseAddressFor1099Field = Section.Item.Mode.Field(field: (L.selectAnswer, nil),
+                                                              description: L.useAddressFor1099Description)
+      items.append(Section.Item(type: .useAddressFor1099, mode: .field(canUseAddressFor1099Field)))
     }
     
     return items

@@ -31,7 +31,6 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.addClosingKeyboardOnTap()
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(UserInfoHeaderView.self)
-    tableView.register(NonPrimaryButtonWithImageCell.self)
     tableView.register(UserInfoFooterView.self)
     tableView.register(TextFieldCell.self)
     tableView.register(TwoTextFieldsCell.self)
@@ -120,16 +119,6 @@ extension UserInfoViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return sections[section].heightForFooter
-  }
-  
-}
-
-// MARK: - NonPrimaryButtonWithImageCellDelegate
-
-extension UserInfoViewController: NonPrimaryButtonWithImageCellDelegate {
-  
-  func nonPrimaryButtonWithImageCellButtonDidTap(_ cell: NonPrimaryButtonWithImageCell) {
-    // TODO: - Add logic
   }
   
 }

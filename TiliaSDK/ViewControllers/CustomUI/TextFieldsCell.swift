@@ -13,29 +13,39 @@ protocol TextFieldsCellDelegate: AnyObject {
 
 class TextFieldsCell: TitleBaseCell {
   
-  typealias Content = (placeholder: String?, text: String?)
+  typealias FieldsContent = (placeholder: String?, text: String?)
   
   var textFields: [RoundedTextField] { return [] } // Need to override in child class, default is empty
   
   private weak var delegate: TextFieldsCellDelegate?
   
+  private let descriptionLabel: UILabel = {
+    let label = UILabel()
+    label.font = .systemFont(ofSize: 14)
+    label.textColor = .tertiaryTextColor
+    label.numberOfLines = 0
+    return label
+  }()
+
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    textFields.forEach {
-      addChildView($0)
-      $0.delegate = self
-    }
+    setup()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-  final func configure(content: Content..., delegate: TextFieldsCellDelegate?) {
-    zip(content, textFields).forEach { content, textField in
+  final func configure(fieldsContent: FieldsContent...,
+                       description: String?,
+                       delegate: TextFieldsCellDelegate?) {
+    zip(fieldsContent, textFields).forEach { content, textField in
       textField.placeholder = content.placeholder
       textField.text = content.text
     }
+    descriptionLabel.text = description
+    descriptionLabel.isHidden = description == nil
   }
   
 }
@@ -53,35 +63,16 @@ extension TextFieldsCell: UITextFieldDelegate {
   
 }
 
-final class TextFieldCell: TextFieldsCell {
-  
-  private let firstTextField = RoundedTextField()
-  
-  override var textFields: [RoundedTextField] {
-    return [firstTextField]
-  }
-  
-}
+// MARK: - Private Methods
 
-final class TwoTextFieldsCell: TextFieldsCell {
+private extension TextFieldsCell {
   
-  private let firstTextField = RoundedTextField()
-  private let secondTextField = RoundedTextField()
-  
-  override var textFields: [RoundedTextField] {
-    return [firstTextField, secondTextField]
-  }
-  
-}
-
-final class ThreeTextFieldsCell: TextFieldsCell {
-  
-  private let firstTextField = RoundedTextField()
-  private let secondTextField = RoundedTextField()
-  private let thirdTextField = RoundedTextField()
-  
-  override var textFields: [RoundedTextField] {
-    return [firstTextField, secondTextField, thirdTextField]
+  func setup() {
+    textFields.forEach {
+      addChildView($0)
+      $0.delegate = self
+    }
+    addChildView(descriptionLabel)
   }
   
 }
