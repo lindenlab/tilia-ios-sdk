@@ -28,6 +28,14 @@ final class TextFieldCell: TextFieldsCell {
     pickerDataSource = nil
   }
   
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    if let pickerView = textField.inputView as? UIPickerView {
+      textField.text = pickerDataSource?.items[pickerView.selectedRow(inComponent: 0)]
+    } else if let datePicker = textField.inputView as? UIDatePicker {
+      textField.text = datePicker.date.string()
+    }
+  }
+  
   func configure(inputMode: InputMode) {
     switch inputMode {
     case let .picker(items, selectedIndex):
@@ -45,7 +53,7 @@ private extension TextFieldCell {
   
   final class DatePickerDataSource: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    private let items: [String]
+    let items: [String]
     private let selectHandler: (String) -> Void
     
     init(items: [String], selectHandler: @escaping (String) -> Void) {
@@ -103,8 +111,7 @@ private extension TextFieldCell {
   }
   
   @objc func datePickerDidChange(_ sender: UIDatePicker) {
-    let pickerView = firstTextField.inputView as? UIDatePicker
-    firstTextField.text = pickerView?.date.string()
+    firstTextField.text = sender.date.string()
   }
   
 }

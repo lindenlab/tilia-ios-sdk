@@ -36,6 +36,10 @@ final class RoundedTextField: UITextField {
     return bounds.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
   }
   
+  override func caretRect(for position: UITextPosition) -> CGRect {
+    return inputView == nil ? super.caretRect(for: position) : .zero
+  }
+  
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     setupBorderColor()
