@@ -149,6 +149,7 @@ extension UserInfoViewController: UserInfoHeaderViewDelegate {
   func userInfoHeaderView(_ header: UserInfoHeaderView, willExpand isExpanded: Bool) {
     guard let index = getHeaderIndex(header) else { return }
     viewModel.updateSection(at: index,
+                            sectionType: sections[index].type,
                             isExpanded: isExpanded)
   }
   
@@ -211,11 +212,12 @@ private extension UserInfoViewController {
       self.tableView.reloadData()
     }.store(in: &subscriptions)
     
-    viewModel.section.sink { [weak self] item in
+    viewModel.expandSection.sink { [weak self] item in
       guard let self = self else { return }
       self.builder.updateSection(&self.sections[item.index],
                                  with: item.model,
-                                 isExpanded: item.isExpanded)
+                                 isExpanded: item.isExpanded,
+                                 isFilled: item.isFilled)
       self.tableView.performBatchUpdates {
         self.tableView.reloadSections([item.index], with: .fade)
       } completion: { _ in

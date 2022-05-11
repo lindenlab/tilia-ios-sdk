@@ -112,7 +112,7 @@ struct UserInfoSectionBuilder {
     
     let type: SectionType
     var mode: UserInfoHeaderView.Mode
-    let isNextButtonEnabled: Bool
+    var isFilled: Bool
     var items: [Item]
     
     var isExpanded: Bool { return mode == .expanded }
@@ -175,13 +175,12 @@ struct UserInfoSectionBuilder {
     case .location, .personal:
       if section.isExpanded {
         let view = tableView.dequeue(UserInfoFooterView.self)
-        view.configure(isButtonEnabled: section.isNextButtonEnabled,
+        view.configure(isButtonEnabled: section.isFilled,
                        delegate: delegate)
         return view
       } else {
         return nil
       }
-      
     default:
       return nil
     }
@@ -221,12 +220,12 @@ struct UserInfoSectionBuilder {
     return Section.SectionType.allCases.map {
       return Section(type: $0,
                      mode: $0.defaultMode,
-                     isNextButtonEnabled: false,
+                     isFilled: false,
                      items: [])
     }
   }
   
-  func updateSection(_ section: inout Section, with model: UserInfoModel, isExpanded: Bool) {
+  func updateSection(_ section: inout Section, with model: UserInfoModel, isExpanded: Bool, isFilled: Bool) {
     if isExpanded {
       section.mode = .expanded
       switch section.type {
@@ -238,9 +237,10 @@ struct UserInfoSectionBuilder {
         section.items = itemsForContactlSection(with: model)
       }
     } else {
-      section.mode = .normal // TODO: - Add here logic for
+      section.mode = isFilled ? .passed : .normal
       section.items = []
     }
+    section.isFilled = isFilled
   }
   
   func updateSection(_ section: inout Section, at index: Int, text: String?, titleIndex: Int) {

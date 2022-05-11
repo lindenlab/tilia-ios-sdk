@@ -53,6 +53,8 @@
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
 		D16EDD4C2808481D00A1E413 /* TLUpdateCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */; };
+		D179123B282C3A2B0053DB10 /* UserInfoValidators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179123A282C3A2B0053DB10 /* UserInfoValidators.swift */; };
+		D179123D282C3BD00053DB10 /* PossiblyEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */; };
 		D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165827E7C0AF0082A85B /* AccountRouter.swift */; };
 		D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165A27E7C0C50082A85B /* PaymentRouter.swift */; };
 		D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */; };
@@ -199,6 +201,8 @@
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
 		D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLUpdateCallback.swift; sourceTree = "<group>"; };
+		D179123A282C3A2B0053DB10 /* UserInfoValidators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidators.swift; sourceTree = "<group>"; };
+		D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossiblyEmpty.swift; sourceTree = "<group>"; };
 		D188165827E7C0AF0082A85B /* AccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouter.swift; sourceTree = "<group>"; };
 		D188165A27E7C0C50082A85B /* PaymentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRouter.swift; sourceTree = "<group>"; };
 		D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouter.swift; sourceTree = "<group>"; };
@@ -515,6 +519,14 @@
 			path = AddCreditCard;
 			sourceTree = "<group>";
 		};
+		D1791239282C39E80053DB10 /* Validators */ = {
+			isa = PBXGroup;
+			children = (
+				D179123A282C3A2B0053DB10 /* UserInfoValidators.swift */,
+			);
+			path = Validators;
+			sourceTree = "<group>";
+		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -530,6 +542,7 @@
 				D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */,
 				D15BA9F2282AABF900511785 /* Date+Helpers.swift */,
 				D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */,
+				D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -557,6 +570,7 @@
 		D19A0DA3281FED4900483DDC /* UserInfo */ = {
 			isa = PBXGroup;
 			children = (
+				D1791239282C39E80053DB10 /* Validators */,
 				D13BDD6F2822795100A31F2D /* Builder */,
 				D13BDD702822795C00A31F2D /* Views */,
 				D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */,
@@ -906,6 +920,7 @@
 				D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */,
 				D1C8A84227F5E42500BF2910 /* LocalizationConstants.swift in Sources */,
 				D18855E3282910A200BAC86F /* TextFieldsCell.swift in Sources */,
+				D179123D282C3BD00053DB10 /* PossiblyEmpty.swift in Sources */,
 				D18855E1282700D400BAC86F /* UserInfoModel.swift in Sources */,
 				D1CCE8D627F4C5CF00FD0E25 /* TosRequiredForUserTestViewController.swift in Sources */,
 				D1C8A84427F5E49600BF2910 /* String+Localization.swift in Sources */,
@@ -972,6 +987,7 @@
 				D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */,
 				D15BA9F3282AABF900511785 /* Date+Helpers.swift in Sources */,
 				D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */,
+				D179123B282C3A2B0053DB10 /* UserInfoValidators.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
 				D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */,
 				D19A0DA7281FED6600483DDC /* UserInfoRouter.swift in Sources */,
