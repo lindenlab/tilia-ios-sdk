@@ -23,7 +23,7 @@ final class CheckoutViewController: BaseViewController, LoadableProtocol {
     let tableView = UITableView(frame: .zero, style: .grouped)
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.showsVerticalScrollIndicator = false
-    tableView.backgroundColor = .clear
+    tableView.backgroundColor = .backgroundColor
     tableView.separatorStyle = .none
     tableView.delaysContentTouches = false
     tableView.delegate = self

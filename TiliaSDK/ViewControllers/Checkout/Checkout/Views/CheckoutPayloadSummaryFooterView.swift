@@ -77,7 +77,7 @@ private extension CheckoutPayloadSummaryFooterView {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.distribution = .equalSpacing
     
-    contentView.backgroundColor = .clear
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     contentView.addSubview(topDivider)
     contentView.addSubview(bottomDivider)

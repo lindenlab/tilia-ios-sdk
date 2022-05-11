@@ -94,7 +94,7 @@ final class TitleInfoView: UIView {
 private extension TitleInfoView {
   
   func setup(insets: UIEdgeInsets) {
-    backgroundColor = .clear
+    backgroundColor = .backgroundColor
     addSubview(stackView)
     
     let topConstraint = stackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)

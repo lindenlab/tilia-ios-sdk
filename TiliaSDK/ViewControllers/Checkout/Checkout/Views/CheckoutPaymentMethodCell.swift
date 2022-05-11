@@ -103,8 +103,8 @@ private extension CheckoutPaymentMethodCell {
     stackView.distribution = .equalSpacing
     stackView.alignment = .center
     
-    backgroundColor = .clear
-    contentView.backgroundColor = .clear
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
     

@@ -40,7 +40,7 @@ final class ButtonsView: UIView {
 private extension ButtonsView {
   
   func setup(insets: UIEdgeInsets) {
-    backgroundColor = .clear
+    backgroundColor = .backgroundColor
     
     primaryButton.addTarget(self, action: #selector(primaryButtonDidTap), for: .touchUpInside)
     nonPrimaryButton.addTarget(self, action: #selector(nonPrimaryButtonDidTap), for: .touchUpInside)

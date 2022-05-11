@@ -82,7 +82,6 @@ private extension UserInfoHeaderView {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.distribution = .equalSpacing
     
-    contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
     
