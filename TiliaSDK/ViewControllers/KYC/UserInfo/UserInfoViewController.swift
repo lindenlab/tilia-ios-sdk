@@ -227,7 +227,7 @@ private extension UserInfoViewController {
   }
   
   func getHeaderIndex(_ header: UITableViewHeaderFooterView) -> Int? {
-    sections.indices.firstIndex {
+    return sections.indices.firstIndex {
       return tableView.headerView(forSection: $0) === header
     }
   }

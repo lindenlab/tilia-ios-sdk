@@ -50,7 +50,7 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
 private extension UserInfoFooterView {
   
   func setup() {
-    contentView.backgroundColor = .clear
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(button)
     
     let topConstraint = button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)

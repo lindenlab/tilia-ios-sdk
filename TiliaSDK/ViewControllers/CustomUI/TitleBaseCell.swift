@@ -50,8 +50,8 @@ private extension TitleBaseCell {
   
   func setup() {
     selectionStyle = .none
-    backgroundColor = .clear
-    contentView.backgroundColor = .clear
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     
     NSLayoutConstraint.activate([
