@@ -32,7 +32,7 @@ struct UserInfoSectionBuilder {
       var defaultMode: UserInfoHeaderView.Mode {
         switch self {
         case .location: return .normal
-        default: return .disabled
+        default: return .normal
         }
       }
     }
@@ -100,7 +100,7 @@ struct UserInfoSectionBuilder {
       }
       
       let type: ItemType
-      let mode: Mode
+      var mode: Mode
       let description: String?
       
       init(type: ItemType, mode: Mode, description: String? = nil) {
@@ -240,6 +240,16 @@ struct UserInfoSectionBuilder {
     } else {
       section.mode = .normal // TODO: - Add here logic for
       section.items = []
+    }
+  }
+  
+  func updateSection(_ section: inout Section, at index: Int, text: String?, titleIndex: Int) {
+    switch section.items[index].mode {
+    case var .fields(field):
+      field.fields[titleIndex].text = text
+      section.items[index].mode = .fields(field)
+    default:
+      break
     }
   }
   

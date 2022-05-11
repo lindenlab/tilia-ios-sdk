@@ -128,7 +128,16 @@ extension UserInfoViewController: UITableViewDelegate {
 extension UserInfoViewController: TextFieldsCellDelegate {
   
   func textFieldsCell(_ cell: TextFieldsCell, didEndEditingWith text: String?, at index: Int) {
-    
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    let section = indexPath.section
+    let row = indexPath.row
+    viewModel.setText(text,
+                      for: sections[section].items[row].type,
+                      fieldIndex: index)
+    builder.updateSection(&sections[section],
+                          at: row,
+                          text: text,
+                          titleIndex: index)
   }
   
 }
