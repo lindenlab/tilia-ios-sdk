@@ -77,15 +77,6 @@ public extension TLManager {
     executeOnQueue { self._colorsConfiguration.primaryColor = .init(lightModeColor: lightModeColor, darkModeColor: darkModeColor) }
   }
   
-  /// Set primary text color for light and dark theme, default is Tilia primary text color
-  /// - Parameters:
-  ///   - lightModeColor: color for light mode
-  ///   - darkModeColor: color for dark mode
-  func setPrimaryTextColor(forLightMode lightModeColor: UIColor,
-                           andDarkMode darkModeColor: UIColor) {
-    executeOnQueue { self._colorsConfiguration.primaryTextColor = .init(lightModeColor: lightModeColor, darkModeColor: darkModeColor) }
-  }
-  
   /// Set success background color for light and dark theme, default is Tilia success background color
   /// - Parameters:
   ///   - lightModeColor: color for light mode

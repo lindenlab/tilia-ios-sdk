@@ -13,7 +13,7 @@ struct InvoiceModel: Decodable {
   
   private enum CodingKeys: String, CodingKey {
     case invoiceId = "invoice_id"
-    case escrowInvoiceId = "escrow_invoice_id"
+    case escrowInvoiceId = "id"
   }
   
   init(from decoder: Decoder) throws {
