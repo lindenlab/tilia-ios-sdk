@@ -26,9 +26,7 @@ protocol UserInfoViewModelOutputProtocol {
   var coutryOfResidenceDidChange: PassthroughSubject<String?, Never> { get }
 }
 
-protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol {
-  
-}
+protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol { }
 
 final class UserInfoViewModel: UserInfoViewModelProtocol {
   

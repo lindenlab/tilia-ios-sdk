@@ -155,7 +155,10 @@ extension UserInfoViewController: UserInfoHeaderViewDelegate {
 extension UserInfoViewController: UserInfoFooterViewDelegate {
   
   func userInfoFooterViewButtonDidTap(_ footer: UserInfoFooterView) {
-    
+    guard let index = getFooterIndex(footer) else { return }
+    viewModel.updateSection(at: index,
+                            sectionType: sections[index].type,
+                            isExpanded: false)
   }
   
 }
@@ -250,6 +253,12 @@ private extension UserInfoViewController {
   func getHeaderIndex(_ header: UITableViewHeaderFooterView) -> Int? {
     return sections.indices.firstIndex {
       return tableView.headerView(forSection: $0) === header
+    }
+  }
+  
+  func getFooterIndex(_ footer: UITableViewHeaderFooterView) -> Int? {
+    return sections.indices.firstIndex {
+      return tableView.footerView(forSection: $0) === footer
     }
   }
   
