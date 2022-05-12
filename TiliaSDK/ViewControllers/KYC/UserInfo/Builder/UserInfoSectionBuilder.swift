@@ -225,7 +225,10 @@ struct UserInfoSectionBuilder {
     }
   }
   
-  func updateSection(_ section: inout Section, with model: UserInfoModel, isExpanded: Bool, isFilled: Bool) {
+  func updateSection(_ section: inout Section,
+                     with model: UserInfoModel,
+                     isExpanded: Bool,
+                     isFilled: Bool) {
     if isExpanded {
       section.mode = .expanded
       switch section.type {
@@ -243,14 +246,22 @@ struct UserInfoSectionBuilder {
     section.isFilled = isFilled
   }
   
-  func updateSection(_ section: inout Section, at index: Int, text: String?, titleIndex: Int) {
-    switch section.items[index].mode {
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at indexPath: IndexPath,
+                     text: String?,
+                     fieldIndex: Int,
+                     isFilled: Bool) {
+    switch section.items[indexPath.row].mode {
     case var .fields(field):
-      field.fields[titleIndex].text = text
-      section.items[index].mode = .fields(field)
+      field.fields[fieldIndex].text = text
+      section.items[indexPath.row].mode = .fields(field)
     default:
       break
     }
+    section.isFilled = isFilled
+    let footer = tableView.footerView(forSection: indexPath.section) as? UserInfoFooterView
+    footer?.configure(isButtonEnabled: isFilled)
   }
   
 }

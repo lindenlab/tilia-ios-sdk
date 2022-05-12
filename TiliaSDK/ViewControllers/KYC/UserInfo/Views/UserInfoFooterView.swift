@@ -30,8 +30,12 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
   }()
   
   func configure(isButtonEnabled: Bool, delegate: UserInfoFooterViewDelegate?) {
-    button.isEnabled = isButtonEnabled
+    configure(isButtonEnabled: isButtonEnabled)
     self.delegate = delegate
+  }
+  
+  func configure(isButtonEnabled: Bool) {
+    button.isEnabled = isButtonEnabled
   }
   
   override init(reuseIdentifier: String?) {

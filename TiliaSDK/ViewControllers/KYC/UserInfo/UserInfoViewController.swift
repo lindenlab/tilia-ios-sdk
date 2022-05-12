@@ -129,15 +129,10 @@ extension UserInfoViewController: TextFieldsCellDelegate {
   
   func textFieldsCell(_ cell: TextFieldsCell, didEndEditingWith text: String?, at index: Int) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
-    let section = indexPath.section
-    let row = indexPath.row
     viewModel.setText(text,
-                      for: sections[section].items[row].type,
+                      for: sections[indexPath.section],
+                      indexPath: indexPath,
                       fieldIndex: index)
-    builder.updateSection(&sections[section],
-                          at: row,
-                          text: text,
-                          titleIndex: index)
   }
   
 }
@@ -228,6 +223,16 @@ private extension UserInfoViewController {
           self.scrollToSection(at: item.index)
         }
       }
+    }.store(in: &subscriptions)
+    
+    viewModel.setSectionText.sink { [weak self] item in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.sections[item.indexPath.section],
+                                 in: self.tableView,
+                                 at: item.indexPath,
+                                 text: item.text,
+                                 fieldIndex: item.fieldIndex,
+                                 isFilled: item.isFilled)
     }.store(in: &subscriptions)
   }
   

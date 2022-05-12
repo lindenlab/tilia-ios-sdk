@@ -9,11 +9,12 @@ import Combine
 import Foundation
 
 typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool)
+typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
 
 protocol UserInfoViewModelInputProtocol {
   func viewDidLoad()
   func updateSection(at index: Int, sectionType: UserInfoSectionBuilder.Section.SectionType, isExpanded: Bool)
-  func setText(_ text: String?, for type: UserInfoSectionBuilder.Section.Item.ItemType, fieldIndex: Int)
+  func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
 }
 
 protocol UserInfoViewModelOutputProtocol {
@@ -21,6 +22,7 @@ protocol UserInfoViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
   var content: PassthroughSubject<Void, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
+  var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
 }
 
 protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol {
@@ -33,6 +35,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
   let error = PassthroughSubject<Error, Never>()
   let content = PassthroughSubject<Void, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
+  let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   
   private let manager: NetworkManager
   private var userInfoModel = UserInfoModel()
@@ -46,13 +49,18 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
     content.send(())// TODO: - Fix this
   }
   
-  func updateSection(at index: Int, sectionType: UserInfoSectionBuilder.Section.SectionType, isExpanded: Bool) {
+  func updateSection(at index: Int,
+                     sectionType: UserInfoSectionBuilder.Section.SectionType,
+                     isExpanded: Bool) {
     let isSectionFilled = validator(for: sectionType).isFilled(for: userInfoModel)
     expandSection.send((index, userInfoModel, isExpanded, isSectionFilled))
   }
   
-  func setText(_ text: String?, for type: UserInfoSectionBuilder.Section.Item.ItemType, fieldIndex: Int) {
-    switch type {
+  func setText(_ text: String?,
+               for section: UserInfoSectionBuilder.Section,
+               indexPath: IndexPath,
+               fieldIndex: Int) {
+    switch section.items[indexPath.row].type {
     case .countryOfResidance:
       userInfoModel.countryOfResidence = text
     case .fullName:
@@ -86,6 +94,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
     case .useAddressFor1099:
       userInfoModel.canUseAddressFor1099 = UserInfoModel.CanUseAddressFor1099(rawValue: text ?? "")
     }
+    
+    let isSectionFilled = validator(for: section.type).isFilled(for: userInfoModel)
+    setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
   }
   
 }
