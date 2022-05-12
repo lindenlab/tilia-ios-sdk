@@ -26,7 +26,7 @@ final class LabelCell: TitleBaseCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(description: String) {
+  func configure(description: String?) {
     label.text = description
   }
   

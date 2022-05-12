@@ -23,6 +23,7 @@ protocol UserInfoViewModelOutputProtocol {
   var content: PassthroughSubject<Void, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
+  var coutryOfResidenceDidChange: PassthroughSubject<String?, Never> { get }
 }
 
 protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol {
@@ -36,6 +37,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
   let content = PassthroughSubject<Void, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
+  let coutryOfResidenceDidChange = PassthroughSubject<String?, Never>()
   
   private let manager: NetworkManager
   private var userInfoModel = UserInfoModel()
@@ -63,6 +65,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
     switch section.items[indexPath.row].type {
     case .countryOfResidance:
       userInfoModel.countryOfResidence = text
+      coutryOfResidenceDidChange.send(text)
     case .fullName:
       switch fieldIndex {
       case 0:
@@ -87,7 +90,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
       }
     case .city:
       userInfoModel.address.city = text
-    case .region:
+    case .stateOrRegion, .state:
       userInfoModel.address.region = text
     case .postalCode:
       userInfoModel.address.postalCode = text

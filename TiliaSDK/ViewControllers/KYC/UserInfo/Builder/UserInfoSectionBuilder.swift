@@ -46,7 +46,8 @@ struct UserInfoSectionBuilder {
         case ssn
         case address
         case city
-        case region(isUsResident: Bool)
+        case stateOrRegion
+        case state
         case postalCode
         case useAddressFor1099
         
@@ -58,7 +59,8 @@ struct UserInfoSectionBuilder {
           case .ssn: return L.ssn
           case .address: return L.address
           case .city: return L.city
-          case .region(let isUsResident): return isUsResident ? L.state : L.stateOrRegion
+          case .stateOrRegion: return L.stateOrRegion
+          case .state: return L.state
           case .postalCode: return L.postalCode
           case .useAddressFor1099: return L.useAddressFor1099
           }
@@ -96,7 +98,7 @@ struct UserInfoSectionBuilder {
         }
         
         case fields(Fields)
-        case label(String)
+        case label(String?)
       }
       
       let type: ItemType
@@ -259,9 +261,27 @@ struct UserInfoSectionBuilder {
     default:
       break
     }
+    
     section.isFilled = isFilled
-    let footer = tableView.footerView(forSection: indexPath.section) as? UserInfoFooterView
-    footer?.configure(isButtonEnabled: isFilled)
+    if let footer = tableView.footerView(forSection: indexPath.section) as? UserInfoFooterView {
+      footer.configure(isButtonEnabled: isFilled)
+    }
+  }
+  
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at indexPath: IndexPath,
+                     countryOfResidenceDidChangeWith text: String?) {
+    switch section.items[indexPath.row].mode {
+    case .label:
+      section.items[indexPath.row].mode = .label(text)
+      if let cell = tableView.cellForRow(at: indexPath) as? LabelCell {
+        cell.configure(description: text)
+      }
+    default:
+      break
+    }
+    
   }
   
 }
@@ -335,19 +355,17 @@ private extension UserInfoSectionBuilder {
     
     let postalCodeField = Section.Item.Mode.Fields(fields: [.init(text: model.address.postalCode)])
     
-    let countryOfResidenseLabel = model.countryOfResidence ?? "Here will be country of residence" // TODO: - Add logic
-    
     var items: [Section.Item] = [
       Section.Item(type: .address,
                    mode: .fields(addressField)),
       Section.Item(type: .city,
                    mode: .fields(cityField)),
-      Section.Item(type: .region(isUsResident: model.isUsResident),
+      Section.Item(type: model.isUsResident ? .state : .stateOrRegion,
                    mode: .fields(regionField)),
       Section.Item(type: .postalCode,
                    mode: .fields(postalCodeField)),
       Section.Item(type: .countryOfResidance,
-                   mode: .label(countryOfResidenseLabel))
+                   mode: .label(model.countryOfResidence))
     ]
     
     if model.isUsResident {

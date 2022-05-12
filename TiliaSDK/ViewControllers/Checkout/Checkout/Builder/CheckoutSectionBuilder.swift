@@ -200,8 +200,9 @@ struct CheckoutSectionBuilder {
     switch section {
     case var .summary(model):
       model.isLoading = isLoading
-      let footerView = tableView.footerView(forSection: sectionIndex) as? CheckoutPayloadSummaryFooterView
-      footerView?.configure(isLoading: isLoading)
+      if let footerView = tableView.footerView(forSection: sectionIndex) as? CheckoutPayloadSummaryFooterView {
+        footerView.configure(isLoading: isLoading)
+      }
       return .summary(model)
     default:
       return section
@@ -215,8 +216,9 @@ struct CheckoutSectionBuilder {
     switch section {
     case var .payment(model):
       model.items[indexPath.row].isSelected = isSelected
-      let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell
-      cell?.configure(isSelected: isSelected)
+      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell {
+        cell.configure(isSelected: isSelected)
+      }
       return .payment(model)
     default:
       return section
@@ -230,8 +232,9 @@ struct CheckoutSectionBuilder {
     switch section {
     case var .payment(model):
       model.isPayButtonEnabled = isPayButtonEnabled
-      let footer = tableView.footerView(forSection: sectionIndex) as? CheckoutPaymentFooterView
-      footer?.configure(isPrimaryButtonEnabled: isPayButtonEnabled)
+      if let footer = tableView.footerView(forSection: sectionIndex) as? CheckoutPaymentFooterView {
+        footer.configure(isPrimaryButtonEnabled: isPayButtonEnabled)
+      }
       return .payment(model)
     default:
       return section
