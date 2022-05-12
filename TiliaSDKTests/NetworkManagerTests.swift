@@ -126,11 +126,11 @@ class NetworkManagerTests: XCTestCase {
     XCTAssertEqual(invoice?.invoiceId, id)
   }
   
-  func testCreateExcrowInvoiceSuccess() {
+  func testCreateEscrowInvoiceSuccess() {
     TLManager.shared.setToken(UUID().uuidString)
-    let id = "be193753-21fe-4b28-810a-9a04462b6cbf"
+    let id = "esc_27eSQr5coZR1vmq5rFJ74RBE4Xm"
     var invoice: InvoiceModel?
-    let expactation = XCTestExpectation(description: "testCreateExcrowInvoiceSuccess")
+    let expactation = XCTestExpectation(description: "testCreateEscrowInvoiceSuccess")
     networkManager.createInvoice(withId: id, isEscrow: true) { result in
       expactation.fulfill()
       switch result {

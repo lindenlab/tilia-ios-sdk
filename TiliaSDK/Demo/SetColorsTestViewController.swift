@@ -141,7 +141,8 @@ final class SetColorsTestViewController: UIViewController {
   @objc func buttonTapped() {
     manager.setBackgroundColor(forLightMode: backgroundColorView.lightModeColor, andDarkMode: backgroundColorView.darkModeColor)
     manager.setPrimaryColor(forLightMode: primaryColorView.lightModeColor, andDarkMode: primaryColorView.darkModeColor)
-    manager.setPrimaryTextColor(forLightMode: primaryTextColorView.lightModeColor, andDarkMode: primaryTextColorView.darkModeColor)
+    // TODO: - Temporary removed
+//    manager.setPrimaryTextColor(forLightMode: primaryTextColorView.lightModeColor, andDarkMode: primaryTextColorView.darkModeColor)
     manager.setSuccessBackgroundColor(forLightMode: successBackgroundColorView.lightModeColor, andDarkMode: successBackgroundColorView.darkModeColor)
     manager.setFailureBackgroundColor(forLightMode: failureBackgroundColorView.lightModeColor, andDarkMode: failureBackgroundColorView.darkModeColor)
     self.navigationController?.popViewController(animated: true)
