@@ -99,10 +99,14 @@ struct CheckoutSectionBuilder {
   func header(for section: Section,
               in tableView: UITableView) -> UIView? {
     switch section {
-    case let .summary(invoiceModel):
+    case .summary:
       let view = tableView.dequeue(TitleInfoHeaderFooterView.self)
+      // TODO: - Temporary remove
+//      view.configure(title: L.transactionSummary,
+//                     subTitle: "\(invoiceModel.referenceType) \(invoiceModel.referenceId)",
+//                     spacing: 4)
       view.configure(title: L.transactionSummary,
-                     subTitle: "\(invoiceModel.referenceType) \(invoiceModel.referenceId)",
+                     subTitle: nil,
                      spacing: 4)
       return view
     case let .payment(model) where !model.isEmpty:
