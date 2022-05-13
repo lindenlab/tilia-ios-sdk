@@ -62,6 +62,11 @@ extension TextFieldsCell: UITextFieldDelegate {
                              at: index)
   }
   
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+  
 }
 
 // MARK: - Private Methods
@@ -72,6 +77,7 @@ private extension TextFieldsCell {
     textFields.forEach {
       addChildView($0)
       $0.delegate = self
+      $0.returnKeyType = .done
     }
     addChildView(descriptionLabel)
   }
