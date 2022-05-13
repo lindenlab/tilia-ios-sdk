@@ -38,6 +38,7 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.register(LabelCell.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.tableFooterView = builder.tableFooter(delegate: self)
+    tableView.estimatedRowHeight = 44
     return tableView
   }()
   
@@ -142,6 +143,7 @@ extension UserInfoViewController: TextFieldsCellDelegate {
 extension UserInfoViewController: UserInfoHeaderViewDelegate {
   
   func userInfoHeaderView(_ header: UserInfoHeaderView, willExpand isExpanded: Bool) {
+    tableView.endEditing(true)
     guard let index = getHeaderIndex(header) else { return }
     viewModel.updateSection(at: index,
                             sectionType: sections[index].type,
