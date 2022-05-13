@@ -45,7 +45,7 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
   
   private let imageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = .bottomArrowIcon?.withRenderingMode(.alwaysTemplate)
+    imageView.contentMode = .center
     return imageView
   }()
   
@@ -56,6 +56,11 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    imageView.transform = .identity
   }
   
   func configure(title: String,
@@ -98,7 +103,9 @@ private extension UserInfoHeaderView {
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       divider.topAnchor.constraint(equalTo: topAnchor),
       divider.leftAnchor.constraint(equalTo: leftAnchor),
-      divider.rightAnchor.constraint(equalTo: rightAnchor)
+      divider.rightAnchor.constraint(equalTo: rightAnchor),
+      imageView.widthAnchor.constraint(equalToConstant: 24),
+      imageView.heightAnchor.constraint(equalToConstant: 24)
     ])
   }
   
@@ -108,8 +115,8 @@ private extension UserInfoHeaderView {
     isExpanded = mode.isExpanded
     divider.isHidden = mode.isDividerHidden
     titleLabel.textColor = mode.titleColor
+    imageView.image = mode.icon
     imageView.tintColor = mode.iconColor
-    imageView.transform = .identity
     if isExpanded {
       imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
     }
@@ -144,6 +151,16 @@ private extension UserInfoHeaderView.Mode {
     case .failed: return .failureBackgroundColor
     case .disabled: return .tertiaryTextColor
     }
+  }
+  
+  var icon: UIImage? {
+    let image: UIImage?
+    switch self {
+    case .normal, .expanded, .disabled: image = .bottomArrowIcon
+    case .passed: image = .successIcon
+    case .failed: image = .failureIcon
+    }
+    return image?.withRenderingMode(.alwaysTemplate)
   }
   
   var iconColor: UIColor {
