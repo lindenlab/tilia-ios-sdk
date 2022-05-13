@@ -32,7 +32,7 @@ struct UserInfoSectionBuilder {
       var defaultMode: UserInfoHeaderView.Mode {
         switch self {
         case .location: return .normal
-        default: return .normal
+        default: return .disabled
         }
       }
     }
