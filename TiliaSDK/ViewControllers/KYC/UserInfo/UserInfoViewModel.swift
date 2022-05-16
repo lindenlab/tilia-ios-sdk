@@ -24,6 +24,7 @@ protocol UserInfoViewModelOutputProtocol {
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
   var coutryOfResidenceDidChange: PassthroughSubject<String?, Never> { get }
+  var coutryOfResidenceDidSelect: PassthroughSubject<Void, Never> { get }
 }
 
 protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol { }
@@ -36,6 +37,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   let coutryOfResidenceDidChange = PassthroughSubject<String?, Never>()
+  let coutryOfResidenceDidSelect = PassthroughSubject<Void, Never>()
   
   private let manager: NetworkManager
   private var userInfoModel = UserInfoModel()
@@ -60,44 +62,55 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
                for section: UserInfoSectionBuilder.Section,
                indexPath: IndexPath,
                fieldIndex: Int) {
+    var isFieldChanged = false
+    
     switch section.items[indexPath.row].type {
     case .countryOfResidance:
-      userInfoModel.countryOfResidence = text
-      coutryOfResidenceDidChange.send(text)
+      if userInfoModel.countryOfResidence == nil, text != nil {
+        coutryOfResidenceDidSelect.send(())
+      }
+      isFieldChanged = isFieldUpdated(&userInfoModel.countryOfResidence, with: text)
+      if isFieldChanged {
+        coutryOfResidenceDidChange.send(text)
+      }
     case .fullName:
       switch fieldIndex {
       case 0:
-        userInfoModel.fullName.first = text
+        isFieldChanged = isFieldUpdated(&userInfoModel.fullName.first, with: text)
       case 1:
-        userInfoModel.fullName.middle = text
+        isFieldChanged = isFieldUpdated(&userInfoModel.fullName.middle, with: text)
       case 2:
-        userInfoModel.fullName.last = text
+        isFieldChanged = isFieldUpdated(&userInfoModel.fullName.last, with: text)
       default: break
       }
     case .dateOfBirth:
-      userInfoModel.dateOfBirth = DateFormatter.defaultFormatter.date(from: text ?? "")
+      let date = DateFormatter.defaultFormatter.date(from: text ?? "")
+      isFieldChanged = isFieldUpdated(&userInfoModel.dateOfBirth, with: date)
     case .ssn:
-      userInfoModel.ssn = text
+      isFieldChanged = isFieldUpdated(&userInfoModel.ssn, with: text)
     case .address:
       switch fieldIndex {
       case 0:
-        userInfoModel.address.street = text
+        isFieldChanged = isFieldUpdated(&userInfoModel.address.street, with: text)
       case 1:
-        userInfoModel.address.apartment = text
+        isFieldChanged = isFieldUpdated(&userInfoModel.address.apartment, with: text)
       default: break
       }
     case .city:
-      userInfoModel.address.city = text
+      isFieldChanged = isFieldUpdated(&userInfoModel.address.city, with: text)
     case .stateOrRegion, .state:
-      userInfoModel.address.region = text
+      isFieldChanged = isFieldUpdated(&userInfoModel.address.region , with: text)
     case .postalCode:
-      userInfoModel.address.postalCode = text
+      isFieldChanged = isFieldUpdated(&userInfoModel.address.postalCode, with: text)
     case .useAddressFor1099:
-      userInfoModel.canUseAddressFor1099 = UserInfoModel.CanUseAddressFor1099(rawValue: text ?? "")
+      let value = UserInfoModel.CanUseAddressFor1099(rawValue: text ?? "")
+      isFieldChanged = isFieldUpdated(&userInfoModel.canUseAddressFor1099, with: value)
     }
     
-    let isSectionFilled = validator(for: section.type).isFilled(for: userInfoModel)
-    setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
+    if isFieldChanged {
+      let isSectionFilled = validator(for: section.type).isFilled(for: userInfoModel)
+      setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
+    }
   }
   
 }
@@ -114,4 +127,10 @@ private extension UserInfoViewModel {
     }
   }
   
+  func isFieldUpdated<Value: Equatable>(_ field: inout Value?, with value: Value?) -> Bool {
+    guard field != value else { return false }
+    field = value
+    return true
+  }
+    
 }

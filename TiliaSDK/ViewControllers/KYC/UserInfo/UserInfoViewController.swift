@@ -238,6 +238,8 @@ private extension UserInfoViewController {
                                  text: item.text,
                                  fieldIndex: item.fieldIndex,
                                  isFilled: item.isFilled)
+      self.builder.updateTableFooter(for: self.sections,
+                                     in: self.tableView)
     }.store(in: &subscriptions)
     
     viewModel.coutryOfResidenceDidChange.sink { [weak self] text in
@@ -249,6 +251,17 @@ private extension UserInfoViewController {
                                  in: self.tableView,
                                  at: IndexPath(row: itemIndex, section: sectionIndex),
                                  countryOfResidenceDidChangeWith: text)
+    }.store(in: &subscriptions)
+    
+    viewModel.coutryOfResidenceDidSelect.sink { [weak self] _ in
+      guard let self = self else { return }
+      let indices = self.sections.enumerated().filter { $1.mode == .disabled }
+      indices.forEach { index, _ in
+        self.builder.updateSection(&self.sections[index],
+                                   in: self.tableView,
+                                   at: index,
+                                   mode: .normal)
+      }
     }.store(in: &subscriptions)
   }
   

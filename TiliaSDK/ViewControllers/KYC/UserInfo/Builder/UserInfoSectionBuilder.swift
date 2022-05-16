@@ -205,6 +205,7 @@ struct UserInfoSectionBuilder {
     primaryButton.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
                            for: .normal)
     primaryButton.imageView?.tintColor = .primaryButtonTextColor
+    primaryButton.isEnabled = false
     
     let nonPrimaryButton = NonPrimaryButton()
     nonPrimaryButton.setTitle(L.cancel,
@@ -281,7 +282,23 @@ struct UserInfoSectionBuilder {
     default:
       break
     }
-    
+  }
+  
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
+                     mode: UserInfoHeaderView.Mode) {
+    section.mode = mode
+    if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
+      header.configure(mode: mode)
+    }
+  }
+  
+  func updateTableFooter(for sections: [Section],
+                         in tableView: UITableView) {
+    guard let tableFooterView = tableView.tableFooterView as? ButtonsView else { return }
+    let isPrimaryButtonEnabled = sections.filter { $0.isFilled }.count == sections.count
+    tableFooterView.primaryButton.isEnabled = isPrimaryButtonEnabled
   }
   
 }
