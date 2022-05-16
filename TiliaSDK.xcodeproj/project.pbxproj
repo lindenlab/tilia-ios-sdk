@@ -100,7 +100,7 @@
 		D1C8A83E27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83D27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift */; };
 		D1C8A84027F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83F27F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift */; };
 		D1C8A84227F5E42500BF2910 /* LocalizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A84127F5E42500BF2910 /* LocalizationConstants.swift */; };
-		D1C8A84427F5E49600BF2910 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A84327F5E49600BF2910 /* String+Localization.swift */; };
+		D1C8A84427F5E49600BF2910 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A84327F5E49600BF2910 /* String+Helpers.swift */; };
 		D1C8A84627F5EC9A00BF2910 /* LocalizedConstants.strings in Resources */ = {isa = PBXBuildFile; fileRef = D1C8A84527F5EC9A00BF2910 /* LocalizedConstants.strings */; };
 		D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A84727F60FFE00BF2910 /* InvoiceModel.swift */; };
 		D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A84927F6143E00BF2910 /* InvoiceDetailsModel.swift */; };
@@ -248,7 +248,7 @@
 		D1C8A83D27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Helpers.swift"; sourceTree = "<group>"; };
 		D1C8A83F27F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewHeaderFooterView+Helpers.swift"; sourceTree = "<group>"; };
 		D1C8A84127F5E42500BF2910 /* LocalizationConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstants.swift; sourceTree = "<group>"; };
-		D1C8A84327F5E49600BF2910 /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
+		D1C8A84327F5E49600BF2910 /* String+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		D1C8A84527F5EC9A00BF2910 /* LocalizedConstants.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedConstants.strings; sourceTree = "<group>"; };
 		D1C8A84727F60FFE00BF2910 /* InvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceModel.swift; sourceTree = "<group>"; };
 		D1C8A84927F6143E00BF2910 /* InvoiceDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceDetailsModel.swift; sourceTree = "<group>"; };
@@ -538,7 +538,7 @@
 				D1C8A83927F4FDA800BF2910 /* UITableView+Helpers.swift */,
 				D1C8A83D27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift */,
 				D1C8A83F27F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift */,
-				D1C8A84327F5E49600BF2910 /* String+Localization.swift */,
+				D1C8A84327F5E49600BF2910 /* String+Helpers.swift */,
 				D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */,
 				D15BA9F2282AABF900511785 /* Date+Helpers.swift */,
 				D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */,
@@ -923,7 +923,7 @@
 				D179123D282C3BD00053DB10 /* PossiblyEmpty.swift in Sources */,
 				D18855E1282700D400BAC86F /* UserInfoModel.swift in Sources */,
 				D1CCE8D627F4C5CF00FD0E25 /* TosRequiredForUserTestViewController.swift in Sources */,
-				D1C8A84427F5E49600BF2910 /* String+Localization.swift in Sources */,
+				D1C8A84427F5E49600BF2910 /* String+Helpers.swift in Sources */,
 				D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */,
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,

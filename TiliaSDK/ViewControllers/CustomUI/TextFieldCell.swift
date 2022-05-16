@@ -16,6 +16,8 @@ final class TextFieldCell: TextFieldsCell {
   
   private let firstTextField = RoundedTextField()
   private var pickerDataSource: DatePickerDataSource?
+  private var fieldMask: String? // "xxx-xxx", supports only digits
+  private var maskSeparator: Character? // "-"
   
   override var textFields: [RoundedTextField] {
     return [firstTextField]
@@ -26,6 +28,9 @@ final class TextFieldCell: TextFieldsCell {
     firstTextField.inputView = nil
     firstTextField.inputAccessoryView = nil
     pickerDataSource = nil
+    fieldMask = nil
+    maskSeparator = nil
+    firstTextField.keyboardType = .default
   }
   
   func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -36,6 +41,32 @@ final class TextFieldCell: TextFieldsCell {
     }
   }
   
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    guard
+      let mask = fieldMask,
+      let separator = maskSeparator,
+      !string.isEmpty else { return true }
+    
+    guard
+      !string.trimmingCharacters(in: CharacterSet.decimalDigits.inverted).isEmpty,
+      var newText = textField.text?.newString(forRange: range, withReplacementString: string),
+      newText.count <= mask.count else { return false }
+    
+    
+    let oldText = textField.text ?? ""
+    for (index, _) in string.enumerated() {
+      let maskIndex = mask.index(oldText.endIndex, offsetBy: index)
+      if mask[maskIndex] == separator {
+        newText.insert(separator, at: maskIndex)
+      }
+    }
+    
+    if newText.count <= mask.count {
+      textField.text = newText
+    }
+    return false
+  }
+  
   func configure(inputMode: InputMode) {
     switch inputMode {
     case let .picker(items, selectedIndex):
@@ -43,6 +74,12 @@ final class TextFieldCell: TextFieldsCell {
     case let .datePicker(selectedDate):
       firstTextField.inputView = datePicker(selectedDate: selectedDate)
     }
+  }
+  
+  func configure(mask: String, separator: Character = "-") {
+    fieldMask = mask
+    maskSeparator = separator
+    firstTextField.keyboardType = .numberPad
   }
   
 }

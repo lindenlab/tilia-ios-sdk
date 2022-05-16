@@ -86,14 +86,18 @@ struct UserInfoSectionBuilder {
         struct Fields {
           var fields: [Field]
           let inputMode: TextFieldCell.InputMode?
+          let mask: String?
           
           var fieldsContent: [TextFieldsCell.FieldContent] {
             return fields.map { $0.fieldContent }
           }
           
-          init(fields: [Field], inputMode: TextFieldCell.InputMode? = nil) {
+          init(fields: [Field],
+               inputMode: TextFieldCell.InputMode? = nil,
+               mask: String? = nil) {
             self.fields = fields
             self.inputMode = inputMode
+            self.mask = mask
           }
         }
         
@@ -136,9 +140,8 @@ struct UserInfoSectionBuilder {
       switch model.fields.count {
       case 1:
         let newCell = tableView.dequeue(TextFieldCell.self, for: indexPath)
-        model.inputMode.map {
-          newCell.configure(inputMode: $0)
-        }
+        model.inputMode.map { newCell.configure(inputMode: $0) }
+        model.mask.map { newCell.configure(mask: $0) }
         cell = newCell
       case 2:
         cell = tableView.dequeue(TwoTextFieldsCell.self, for: indexPath)
@@ -340,8 +343,10 @@ private extension UserInfoSectionBuilder {
     ]
     
     if model.isUsResident {
-      let ssnField = Section.Item.Mode.Fields(fields: [.init(placeholder: "xxx-xx-xxxx",
-                                                             text: model.ssn)])
+      let mask = "xxx-xx-xxxx"
+      let ssnField = Section.Item.Mode.Fields(fields: [.init(placeholder: mask,
+                                                             text: model.ssn)],
+                                              mask: mask)
       items.append(Section.Item(type: .ssn,
                                 mode: .fields(ssnField)))
     }
