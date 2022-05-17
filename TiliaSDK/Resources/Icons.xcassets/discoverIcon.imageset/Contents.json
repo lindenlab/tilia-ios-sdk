@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "id=discover.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "id=discover@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "id=discover@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "id=discover.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
