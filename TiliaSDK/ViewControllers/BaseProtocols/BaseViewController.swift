@@ -21,6 +21,21 @@ class BaseViewController: UIViewController {
     return divider
   }()
   
+  lazy var closeButton: NonPrimaryButton = {
+    let button = NonPrimaryButton()
+    button.setTitle(L.close, for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.accessibilityIdentifier = "closeButton"
+    
+    view.addSubview(button)
+    NSLayoutConstraint.activate([
+      button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      button.widthAnchor.constraint(equalToConstant: 100)
+    ])
+    return button
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setup()

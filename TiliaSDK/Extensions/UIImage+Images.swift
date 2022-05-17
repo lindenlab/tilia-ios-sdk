@@ -21,5 +21,7 @@ extension UIImage {
   static let maestroIcon = UIImage(named: "maestroIcon")
   static let masterCardIcon = UIImage(named: "masterCardIcon")
   static let visaIcon = UIImage(named: "visaIcon")
+  static let bottomArrowIcon = UIImage(named: "bottomArrowIcon")
+  static let rightArrowIcon = UIImage(named: "rightArrowIcon")
   
 }

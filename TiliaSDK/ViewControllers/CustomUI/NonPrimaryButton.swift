@@ -7,10 +7,10 @@
 
 import UIKit
 
-final class NonPrimaryButton: ButtonWithBackgroundColor {
+class NonPrimaryButton: ButtonWithBackgroundColor {
   
   override var intrinsicContentSize: CGSize {
-    return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
+    return CGSize(width: super.intrinsicContentSize.width, height: 44)
   }
   
   override init(frame: CGRect) {
@@ -42,6 +42,7 @@ private extension NonPrimaryButton {
     layer.borderWidth = 1
     setupBorderColor()
     titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
   }
   
   func setupBorderColor() {

@@ -111,7 +111,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
 private extension CheckoutPaymentFooterView {
   
   func setup() {
-    contentView.backgroundColor = .clear
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     
     let topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)

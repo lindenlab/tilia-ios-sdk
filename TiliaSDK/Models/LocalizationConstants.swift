@@ -40,5 +40,31 @@ enum L {
   static let goBack = "goBack".localized
   static let errorAddCreditTitle = "errorAddCreditTitle".localized
   static let errorAddCreditMessage = "errorAddCreditMessage".localized
-  
+  static let userInfoTitle = "userInfoTitle".localized
+  static let userInfoMessage = "userInfoMessage".localized
+  static let location = "location".localized
+  static let countryOfResidence = "countryOfResidence".localized
+  static let selectCountry = "selectCountry".localized
+  static let continueTitle = "continueTitle".localized
+  static let personal = "personal".localized
+  static let contact = "contact".localized
+  static let next = "next".localized
+  static let firstName = "firstName".localized
+  static let middleName = "middleName".localized
+  static let lastName = "lastName".localized
+  static let selectDateOfBirth = "selectDateOfBirth".localized
+  static let dateOfBirth = "dateOfBirth".localized
+  static let ssn = "ssn".localized
+  static let fullName = "fullName".localized
+  static let address = "address".localized
+  static let streetAddress = "streetAddress".localized
+  static let apartment = "apartment".localized
+  static let city = "city".localized
+  static let state = "state".localized
+  static let stateOrRegion = "stateOrRegion".localized
+  static let selectState = "selectState".localized
+  static let postalCode = "postalCode".localized
+  static let useAddressFor1099 = "useAddressFor1099".localized
+  static let useAddressFor1099Description = "useAddressFor1099Description".localized
+  static let selectAnswer = "selectAnswer".localized
 }

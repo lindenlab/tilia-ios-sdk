@@ -66,14 +66,14 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     subTitleLabel.text = subTitle
     subTitleLabel.isHidden = subTitle == nil
     radioButton.isUserInteractionEnabled = canSelect
-    radioButton.setSelected(isSelected)
+    radioButton.isRadioSelected = isSelected
     self.delegate = delegate
     divider.isHidden = isDividerHidden
     iconImageView.image = icon
   }
   
   func configure(isSelected: Bool) {
-    radioButton.setSelected(isSelected)
+    radioButton.isRadioSelected = isSelected
   }
   
 }
@@ -103,8 +103,8 @@ private extension CheckoutPaymentMethodCell {
     stackView.distribution = .equalSpacing
     stackView.alignment = .center
     
-    backgroundColor = .clear
-    contentView.backgroundColor = .clear
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
     

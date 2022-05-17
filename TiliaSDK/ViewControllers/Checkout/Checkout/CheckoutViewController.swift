@@ -23,7 +23,7 @@ final class CheckoutViewController: BaseViewController, LoadableProtocol {
     let tableView = UITableView(frame: .zero, style: .grouped)
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.showsVerticalScrollIndicator = false
-    tableView.backgroundColor = .clear
+    tableView.backgroundColor = .backgroundColor
     tableView.separatorStyle = .none
     tableView.delaysContentTouches = false
     tableView.delegate = self
@@ -35,15 +35,6 @@ final class CheckoutViewController: BaseViewController, LoadableProtocol {
     tableView.register(CheckoutPaymentMethodCell.self)
     tableView.register(CheckoutSuccessfulPaymentCell.self)
     return tableView
-  }()
-  
-  private lazy var closeButton: NonPrimaryButton = {
-    let button = NonPrimaryButton()
-    button.setTitle(L.close, for: .normal)
-    button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.accessibilityIdentifier = "closeButton"
-    return button
   }()
   
   init(invoiceId: String,
@@ -110,8 +101,7 @@ extension CheckoutViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections[section],
                           in: tableView,
-                          delegate: self,
-                          textViewDelegate: self)
+                          delegate: self)
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -259,12 +249,7 @@ private extension CheckoutViewController {
   }
   
   func showCancelButton() {
-    view.addSubview(closeButton)
-    NSLayoutConstraint.activate([
-      closeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      closeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      closeButton.widthAnchor.constraint(equalToConstant: 100)
-    ])
+    closeButton.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
   }
   
   @objc func closeButtonDidTap() {

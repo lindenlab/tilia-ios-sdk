@@ -13,7 +13,7 @@ final class RadioButton: UIButton {
     return CGSize(width: 20, height: 20)
   }
   
-  private(set) var isRadioSelected: Bool = false {
+  var isRadioSelected: Bool = false {
     didSet {
       setup()
     }
@@ -39,10 +39,6 @@ final class RadioButton: UIButton {
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     setup()
-  }
-  
-  func setSelected(_ isSelected: Bool) {
-    isRadioSelected = isSelected
   }
   
 }

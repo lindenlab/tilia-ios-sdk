@@ -42,7 +42,7 @@ final class TitleInfoHeaderFooterView: UITableViewHeaderFooterView {
 private extension TitleInfoHeaderFooterView {
   
   func setup() {
-    contentView.backgroundColor = .clear
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(titleInfoView)
     
     let topConstraint = titleInfoView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
