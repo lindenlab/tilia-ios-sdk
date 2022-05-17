@@ -40,6 +40,10 @@ final class RoundedTextField: UITextField {
     return inputView == nil ? super.caretRect(for: position) : .zero
   }
   
+  override func selectionRects(for range: UITextRange) -> [UITextSelectionRect] {
+    return inputView == nil ? super.selectionRects(for: range) : []
+  }
+  
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     setupBorderColor()
