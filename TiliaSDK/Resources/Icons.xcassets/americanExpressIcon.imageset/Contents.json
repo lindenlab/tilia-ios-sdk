@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "id=amex.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "id=amex@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "id=amex@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "id=amex.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
