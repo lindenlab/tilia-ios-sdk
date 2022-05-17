@@ -52,7 +52,6 @@ final class TextFieldCell: TextFieldsCell {
       var newText = textField.text?.newString(forRange: range, withReplacementString: string),
       newText.count <= mask.count else { return false }
     
-    
     let oldText = textField.text ?? ""
     for (index, _) in string.enumerated() {
       let maskIndex = mask.index(oldText.endIndex, offsetBy: index)
