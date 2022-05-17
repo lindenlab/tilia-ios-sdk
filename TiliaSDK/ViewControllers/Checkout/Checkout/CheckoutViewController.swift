@@ -37,15 +37,6 @@ final class CheckoutViewController: BaseViewController, LoadableProtocol {
     return tableView
   }()
   
-  private lazy var closeButton: NonPrimaryButton = {
-    let button = NonPrimaryButton()
-    button.setTitle(L.close, for: .normal)
-    button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.accessibilityIdentifier = "closeButton"
-    return button
-  }()
-  
   init(invoiceId: String,
        manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -259,12 +250,7 @@ private extension CheckoutViewController {
   }
   
   func showCancelButton() {
-    view.addSubview(closeButton)
-    NSLayoutConstraint.activate([
-      closeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      closeButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      closeButton.widthAnchor.constraint(equalToConstant: 100)
-    ])
+    closeButton.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
   }
   
   @objc func closeButtonDidTap() {
