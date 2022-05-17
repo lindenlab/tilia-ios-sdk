@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "id=jcb.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "id=jcb@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "id=jcb@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "id=jcb.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "id=mastercard.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "id=mastercard@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "id=mastercard@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "id=mastercard.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
