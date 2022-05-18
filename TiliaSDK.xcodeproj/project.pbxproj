@@ -590,6 +590,7 @@
 		D1B871F628339ABA00C44441 /* UserDocument */ = {
 			isa = PBXGroup;
 			children = (
+				D1B871FE2835188F00C44441 /* Builder */,
 				D1B871FD28339BEE00C44441 /* Views */,
 				D1B871FB28339BE600C44441 /* UserDocumentViewModel.swift */,
 				D1B871F928339B5400C44441 /* UserDocumentRouter.swift */,
@@ -603,6 +604,13 @@
 			children = (
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		D1B871FE2835188F00C44441 /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Builder;
 			sourceTree = "<group>";
 		};
 		D1B872B8280442E400DD1F7B /* Testable */ = {
