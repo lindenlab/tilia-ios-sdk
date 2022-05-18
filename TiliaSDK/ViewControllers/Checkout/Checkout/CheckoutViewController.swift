@@ -129,7 +129,7 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
   }
   
   func checkoutPaymentFooterViewAddCreditCardButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
-    router.routeToAddCreditCard()
+    router.routeToAddCreditCardView()
   }
   
   func checkoutPaymentFooterViewCloseButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
