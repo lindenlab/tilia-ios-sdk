@@ -7,10 +7,16 @@
 
 import UIKit
 
-protocol UserInfoRoutingProtocol: RoutingProtocol { }
+protocol UserInfoRoutingProtocol: RoutingProtocol {
+  func routeToUserDocumentsView()
+}
 
 final class UserInfoRouter: UserInfoRoutingProtocol {
   
   weak var viewController: UIViewController?
+  
+  func routeToUserDocumentsView() {
+    
+  }
   
 }

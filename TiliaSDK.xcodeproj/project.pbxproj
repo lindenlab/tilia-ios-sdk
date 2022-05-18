@@ -76,9 +76,10 @@
 		D19A0DA7281FED6600483DDC /* UserInfoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA6281FED6600483DDC /* UserInfoRouter.swift */; };
 		D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */; };
 		D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */; };
-		D1B871F828339B2A00C44441 /* UserDocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871F728339B2A00C44441 /* UserDocumentViewController.swift */; };
-		D1B871FA28339B5400C44441 /* UserDocumentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871F928339B5400C44441 /* UserDocumentRouter.swift */; };
-		D1B871FC28339BE600C44441 /* UserDocumentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871FB28339BE600C44441 /* UserDocumentViewModel.swift */; };
+		D1B871F828339B2A00C44441 /* UserDocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871F728339B2A00C44441 /* UserDocumentsViewController.swift */; };
+		D1B871FA28339B5400C44441 /* UserDocumentsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871F928339B5400C44441 /* UserDocumentsRouter.swift */; };
+		D1B871FC28339BE600C44441 /* UserDocumentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871FB28339BE600C44441 /* UserDocumentsViewModel.swift */; };
+		D1B8720028351B4600C44441 /* UserDocumentsSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871FF28351B4600C44441 /* UserDocumentsSectionBuilder.swift */; };
 		D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872B92804498500DD1F7B /* ServerTestClient.swift */; };
 		D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */; };
 		D1B872C528044CC900DD1F7B /* PayInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */; };
@@ -227,9 +228,10 @@
 		D19A0DA6281FED6600483DDC /* UserInfoRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoRouter.swift; sourceTree = "<group>"; };
 		D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowTestViewController.swift; sourceTree = "<group>"; };
-		D1B871F728339B2A00C44441 /* UserDocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentViewController.swift; sourceTree = "<group>"; };
-		D1B871F928339B5400C44441 /* UserDocumentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentRouter.swift; sourceTree = "<group>"; };
-		D1B871FB28339BE600C44441 /* UserDocumentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentViewModel.swift; sourceTree = "<group>"; };
+		D1B871F728339B2A00C44441 /* UserDocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewController.swift; sourceTree = "<group>"; };
+		D1B871F928339B5400C44441 /* UserDocumentsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsRouter.swift; sourceTree = "<group>"; };
+		D1B871FB28339BE600C44441 /* UserDocumentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModel.swift; sourceTree = "<group>"; };
+		D1B871FF28351B4600C44441 /* UserDocumentsSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsSectionBuilder.swift; sourceTree = "<group>"; };
 		D1B872B92804498500DD1F7B /* ServerTestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTestClient.swift; sourceTree = "<group>"; };
 		D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CreateInvoiceResponse.json; sourceTree = "<group>"; };
 		D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PayInvoiceResponse.json; sourceTree = "<group>"; };
@@ -569,7 +571,7 @@
 			isa = PBXGroup;
 			children = (
 				D19A0DA3281FED4900483DDC /* UserInfo */,
-				D1B871F628339ABA00C44441 /* UserDocument */,
+				D1B871F628339ABA00C44441 /* UserDocuments */,
 			);
 			path = KYC;
 			sourceTree = "<group>";
@@ -587,16 +589,16 @@
 			path = UserInfo;
 			sourceTree = "<group>";
 		};
-		D1B871F628339ABA00C44441 /* UserDocument */ = {
+		D1B871F628339ABA00C44441 /* UserDocuments */ = {
 			isa = PBXGroup;
 			children = (
 				D1B871FE2835188F00C44441 /* Builder */,
 				D1B871FD28339BEE00C44441 /* Views */,
-				D1B871FB28339BE600C44441 /* UserDocumentViewModel.swift */,
-				D1B871F928339B5400C44441 /* UserDocumentRouter.swift */,
-				D1B871F728339B2A00C44441 /* UserDocumentViewController.swift */,
+				D1B871FB28339BE600C44441 /* UserDocumentsViewModel.swift */,
+				D1B871F928339B5400C44441 /* UserDocumentsRouter.swift */,
+				D1B871F728339B2A00C44441 /* UserDocumentsViewController.swift */,
 			);
-			path = UserDocument;
+			path = UserDocuments;
 			sourceTree = "<group>";
 		};
 		D1B871FD28339BEE00C44441 /* Views */ = {
@@ -609,6 +611,7 @@
 		D1B871FE2835188F00C44441 /* Builder */ = {
 			isa = PBXGroup;
 			children = (
+				D1B871FF28351B4600C44441 /* UserDocumentsSectionBuilder.swift */,
 			);
 			path = Builder;
 			sourceTree = "<group>";
@@ -946,7 +949,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1B871FC28339BE600C44441 /* UserDocumentViewModel.swift in Sources */,
+				D1B871FC28339BE600C44441 /* UserDocumentsViewModel.swift in Sources */,
 				D1C8A83E27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift in Sources */,
 				D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */,
 				D16EDD4C2808481D00A1E413 /* TLUpdateCallback.swift in Sources */,
@@ -985,6 +988,7 @@
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
 				D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */,
 				D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */,
+				D1B8720028351B4600C44441 /* UserDocumentsSectionBuilder.swift in Sources */,
 				D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */,
 				D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */,
 				D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */,
@@ -1004,7 +1008,7 @@
 				D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */,
 				D15BA9ED282A9B2C00511785 /* TextFieldCell.swift in Sources */,
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,
-				D1B871F828339B2A00C44441 /* UserDocumentViewController.swift in Sources */,
+				D1B871F828339B2A00C44441 /* UserDocumentsViewController.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D15BA9EF282A9B6500511785 /* TwoTextFieldsCell.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,
@@ -1040,7 +1044,7 @@
 				D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,
-				D1B871FA28339B5400C44441 /* UserDocumentRouter.swift in Sources */,
+				D1B871FA28339B5400C44441 /* UserDocumentsRouter.swift in Sources */,
 				D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
