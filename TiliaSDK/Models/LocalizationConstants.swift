@@ -67,4 +67,24 @@ enum L {
   static let useAddressFor1099 = "useAddressFor1099".localized
   static let useAddressFor1099Description = "useAddressFor1099Description".localized
   static let selectAnswer = "selectAnswer".localized
+  static let almostThere = "almostThere".localized
+  static let userDocumentsMessage = "userDocumentsMessage".localized
+  static let document = "document".localized
+  static let selectDocument = "selectDocument".localized
+  static let upload = "upload".localized
+  static let passport = "passport".localized
+  static let driversLicense = "driversLicense".localized
+  static let identityCard = "identityCard".localized
+  static let residencePermit = "residencePermit".localized
+  static let frontSide = "frontSide".localized
+  static let backSide = "backSide".localized
+  static let captureOnCamera = "captureOnCamera".localized
+  static let pickFile = "pickFile".localized
+  static let documentIssuingCountry = "documentIssuingCountry".localized
+  static let isAddressUpToDateDescription = "isAddressUpToDateDescription".localized
+  static let supportingDocuments = "supportingDocuments".localized
+  static let supportingDocumentsDescription = "supportingDocumentsDescription".localized
+  static let allSet = "allSet".localized
+  static let userDocumentsSuccessMessage = "userDocumentsSuccessMessage".localized
+  
 }
