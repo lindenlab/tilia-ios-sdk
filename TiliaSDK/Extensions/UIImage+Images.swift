@@ -23,5 +23,12 @@ extension UIImage {
   static let visaIcon = UIImage(named: "visaIcon")
   static let bottomArrowIcon = UIImage(named: "bottomArrowIcon")
   static let rightArrowIcon = UIImage(named: "rightArrowIcon")
+  static let driversLicenseBackIcon = UIImage(named: "driversLicenseBackIcon")
+  static let driversLicenseFrontIcon = UIImage(named: "driversLicenseFrontIcon")
+  static let identityCardBackIcon = UIImage(named: "identityCardBackIcon")
+  static let identityCardFrontIcon = UIImage(named: "identityCardFrontIcon")
+  static let passportIcon = UIImage(named: "passportIcon")
+  static let resedencePermitBackIcon = UIImage(named: "resedencePermitBackIcon")
+  static let resedencePermitFrontIcon = UIImage(named: "resedencePermitFrontIcon")
   
 }
