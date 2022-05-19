@@ -100,11 +100,11 @@ extension UserDocumentsViewController: UITableViewDelegate {
 
 extension UserDocumentsViewController: ButtonsViewDelegate {
   
-  func buttonsViewPrimaryButtonDidTap(_ view: ButtonsView) {
+  func buttonsViewPrimaryButtonDidTap() {
     
   }
   
-  func buttonsViewPrimaryNonButtonDidTap(_ view: ButtonsView) {
+  func buttonsViewPrimaryNonButtonDidTap() {
     router.dismiss()
   }
   

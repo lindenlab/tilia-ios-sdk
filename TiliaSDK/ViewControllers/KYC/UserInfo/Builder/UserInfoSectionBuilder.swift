@@ -203,12 +203,12 @@ struct UserInfoSectionBuilder {
   
   func tableFooter(delegate: TableFooterDelegate) -> UIView {
     let primaryButton = PrimaryButtonWithStyle(.titleAndImageCenter)
+    primaryButton.setTitleForLoadingState(L.hangTight)
     primaryButton.setTitle(L.continueTitle,
                            for: .normal)
     primaryButton.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
                            for: .normal)
-    primaryButton.imageView?.tintColor = .primaryButtonTextColor
-    primaryButton.isEnabled = false
+//    primaryButton.isEnabled = false // TODO: - Fix me
     
     let nonPrimaryButton = NonPrimaryButton()
     nonPrimaryButton.setTitle(L.cancel,
@@ -299,7 +299,7 @@ struct UserInfoSectionBuilder {
   
   func updateTableFooter(for sections: [Section],
                          in tableView: UITableView) {
-    guard let tableFooterView = tableView.tableFooterView as? ButtonsView else { return }
+    guard let tableFooterView = tableView.tableFooterView as? ButtonsView<PrimaryButtonWithStyle, NonPrimaryButton> else { return }
     let isPrimaryButtonEnabled = sections.filter { $0.isFilled }.count == sections.count
     tableFooterView.primaryButton.isEnabled = isPrimaryButtonEnabled
   }

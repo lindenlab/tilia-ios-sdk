@@ -29,4 +29,11 @@ final class NonPrimaryButtonWithStyle: NonPrimaryButton {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func setTitleColor(_ color: UIColor?, for state: UIControl.State) {
+    super.setTitleColor(color, for: state)
+    if state == .normal, let color = color {
+      imageView?.tintColor = color
+    }
+  }
+  
 }

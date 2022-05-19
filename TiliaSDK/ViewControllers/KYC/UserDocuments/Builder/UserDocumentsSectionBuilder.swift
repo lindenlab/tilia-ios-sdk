@@ -27,7 +27,6 @@ struct UserDocumentsSectionBuilder {
                            for: .normal)
     primaryButton.setImage(.uploadIcon?.withRenderingMode(.alwaysTemplate),
                            for: .normal)
-    primaryButton.imageView?.tintColor = .primaryButtonTextColor
     primaryButton.isEnabled = false
     
     let nonPrimaryButton = NonPrimaryButtonWithStyle(.imageAndTitleCenter)
@@ -35,7 +34,6 @@ struct UserDocumentsSectionBuilder {
                               for: .normal)
     nonPrimaryButton.setImage(.leftArrowicon?.withRenderingMode(.alwaysTemplate),
                               for: .normal)
-    nonPrimaryButton.imageView?.tintColor = .primaryTextColor
     
     let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     let view = ButtonsView(primaryButton: primaryButton,

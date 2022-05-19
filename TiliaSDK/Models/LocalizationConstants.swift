@@ -86,5 +86,6 @@ enum L {
   static let supportingDocumentsDescription = "supportingDocumentsDescription".localized
   static let allSet = "allSet".localized
   static let userDocumentsSuccessMessage = "userDocumentsSuccessMessage".localized
+  static let hangTight = "hangTight".localized
   
 }

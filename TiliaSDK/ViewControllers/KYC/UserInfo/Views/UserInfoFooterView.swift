@@ -23,7 +23,6 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
                     for: .normal)
     button.setBackgroundColor(.backgroundColor, for: .disabled)
     button.setTitleColor(.borderColor, for: .disabled)
-    button.imageView?.tintColor = .primaryTextColor
     button.translatesAutoresizingMaskIntoConstraints = false
     button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
     return button
