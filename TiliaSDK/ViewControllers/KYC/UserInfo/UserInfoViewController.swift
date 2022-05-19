@@ -169,6 +169,11 @@ extension UserInfoViewController: UserInfoFooterViewDelegate {
 extension UserInfoViewController: ButtonsViewDelegate {
   
   func buttonsViewPrimaryButtonDidTap(_ view: ButtonsView) {
+    for (index, section) in sections.enumerated() where section.mode == .expanded {
+      viewModel.updateSection(at: index,
+                              sectionType: section.type,
+                              isExpanded: false)
+    }
     router.routeToUserDocumentsView()
   }
   
