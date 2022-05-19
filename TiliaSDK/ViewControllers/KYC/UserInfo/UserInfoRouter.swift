@@ -14,9 +14,15 @@ protocol UserInfoRoutingProtocol: RoutingProtocol {
 final class UserInfoRouter: UserInfoRoutingProtocol {
   
   weak var viewController: UIViewController?
+  private let dataStore: UserInfoDataStore
+  
+  init(dataStore: UserInfoDataStore) {
+    self.dataStore = dataStore
+  }
   
   func routeToUserDocumentsView() {
-    
+    let userDocumentsViewController = UserDocumentsViewController(manager: dataStore.manager)
+    viewController?.present(userDocumentsViewController, animated: true)
   }
   
 }

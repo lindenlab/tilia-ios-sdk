@@ -27,9 +27,13 @@ protocol UserInfoViewModelOutputProtocol {
   var coutryOfResidenceDidSelect: PassthroughSubject<Void, Never> { get }
 }
 
+protocol UserInfoDataStore {
+  var manager: NetworkManager { get }
+}
+
 protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol { }
 
-final class UserInfoViewModel: UserInfoViewModelProtocol {
+final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   let loading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<Error, Never>()
@@ -39,7 +43,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol {
   let coutryOfResidenceDidChange = PassthroughSubject<String?, Never>()
   let coutryOfResidenceDidSelect = PassthroughSubject<Void, Never>()
   
-  private let manager: NetworkManager
+  let manager: NetworkManager
   private var userInfoModel = UserInfoModel()
   
   

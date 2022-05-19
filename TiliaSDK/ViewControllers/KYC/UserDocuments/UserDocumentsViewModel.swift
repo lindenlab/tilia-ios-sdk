@@ -18,6 +18,10 @@ protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, Us
 
 final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
+  private let manager: NetworkManager
   
+  init(manager: NetworkManager) {
+    self.manager = manager
+  }
   
 }

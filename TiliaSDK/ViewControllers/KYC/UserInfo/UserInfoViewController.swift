@@ -29,7 +29,6 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.addClosingKeyboardOnTap()
-    tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(UserInfoHeaderView.self)
     tableView.register(UserInfoFooterView.self)
     tableView.register(TextFieldCell.self)
@@ -44,7 +43,7 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
   
   init(manager: NetworkManager) {
     let viewModel = UserInfoViewModel(manager: manager)
-    let router = UserInfoRouter()
+    let router = UserInfoRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
     super.init(nibName: nil, bundle: nil)
@@ -170,7 +169,7 @@ extension UserInfoViewController: UserInfoFooterViewDelegate {
 extension UserInfoViewController: ButtonsViewDelegate {
   
   func buttonsViewPrimaryButtonDidTap(_ view: ButtonsView) {
-    
+    router.routeToUserDocumentsView()
   }
   
   func buttonsViewPrimaryNonButtonDidTap(_ view: ButtonsView) {
