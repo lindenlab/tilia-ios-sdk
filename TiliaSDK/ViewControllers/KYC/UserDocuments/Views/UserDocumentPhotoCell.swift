@@ -79,14 +79,17 @@ private extension UserDocumentPhotoCell {
     stackView.spacing = 16
     stackView.setCustomSpacing(10, after: titleLabel)
     stackView.axis = .vertical
-    
     contentView.addSubview(stackView)
+    
+    let bottomAnchor = stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+    bottomAnchor.priority = UILayoutPriority(999)
+    
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-      photoImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.65)
+      bottomAnchor,
+      photoImageView.heightAnchor.constraint(equalTo: photoImageView.widthAnchor, multiplier: 0.65)
     ])
   }
   
