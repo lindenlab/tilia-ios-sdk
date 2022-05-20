@@ -34,15 +34,15 @@ final class PrimaryButtonWithStyle: PrimaryButton {
   private var title: String?
   private var spinner: UIActivityIndicatorView?
   
-  init(_ style: Style, frame: CGRect = .zero) {
+  init(style: Style, frame: CGRect = .zero) {
     self.style = style
     super.init(frame: frame)
     switch style {
     case .titleAndImageCenter:
       semanticContentAttribute = .forceRightToLeft
-      imageEdgeInsets.left = 12
+      imageEdgeInsets.right = -8
     case .imageAndTitleCenter:
-      imageEdgeInsets.right = 12
+      imageEdgeInsets.left = -8
     }
   }
   
@@ -56,9 +56,9 @@ final class PrimaryButtonWithStyle: PrimaryButton {
     let spinnerCenterX: CGFloat
     switch style {
     case .titleAndImageCenter:
-      spinnerCenterX = titleLabel.frame.maxX + imageEdgeInsets.left
+      spinnerCenterX = titleLabel.frame.maxX + 12
     case .imageAndTitleCenter:
-      spinnerCenterX = titleLabel.frame.minX - imageEdgeInsets.right
+      spinnerCenterX = titleLabel.frame.minX - 12
     }
     spinner.center = CGPoint(x: spinnerCenterX, y: titleLabel.frame.midY)
   }

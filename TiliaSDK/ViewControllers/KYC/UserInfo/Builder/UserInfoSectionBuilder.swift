@@ -202,7 +202,7 @@ struct UserInfoSectionBuilder {
   }
   
   func tableFooter(delegate: TableFooterDelegate) -> UIView {
-    let primaryButton = PrimaryButtonWithStyle(.titleAndImageCenter)
+    let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
     primaryButton.setTitleForLoadingState(L.hangTight)
     primaryButton.setTitle(L.continueTitle,
                            for: .normal)

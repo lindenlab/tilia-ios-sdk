@@ -22,14 +22,14 @@ struct UserDocumentsSectionBuilder {
   }
   
   func tableFooter(delegate: TableFooterDelegate) -> UIView {
-    let primaryButton = PrimaryButtonWithStyle(.titleAndImageCenter)
+    let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
     primaryButton.setTitle(L.continueTitle,
                            for: .normal)
     primaryButton.setImage(.uploadIcon?.withRenderingMode(.alwaysTemplate),
                            for: .normal)
-    primaryButton.isEnabled = false
+//    primaryButton.isEnabled = false // TODO: - Fix me
     
-    let nonPrimaryButton = NonPrimaryButtonWithStyle(.imageAndTitleCenter)
+    let nonPrimaryButton = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
     nonPrimaryButton.setTitle(L.goBack,
                               for: .normal)
     nonPrimaryButton.setImage(.leftArrowicon?.withRenderingMode(.alwaysTemplate),

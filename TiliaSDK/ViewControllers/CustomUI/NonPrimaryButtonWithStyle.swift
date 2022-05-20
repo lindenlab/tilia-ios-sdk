@@ -14,14 +14,14 @@ final class NonPrimaryButtonWithStyle: NonPrimaryButton {
     case imageAndTitleCenter
   }
   
-  init(_ style: Style, frame: CGRect = .zero) {
+  init(style: Style, frame: CGRect = .zero) {
     super.init(frame: frame)
     switch style {
     case .titleAndImageCenter:
       semanticContentAttribute = .forceRightToLeft
-      imageEdgeInsets.left = 12
+      imageEdgeInsets.right = -8
     case .imageAndTitleCenter:
-      imageEdgeInsets.right = 12
+      imageEdgeInsets.left = -8
     }
   }
   

@@ -76,6 +76,7 @@
 		D19A0DA7281FED6600483DDC /* UserInfoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA6281FED6600483DDC /* UserInfoRouter.swift */; };
 		D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */; };
 		D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */; };
+		D19C79902837958C0024BB6F /* UserDocumentPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19C798F2837958C0024BB6F /* UserDocumentPhotoCell.swift */; };
 		D1B871F828339B2A00C44441 /* UserDocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871F728339B2A00C44441 /* UserDocumentsViewController.swift */; };
 		D1B871FA28339B5400C44441 /* UserDocumentsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871F928339B5400C44441 /* UserDocumentsRouter.swift */; };
 		D1B871FC28339BE600C44441 /* UserDocumentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871FB28339BE600C44441 /* UserDocumentsViewModel.swift */; };
@@ -228,6 +229,7 @@
 		D19A0DA6281FED6600483DDC /* UserInfoRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoRouter.swift; sourceTree = "<group>"; };
 		D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowTestViewController.swift; sourceTree = "<group>"; };
+		D19C798F2837958C0024BB6F /* UserDocumentPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentPhotoCell.swift; sourceTree = "<group>"; };
 		D1B871F728339B2A00C44441 /* UserDocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewController.swift; sourceTree = "<group>"; };
 		D1B871F928339B5400C44441 /* UserDocumentsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsRouter.swift; sourceTree = "<group>"; };
 		D1B871FB28339BE600C44441 /* UserDocumentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModel.swift; sourceTree = "<group>"; };
@@ -604,6 +606,7 @@
 		D1B871FD28339BEE00C44441 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D19C798F2837958C0024BB6F /* UserDocumentPhotoCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1019,6 +1022,7 @@
 				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,
 				D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */,
 				D1CCE8DC27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift in Sources */,
+				D19C79902837958C0024BB6F /* UserDocumentPhotoCell.swift in Sources */,
 				D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */,
 				D16D56A7282593D20088FB3D /* PrimaryButtonWithStyle.swift in Sources */,
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,

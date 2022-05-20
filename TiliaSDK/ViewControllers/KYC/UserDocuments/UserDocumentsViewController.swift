@@ -26,8 +26,7 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.addClosingKeyboardOnTap()
-    tableView.register(TextFieldCell.self)
-    tableView.register(LabelCell.self)
+    tableView.register(UserDocumentPhotoCell.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.tableFooterView = builder.tableFooter(delegate: self)
     tableView.estimatedRowHeight = 44
@@ -77,15 +76,17 @@ extension UserDocumentsViewController: UIAdaptivePresentationControllerDelegate 
 extension UserDocumentsViewController: UITableViewDataSource {
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return sections.count
+    return 1
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 0
+    return 2
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return UITableViewCell()
+    let cell = tableView.dequeue(UserDocumentPhotoCell.self, for: indexPath)
+    cell.configure(title: "Back side", image: .passportIcon, primaryButtonTitle: indexPath.row == 0 ? L.captureOnCamera : nil, nonPrimaryButtonTitle: L.pickFile)
+    return cell
   }
   
 }
