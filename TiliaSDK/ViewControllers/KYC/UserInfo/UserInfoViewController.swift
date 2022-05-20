@@ -66,6 +66,7 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     super.viewDidLayoutSubviews()
     tableView.updateTableHeaderHeight()
     tableView.updateTableFooterHeight()
+    tableView.performBatchUpdates(nil, completion: nil)
   }
   
 }

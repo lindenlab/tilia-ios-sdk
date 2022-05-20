@@ -57,6 +57,7 @@ final class UserDocumentsViewController: BaseViewController {
     super.viewDidLayoutSubviews()
     tableView.updateTableHeaderHeight()
     tableView.updateTableFooterHeight()
+    tableView.performBatchUpdates(nil, completion: nil)
   }
   
 }
