@@ -25,25 +25,29 @@ extension UITableView {
     dequeueReusableCell(withIdentifier: cellClass.reuseIdentifier, for: indexPath) as! T
   }
   
-  func updateTableHeaderHeight() {
-    tableHeaderView.map {
-      let targetSize = CGSize(width: frame.width,
-                              height: UIView.layoutFittingCompressedSize.height)
-      let newSize = $0.systemLayoutSizeFitting(targetSize)
-      if $0.frame.size.height != newSize.height {
-        $0.frame.size.height = newSize.height
-      }
-    }
+  func updateTableHeaderHeightIfNeeded() {
+    tableHeaderView.map { updateHeightIfNeeded(for: $0) }
   }
   
-  func updateTableFooterHeight() {
-    tableFooterView.map {
-      let targetSize = CGSize(width: frame.width,
-                              height: UIView.layoutFittingCompressedSize.height)
-      let newSize = $0.systemLayoutSizeFitting(targetSize)
-      if $0.frame.size.height != newSize.height {
-        $0.frame.size.height = newSize.height
-      }
+  func updateTableFooterHeightIfNeeded() {
+    tableFooterView.map { updateHeightIfNeeded(for: $0) }
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension UITableView {
+  
+  func updateHeightIfNeeded(for view: UIView) {
+    let targetSize = CGSize(width: frame.width,
+                            height: UIView.layoutFittingCompressedSize.height)
+    let newSize = view.systemLayoutSizeFitting(targetSize,
+                                               withHorizontalFittingPriority: .required,
+                                               verticalFittingPriority: .fittingSizeLevel)
+    if view.frame.size.height != newSize.height {
+      view.frame.size.height = newSize.height
+      performBatchUpdates(nil, completion: nil)
     }
   }
   

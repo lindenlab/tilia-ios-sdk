@@ -64,9 +64,8 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    tableView.updateTableHeaderHeight()
-    tableView.updateTableFooterHeight()
-    tableView.performBatchUpdates(nil, completion: nil)
+    tableView.updateTableHeaderHeightIfNeeded()
+    tableView.updateTableFooterHeightIfNeeded()
   }
   
 }
