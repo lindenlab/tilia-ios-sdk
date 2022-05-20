@@ -122,11 +122,14 @@ struct UserInfoSectionBuilder {
     var items: [Item]
     
     var isExpanded: Bool { return mode == .expanded }
-    var numberOfRows: Int { return items.count }
-    
-    var heightForFooter: CGFloat {
-      return isExpanded ? UITableView.automaticDimension : .leastNormalMagnitude
-    }
+  }
+  
+  func numberOfRows(in section: Section) -> Int {
+    return section.items.count
+  }
+  
+  func heightForHeader(in section: Section) -> CGFloat {
+    return section.isExpanded ? UITableView.automaticDimension : .leastNormalMagnitude
   }
   
   func cell(for section: Section,

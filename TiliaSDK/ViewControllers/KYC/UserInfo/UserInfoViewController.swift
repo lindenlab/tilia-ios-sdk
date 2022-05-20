@@ -37,7 +37,9 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.register(LabelCell.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.tableFooterView = builder.tableFooter(delegate: self)
-    tableView.estimatedRowHeight = 44
+    tableView.estimatedRowHeight = 150
+    tableView.estimatedSectionFooterHeight = 50
+    tableView.estimatedSectionHeaderHeight = 50
     return tableView
   }()
   
@@ -89,7 +91,7 @@ extension UserInfoViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return sections[section].numberOfRows
+    return builder.numberOfRows(in: sections[section])
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -118,7 +120,7 @@ extension UserInfoViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return sections[section].heightForFooter
+    return builder.heightForHeader(in: sections[section])
   }
   
 }
