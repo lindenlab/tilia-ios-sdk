@@ -45,24 +45,22 @@ struct CheckoutSectionBuilder {
     case summary(Summary)
     case payment(Payment)
     case successfulPayment
-    
-    var numberOfRows: Int {
-      switch self {
-      case let .summary(model): return model.items.count
-      case let .payment(model): return model.items.count
-      case .successfulPayment: return 1
-      }
+  }
+  
+  func numberOfRows(in section: Section) -> Int {
+    switch section {
+    case let .summary(model): return model.items.count
+    case let .payment(model): return model.items.count
+    case .successfulPayment: return 1
     }
-    
-    var heightForHeader: CGFloat {
-      switch self {
-      case .successfulPayment: return .leastNormalMagnitude
-      case let .payment(model):
-        return model.isEmpty ? 20 : UITableView.automaticDimension
-      default: return UITableView.automaticDimension
-      }
+  }
+  
+  func heightForHeader(in section: Section) -> CGFloat {
+    switch section {
+    case .successfulPayment: return .leastNormalMagnitude
+    case let .payment(model): return model.isEmpty ? 20 : UITableView.automaticDimension
+    default: return UITableView.automaticDimension
     }
-    
   }
   
   func cell(for section: Section,
