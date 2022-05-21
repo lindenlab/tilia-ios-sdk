@@ -128,7 +128,7 @@ struct UserInfoSectionBuilder {
     return section.items.count
   }
   
-  func heightForHeader(in section: Section) -> CGFloat {
+  func heightForFooter(in section: Section) -> CGFloat {
     return section.isExpanded ? UITableView.automaticDimension : .leastNormalMagnitude
   }
   

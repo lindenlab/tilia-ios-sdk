@@ -120,7 +120,7 @@ extension UserInfoViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return builder.heightForHeader(in: sections[section])
+    return builder.heightForFooter(in: sections[section])
   }
   
 }
@@ -176,7 +176,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
                               sectionType: section.type,
                               isExpanded: false)
     }
-    router.routeToUserDocumentsView()
+//    router.routeToUserDocumentsView()
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
