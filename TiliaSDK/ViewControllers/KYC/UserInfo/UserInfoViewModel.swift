@@ -66,9 +66,11 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
                for section: UserInfoSectionBuilder.Section,
                indexPath: IndexPath,
                fieldIndex: Int) {
+    guard let type = section.items[indexPath.row].type else { return }
+    
     var isFieldChanged = false
     
-    switch section.items[indexPath.row].type {
+    switch type {
     case .countryOfResidance:
       if userInfoModel.countryOfResidence == nil, text != nil {
         coutryOfResidenceDidSelect.send(())

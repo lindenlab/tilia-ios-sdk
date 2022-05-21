@@ -7,34 +7,40 @@
 
 import UIKit
 
-protocol UserInfoFooterViewDelegate: AnyObject {
-  func userInfoFooterViewButtonDidTap(_ footer: UserInfoFooterView)
-}
-
 final class UserInfoFooterView: UITableViewHeaderFooterView {
   
-  private weak var delegate: UserInfoFooterViewDelegate?
-  
-  private lazy var button: NonPrimaryButtonWithStyle = {
-    let button = NonPrimaryButtonWithStyle(style: .titleAndImageCenter)
-    button.setTitle(L.next,
-                    for: .normal)
-    button.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
-                    for: .normal)
-    button.setBackgroundColor(.backgroundColor, for: .disabled)
-    button.setTitleColor(.borderColor, for: .disabled)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
-    return button
+  private let divider: DividerView = {
+    let view = DividerView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
   }()
   
-  func configure(isButtonEnabled: Bool, delegate: UserInfoFooterViewDelegate?) {
-    configure(isButtonEnabled: isButtonEnabled)
-    self.delegate = delegate
+  private let buttonsView: ButtonsView<PrimaryButtonWithStyle, NonPrimaryButton> = {
+    let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
+    primaryButton.setTitleForLoadingState(L.hangTight)
+    primaryButton.setTitle(L.continueTitle,
+                           for: .normal)
+    primaryButton.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
+                           for: .normal)
+    primaryButton.isEnabled = false
+    
+    let nonPrimaryButton = NonPrimaryButton()
+    nonPrimaryButton.setTitle(L.cancel,
+                              for: .normal)
+    
+    let view = ButtonsView(primaryButton: primaryButton,
+                           nonPrimaryButton: nonPrimaryButton)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+  
+  func configure(isPrimaryButtonEnabled: Bool, delegate: ButtonsViewDelegate?) {
+    configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled)
+    buttonsView.delegate = delegate
   }
   
-  func configure(isButtonEnabled: Bool) {
-    button.isEnabled = isButtonEnabled
+  func configure(isPrimaryButtonEnabled: Bool) {
+    buttonsView.primaryButton.isEnabled = isPrimaryButtonEnabled
   }
   
   override init(reuseIdentifier: String?) {
@@ -54,19 +60,24 @@ private extension UserInfoFooterView {
   
   func setup() {
     contentView.backgroundColor = .backgroundColor
-    contentView.addSubview(button)
+    contentView.addSubview(buttonsView)
+    contentView.addSubview(divider)
     
-    let topConstraint = button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
+    let topConstraint = buttonsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24)
     topConstraint.priority = UILayoutPriority(999)
+    
+    let rightConstraint = buttonsView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
+    rightConstraint.priority = UILayoutPriority(999)
+    
     NSLayoutConstraint.activate([
       topConstraint,
-      button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-      button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
+      rightConstraint,
+      buttonsView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+      buttonsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+      divider.topAnchor.constraint(equalTo: topAnchor),
+      divider.leftAnchor.constraint(equalTo: leftAnchor),
+      divider.rightAnchor.constraint(equalTo: rightAnchor)
     ])
-  }
-  
-  @objc func buttonDidTap() {
-    delegate?.userInfoFooterViewButtonDidTap(self)
   }
   
 }

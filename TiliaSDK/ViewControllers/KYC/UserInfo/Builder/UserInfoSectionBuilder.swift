@@ -9,10 +9,9 @@ import UIKit
 
 struct UserInfoSectionBuilder {
   
-  typealias CellDelegate = TextFieldsCellDelegate
+  typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
-  typealias SectionFooterDelegate = UserInfoFooterViewDelegate
-  typealias TableFooterDelegate = ButtonsViewDelegate
+  typealias SectionFooterDelegate = ButtonsViewDelegate
   
   struct Section {
     
@@ -103,13 +102,14 @@ struct UserInfoSectionBuilder {
         
         case fields(Fields)
         case label(String?)
+        case button
       }
       
-      let type: ItemType
+      let type: ItemType?
       var mode: Mode
       let description: String?
       
-      init(type: ItemType, mode: Mode, description: String? = nil) {
+      init(type: ItemType? = nil, mode: Mode, description: String? = nil) {
         self.type = type
         self.mode = mode
         self.description = description
@@ -129,7 +129,10 @@ struct UserInfoSectionBuilder {
   }
   
   func heightForFooter(in section: Section) -> CGFloat {
-    return section.isExpanded ? UITableView.automaticDimension : .leastNormalMagnitude
+    switch section.type {
+    case .contact: return UITableView.automaticDimension
+    default: return .leastNormalMagnitude
+    }
   }
   
   func cell(for section: Section,
@@ -153,15 +156,19 @@ struct UserInfoSectionBuilder {
       default:
         fatalError("For now we do not support more than 3 fields")
       }
-      cell.configure(title: item.type.title)
+      cell.configure(title: item.type?.title ?? "")
       cell.configure(fieldsContent: model.fieldsContent,
                      description: item.description,
                      delegate: delegate)
       return cell
     case let .label(model):
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
-      cell.configure(title: item.type.title)
+      cell.configure(title: item.type?.title ?? "")
       cell.configure(description: model)
+      return cell
+    case .button:
+      let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
+      cell.configure(isButtonEnabled: section.isFilled, delegate: delegate)
       return cell
     }
   }
@@ -176,19 +183,17 @@ struct UserInfoSectionBuilder {
     return view
   }
   
-  func footer(for section: Section,
+  func footer(for sections: [Section],
               in tableView: UITableView,
+              at section: Int,
               delegate: SectionFooterDelegate) -> UIView? {
-    switch section.type {
-    case .location, .personal:
-      if section.isExpanded {
-        let view = tableView.dequeue(UserInfoFooterView.self)
-        view.configure(isButtonEnabled: section.isFilled,
-                       delegate: delegate)
-        return view
-      } else {
-        return nil
-      }
+    switch sections[section].type {
+    case .contact:
+      let isPrimaryButtonEnabled = isAllSectionsFilled(sections)
+      let view = tableView.dequeue(UserInfoFooterView.self)
+      view.configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled,
+                     delegate: delegate)
+      return view
     default:
       return nil
     }
@@ -204,27 +209,6 @@ struct UserInfoSectionBuilder {
     return view
   }
   
-  func tableFooter(delegate: TableFooterDelegate) -> UIView {
-    let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
-    primaryButton.setTitleForLoadingState(L.hangTight)
-    primaryButton.setTitle(L.continueTitle,
-                           for: .normal)
-    primaryButton.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
-                           for: .normal)
-//    primaryButton.isEnabled = false // TODO: - Fix me
-    
-    let nonPrimaryButton = NonPrimaryButton()
-    nonPrimaryButton.setTitle(L.cancel,
-                              for: .normal)
-    
-    let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-    let view = ButtonsView(primaryButton: primaryButton,
-                           nonPrimaryButton: nonPrimaryButton,
-                           insets: insets)
-    view.delegate = delegate
-    return view
-  }
-  
   func sections() -> [Section] {
     return Section.SectionType.allCases.map {
       return Section(type: $0,
@@ -236,8 +220,11 @@ struct UserInfoSectionBuilder {
   
   func updateSection(_ section: inout Section,
                      with model: UserInfoModel,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
                      isExpanded: Bool,
-                     isFilled: Bool) {
+                     isFilled: Bool) -> [IndexPath] {
+    let items: [Section.Item]
     if isExpanded {
       section.mode = .expanded
       switch section.type {
@@ -246,13 +233,21 @@ struct UserInfoSectionBuilder {
       case .personal:
         section.items = itemsForPersonalSection(with: model)
       case .contact:
-        section.items = itemsForContactlSection(with: model)
+        section.items = itemsForContactSection(with: model)
       }
+      items = section.items
     } else {
+      items = section.items
       section.mode = isFilled ? .passed : .normal
       section.items = []
     }
     section.isFilled = isFilled
+    
+    if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
+      header.configure(mode: section.mode)
+    }
+    
+    return items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) }
   }
   
   func updateSection(_ section: inout Section,
@@ -270,8 +265,11 @@ struct UserInfoSectionBuilder {
     }
     
     section.isFilled = isFilled
-    if let footer = tableView.footerView(forSection: indexPath.section) as? UserInfoFooterView {
-      footer.configure(isButtonEnabled: isFilled)
+    
+    let nextButtonCellIndexPath = IndexPath(row: tableView.numberOfRows(inSection: indexPath.section) - 1,
+                                            section: indexPath.section)
+    if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
+      nextButtonCell.configure(isButtonEnabled: isFilled)
     }
   }
   
@@ -302,9 +300,10 @@ struct UserInfoSectionBuilder {
   
   func updateTableFooter(for sections: [Section],
                          in tableView: UITableView) {
-    guard let tableFooterView = tableView.tableFooterView as? ButtonsView<PrimaryButtonWithStyle, NonPrimaryButton> else { return }
-    let isPrimaryButtonEnabled = sections.filter { $0.isFilled }.count == sections.count
-    tableFooterView.primaryButton.isEnabled = isPrimaryButtonEnabled
+    guard
+      let index = sections.lastIndex(where: { $0.type == .contact }),
+      let footer = tableView.footerView(forSection: index) as? UserInfoFooterView else { return }
+    footer.configure(isPrimaryButtonEnabled: isAllSectionsFilled(sections))
   }
   
 }
@@ -322,7 +321,8 @@ private extension UserInfoSectionBuilder {
                                                                               selectedIndex: selectedIndex))
     return [
       Section.Item(type: .countryOfResidance,
-                   mode: .fields(countryOfResidenceField))
+                   mode: .fields(countryOfResidenceField)),
+      Section.Item(mode: .button)
     ]
   }
   
@@ -354,10 +354,12 @@ private extension UserInfoSectionBuilder {
                                 mode: .fields(ssnField)))
     }
     
+    items.append(Section.Item(mode: .button))
+    
     return items
   }
   
-  func itemsForContactlSection(with model: UserInfoModel) -> [Section.Item] {
+  func itemsForContactSection(with model: UserInfoModel) -> [Section.Item] {
     let addressField = Section.Item.Mode.Fields(fields: [.init(placeholder:L.streetAddress,
                                                                text: model.address.street),
                                                          .init(placeholder:L.apartment,
@@ -407,6 +409,10 @@ private extension UserInfoSectionBuilder {
     }
     
     return items
+  }
+  
+  func isAllSectionsFilled(_ sections: [Section]) -> Bool {
+    return sections.filter { $0.isFilled }.count == sections.count
   }
   
 }

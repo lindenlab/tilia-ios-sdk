@@ -31,15 +31,15 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.addClosingKeyboardOnTap()
     tableView.register(UserInfoHeaderView.self)
     tableView.register(UserInfoFooterView.self)
+    tableView.register(UserInfoNextButtonCell.self)
     tableView.register(TextFieldCell.self)
     tableView.register(TwoTextFieldsCell.self)
     tableView.register(ThreeTextFieldsCell.self)
     tableView.register(LabelCell.self)
     tableView.tableHeaderView = builder.tableHeader()
-    tableView.tableFooterView = builder.tableFooter(delegate: self)
     tableView.estimatedRowHeight = 150
-    tableView.estimatedSectionFooterHeight = 50
     tableView.estimatedSectionHeaderHeight = 50
+    tableView.estimatedSectionFooterHeight = 140
     return tableView
   }()
   
@@ -67,7 +67,6 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.updateTableHeaderHeightIfNeeded()
-    tableView.updateTableFooterHeightIfNeeded()
   }
   
 }
@@ -114,8 +113,9 @@ extension UserInfoViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return builder.footer(for: sections[section],
+    return builder.footer(for: sections,
                           in: tableView,
+                          at: section,
                           delegate: self)
   }
   
@@ -139,6 +139,20 @@ extension UserInfoViewController: TextFieldsCellDelegate {
   
 }
 
+// MARK: - UserInfoNextButtonCellDelegate
+
+extension UserInfoViewController: UserInfoNextButtonCellDelegate {
+  
+  func userInfoNextButtonCellButtonDidTap(_ cell: UserInfoNextButtonCell) {
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    let section = indexPath.section
+    viewModel.updateSection(at: section,
+                            sectionType: sections[section].type,
+                            isExpanded: false)
+  }
+  
+}
+
 // MARK: - UserInfoHeaderViewDelegate
 
 extension UserInfoViewController: UserInfoHeaderViewDelegate {
@@ -149,19 +163,6 @@ extension UserInfoViewController: UserInfoHeaderViewDelegate {
     viewModel.updateSection(at: index,
                             sectionType: sections[index].type,
                             isExpanded: isExpanded)
-  }
-  
-}
-
-// MARK: - UserInfoFooterViewDelegate
-
-extension UserInfoViewController: UserInfoFooterViewDelegate {
-  
-  func userInfoFooterViewButtonDidTap(_ footer: UserInfoFooterView) {
-    guard let index = getFooterIndex(footer) else { return }
-    viewModel.updateSection(at: index,
-                            sectionType: sections[index].type,
-                            isExpanded: false)
   }
   
 }
@@ -223,12 +224,18 @@ private extension UserInfoViewController {
     
     viewModel.expandSection.sink { [weak self] item in
       guard let self = self else { return }
-      self.builder.updateSection(&self.sections[item.index],
-                                 with: item.model,
-                                 isExpanded: item.isExpanded,
-                                 isFilled: item.isFilled)
+      let indexPaths = self.builder.updateSection(&self.sections[item.index],
+                                                  with: item.model,
+                                                  in: self.tableView,
+                                                  at: item.index,
+                                                  isExpanded: item.isExpanded,
+                                                  isFilled: item.isFilled)
       self.tableView.performBatchUpdates {
-        self.tableView.reloadSections([item.index], with: .fade)
+        if item.isExpanded {
+          self.tableView.insertRows(at: indexPaths, with: .fade)
+        } else {
+          self.tableView.deleteRows(at: indexPaths, with: .fade)
+        }
       } completion: { _ in
         if item.isExpanded {
           self.scrollToSection(at: item.index)
@@ -277,14 +284,8 @@ private extension UserInfoViewController {
     }
   }
   
-  func getFooterIndex(_ footer: UITableViewHeaderFooterView) -> Int? {
-    return sections.indices.firstIndex {
-      return tableView.footerView(forSection: $0) === footer
-    }
-  }
-  
   func scrollToSection(at index: Int) {
-    tableView.scrollToRow(at: IndexPath(row: NSNotFound, section: index),
+    tableView.scrollToRow(at: IndexPath(row: 0, section: index),
                           at: .top,
                           animated: true)
   }

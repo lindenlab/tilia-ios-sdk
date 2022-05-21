@@ -44,6 +44,7 @@
 		D15BA9F1282A9B9500511785 /* ThreeTextFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9F0282A9B9500511785 /* ThreeTextFieldsCell.swift */; };
 		D15BA9F3282AABF900511785 /* Date+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9F2282AABF900511785 /* Date+Helpers.swift */; };
 		D15BA9F5282AACE200511785 /* DateFormatter+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */; };
+		D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */; };
 		D16D569F28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift */; };
 		D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A2282538F00088FB3D /* TitleBaseCell.swift */; };
 		D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A4282560DC0088FB3D /* ButtonsView.swift */; };
@@ -197,6 +198,7 @@
 		D15BA9F0282A9B9500511785 /* ThreeTextFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeTextFieldsCell.swift; sourceTree = "<group>"; };
 		D15BA9F2282AABF900511785 /* Date+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helpers.swift"; sourceTree = "<group>"; };
 		D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Helpers.swift"; sourceTree = "<group>"; };
+		D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoNextButtonCell.swift; sourceTree = "<group>"; };
 		D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPrimaryButtonWithStyle.swift; sourceTree = "<group>"; };
 		D16D56A2282538F00088FB3D /* TitleBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBaseCell.swift; sourceTree = "<group>"; };
 		D16D56A4282560DC0088FB3D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 			children = (
 				D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */,
 				D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */,
+				D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -996,6 +999,7 @@
 				D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */,
 				D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */,
 				D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */,
+				D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */,
 				D135DCAC27E762460009D888 /* RouterProtocol.swift in Sources */,
 				D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */,
 				D1BA29E027FCA96B00F046E8 /* ColorsConfiguration.swift in Sources */,

@@ -58,11 +58,6 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    imageView.transform = .identity
-  }
-  
   func configure(title: String,
                  mode: Mode,
                  delegate: UserInfoHeaderViewDelegate?) {
@@ -121,6 +116,7 @@ private extension UserInfoHeaderView {
     titleLabel.textColor = mode.titleColor
     imageView.image = mode.icon
     imageView.tintColor = mode.iconColor
+    imageView.transform = .identity
     if isExpanded {
       imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
     }

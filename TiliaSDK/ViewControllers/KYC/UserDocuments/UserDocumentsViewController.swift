@@ -56,7 +56,6 @@ final class UserDocumentsViewController: BaseViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.updateTableHeaderHeightIfNeeded()
-    tableView.updateTableFooterHeightIfNeeded()
   }
   
 }
