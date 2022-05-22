@@ -22,7 +22,6 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
                            for: .normal)
     primaryButton.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
                            for: .normal)
-    primaryButton.isEnabled = false
     
     let nonPrimaryButton = NonPrimaryButton()
     nonPrimaryButton.setTitle(L.cancel,

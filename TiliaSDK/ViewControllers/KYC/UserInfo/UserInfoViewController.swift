@@ -177,7 +177,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
                               sectionType: section.type,
                               isExpanded: false)
     }
-//    router.routeToUserDocumentsView()
+    router.routeToUserDocumentsView()
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {

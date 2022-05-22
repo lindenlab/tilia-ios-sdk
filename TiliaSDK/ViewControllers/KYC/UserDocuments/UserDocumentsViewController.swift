@@ -28,7 +28,6 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.addClosingKeyboardOnTap()
     tableView.register(UserDocumentPhotoCell.self)
     tableView.tableHeaderView = builder.tableHeader()
-    tableView.tableFooterView = builder.tableFooter(delegate: self)
     tableView.estimatedRowHeight = 44
     return tableView
   }()

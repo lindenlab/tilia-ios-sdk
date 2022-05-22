@@ -191,7 +191,7 @@ struct UserInfoSectionBuilder {
     case .contact:
       let isPrimaryButtonEnabled = isAllSectionsFilled(sections)
       let view = tableView.dequeue(UserInfoFooterView.self)
-      view.configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled,
+      view.configure(isPrimaryButtonEnabled: true, // TODO: - Remove this
                      delegate: delegate)
       return view
     default:
