@@ -23,17 +23,12 @@ struct UserInfoModel {
     var postalCode: String?
   }
   
-  enum CanUseAddressFor1099: String, CaseIterable {
-    case yes = "Yes"
-    case no = "No"
-  }
-  
   var countryOfResidence: String?
   var fullName: FullName
   var dateOfBirth: Date?
   var ssn: String?
   var address: Address
-  var canUseAddressFor1099: CanUseAddressFor1099?
+  var canUseAddressFor1099: BoolModel?
   
   var isUsResident: Bool {
     return true
@@ -48,7 +43,7 @@ struct UserInfoModel {
        dateOfBirth: Date? = nil,
        ssn: String? = nil,
        address: Address = Address(),
-       canUseAddressFor1099: CanUseAddressFor1099? = nil) {
+       canUseAddressFor1099: BoolModel? = nil) {
     self.countryOfResidence = countryOfResidence
     self.fullName = fullName
     self.dateOfBirth = dateOfBirth

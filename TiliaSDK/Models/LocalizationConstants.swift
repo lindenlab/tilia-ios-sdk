@@ -87,5 +87,8 @@ enum L {
   static let allSet = "allSet".localized
   static let userDocumentsSuccessMessage = "userDocumentsSuccessMessage".localized
   static let hangTight = "hangTight".localized
+  static let uploading = "uploading".localized
+  static let yes = "yes".localized
+  static let no = "no".localized
   
 }

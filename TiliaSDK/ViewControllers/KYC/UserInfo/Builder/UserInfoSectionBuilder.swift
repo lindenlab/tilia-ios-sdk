@@ -396,12 +396,12 @@ private extension UserInfoSectionBuilder {
     ]
     
     if model.isUsResident {
-      let canUseAddressFor1099Items = UserInfoModel.CanUseAddressFor1099.allCases.map { $0.rawValue }
-      let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099?.rawValue }
+      let canUseAddressFor1099Items = BoolModel.allCases
+      let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099 }
       
       let canUseAddressFor1099Field = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectAnswer,
-                                                                              text: model.canUseAddressFor1099?.rawValue)],
-                                                               inputMode: .picker(items: canUseAddressFor1099Items,
+                                                                              text: model.canUseAddressFor1099?.description)],
+                                                               inputMode: .picker(items: canUseAddressFor1099Items.map { $0.description },
                                                                                   selectedIndex: canUseAddressFor1099SelectedIndex))
       items.append(Section.Item(type: .useAddressFor1099,
                                 mode: .fields(canUseAddressFor1099Field),

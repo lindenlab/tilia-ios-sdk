@@ -1,5 +1,5 @@
 //
-//  UserDocumentPhotoCell.swift
+//  UserDocumentsPhotoCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 20.05.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class UserDocumentPhotoCell: UITableViewCell {
+final class UserDocumentsPhotoCell: UITableViewCell {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
@@ -61,7 +61,7 @@ final class UserDocumentPhotoCell: UITableViewCell {
 
 // MARK: - Private Methods
 
-private extension UserDocumentPhotoCell {
+private extension UserDocumentsPhotoCell {
   
   func setup() {
     selectionStyle = .none

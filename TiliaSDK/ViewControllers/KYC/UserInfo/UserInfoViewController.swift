@@ -212,8 +212,9 @@ private extension UserInfoViewController {
     
     viewModel.error.sink { [weak self] _ in
       guard let self = self else { return }
-      self.router.showToast(title: L.errorPaymentTitle,
-                            message: L.errorPaymentMessage)
+      // TODO: - Fix me
+//      self.router.showToast(title: L.errorPaymentTitle,
+//                            message: L.errorPaymentMessage)
     }.store(in: &subscriptions)
     
     viewModel.content.sink { [weak self] _ in

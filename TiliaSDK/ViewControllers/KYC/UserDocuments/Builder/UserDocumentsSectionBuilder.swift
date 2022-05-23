@@ -9,38 +9,66 @@ import UIKit
 
 struct UserDocumentsSectionBuilder {
   
-  typealias TableFooterDelegate = ButtonsViewDelegate
+  typealias CellDelegate = TextFieldsCellDelegate
+  typealias SectionFooterDelegate = ButtonsViewDelegate
   
-  func tableHeader() -> UIView {
-    let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-    let view = TitleInfoView(insets: insets)
-    view.title = L.almostThere
-    view.subTitle = L.userDocumentsMessage
-    view.subTitleTextFont = .systemFont(ofSize: 14)
-    view.subTitleTextColor = .secondaryTextColor
+  struct Section {
+    
+    enum SectionType {
+      case documents
+      case success
+    }
+    
+    struct Item {
+      
+    }
+    
+    let type: SectionType
+    var items: [Item]
+  }
+  
+  func numberOfRows(in section: Section) -> Int {
+    return section.items.count
+  }
+  
+  func cell(for section: Section,
+            in tableView: UITableView,
+            at indexPath: IndexPath,
+            delegate: CellDelegate) -> UITableViewCell {
+    return UITableViewCell()
+  }
+  
+  func header(for section: Section,
+              in tableView: UITableView) -> UIView {
+    let view = tableView.dequeue(TitleInfoHeaderFooterView.self)
+    switch section.type {
+    case .documents:
+      view.configure(title: L.almostThere, subTitle: L.userDocumentsMessage)
+    case .success:
+      view.configure(title: L.allSet, subTitle: L.userDocumentsSuccessMessage)
+    }
     return view
   }
   
-  func tableFooter(delegate: TableFooterDelegate) -> UIView {
-    let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
-    primaryButton.setTitle(L.continueTitle,
-                           for: .normal)
-    primaryButton.setImage(.uploadIcon?.withRenderingMode(.alwaysTemplate),
-                           for: .normal)
-//    primaryButton.isEnabled = false // TODO: - Fix me
-    
-    let nonPrimaryButton = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
-    nonPrimaryButton.setTitle(L.goBack,
-                              for: .normal)
-    nonPrimaryButton.setImage(.leftArrowicon?.withRenderingMode(.alwaysTemplate),
-                              for: .normal)
-    
-    let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-    let view = ButtonsView(primaryButton: primaryButton,
-                           nonPrimaryButton: nonPrimaryButton,
-                           insets: insets)
-    view.delegate = delegate
+  func footer(for section: Section,
+              in tableView: UITableView,
+              delegate: SectionFooterDelegate) -> UIView {
+    let view = tableView.dequeue(UserDocumentsFooterView.self)
+    switch section.type {
+    case .documents:
+      view.configure(isPrimaryButtonEnabled: false, delegate: delegate)
+    case .success:
+      view.configure(isPrimaryButtonEnabled: false, delegate: nil) // TODO: - Fix me
+    }
     return view
+  }
+  
+  func documetsSection() -> Section {
+    return Section(type: .documents, items: [])
+  }
+  
+  func successSection() -> Section {
+    return Section(type: .success, items: [])
   }
   
 }

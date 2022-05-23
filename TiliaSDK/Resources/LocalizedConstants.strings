@@ -76,3 +76,6 @@
 "allSet" = "You’re all set!";
 "userDocumentsSuccessMessage" = "Thank you for providing this additional information.";
 "hangTight" = "Hang tight...";
+"uploading" = "Uploading...";
+"yes" = "Yes";
+"no" = "No";
