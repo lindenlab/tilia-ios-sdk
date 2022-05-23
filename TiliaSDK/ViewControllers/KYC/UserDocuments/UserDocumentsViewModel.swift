@@ -30,7 +30,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let setText = PassthroughSubject<UserDocumentsSetText, Never>()
   
   private let manager: NetworkManager
-  private var userDocumentsModel = UserDocumentsModel()
+  private var userDocumentsModel = UserDocumentsModel(documentCountry: "USA") // TODO: - Fix me
   
   init(manager: NetworkManager) {
     self.manager = manager

@@ -31,7 +31,7 @@ struct UserInfoModel {
   var canUseAddressFor1099: BoolModel?
   
   var isUsResident: Bool {
-    return true
+    return countryOfResidence == "USA" // TODO: - Fix me
   }
   
   var dateOfBirthString: String? {

@@ -257,14 +257,14 @@ private extension UserInfoViewController {
     }.store(in: &subscriptions)
     
     viewModel.coutryOfResidenceDidChange.sink { [weak self] text in
-      guard
-        let self = self,
-        let sectionIndex = self.sections.firstIndex(where: { $0.type == .contact }),
-        let itemIndex = self.sections[sectionIndex].items.firstIndex(where: { $0.type == .countryOfResidance }) else { return }
-      self.builder.updateSection(&self.sections[sectionIndex],
-                                 in: self.tableView,
-                                 at: IndexPath(row: itemIndex, section: sectionIndex),
-                                 countryOfResidenceDidChangeWith: text)
+//      guard
+//        let self = self,
+//        let sectionIndex = self.sections.firstIndex(where: { $0.type == .contact }),
+//        let itemIndex = self.sections[sectionIndex].items.firstIndex(where: { $0.type == .countryOfResidance }) else { return }
+//      self.builder.updateSection(&self.sections[sectionIndex],
+//                                 in: self.tableView,
+//                                 at: IndexPath(row: itemIndex, section: sectionIndex),
+//                                 countryOfResidenceDidChangeWith: text)
     }.store(in: &subscriptions)
     
     viewModel.coutryOfResidenceDidSelect.sink { [weak self] _ in

@@ -281,20 +281,21 @@ struct UserInfoSectionBuilder {
     }
   }
   
-  func updateSection(_ section: inout Section,
-                     in tableView: UITableView,
-                     at indexPath: IndexPath,
-                     countryOfResidenceDidChangeWith text: String?) {
-    switch section.items[indexPath.row].mode {
-    case .label:
-      section.items[indexPath.row].mode = .label(text)
-      if let cell = tableView.cellForRow(at: indexPath) as? LabelCell {
-        cell.configure(description: text)
-      }
-    default:
-      break
-    }
-  }
+//  // TODO: - Fix me
+//  func updateSection(_ section: inout Section,
+//                     in tableView: UITableView,
+//                     at indexPath: IndexPath,
+//                     countryOfResidenceDidChangeWith text: String?) {
+//    switch section.items[indexPath.row].mode {
+//    case .label:
+//      section.items[indexPath.row].mode = .label(text)
+//      if let cell = tableView.cellForRow(at: indexPath) as? LabelCell {
+//        cell.configure(description: text)
+//      }
+//    default:
+//      break
+//    }
+//  }
   
   func updateSection(_ section: inout Section,
                      in tableView: UITableView,
