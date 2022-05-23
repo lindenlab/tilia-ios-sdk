@@ -14,7 +14,7 @@ final class UserDocumentsViewController: BaseViewController {
   private let router: UserDocumentsRoutingProtocol
   private let builder = UserDocumentsSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
-  private var sections: [UserDocumentsSectionBuilder.Section] = []
+  private var section: UserDocumentsSectionBuilder.Section!
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -29,6 +29,7 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.register(UserDocumentsPhotoCell.self)
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(UserDocumentsFooterView.self)
+    tableView.register(TextFieldCell.self)
     tableView.estimatedRowHeight = 100
     tableView.estimatedSectionHeaderHeight = 100
     tableView.estimatedSectionFooterHeight = 140
@@ -72,16 +73,12 @@ extension UserDocumentsViewController: UIAdaptivePresentationControllerDelegate 
 
 extension UserDocumentsViewController: UITableViewDataSource {
   
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return sections.count
-  }
-  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return builder.numberOfRows(in: sections[section])
+    return builder.numberOfRows(in: self.section)
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return builder.cell(for: sections[indexPath.section],
+    return builder.cell(for: section,
                         in: tableView,
                         at: indexPath,
                         delegate: self)
@@ -94,12 +91,12 @@ extension UserDocumentsViewController: UITableViewDataSource {
 extension UserDocumentsViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return builder.header(for: sections[section],
+    return builder.header(for: self.section,
                           in: tableView)
   }
   
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return builder.footer(for: sections[section],
+    return builder.footer(for: self.section,
                           in: tableView,
                           delegate: self)
   }
@@ -111,7 +108,10 @@ extension UserDocumentsViewController: UITableViewDelegate {
 extension UserDocumentsViewController: TextFieldsCellDelegate {
   
   func textFieldsCell(_ cell: TextFieldsCell, didEndEditingWith text: String?, at index: Int) {
-    
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    viewModel.setText(text,
+                      for: section.items[indexPath.row],
+                      at: indexPath.row)
   }
   
 }
@@ -143,6 +143,9 @@ private extension UserDocumentsViewController {
       tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       tableView.bottomAnchor.constraint(equalTo: divider.topAnchor)
     ])
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
   }
   
   func bind() {
@@ -153,11 +156,32 @@ private extension UserDocumentsViewController {
 //                            message: L.errorPaymentMessage)
     }.store(in: &subscriptions)
     
-    viewModel.content.sink { [weak self] _ in
+    viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      self.sections = [self.builder.documetsSection()]
+      self.section = self.builder.documetsSection(with: $0)
       self.tableView.reloadData()
     }.store(in: &subscriptions)
+    
+    viewModel.setText.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.section,
+                                 at: $0.index,
+                                 text: $0.text)
+    }.store(in: &subscriptions)
+  }
+  
+  @objc func keyboardWasShown(_ notificiation: NSNotification) {
+    guard
+      let value = notificiation.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+      let firstResponder = self.view.firstResponder else { return }
+    let bottomInset = self.view.frame.height - divider.frame.midY
+    tableView.contentInset.bottom = value.cgRectValue.height - bottomInset
+    let rect = firstResponder.convert(firstResponder.frame, to: self.tableView)
+    tableView.scrollRectToVisible(rect, animated: true)
+  }
+  
+  @objc func keyboardWillBeHidden() {
+    tableView.contentInset.bottom = 0
   }
   
 }

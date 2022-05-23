@@ -21,6 +21,54 @@ struct UserDocumentsSectionBuilder {
     
     struct Item {
       
+      enum ItemType {
+        case document
+        case documentFrontSide
+        case documentBackSide
+        case documentCountry
+        case isAddressOnDocument
+        case supportingDocuments
+        
+        var title: String {
+          switch self {
+          case .document: return L.document
+          case .documentFrontSide: return L.frontSide
+          case .documentBackSide: return L.backSide
+          case .documentCountry: return L.documentIssuingCountry
+          case .isAddressOnDocument: return L.isAddressUpToDateDescription
+          case .supportingDocuments: return L.supportingDocuments
+          }
+        }
+      }
+      
+      enum Mode {
+        
+        struct Field {
+          let placeholder: String
+          var text: String?
+          let items: [String]
+          let seletedItemIndex: Int?
+          
+          var fieldContent: TextFieldsCell.FieldContent {
+            return (placeholder, text)
+          }
+        }
+        
+        struct Photo {
+          
+        }
+        
+        struct Document {
+          
+        }
+        
+        case field(Field)
+        case photo(Photo)
+        case additionalDocuments(Document)
+      }
+      
+      let type: ItemType
+      var mode: Mode
     }
     
     let type: SectionType
@@ -35,7 +83,19 @@ struct UserDocumentsSectionBuilder {
             in tableView: UITableView,
             at indexPath: IndexPath,
             delegate: CellDelegate) -> UITableViewCell {
-    return UITableViewCell()
+    let item = section.items[indexPath.row]
+    switch item.mode {
+    case let .field(model):
+      let cell = tableView.dequeue(TextFieldCell.self, for: indexPath)
+      cell.configure(title: item.type.title)
+      cell.configure(fieldsContent: [model.fieldContent],
+                     description: nil,
+                     delegate: delegate)
+      cell.configure(inputMode: .picker(items: model.items,
+                                        selectedIndex: model.seletedItemIndex))
+      return cell
+    default: return UITableViewCell()
+    }
   }
   
   func header(for section: Section,
@@ -63,12 +123,33 @@ struct UserDocumentsSectionBuilder {
     return view
   }
   
-  func documetsSection() -> Section {
-    return Section(type: .documents, items: [])
+  func documetsSection(with model: UserDocumentsModel) -> Section {
+    let documents = DocumentModel.allCases
+    let selectedDocumentIndex = documents.firstIndex { $0 == model.document }
+    let field = Section.Item.Mode.Field(placeholder: L.selectDocument,
+                                        text: model.document?.description,
+                                        items: documents.map { $0.description },
+                                        seletedItemIndex: selectedDocumentIndex)
+    let items: [Section.Item] = [
+      Section.Item(type: .document, mode: .field(field))
+    ]
+    return Section(type: .documents, items: items)
   }
   
   func successSection() -> Section {
     return Section(type: .success, items: [])
+  }
+  
+  func updateSection(_ section: inout Section,
+                     at index: Int,
+                     text: String?) {
+    switch section.items[index].mode {
+    case var .field(field):
+      field.text = text
+      section.items[index].mode = .field(field)
+    default:
+      break
+    }
   }
   
 }

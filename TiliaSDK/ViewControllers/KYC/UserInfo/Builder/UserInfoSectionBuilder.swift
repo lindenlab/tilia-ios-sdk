@@ -266,7 +266,15 @@ struct UserInfoSectionBuilder {
     
     section.isFilled = isFilled
     
-    let nextButtonCellIndexPath = IndexPath(row: tableView.numberOfRows(inSection: indexPath.section) - 1,
+    let nextButtonCellIndex = section.items.firstIndex {
+      if case .button = $0.mode {
+        return true
+      } else {
+        return false
+      }
+    }
+    guard let nextButtonCellIndex = nextButtonCellIndex else { return }
+    let nextButtonCellIndexPath = IndexPath(row: nextButtonCellIndex,
                                             section: indexPath.section)
     if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
       nextButtonCell.configure(isButtonEnabled: isFilled)

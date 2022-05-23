@@ -8,13 +8,17 @@
 import Combine
 import Foundation
 
+typealias UserDocumentsSetText = (index: Int, text: String?)
+
 protocol UserDocumentsViewModelInputProtocol {
   func viewDidLoad()
+  func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
 }
 
 protocol UserDocumentsViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
-  var content: PassthroughSubject<Void, Never> { get }
+  var content: PassthroughSubject<UserDocumentsModel, Never> { get }
+  var setText: PassthroughSubject<UserDocumentsSetText, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -22,16 +26,49 @@ protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, Us
 final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
   let error = PassthroughSubject<Error, Never>()
-  let content = PassthroughSubject<Void, Never>()
+  let content = PassthroughSubject<UserDocumentsModel, Never>()
+  let setText = PassthroughSubject<UserDocumentsSetText, Never>()
   
   private let manager: NetworkManager
+  private var userDocumentsModel = UserDocumentsModel()
   
   init(manager: NetworkManager) {
     self.manager = manager
   }
   
   func viewDidLoad() {
-    content.send(())// TODO: - Fix this
+    content.send(userDocumentsModel)// TODO: - Fix this
+  }
+  
+  func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int) {
+    var isFieldChanged = false
+    
+    switch item.type {
+    case .document:
+      let value = DocumentModel(str: text ?? "")
+      isFieldChanged = isFieldUpdated(&userDocumentsModel.document, with: value)
+    case .isAddressOnDocument:
+      let value = BoolModel(str: text ?? "")
+      isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)
+    default:
+      break
+    }
+    
+    if isFieldChanged {
+      setText.send((index, text))
+    }
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension UserDocumentsViewModel {
+  
+  func isFieldUpdated<Value: Equatable>(_ field: inout Value?, with value: Value?) -> Bool {
+    guard field != value else { return false }
+    field = value
+    return true
   }
   
 }
