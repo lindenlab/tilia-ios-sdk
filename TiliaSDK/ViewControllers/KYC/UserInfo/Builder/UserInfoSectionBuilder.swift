@@ -12,6 +12,7 @@ struct UserInfoSectionBuilder {
   typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
+  typealias TableUpdate = (insertSection: IndexSet?, deleteSection: IndexSet?, deleteRows: [IndexPath]?)
   
   struct Section {
     
@@ -225,8 +226,9 @@ struct UserInfoSectionBuilder {
                      isExpanded: Bool,
                      isFilled: Bool) -> [IndexPath] {
     let items: [Section.Item]
+    let mode: UserInfoHeaderView.Mode
     if isExpanded {
-      section.mode = .expanded
+      mode = .expanded
       switch section.type {
       case .location:
         section.items = itemsForLocationSection(with: model)
@@ -238,14 +240,15 @@ struct UserInfoSectionBuilder {
       items = section.items
     } else {
       items = section.items
-      section.mode = isFilled ? .passed : .normal
+      mode = isFilled ? .passed : .normal
       section.items = []
     }
     section.isFilled = isFilled
     
-    if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
-      header.configure(mode: section.mode)
-    }
+    updateSection(&section,
+                  in: tableView,
+                  at: sectionIndex,
+                  mode: mode)
     
     return items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) }
   }
@@ -285,21 +288,22 @@ struct UserInfoSectionBuilder {
     }
   }
   
-//  // TODO: - Fix me
-//  func updateSection(_ section: inout Section,
-//                     in tableView: UITableView,
-//                     at indexPath: IndexPath,
-//                     countryOfResidenceDidChangeWith text: String?) {
-//    switch section.items[indexPath.row].mode {
-//    case .label:
-//      section.items[indexPath.row].mode = .label(text)
-//      if let cell = tableView.cellForRow(at: indexPath) as? LabelCell {
-//        cell.configure(description: text)
-//      }
-//    default:
-//      break
-//    }
-//  }
+  func updateSections(_ sections: inout [Section],
+                      in tableView: UITableView,
+                      countryOfResidenceDidChangeWith model: UserInfoModel) -> TableUpdate {
+    var tableUpdate: TableUpdate = (nil, nil, nil)
+    
+    sections.firstIndex(where: { $0.type == .contact }).map {
+      tableUpdate.deleteRows = updateSection(&sections[$0],
+                                             with: model,
+                                             in: tableView,
+                                             at: $0,
+                                             isExpanded: false,
+                                             isFilled: false)
+    }
+    
+    return tableUpdate
+  }
   
   func updateSection(_ section: inout Section,
                      in tableView: UITableView,

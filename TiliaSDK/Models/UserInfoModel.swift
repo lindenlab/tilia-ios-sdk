@@ -52,4 +52,13 @@ struct UserInfoModel {
     self.canUseAddressFor1099 = canUseAddressFor1099
   }
   
+  mutating func setAddressToDefault() {
+    address.street = nil
+    address.apartment = nil
+    address.city = nil
+    address.region = nil
+    address.postalCode = nil
+    canUseAddressFor1099 = nil
+  }
+  
 }

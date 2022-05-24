@@ -256,15 +256,16 @@ private extension UserInfoViewController {
                                      in: self.tableView)
     }.store(in: &subscriptions)
     
-    viewModel.coutryOfResidenceDidChange.sink { [weak self] text in
-//      guard
-//        let self = self,
-//        let sectionIndex = self.sections.firstIndex(where: { $0.type == .contact }),
-//        let itemIndex = self.sections[sectionIndex].items.firstIndex(where: { $0.type == .countryOfResidance }) else { return }
-//      self.builder.updateSection(&self.sections[sectionIndex],
-//                                 in: self.tableView,
-//                                 at: IndexPath(row: itemIndex, section: sectionIndex),
-//                                 countryOfResidenceDidChangeWith: text)
+    viewModel.coutryOfResidenceDidChange.sink { [weak self] model in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updateSections(&self.sections,
+                                                    in: self.tableView,
+                                                    countryOfResidenceDidChangeWith: model)
+      self.builder.updateTableFooter(for: self.sections,
+                                     in: self.tableView)
+      self.tableView.performBatchUpdates {
+        tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
+      }
     }.store(in: &subscriptions)
     
     viewModel.coutryOfResidenceDidSelect.sink { [weak self] _ in

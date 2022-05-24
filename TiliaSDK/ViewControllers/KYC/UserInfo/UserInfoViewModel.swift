@@ -23,7 +23,7 @@ protocol UserInfoViewModelOutputProtocol {
   var content: PassthroughSubject<Void, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
-  var coutryOfResidenceDidChange: PassthroughSubject<String?, Never> { get }
+  var coutryOfResidenceDidChange: PassthroughSubject<UserInfoModel, Never> { get }
   var coutryOfResidenceDidSelect: PassthroughSubject<Void, Never> { get }
 }
 
@@ -40,7 +40,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let content = PassthroughSubject<Void, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
-  let coutryOfResidenceDidChange = PassthroughSubject<String?, Never>()
+  let coutryOfResidenceDidChange = PassthroughSubject<UserInfoModel, Never>()
   let coutryOfResidenceDidSelect = PassthroughSubject<Void, Never>()
   
   let manager: NetworkManager
@@ -77,7 +77,8 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       if wasNil {
         coutryOfResidenceDidSelect.send(())
       } else if isFieldChanged {
-        coutryOfResidenceDidChange.send(text)
+        userInfoModel.setAddressToDefault()
+        coutryOfResidenceDidChange.send(userInfoModel)
       }
     case .fullName:
       switch fieldIndex {
