@@ -44,7 +44,7 @@ struct UserDocumentsSectionBuilder {
       enum Mode {
         
         struct Field {
-          let placeholder: String
+          let placeholder: String?
           var text: String?
           let items: [String]
           let seletedItemIndex: Int?
@@ -55,7 +55,17 @@ struct UserDocumentsSectionBuilder {
         }
         
         struct Photo {
+          let image: UIImage?
+          let primaryButtonTitle: String?
+          let nonPrimaryButtonTitle: String
           
+          init(image: UIImage?,
+               primaryButtonTitle: String? = L.captureOnCamera,
+               nonPrimaryButtonTitle: String = L.pickFile) {
+            self.image = image
+            self.primaryButtonTitle = primaryButtonTitle
+            self.nonPrimaryButtonTitle = nonPrimaryButtonTitle
+          }
         }
         
         struct Document {
@@ -118,7 +128,7 @@ struct UserDocumentsSectionBuilder {
     case .documents:
       view.configure(isPrimaryButtonEnabled: false, delegate: delegate)
     case .success:
-      view.configure(isPrimaryButtonEnabled: false, delegate: nil) // TODO: - Fix me
+      view.configure(isPrimaryButtonEnabled: false, delegate: delegate) // TODO: - Fix me
     }
     return view
   }
@@ -149,6 +159,80 @@ struct UserDocumentsSectionBuilder {
       section.items[index].mode = .field(field)
     default:
       break
+    }
+  }
+  
+  func updateSection(_ section: inout Section,
+                     didSelectDocumentWith model: UserDocumentsModel) -> [IndexPath] {
+    guard let document = model.document else { return [] }
+    
+    section.items.append(documentFrontSideItem(for: document))
+    
+    documentBackSideItem(for: document).map { section.items.append($0) }
+    
+    let countryItems =  ["USA", "Canada", "Ukraine"]
+    section.items.append(documentCountryItem(country: model.documentCountry,
+                                             items: countryItems))
+    
+    if model.isUsResident {
+      section.items.append(isAddressOnDocumentItem())
+    }
+    
+    return (1..<section.items.count).map { IndexPath(row: $0, section: 0) }
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension UserDocumentsSectionBuilder {
+  
+  func documentFrontSideItem(for document: DocumentModel) -> Section.Item {
+    return .init(type: .documentFrontSide,
+                 mode: .photo(.init(image: document.frontImage)))
+  }
+  
+  func documentBackSideItem(for document: DocumentModel) -> Section.Item? {
+    guard document != .passport else { return nil }
+    return .init(type: .documentBackSide,
+                 mode: .photo(.init(image: document.backImage)))
+  }
+  
+  func documentCountryItem(country: String, items: [String]) -> Section.Item {
+    let selectedIndex = items.firstIndex { $0 == country }
+    return .init(type: .documentCountry, mode: .field(.init(placeholder: nil,
+                                                            text: country,
+                                                            items: items,
+                                                            seletedItemIndex: selectedIndex)))
+  }
+  
+  func isAddressOnDocumentItem() -> Section.Item {
+    let items = BoolModel.allCases
+    return .init(type: .isAddressOnDocument, mode: .field(.init(placeholder: L.selectAnswer,
+                                                                text: nil,
+                                                                items: items.map { $0.description },
+                                                                seletedItemIndex: nil)))
+  }
+  
+}
+
+private extension DocumentModel {
+  
+  var frontImage: UIImage? {
+    switch self {
+    case .passport: return .passportIcon
+    case .driversLicense: return .driversLicenseFrontIcon
+    case .identityCard: return .identityCardFrontIcon
+    case .residencePermit: return .residencePermitFrontIcon
+    }
+  }
+  
+  var backImage: UIImage? {
+    switch self {
+    case .passport: return nil
+    case .driversLicense: return .driversLicenseBackIcon
+    case .identityCard: return .identityCardBackIcon
+    case .residencePermit: return .residencePermitBackIcon
     }
   }
   

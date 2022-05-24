@@ -32,7 +32,7 @@ extension UIImage {
   static let identityCardBackIcon = UIImage(named: "identityCardBackIcon")
   static let identityCardFrontIcon = UIImage(named: "identityCardFrontIcon")
   static let passportIcon = UIImage(named: "passportIcon")
-  static let resedencePermitBackIcon = UIImage(named: "resedencePermitBackIcon")
-  static let resedencePermitFrontIcon = UIImage(named: "resedencePermitFrontIcon")
+  static let residencePermitBackIcon = UIImage(named: "residencePermitBackIcon")
+  static let residencePermitFrontIcon = UIImage(named: "residencePermitFrontIcon")
   
 }
