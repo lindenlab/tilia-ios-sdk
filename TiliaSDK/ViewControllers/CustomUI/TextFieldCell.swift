@@ -154,7 +154,8 @@ private extension TextFieldCell {
     let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
                                      target: nil,
                                      action: nil)
-    let toolbar = UIToolbar()
+    let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
+    let toolbar = UIToolbar(frame: frame)
     toolbar.sizeToFit()
     toolbar.setItems([flexButton, doneButton], animated: false)
     return toolbar
