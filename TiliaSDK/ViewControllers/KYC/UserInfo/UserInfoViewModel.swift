@@ -72,11 +72,11 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     
     switch type {
     case .countryOfResidance:
-      if userInfoModel.countryOfResidence == nil, text != nil {
-        coutryOfResidenceDidSelect.send(())
-      }
+      let wasNil = userInfoModel.countryOfResidence == nil
       isFieldChanged = isFieldUpdated(&userInfoModel.countryOfResidence, with: text)
-      if isFieldChanged {
+      if wasNil {
+        coutryOfResidenceDidSelect.send(())
+      } else if isFieldChanged {
         coutryOfResidenceDidChange.send(text)
       }
     case .fullName:

@@ -84,7 +84,7 @@ struct UserInfoSectionBuilder {
         
         struct Fields {
           var fields: [Field]
-          let inputMode: TextFieldCell.InputMode?
+          var inputMode: TextFieldCell.InputMode?
           let mask: String?
           
           var fieldsContent: [TextFieldsCell.FieldContent] {
@@ -259,6 +259,10 @@ struct UserInfoSectionBuilder {
     switch section.items[indexPath.row].mode {
     case var .fields(field):
       field.fields[fieldIndex].text = text
+      if let inputMode = field.inputMode, case let .picker(items, _) = inputMode {
+        let selectedIndex = items.firstIndex { $0 == text }
+        field.inputMode = .picker(items: items, selectedIndex: selectedIndex)
+      }
       section.items[indexPath.row].mode = .fields(field)
     default:
       break

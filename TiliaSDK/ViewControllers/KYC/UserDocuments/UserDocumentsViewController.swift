@@ -168,6 +168,24 @@ private extension UserDocumentsViewController {
                                  at: $0.index,
                                  text: $0.text)
     }.store(in: &subscriptions)
+    
+    viewModel.documentDidSelect.sink { [weak self] in
+      guard let self = self else { return }
+      let indexPaths = self.builder.updateSection(&self.section,
+                                                  didSelectDocumentWith: $0)
+      self.tableView.insertRows(at: indexPaths, with: .fade)
+    }.store(in: &subscriptions)
+    
+    viewModel.documentDidChange.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updateSection(&self.section,
+                                                   didChangeDocument: $0)
+      self.tableView.performBatchUpdates {
+        self.tableView.reloadRows(at: tableUpdate.reload, with: .fade)
+        tableUpdate.insert.map { self.tableView.insertRows(at: $0, with: .fade) }
+        tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
+      }
+    }.store(in: &subscriptions)
   }
   
   @objc func keyboardWasShown(_ notificiation: NSNotification) {

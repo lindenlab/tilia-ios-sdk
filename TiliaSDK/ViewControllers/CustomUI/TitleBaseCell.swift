@@ -13,6 +13,7 @@ class TitleBaseCell: UITableViewCell {
     let label = UILabel()
     label.font = .systemFont(ofSize: 16)
     label.textColor = .primaryTextColor
+    label.numberOfLines = 0
     return label
   }()
   

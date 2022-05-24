@@ -47,7 +47,6 @@
 		D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */; };
 		D1632D0D283B7D5F006BDF19 /* BoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0C283B7D5F006BDF19 /* BoolModel.swift */; };
 		D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */; };
-		D1632D11283BA80D006BDF19 /* DocumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D10283BA80D006BDF19 /* DocumentModel.swift */; };
 		D1632D13283BC411006BDF19 /* UserDocumentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D12283BC411006BDF19 /* UserDocumentsModel.swift */; };
 		D16D569F28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift */; };
 		D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A2282538F00088FB3D /* TitleBaseCell.swift */; };
@@ -205,7 +204,6 @@
 		D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoNextButtonCell.swift; sourceTree = "<group>"; };
 		D1632D0C283B7D5F006BDF19 /* BoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolModel.swift; sourceTree = "<group>"; };
 		D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsFooterView.swift; sourceTree = "<group>"; };
-		D1632D10283BA80D006BDF19 /* DocumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentModel.swift; sourceTree = "<group>"; };
 		D1632D12283BC411006BDF19 /* UserDocumentsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsModel.swift; sourceTree = "<group>"; };
 		D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPrimaryButtonWithStyle.swift; sourceTree = "<group>"; };
 		D16D56A2282538F00088FB3D /* TitleBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBaseCell.swift; sourceTree = "<group>"; };
@@ -488,7 +486,6 @@
 				D154AD41280F071E003976CB /* CreateInvoiceModel.swift */,
 				D18855E0282700D400BAC86F /* UserInfoModel.swift */,
 				D1632D0C283B7D5F006BDF19 /* BoolModel.swift */,
-				D1632D10283BA80D006BDF19 /* DocumentModel.swift */,
 				D1632D12283BC411006BDF19 /* UserDocumentsModel.swift */,
 			);
 			path = Models;
@@ -1038,7 +1035,6 @@
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
 				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
-				D1632D11283BA80D006BDF19 /* DocumentModel.swift in Sources */,
 				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,
 				D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */,
 				D1CCE8DC27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift in Sources */,

@@ -11,6 +11,7 @@ struct UserDocumentsSectionBuilder {
   
   typealias CellDelegate = TextFieldsCellDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
+  typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?, reload: [IndexPath])
   
   struct Section {
     
@@ -47,7 +48,7 @@ struct UserDocumentsSectionBuilder {
           let placeholder: String?
           var text: String?
           let items: [String]
-          let seletedItemIndex: Int?
+          var seletedItemIndex: Int?
           
           var fieldContent: TextFieldsCell.FieldContent {
             return (placeholder, text)
@@ -104,6 +105,13 @@ struct UserDocumentsSectionBuilder {
       cell.configure(inputMode: .picker(items: model.items,
                                         selectedIndex: model.seletedItemIndex))
       return cell
+    case let .photo(model):
+      let cell = tableView.dequeue(UserDocumentsPhotoCell.self, for: indexPath)
+      cell.configure(title: item.type.title,
+                     image: model.image,
+                     primaryButtonTitle: model.primaryButtonTitle,
+                     nonPrimaryButtonTitle: model.nonPrimaryButtonTitle)
+      return cell
     default: return UITableViewCell()
     }
   }
@@ -134,7 +142,7 @@ struct UserDocumentsSectionBuilder {
   }
   
   func documetsSection(with model: UserDocumentsModel) -> Section {
-    let documents = DocumentModel.allCases
+    let documents = UserDocumentsModel.Document.allCases
     let selectedDocumentIndex = documents.firstIndex { $0 == model.document }
     let field = Section.Item.Mode.Field(placeholder: L.selectDocument,
                                         text: model.document?.description,
@@ -155,7 +163,9 @@ struct UserDocumentsSectionBuilder {
                      text: String?) {
     switch section.items[index].mode {
     case var .field(field):
+      let selectedIndex = field.items.firstIndex { $0 == text }
       field.text = text
+      field.seletedItemIndex = selectedIndex
       section.items[index].mode = .field(field)
     default:
       break
@@ -168,7 +178,9 @@ struct UserDocumentsSectionBuilder {
     
     section.items.append(documentFrontSideItem(for: document))
     
-    documentBackSideItem(for: document).map { section.items.append($0) }
+    if document != .passport {
+      section.items.append(documentBackSideItem(for: document))
+    }
     
     let countryItems =  ["USA", "Canada", "Ukraine"]
     section.items.append(documentCountryItem(country: model.documentCountry,
@@ -181,19 +193,46 @@ struct UserDocumentsSectionBuilder {
     return (1..<section.items.count).map { IndexPath(row: $0, section: 0) }
   }
   
+  func updateSection(_ section: inout Section,
+                     didChangeDocument document: UserDocumentsModel.Document) -> TableUpdate {
+    var tableUpdate: TableUpdate = (nil, nil, [])
+    
+    guard let documentFrontSideIndex = section.items.firstIndex(where: { $0.type == .documentFrontSide }) else { return tableUpdate }
+    
+    section.items[documentFrontSideIndex] = documentFrontSideItem(for: document)
+    tableUpdate.reload.append(IndexPath(row: documentFrontSideIndex, section: 0))
+    
+    let documentBackSideIndex = section.items.firstIndex(where: { $0.type == .documentBackSide })
+    
+    if document == .passport {
+      documentBackSideIndex.map {
+        section.items.remove(at: $0)
+        tableUpdate.delete = [IndexPath(row: $0, section: 0)]
+      }
+    } else if let index = documentBackSideIndex {
+      section.items[index] = documentBackSideItem(for: document)
+      tableUpdate.reload.append(IndexPath(row: index, section: 0))
+    } else {
+      let index = documentFrontSideIndex + 1
+      section.items.insert(documentBackSideItem(for: document), at: index)
+      tableUpdate.insert = [IndexPath(row: index, section: 0)]
+    }
+    
+    return tableUpdate
+  }
+  
 }
 
 // MARK: - Private Methods
 
 private extension UserDocumentsSectionBuilder {
   
-  func documentFrontSideItem(for document: DocumentModel) -> Section.Item {
+  func documentFrontSideItem(for document: UserDocumentsModel.Document) -> Section.Item {
     return .init(type: .documentFrontSide,
                  mode: .photo(.init(image: document.frontImage)))
   }
   
-  func documentBackSideItem(for document: DocumentModel) -> Section.Item? {
-    guard document != .passport else { return nil }
+  func documentBackSideItem(for document: UserDocumentsModel.Document) -> Section.Item {
     return .init(type: .documentBackSide,
                  mode: .photo(.init(image: document.backImage)))
   }
@@ -216,7 +255,7 @@ private extension UserDocumentsSectionBuilder {
   
 }
 
-private extension DocumentModel {
+private extension UserDocumentsModel.Document {
   
   var frontImage: UIImage? {
     switch self {

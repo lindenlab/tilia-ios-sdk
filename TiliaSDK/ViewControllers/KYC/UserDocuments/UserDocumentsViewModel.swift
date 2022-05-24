@@ -19,6 +19,8 @@ protocol UserDocumentsViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
   var content: PassthroughSubject<UserDocumentsModel, Never> { get }
   var setText: PassthroughSubject<UserDocumentsSetText, Never> { get }
+  var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
+  var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -28,6 +30,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let error = PassthroughSubject<Error, Never>()
   let content = PassthroughSubject<UserDocumentsModel, Never>()
   let setText = PassthroughSubject<UserDocumentsSetText, Never>()
+  let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
+  let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
   
   private let manager: NetworkManager
   private var userDocumentsModel = UserDocumentsModel(documentCountry: "USA") // TODO: - Fix me
@@ -45,8 +49,18 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     
     switch item.type {
     case .document:
-      let value = DocumentModel(str: text ?? "")
+      let wasNil = userDocumentsModel.document == nil
+      let value = UserDocumentsModel.Document(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.document, with: value)
+      if wasNil {
+        documentDidSelect.send(userDocumentsModel)
+      } else if isFieldChanged, let value = value {
+        userDocumentsModel.backImage = nil
+        userDocumentsModel.frontImage = nil
+        documentDidChange.send(value)
+      }
+    case .documentCountry:
+      isFieldChanged = isFieldUpdated(&userDocumentsModel.documentCountry, with: text ?? "")
     case .isAddressOnDocument:
       let value = BoolModel(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)
@@ -65,7 +79,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
 
 private extension UserDocumentsViewModel {
   
-  func isFieldUpdated<Value: Equatable>(_ field: inout Value?, with value: Value?) -> Bool {
+  func isFieldUpdated<Value: Equatable>(_ field: inout Value, with value: Value) -> Bool {
     guard field != value else { return false }
     field = value
     return true
