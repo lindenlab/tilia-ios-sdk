@@ -96,5 +96,9 @@ enum L {
   static let signatureTitle = "signatureTitle".localized
   static let signatureDescription = "signatureDescription".localized
   static let yourFullName = "yourFullName".localized
+  static let accessToCameraTitle = "accessToCameraTitle".localized
+  static let accessToCameraMessage = "accessToCameraMessage".localized
+  static let notNow = "notNow".localized
+  static let openSettings = "openSettings".localized
   
 }

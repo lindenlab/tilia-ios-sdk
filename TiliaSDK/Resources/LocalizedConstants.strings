@@ -85,3 +85,7 @@
 "signatureTitle" = "Signature of U.S. person";
 "signatureDescription" = "Typing your name serves as your signature";
 "yourFullName" = "Your full name";
+"accessToCameraTitle" = "Allow access to your camera";
+"accessToCameraMessage" = "This app requires access to your camera.";
+"notNow" = "Not now";
+"openSettings" = "Open Settings";

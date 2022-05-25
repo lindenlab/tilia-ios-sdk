@@ -37,14 +37,9 @@ struct UserDocumentsModel {
     
   }
   
-  struct Image {
-    let image: UIImage
-    let title: String
-  }
-  
   var document: Document?
-  var frontImage: Image?
-  var backImage: Image?
+  var frontImage: UIImage?
+  var backImage: UIImage?
   var documentCountry: String
   var isAddressOnDocument: BoolModel?
   

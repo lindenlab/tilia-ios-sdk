@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol UserDocumentsPhotoCellDelegate: AnyObject {
+  func userDocumentsPhotoCellPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell)
+  func userDocumentsPhotoCellNonPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell)
+}
+
 final class UserDocumentsPhotoCell: UITableViewCell {
+  
+  private weak var delegate: UserDocumentsPhotoCellDelegate?
   
   private let titleLabel: UILabel = {
     let label = UILabel()
@@ -26,6 +33,7 @@ final class UserDocumentsPhotoCell: UITableViewCell {
     button.setImage(.cameraIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.setContentHuggingPriority(UILayoutPriority(251), for: .horizontal)
+    button.setTitle(L.captureOnCamera, for: .normal)
     return button
   }()
   
@@ -33,6 +41,7 @@ final class UserDocumentsPhotoCell: UITableViewCell {
     let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
     button.setImage(.documentIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
+    button.setTitle(L.pickFile, for: .normal)
     return button
   }()
   
@@ -47,22 +56,15 @@ final class UserDocumentsPhotoCell: UITableViewCell {
   
   func configure(title: String?,
                  image: UIImage?,
-                 primaryButtonTitle: String?,
-                 nonPrimaryButtonTitle: String) {
+                 delegate: UserDocumentsPhotoCellDelegate?) {
     titleLabel.text = title
     titleLabel.isHidden = title == nil
-    configure(image: image,
-              primaryButtonTitle: primaryButtonTitle,
-              nonPrimaryButtonTitle: nonPrimaryButtonTitle)
+    self.delegate = delegate
+    configure(image: image)
   }
   
-  func configure(image: UIImage?,
-                 primaryButtonTitle: String?,
-                 nonPrimaryButtonTitle: String) {
+  func configure(image: UIImage?) {
     photoImageView.image = image
-    primaryButton.setTitle(primaryButtonTitle, for: .normal)
-    primaryButton.imageEdgeInsets.left = primaryButtonTitle == nil ? 0 : -8
-    nonPrimaryButton.setTitle(nonPrimaryButtonTitle, for: .normal)
   }
   
 }
@@ -75,6 +77,9 @@ private extension UserDocumentsPhotoCell {
     selectionStyle = .none
     backgroundColor = .backgroundColor
     contentView.backgroundColor = .backgroundColor
+    
+    primaryButton.addTarget(self, action: #selector(primaryButtonDidTap), for: .touchUpInside)
+    nonPrimaryButton.addTarget(self, action: #selector(nonPrimaryButtonDidTap), for: .touchUpInside)
     
     let buttonsStackView = UIStackView(arrangedSubviews: [primaryButton,
                                                           nonPrimaryButton])
@@ -99,6 +104,14 @@ private extension UserDocumentsPhotoCell {
       bottomAnchor,
       photoImageView.heightAnchor.constraint(equalTo: photoImageView.widthAnchor, multiplier: 0.65)
     ])
+  }
+  
+  @objc func primaryButtonDidTap() {
+    delegate?.userDocumentsPhotoCellPrimaryButtonDidTap(self)
+  }
+  
+  @objc func nonPrimaryButtonDidTap() {
+    delegate?.userDocumentsPhotoCellNonPrimaryButtonDidTap(self)
   }
   
 }

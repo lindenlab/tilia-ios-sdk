@@ -1193,6 +1193,7 @@
 				DEVELOPMENT_TEAM = J2NS7P3W5Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TiliaSDK/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1373,12 +1374,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J2NS7P3W5Z;
+				DEVELOPMENT_TEAM = PHKQX3FHH9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TiliaSDK/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1389,9 +1391,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.tilia.ios.sdk;
+				PRODUCT_BUNDLE_IDENTIFIER = io.tilia.ios.sdk.new.sdk;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = TestProject;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1410,6 +1412,7 @@
 				DEVELOPMENT_TEAM = J2NS7P3W5Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TiliaSDK/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

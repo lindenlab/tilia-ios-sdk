@@ -231,16 +231,10 @@ private extension UserInfoViewController {
                                                   at: item.index,
                                                   isExpanded: item.isExpanded,
                                                   isFilled: item.isFilled)
-      self.tableView.performBatchUpdates {
-        if item.isExpanded {
-          self.tableView.insertRows(at: indexPaths, with: .fade)
-        } else {
-          self.tableView.deleteRows(at: indexPaths, with: .fade)
-        }
-      } completion: { _ in
-        if item.isExpanded {
-          self.scrollToSection(at: item.index)
-        }
+      if item.isExpanded {
+        self.tableView.insertRows(at: indexPaths, with: .fade)
+      } else {
+        self.tableView.deleteRows(at: indexPaths, with: .fade)
       }
     }.store(in: &subscriptions)
     
@@ -285,12 +279,6 @@ private extension UserInfoViewController {
     return sections.indices.firstIndex {
       return tableView.headerView(forSection: $0) === header
     }
-  }
-  
-  func scrollToSection(at index: Int) {
-    tableView.scrollToRow(at: IndexPath(row: 0, section: index),
-                          at: .top,
-                          animated: true)
   }
   
   @objc func keyboardWasShown(_ notificiation: NSNotification) {

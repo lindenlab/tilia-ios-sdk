@@ -15,6 +15,7 @@ final class UserDocumentsViewController: BaseViewController {
   private let builder = UserDocumentsSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
   private var section: UserDocumentsSectionBuilder.Section!
+  private var selectedPhotoCellIndex: Int?
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -116,6 +117,22 @@ extension UserDocumentsViewController: TextFieldsCellDelegate {
   
 }
 
+// MARK: - UserDocumentsPhotoCellDelegate
+
+extension UserDocumentsViewController: UserDocumentsPhotoCellDelegate {
+  
+  func userDocumentsPhotoCellPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell) {
+    selectedPhotoCellIndex = tableView.indexPath(for: cell)?.row
+    router.routeToImageGalleryView(sourceType: .camera, delegate: self)
+  }
+  
+  func userDocumentsPhotoCellNonPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell) {
+    selectedPhotoCellIndex = tableView.indexPath(for: cell)?.row
+    router.routeToImageGalleryView(sourceType: .photoLibrary, delegate: self)
+  }
+  
+}
+
 // MARK: - ButtonsViewDelegate
 
 extension UserDocumentsViewController: ButtonsViewDelegate {
@@ -126,6 +143,22 @@ extension UserDocumentsViewController: ButtonsViewDelegate {
   
   func buttonsViewPrimaryNonButtonDidTap() {
     router.dismiss()
+  }
+  
+}
+
+// MARK: - UIImagePickerControllerDelegate
+
+extension UserDocumentsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    picker.dismiss(animated: true)
+    guard
+      let image = info[.originalImage] as? UIImage,
+      let index = selectedPhotoCellIndex else { return }
+    viewModel.setImage(image,
+                       for: section.items[index],
+                       at: index)
   }
   
 }
@@ -167,6 +200,14 @@ private extension UserDocumentsViewController {
       self.builder.updateSection(&self.section,
                                  at: $0.index,
                                  text: $0.text)
+    }.store(in: &subscriptions)
+    
+    viewModel.setImage.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.section,
+                                 at: $0.index,
+                                 in: self.tableView,
+                                 image: $0.image)
     }.store(in: &subscriptions)
     
     viewModel.documentDidSelect.sink { [weak self] in

@@ -80,6 +80,7 @@ final class TextFieldCell: TextFieldsCell {
     fieldMask = mask
     maskSeparator = separator
     firstTextField.keyboardType = .numberPad
+    firstTextField.inputAccessoryView = toolbar()
   }
   
 }

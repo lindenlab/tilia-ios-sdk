@@ -6,19 +6,22 @@
 //
 
 import Combine
-import Foundation
+import UIKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
+typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
 
 protocol UserDocumentsViewModelInputProtocol {
   func viewDidLoad()
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
+  func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
 }
 
 protocol UserDocumentsViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
   var content: PassthroughSubject<UserDocumentsModel, Never> { get }
   var setText: PassthroughSubject<UserDocumentsSetText, Never> { get }
+  var setImage: PassthroughSubject<UserDocumentsSetImage, Never> { get }
   var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
   var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
 }
@@ -30,6 +33,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let error = PassthroughSubject<Error, Never>()
   let content = PassthroughSubject<UserDocumentsModel, Never>()
   let setText = PassthroughSubject<UserDocumentsSetText, Never>()
+  let setImage = PassthroughSubject<UserDocumentsSetImage, Never>()
   let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
   
@@ -71,6 +75,17 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     if isFieldChanged {
       setText.send((index, text))
     }
+  }
+  
+  func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int) {
+    guard case let .photo(model) = item.mode else { return }
+    switch model.type {
+    case .frontSide:
+      userDocumentsModel.frontImage = image
+    case .backSide:
+      userDocumentsModel.backImage = image
+    }
+    setImage.send((index, image))
   }
   
 }

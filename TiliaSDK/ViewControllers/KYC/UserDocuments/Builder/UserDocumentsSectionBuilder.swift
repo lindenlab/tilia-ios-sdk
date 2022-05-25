@@ -9,7 +9,7 @@ import UIKit
 
 struct UserDocumentsSectionBuilder {
   
-  typealias CellDelegate = TextFieldsCellDelegate
+  typealias CellDelegate = TextFieldsCellDelegate & UserDocumentsPhotoCellDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
   typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?)
   
@@ -49,18 +49,12 @@ struct UserDocumentsSectionBuilder {
         
         struct Photo {
           let type: PhotoType
-          let image: UIImage?
-          let primaryButtonTitle: String?
-          let nonPrimaryButtonTitle: String
+          var image: UIImage?
           
           init(type: PhotoType,
-               image: UIImage?,
-               primaryButtonTitle: String? = L.captureOnCamera,
-               nonPrimaryButtonTitle: String = L.pickFile) {
+               image: UIImage?) {
             self.type = type
             self.image = image
-            self.primaryButtonTitle = primaryButtonTitle
-            self.nonPrimaryButtonTitle = nonPrimaryButtonTitle
           }
         }
         
@@ -104,8 +98,7 @@ struct UserDocumentsSectionBuilder {
       let cell = tableView.dequeue(UserDocumentsPhotoCell.self, for: indexPath)
       cell.configure(title: item.title,
                      image: model.image,
-                     primaryButtonTitle: model.primaryButtonTitle,
-                     nonPrimaryButtonTitle: model.nonPrimaryButtonTitle)
+                     delegate: delegate)
       return cell
     default: return UITableViewCell()
     }
@@ -169,8 +162,26 @@ struct UserDocumentsSectionBuilder {
   }
   
   func updateSection(_ section: inout Section,
+                     at index: Int,
+                     in tableView: UITableView,
+                     image: UIImage?) {
+    switch section.items[index].mode {
+    case var .photo(photo):
+      photo.image = image
+      section.items[index].mode = .photo(photo)
+      updatePhotoCell(at: index,
+                      with: section.items[index],
+                      in: tableView)
+    default:
+      break
+    }
+  }
+  
+  func updateSection(_ section: inout Section,
                      didSelectDocumentWith model: UserDocumentsModel) -> [IndexPath] {
     guard let document = model.document else { return [] }
+    
+    let startIndex = section.items.count
     
     section.items.append(documentFrontSideItem(for: document))
     
@@ -186,7 +197,7 @@ struct UserDocumentsSectionBuilder {
       section.items.append(isAddressOnDocumentItem())
     }
     
-    return (1..<section.items.count).map { IndexPath(row: $0, section: 0) }
+    return (startIndex..<section.items.count).map { IndexPath(row: $0, section: 0) }
   }
   
   func updateSection(_ section: inout Section,
@@ -278,9 +289,7 @@ private extension UserDocumentsSectionBuilder {
     guard let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsPhotoCell else { return }
     switch item.mode {
     case let .photo(model):
-      cell.configure(image: model.image,
-                     primaryButtonTitle: model.primaryButtonTitle,
-                     nonPrimaryButtonTitle: model.nonPrimaryButtonTitle)
+      cell.configure(image: model.image)
     default:
       break
     }
