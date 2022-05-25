@@ -179,9 +179,9 @@ private extension UserDocumentsViewController {
     viewModel.documentDidChange.sink { [weak self] in
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSection(&self.section,
+                                                   in: self.tableView,
                                                    didChangeDocument: $0)
       self.tableView.performBatchUpdates {
-        self.tableView.reloadRows(at: tableUpdate.reload, with: .fade)
         tableUpdate.insert.map { self.tableView.insertRows(at: $0, with: .fade) }
         tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
       }

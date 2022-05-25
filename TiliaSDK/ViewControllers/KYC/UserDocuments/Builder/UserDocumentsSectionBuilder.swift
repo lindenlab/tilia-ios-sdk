@@ -11,7 +11,7 @@ struct UserDocumentsSectionBuilder {
   
   typealias CellDelegate = TextFieldsCellDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
-  typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?, reload: [IndexPath])
+  typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?)
   
   struct Section {
     
@@ -194,13 +194,16 @@ struct UserDocumentsSectionBuilder {
   }
   
   func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
                      didChangeDocument document: UserDocumentsModel.Document) -> TableUpdate {
-    var tableUpdate: TableUpdate = (nil, nil, [])
+    var tableUpdate: TableUpdate = (nil, nil)
     
     guard let documentFrontSideIndex = section.items.firstIndex(where: { $0.type == .documentFrontSide }) else { return tableUpdate }
     
     section.items[documentFrontSideIndex] = documentFrontSideItem(for: document)
-    tableUpdate.reload.append(IndexPath(row: documentFrontSideIndex, section: 0))
+    updatePhotoCell(at: documentFrontSideIndex,
+                    with: section.items[documentFrontSideIndex],
+                    in: tableView)
     
     let documentBackSideIndex = section.items.firstIndex(where: { $0.type == .documentBackSide })
     
@@ -211,7 +214,9 @@ struct UserDocumentsSectionBuilder {
       }
     } else if let index = documentBackSideIndex {
       section.items[index] = documentBackSideItem(for: document)
-      tableUpdate.reload.append(IndexPath(row: index, section: 0))
+      updatePhotoCell(at: index,
+                      with: section.items[index],
+                      in: tableView)
     } else {
       let index = documentFrontSideIndex + 1
       section.items.insert(documentBackSideItem(for: document), at: index)
@@ -251,6 +256,19 @@ private extension UserDocumentsSectionBuilder {
                                                                 text: nil,
                                                                 items: items.map { $0.description },
                                                                 seletedItemIndex: nil)))
+  }
+  
+  func updatePhotoCell(at index: Int, with item: Section.Item, in tableView: UITableView) {
+    let indexPath = IndexPath(row: index, section: 0)
+    guard let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsPhotoCell else { return }
+    switch item.mode {
+    case let .photo(model):
+      cell.configure(image: model.image,
+                     primaryButtonTitle: model.primaryButtonTitle,
+                     nonPrimaryButtonTitle: model.nonPrimaryButtonTitle)
+    default:
+      break
+    }
   }
   
 }

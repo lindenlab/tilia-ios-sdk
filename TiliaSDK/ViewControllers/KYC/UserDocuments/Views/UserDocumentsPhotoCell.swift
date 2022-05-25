@@ -51,6 +51,14 @@ final class UserDocumentsPhotoCell: UITableViewCell {
                  nonPrimaryButtonTitle: String) {
     titleLabel.text = title
     titleLabel.isHidden = title == nil
+    configure(image: image,
+              primaryButtonTitle: primaryButtonTitle,
+              nonPrimaryButtonTitle: nonPrimaryButtonTitle)
+  }
+  
+  func configure(image: UIImage?,
+                 primaryButtonTitle: String?,
+                 nonPrimaryButtonTitle: String) {
     photoImageView.image = image
     primaryButton.setTitle(primaryButtonTitle, for: .normal)
     primaryButton.imageEdgeInsets.left = primaryButtonTitle == nil ? 0 : -8
