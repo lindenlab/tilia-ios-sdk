@@ -288,6 +288,28 @@ struct UserInfoSectionBuilder {
   
   func updateSections(_ sections: inout [Section],
                       in tableView: UITableView,
+                      countryOfResidenceDidSelectWith model: UserInfoModel) -> IndexSet? {
+    sections.enumerated().filter { $1.mode == .disabled }.forEach {
+      updateSection(&sections[$0.offset],
+                    in: tableView,
+                    at: $0.offset,
+                    mode: .normal)
+    }
+    
+    if model.isUsResident, let index = sections.firstIndex(where: { $0.type == .contact }) {
+      let section = Section(type: .tax,
+                            mode: .normal,
+                            isFilled: false,
+                            items: [])
+      sections.insert(section, at: index)
+      return [index]
+    } else {
+      return nil
+    }
+  }
+  
+  func updateSections(_ sections: inout [Section],
+                      in tableView: UITableView,
                       countryOfResidenceDidChangeWith model: UserInfoModel) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
     
@@ -300,17 +322,20 @@ struct UserInfoSectionBuilder {
                                              isFilled: false)
     }
     
-    return tableUpdate
-  }
-  
-  func updateSection(_ section: inout Section,
-                     in tableView: UITableView,
-                     at sectionIndex: Int,
-                     mode: UserInfoHeaderView.Mode) {
-    section.mode = mode
-    if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
-      header.configure(mode: mode)
+    if model.isUsResident {
+      if !sections.contains(where: { $0.type == .tax }), let index = sections.firstIndex(where: { $0.type == .contact }) {
+        let section = Section(type: .tax, mode: .normal, isFilled: false, items: [])
+        sections.insert(section, at: index)
+        tableUpdate.insertSection = [index]
+      }
+    } else {
+      sections.firstIndex(where: { $0.type == .tax }).map {
+        sections.remove(at: $0)
+        tableUpdate.deleteSection = [$0]
+      }
     }
+    
+    return tableUpdate
   }
   
   func updateTableFooter(for sections: [Section],
@@ -384,7 +409,8 @@ private extension UserInfoSectionBuilder {
                    description: L.ssnAcceptionMessage),
       Section.Item(mode: .fields(signatureField),
                    title: L.signatureTitle,
-                   description: L.signatureDescription)
+                   description: L.signatureDescription),
+      Section.Item(mode: .button)
     ]
   }
   
@@ -449,6 +475,16 @@ private extension UserInfoSectionBuilder {
   
   func isAllSectionsFilled(_ sections: [Section]) -> Bool {
     return sections.filter { $0.isFilled }.count == sections.count
+  }
+  
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
+                     mode: UserInfoHeaderView.Mode) {
+    section.mode = mode
+    if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
+      header.configure(mode: mode)
+    }
   }
   
 }

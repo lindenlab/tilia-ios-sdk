@@ -221,15 +221,17 @@ struct UserDocumentsSectionBuilder {
         section.items.remove(at: $0)
         tableUpdate.delete = [IndexPath(row: $0, section: 0)]
       }
-    } else if let index = documentBackSideIndex {
-      section.items[index] = documentBackSideItem(for: document)
-      updatePhotoCell(at: index,
-                      with: section.items[index],
-                      in: tableView)
     } else {
-      let index = documentFrontSideIndex + 1
-      section.items.insert(documentBackSideItem(for: document), at: index)
-      tableUpdate.insert = [IndexPath(row: index, section: 0)]
+      if let index = documentBackSideIndex {
+        section.items[index] = documentBackSideItem(for: document)
+        updatePhotoCell(at: index,
+                        with: section.items[index],
+                        in: tableView)
+      } else {
+        let index = documentFrontSideIndex + 1
+        section.items.insert(documentBackSideItem(for: document), at: index)
+        tableUpdate.insert = [IndexPath(row: index, section: 0)]
+      }
     }
     
     return tableUpdate

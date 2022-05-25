@@ -265,17 +265,18 @@ private extension UserInfoViewController {
                                      in: self.tableView)
       self.tableView.performBatchUpdates {
         tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
+        tableUpdate.insertSection.map { self.tableView.insertSections($0, with: .fade) }
+        tableUpdate.deleteSection.map { self.tableView.deleteSections($0, with: .fade) }
       }
     }.store(in: &subscriptions)
     
-    viewModel.coutryOfResidenceDidSelect.sink { [weak self] _ in
+    viewModel.coutryOfResidenceDidSelect.sink { [weak self] in
       guard let self = self else { return }
-      let indices = self.sections.enumerated().filter { $1.mode == .disabled }
-      indices.forEach { index, _ in
-        self.builder.updateSection(&self.sections[index],
-                                   in: self.tableView,
-                                   at: index,
-                                   mode: .normal)
+      let indexSet = self.builder.updateSections(&self.sections,
+                                                 in: self.tableView,
+                                                 countryOfResidenceDidSelectWith: $0)
+      indexSet.map {
+        self.tableView.insertSections($0, with: .fade)
       }
     }.store(in: &subscriptions)
   }
