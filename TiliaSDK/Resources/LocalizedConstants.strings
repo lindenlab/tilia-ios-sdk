@@ -43,7 +43,7 @@
 "lastName" = "Last name";
 "selectDateOfBirth" = "Select date of birth";
 "dateOfBirth" = "Date of birth";
-"ssn" = "SSN";
+"ssn" = "Social security number";
 "fullName" = "Full name";
 "address" = "Address";
 "streetAddress" = "Street address";

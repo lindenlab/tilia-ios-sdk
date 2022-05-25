@@ -46,25 +46,9 @@ struct UserInfoSectionBuilder {
         case ssn
         case address
         case city
-        case stateOrRegion
         case state
         case postalCode
         case useAddressFor1099
-        
-        var title: String {
-          switch self {
-          case .countryOfResidance: return L.countryOfResidence
-          case .fullName: return L.fullName
-          case .dateOfBirth: return L.dateOfBirth
-          case .ssn: return L.ssn
-          case .address: return L.address
-          case .city: return L.city
-          case .stateOrRegion: return L.stateOrRegion
-          case .state: return L.state
-          case .postalCode: return L.postalCode
-          case .useAddressFor1099: return L.useAddressFor1099
-          }
-        }
       }
       
       enum Mode {
@@ -107,11 +91,16 @@ struct UserInfoSectionBuilder {
       }
       
       let type: ItemType?
+      let title: String?
       var mode: Mode
       let description: String?
       
-      init(type: ItemType? = nil, mode: Mode, description: String? = nil) {
+      init(type: ItemType? = nil,
+           mode: Mode,
+           title: String? = nil,
+           description: String? = nil) {
         self.type = type
+        self.title = title
         self.mode = mode
         self.description = description
       }
@@ -157,14 +146,14 @@ struct UserInfoSectionBuilder {
       default:
         fatalError("For now we do not support more than 3 fields")
       }
-      cell.configure(title: item.type?.title ?? "")
+      cell.configure(title: item.title)
       cell.configure(fieldsContent: model.fieldsContent,
                      description: item.description,
                      delegate: delegate)
       return cell
     case let .label(model):
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
-      cell.configure(title: item.type?.title ?? "")
+      cell.configure(title: item.title)
       cell.configure(description: model)
       return cell
     case .button:
@@ -338,7 +327,8 @@ private extension UserInfoSectionBuilder {
                                                                               selectedIndex: selectedIndex))
     return [
       Section.Item(type: .countryOfResidance,
-                   mode: .fields(countryOfResidenceField)),
+                   mode: .fields(countryOfResidenceField),
+                   title: L.countryOfResidence),
       Section.Item(mode: .button)
     ]
   }
@@ -355,25 +345,24 @@ private extension UserInfoSectionBuilder {
                                                                    text: model.dateOfBirthString)],
                                                     inputMode: .datePicker(selectedDate: model.dateOfBirth))
     
-    var items: [Section.Item] = [
+//
+//    if model.isUsResident {
+//      let mask = "xxx-xx-xxxx"
+//      let ssnField = Section.Item.Mode.Fields(fields: [.init(placeholder: mask,
+//                                                             text: model.ssn)],
+//                                              mask: mask)
+//      items.append(Section.Item(type: .ssn,
+//                                mode: .fields(ssnField)))
+//    }
+    return [
       Section.Item(type: .fullName,
-                   mode: .fields(fullNameField)),
+                   mode: .fields(fullNameField),
+                   title: L.fullName),
       Section.Item(type: .dateOfBirth,
-                   mode: .fields(dateOfBirthField))
+                   mode: .fields(dateOfBirthField),
+                   title: L.dateOfBirth),
+      Section.Item(mode: .button)
     ]
-    
-    if model.isUsResident {
-      let mask = "xxx-xx-xxxx"
-      let ssnField = Section.Item.Mode.Fields(fields: [.init(placeholder: mask,
-                                                             text: model.ssn)],
-                                              mask: mask)
-      items.append(Section.Item(type: .ssn,
-                                mode: .fields(ssnField)))
-    }
-    
-    items.append(Section.Item(mode: .button))
-    
-    return items
   }
   
   func itemsForContactSection(with model: UserInfoModel) -> [Section.Item] {
@@ -401,15 +390,20 @@ private extension UserInfoSectionBuilder {
     
     var items: [Section.Item] = [
       Section.Item(type: .address,
-                   mode: .fields(addressField)),
+                   mode: .fields(addressField),
+                   title: L.address),
       Section.Item(type: .city,
-                   mode: .fields(cityField)),
-      Section.Item(type: model.isUsResident ? .state : .stateOrRegion,
-                   mode: .fields(regionField)),
+                   mode: .fields(cityField),
+                   title: L.city),
+      Section.Item(type: .state,
+                   mode: .fields(regionField),
+                   title: model.isUsResident ? L.state : L.stateOrRegion),
       Section.Item(type: .postalCode,
-                   mode: .fields(postalCodeField)),
+                   mode: .fields(postalCodeField),
+                   title: L.postalCode),
       Section.Item(type: .countryOfResidance,
-                   mode: .label(model.countryOfResidence))
+                   mode: .label(model.countryOfResidence),
+                   title: L.countryOfResidence)
     ]
     
     if model.isUsResident {
@@ -422,6 +416,7 @@ private extension UserInfoSectionBuilder {
                                                                                   selectedIndex: canUseAddressFor1099SelectedIndex))
       items.append(Section.Item(type: .useAddressFor1099,
                                 mode: .fields(canUseAddressFor1099Field),
+                                title: L.useAddressFor1099,
                                 description: L.useAddressFor1099Description))
     }
     

@@ -26,7 +26,7 @@ struct UserInfoPersonalValidator: UserInfoValidator {
     && !model.fullName.middle.isEmpty
     && !model.fullName.last.isEmpty
     && model.dateOfBirth != nil
-    return model.isUsResident ? isFilled && !model.ssn.isEmpty : isFilled
+    return isFilled
   }
   
 }

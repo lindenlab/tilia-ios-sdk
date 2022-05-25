@@ -94,7 +94,8 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       let date = DateFormatter.defaultFormatter.date(from: text ?? "")
       isFieldChanged = isFieldUpdated(&userInfoModel.dateOfBirth, with: date)
     case .ssn:
-      isFieldChanged = isFieldUpdated(&userInfoModel.ssn, with: text)
+      isFieldChanged = isFieldUpdated(&userInfoModel.tax.ssn, with: text)
+      break
     case .address:
       switch fieldIndex {
       case 0:
@@ -105,7 +106,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       }
     case .city:
       isFieldChanged = isFieldUpdated(&userInfoModel.address.city, with: text)
-    case .stateOrRegion, .state:
+    case .state:
       isFieldChanged = isFieldUpdated(&userInfoModel.address.region , with: text)
     case .postalCode:
       isFieldChanged = isFieldUpdated(&userInfoModel.address.postalCode, with: text)

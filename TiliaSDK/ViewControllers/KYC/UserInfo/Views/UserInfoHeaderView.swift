@@ -58,7 +58,7 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String,
+  func configure(title: String?,
                  mode: Mode,
                  delegate: UserInfoHeaderViewDelegate?) {
     configure(mode: mode)

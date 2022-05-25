@@ -34,7 +34,7 @@ class TitleBaseCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  final func configure(title: String) {
+  final func configure(title: String?) {
     titleLabel.text = title
   }
   
