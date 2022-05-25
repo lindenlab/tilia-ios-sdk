@@ -31,6 +31,14 @@ struct UserInfoPersonalValidator: UserInfoValidator {
   
 }
 
+struct UserInfoTaxValidator: UserInfoValidator {
+  
+  func isFilled(for model: UserInfoModel) -> Bool {
+    return !model.tax.ssn.isEmpty && !model.tax.signature.isEmpty
+  }
+  
+}
+
 struct UserInfoContactValidator: UserInfoValidator {
   
   func isFilled(for model: UserInfoModel) -> Bool {

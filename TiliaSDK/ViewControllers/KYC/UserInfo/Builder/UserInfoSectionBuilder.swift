@@ -16,15 +16,21 @@ struct UserInfoSectionBuilder {
   
   struct Section {
     
-    enum SectionType: CaseIterable {
+    enum SectionType {
       case location
       case personal
+      case tax
       case contact
+      
+      static var defaultItems: [SectionType] {
+        return [.location, .personal, .contact]
+      }
       
       var title: String {
         switch self {
         case .location: return L.location
         case .personal: return L.personal
+        case .tax: return L.ssnAcceptionTitle
         case .contact: return L.contact
         }
       }
@@ -44,6 +50,7 @@ struct UserInfoSectionBuilder {
         case fullName
         case dateOfBirth
         case ssn
+        case signature
         case address
         case city
         case state
@@ -86,7 +93,7 @@ struct UserInfoSectionBuilder {
         }
         
         case fields(Fields)
-        case label(String?)
+        case label
         case button
       }
       
@@ -151,10 +158,10 @@ struct UserInfoSectionBuilder {
                      description: item.description,
                      delegate: delegate)
       return cell
-    case let .label(model):
+    case .label:
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
       cell.configure(title: item.title)
-      cell.configure(description: model)
+      cell.configure(description: item.description)
       return cell
     case .button:
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
@@ -200,7 +207,7 @@ struct UserInfoSectionBuilder {
   }
   
   func sections() -> [Section] {
-    return Section.SectionType.allCases.map {
+    return Section.SectionType.defaultItems.map {
       return Section(type: $0,
                      mode: $0.defaultMode,
                      isFilled: false,
@@ -223,6 +230,8 @@ struct UserInfoSectionBuilder {
         section.items = itemsForLocationSection(with: model)
       case .personal:
         section.items = itemsForPersonalSection(with: model)
+      case .tax:
+        section.items = itemsForTaxSection(with: model)
       case .contact:
         section.items = itemsForContactSection(with: model)
       }
@@ -262,18 +271,18 @@ struct UserInfoSectionBuilder {
     
     section.isFilled = isFilled
     
-    let nextButtonCellIndex = section.items.firstIndex {
+    section.items.firstIndex {
       if case .button = $0.mode {
         return true
       } else {
         return false
       }
-    }
-    guard let nextButtonCellIndex = nextButtonCellIndex else { return }
-    let nextButtonCellIndexPath = IndexPath(row: nextButtonCellIndex,
-                                            section: indexPath.section)
-    if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
-      nextButtonCell.configure(isButtonEnabled: isFilled)
+    }.map {
+      let nextButtonCellIndexPath = IndexPath(row: $0,
+                                              section: indexPath.section)
+      if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
+        nextButtonCell.configure(isButtonEnabled: isFilled)
+      }
     }
   }
   
@@ -345,15 +354,6 @@ private extension UserInfoSectionBuilder {
                                                                    text: model.dateOfBirthString)],
                                                     inputMode: .datePicker(selectedDate: model.dateOfBirth))
     
-//
-//    if model.isUsResident {
-//      let mask = "xxx-xx-xxxx"
-//      let ssnField = Section.Item.Mode.Fields(fields: [.init(placeholder: mask,
-//                                                             text: model.ssn)],
-//                                              mask: mask)
-//      items.append(Section.Item(type: .ssn,
-//                                mode: .fields(ssnField)))
-//    }
     return [
       Section.Item(type: .fullName,
                    mode: .fields(fullNameField),
@@ -362,6 +362,29 @@ private extension UserInfoSectionBuilder {
                    mode: .fields(dateOfBirthField),
                    title: L.dateOfBirth),
       Section.Item(mode: .button)
+    ]
+  }
+  
+  func itemsForTaxSection(with model: UserInfoModel) -> [Section.Item] {
+    let ssnFieldMask = "xxx-xx-xxxx"
+    let ssnField = Section.Item.Mode.Fields(fields: [.init(placeholder: ssnFieldMask,
+                                                           text: model.tax.ssn)],
+                                            mask: ssnFieldMask)
+    
+    let signatureField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.yourFullName,
+                                                                 text: model.tax.signature)])
+    
+    return [
+      Section.Item(type: .ssn,
+                   mode: .fields(ssnField),
+                   title: L.ssn),
+      Section.Item(mode: .label,
+                   title: L.ssnAcceptionTitle,
+                   description: L.ssnAcceptionMessage),
+      Section.Item(type: .signature,
+                   mode: .fields(signatureField),
+                   title: L.signatureTitle,
+                   description: L.signatureDescription)
     ]
   }
   
@@ -402,8 +425,9 @@ private extension UserInfoSectionBuilder {
                    mode: .fields(postalCodeField),
                    title: L.postalCode),
       Section.Item(type: .countryOfResidance,
-                   mode: .label(model.countryOfResidence),
-                   title: L.countryOfResidence)
+                   mode: .label,
+                   title: L.countryOfResidence,
+                   description: model.countryOfResidence)
     ]
     
     if model.isUsResident {

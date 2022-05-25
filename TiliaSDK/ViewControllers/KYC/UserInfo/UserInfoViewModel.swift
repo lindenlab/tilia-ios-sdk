@@ -95,7 +95,8 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       isFieldChanged = isFieldUpdated(&userInfoModel.dateOfBirth, with: date)
     case .ssn:
       isFieldChanged = isFieldUpdated(&userInfoModel.tax.ssn, with: text)
-      break
+    case .signature:
+      isFieldChanged = isFieldUpdated(&userInfoModel.tax.signature, with: text)
     case .address:
       switch fieldIndex {
       case 0:
@@ -131,6 +132,7 @@ private extension UserInfoViewModel {
     switch section {
     case .location: return UserInfoLocationValidator()
     case .personal: return UserInfoPersonalValidator()
+    case .tax: return UserInfoTaxValidator()
     case .contact: return UserInfoContactValidator()
     }
   }
