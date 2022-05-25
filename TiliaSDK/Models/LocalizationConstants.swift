@@ -92,6 +92,7 @@ enum L {
   static let no = "no".localized
   static let ssnAcceptionTitle = "ssnAcceptionTitle".localized
   static let ssnAcceptionMessage = "ssnAcceptionMessage".localized
+  static let taxInfo = "taxInfo".localized
   static let signatureTitle = "signatureTitle".localized
   static let signatureDescription = "signatureDescription".localized
   static let yourFullName = "yourFullName".localized

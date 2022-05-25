@@ -23,14 +23,14 @@ struct UserInfoSectionBuilder {
       case contact
       
       static var defaultItems: [SectionType] {
-        return [.location, .personal, .contact]
+        return [.location, .personal, .tax, .contact]
       }
       
       var title: String {
         switch self {
         case .location: return L.location
         case .personal: return L.personal
-        case .tax: return L.ssnAcceptionTitle
+        case .tax: return L.taxInfo
         case .contact: return L.contact
         }
       }
@@ -45,20 +45,20 @@ struct UserInfoSectionBuilder {
     
     struct Item {
       
-      enum ItemType {
-        case countryOfResidance
-        case fullName
-        case dateOfBirth
-        case ssn
-        case signature
-        case address
-        case city
-        case state
-        case postalCode
-        case useAddressFor1099
-      }
-      
       enum Mode {
+        
+        enum FieldType {
+          case countryOfResidance
+          case fullName
+          case dateOfBirth
+          case ssn
+          case signature
+          case address
+          case city
+          case state
+          case postalCode
+          case useAddressFor1099
+        }
         
         struct Field {
           let placeholder: String?
@@ -75,6 +75,7 @@ struct UserInfoSectionBuilder {
         }
         
         struct Fields {
+          let type: FieldType
           var fields: [Field]
           var inputMode: TextFieldCell.InputMode?
           let mask: String?
@@ -83,9 +84,11 @@ struct UserInfoSectionBuilder {
             return fields.map { $0.fieldContent }
           }
           
-          init(fields: [Field],
+          init(type: FieldType,
+               fields: [Field],
                inputMode: TextFieldCell.InputMode? = nil,
                mask: String? = nil) {
+            self.type = type
             self.fields = fields
             self.inputMode = inputMode
             self.mask = mask
@@ -97,16 +100,13 @@ struct UserInfoSectionBuilder {
         case button
       }
       
-      let type: ItemType?
       let title: String?
       var mode: Mode
       let description: String?
       
-      init(type: ItemType? = nil,
-           mode: Mode,
+      init(mode: Mode,
            title: String? = nil,
            description: String? = nil) {
-        self.type = type
         self.title = title
         self.mode = mode
         self.description = description
@@ -330,36 +330,36 @@ private extension UserInfoSectionBuilder {
   func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {
     let items = ["USA", "Canada", "Ukraine"] // TODO: - Remove mock
     let selectedIndex = items.firstIndex { $0 == model.countryOfResidence }
-    let countryOfResidenceField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectCountry,
+    let countryOfResidenceField = Section.Item.Mode.Fields(type: .countryOfResidance,
+                                                           fields: [.init(placeholder: L.selectCountry,
                                                                           text: model.countryOfResidence)],
                                                            inputMode: .picker(items: items,
                                                                               selectedIndex: selectedIndex))
     return [
-      Section.Item(type: .countryOfResidance,
-                   mode: .fields(countryOfResidenceField),
+      Section.Item(mode: .fields(countryOfResidenceField),
                    title: L.countryOfResidence),
       Section.Item(mode: .button)
     ]
   }
   
   func itemsForPersonalSection(with model: UserInfoModel) -> [Section.Item] {
-    let fullNameField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.firstName,
+    let fullNameField = Section.Item.Mode.Fields(type: .fullName,
+                                                 fields: [.init(placeholder: L.firstName,
                                                                 text: model.fullName.first),
                                                           .init(placeholder: L.middleName,
                                                                 text: model.fullName.middle),
                                                           .init(placeholder: L.lastName,
                                                                 text: model.fullName.last)])
     
-    let dateOfBirthField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectDateOfBirth,
+    let dateOfBirthField = Section.Item.Mode.Fields(type: .dateOfBirth,
+                                                    fields: [.init(placeholder: L.selectDateOfBirth,
                                                                    text: model.dateOfBirthString)],
                                                     inputMode: .datePicker(selectedDate: model.dateOfBirth))
     
     return [
-      Section.Item(type: .fullName,
-                   mode: .fields(fullNameField),
+      Section.Item(mode: .fields(fullNameField),
                    title: L.fullName),
-      Section.Item(type: .dateOfBirth,
-                   mode: .fields(dateOfBirthField),
+      Section.Item(mode: .fields(dateOfBirthField),
                    title: L.dateOfBirth),
       Section.Item(mode: .button)
     ]
@@ -367,65 +367,65 @@ private extension UserInfoSectionBuilder {
   
   func itemsForTaxSection(with model: UserInfoModel) -> [Section.Item] {
     let ssnFieldMask = "xxx-xx-xxxx"
-    let ssnField = Section.Item.Mode.Fields(fields: [.init(placeholder: ssnFieldMask,
+    let ssnField = Section.Item.Mode.Fields(type: .ssn,
+                                            fields: [.init(placeholder: ssnFieldMask,
                                                            text: model.tax.ssn)],
                                             mask: ssnFieldMask)
     
-    let signatureField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.yourFullName,
+    let signatureField = Section.Item.Mode.Fields(type: .signature,
+                                                  fields: [.init(placeholder: L.yourFullName,
                                                                  text: model.tax.signature)])
     
     return [
-      Section.Item(type: .ssn,
-                   mode: .fields(ssnField),
+      Section.Item(mode: .fields(ssnField),
                    title: L.ssn),
       Section.Item(mode: .label,
                    title: L.ssnAcceptionTitle,
                    description: L.ssnAcceptionMessage),
-      Section.Item(type: .signature,
-                   mode: .fields(signatureField),
+      Section.Item(mode: .fields(signatureField),
                    title: L.signatureTitle,
                    description: L.signatureDescription)
     ]
   }
   
   func itemsForContactSection(with model: UserInfoModel) -> [Section.Item] {
-    let addressField = Section.Item.Mode.Fields(fields: [.init(placeholder:L.streetAddress,
+    let addressField = Section.Item.Mode.Fields(type: .address,
+                                                fields: [.init(placeholder:L.streetAddress,
                                                                text: model.address.street),
                                                          .init(placeholder:L.apartment,
                                                                text: model.address.apartment)])
     
-    let cityField = Section.Item.Mode.Fields(fields: [.init(text: model.address.city)])
+    let cityField = Section.Item.Mode.Fields(type: .city,
+                                             fields: [.init(text: model.address.city)])
     
     let regionField: Section.Item.Mode.Fields
     if model.isUsResident {
       let regions = ["Florida", "Montana", "Alaska"] // TODO: - Remove mock
       let selectedRegionIndex = regions.firstIndex { $0 == model.address.region }
-      regionField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectState,
+      regionField = Section.Item.Mode.Fields(type: .state,
+                                             fields: [.init(placeholder: L.selectState,
                                                             text: model.address.region)],
                                              inputMode: .picker(items: regions,
                                                                 selectedIndex: selectedRegionIndex))
       
     } else {
-      regionField = Section.Item.Mode.Fields(fields: [.init(text: model.address.region)])
+      regionField = Section.Item.Mode.Fields(type: .state,
+                                             fields: [.init(text: model.address.region)])
     }
     
-    let postalCodeField = Section.Item.Mode.Fields(fields: [.init(text: model.address.postalCode)])
+    let postalCodeField = Section.Item.Mode.Fields(type: .postalCode,
+                                                   fields: [.init(text: model.address.postalCode)])
     
     var items: [Section.Item] = [
-      Section.Item(type: .address,
-                   mode: .fields(addressField),
+      Section.Item(mode: .fields(addressField),
                    title: L.address),
-      Section.Item(type: .city,
-                   mode: .fields(cityField),
+      Section.Item(mode: .fields(cityField),
                    title: L.city),
-      Section.Item(type: .state,
-                   mode: .fields(regionField),
+      Section.Item(mode: .fields(regionField),
                    title: model.isUsResident ? L.state : L.stateOrRegion),
-      Section.Item(type: .postalCode,
-                   mode: .fields(postalCodeField),
+      Section.Item(mode: .fields(postalCodeField),
                    title: L.postalCode),
-      Section.Item(type: .countryOfResidance,
-                   mode: .label,
+      Section.Item(mode: .label,
                    title: L.countryOfResidence,
                    description: model.countryOfResidence)
     ]
@@ -434,12 +434,12 @@ private extension UserInfoSectionBuilder {
       let canUseAddressFor1099Items = BoolModel.allCases
       let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099 }
       
-      let canUseAddressFor1099Field = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectAnswer,
+      let canUseAddressFor1099Field = Section.Item.Mode.Fields(type: .useAddressFor1099,
+                                                               fields: [.init(placeholder: L.selectAnswer,
                                                                               text: model.canUseAddressFor1099?.description)],
                                                                inputMode: .picker(items: canUseAddressFor1099Items.map { $0.description },
                                                                                   selectedIndex: canUseAddressFor1099SelectedIndex))
-      items.append(Section.Item(type: .useAddressFor1099,
-                                mode: .fields(canUseAddressFor1099Field),
+      items.append(Section.Item(mode: .fields(canUseAddressFor1099Field),
                                 title: L.useAddressFor1099,
                                 description: L.useAddressFor1099Description))
     }
