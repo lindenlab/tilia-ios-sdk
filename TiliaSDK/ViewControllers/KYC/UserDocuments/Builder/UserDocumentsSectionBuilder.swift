@@ -22,29 +22,16 @@ struct UserDocumentsSectionBuilder {
     
     struct Item {
       
-      enum ItemType {
-        case document
-        case documentFrontSide
-        case documentBackSide
-        case documentCountry
-        case isAddressOnDocument
-        case supportingDocuments
-        
-        var title: String {
-          switch self {
-          case .document: return L.document
-          case .documentFrontSide: return L.frontSide
-          case .documentBackSide: return L.backSide
-          case .documentCountry: return L.documentIssuingCountry
-          case .isAddressOnDocument: return L.isAddressUpToDateDescription
-          case .supportingDocuments: return L.supportingDocuments
-          }
-        }
-      }
-      
       enum Mode {
         
+        enum FieldType {
+          case document
+          case documentCountry
+          case isAddressOnDocument
+        }
+        
         struct Field {
+          let type: FieldType
           let placeholder: String?
           var text: String?
           let items: [String]
@@ -55,14 +42,22 @@ struct UserDocumentsSectionBuilder {
           }
         }
         
+        enum PhotoType {
+          case frontSide
+          case backSide
+        }
+        
         struct Photo {
+          let type: PhotoType
           let image: UIImage?
           let primaryButtonTitle: String?
           let nonPrimaryButtonTitle: String
           
-          init(image: UIImage?,
+          init(type: PhotoType,
+               image: UIImage?,
                primaryButtonTitle: String? = L.captureOnCamera,
                nonPrimaryButtonTitle: String = L.pickFile) {
+            self.type = type
             self.image = image
             self.primaryButtonTitle = primaryButtonTitle
             self.nonPrimaryButtonTitle = nonPrimaryButtonTitle
@@ -78,7 +73,7 @@ struct UserDocumentsSectionBuilder {
         case additionalDocuments(Document)
       }
       
-      let type: ItemType
+      let title: String
       var mode: Mode
     }
     
@@ -98,7 +93,7 @@ struct UserDocumentsSectionBuilder {
     switch item.mode {
     case let .field(model):
       let cell = tableView.dequeue(TextFieldCell.self, for: indexPath)
-      cell.configure(title: item.type.title)
+      cell.configure(title: item.title)
       cell.configure(fieldsContent: [model.fieldContent],
                      description: nil,
                      delegate: delegate)
@@ -107,7 +102,7 @@ struct UserDocumentsSectionBuilder {
       return cell
     case let .photo(model):
       let cell = tableView.dequeue(UserDocumentsPhotoCell.self, for: indexPath)
-      cell.configure(title: item.type.title,
+      cell.configure(title: item.title,
                      image: model.image,
                      primaryButtonTitle: model.primaryButtonTitle,
                      nonPrimaryButtonTitle: model.nonPrimaryButtonTitle)
@@ -144,18 +139,19 @@ struct UserDocumentsSectionBuilder {
   func documetsSection(with model: UserDocumentsModel) -> Section {
     let documents = UserDocumentsModel.Document.allCases
     let selectedDocumentIndex = documents.firstIndex { $0 == model.document }
-    let field = Section.Item.Mode.Field(placeholder: L.selectDocument,
+    let field = Section.Item.Mode.Field(type: .document,
+                                        placeholder: L.selectDocument,
                                         text: model.document?.description,
                                         items: documents.map { $0.description },
                                         seletedItemIndex: selectedDocumentIndex)
     let items: [Section.Item] = [
-      Section.Item(type: .document, mode: .field(field))
+      Section.Item(title: L.document, mode: .field(field))
     ]
     return Section(type: .documents, items: items)
   }
   
   func successSection() -> Section {
-    return Section(type: .success, items: [])
+    return Section(type: .success, items: []) // TODO: - Fix me
   }
   
   func updateSection(_ section: inout Section,
@@ -198,14 +194,27 @@ struct UserDocumentsSectionBuilder {
                      didChangeDocument document: UserDocumentsModel.Document) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil)
     
-    guard let documentFrontSideIndex = section.items.firstIndex(where: { $0.type == .documentFrontSide }) else { return tableUpdate }
+    let documentFrontSideIndex = section.items.firstIndex {
+      if case let .photo(model) = $0.mode, model.type == .frontSide {
+        return true
+      } else {
+        return false
+      }
+    }
+    guard let documentFrontSideIndex = documentFrontSideIndex else { return tableUpdate }
     
     section.items[documentFrontSideIndex] = documentFrontSideItem(for: document)
     updatePhotoCell(at: documentFrontSideIndex,
                     with: section.items[documentFrontSideIndex],
                     in: tableView)
     
-    let documentBackSideIndex = section.items.firstIndex(where: { $0.type == .documentBackSide })
+    let documentBackSideIndex = section.items.firstIndex {
+      if case let .photo(model) = $0.mode, model.type == .backSide {
+        return true
+      } else {
+        return false
+      }
+    }
     
     if document == .passport {
       documentBackSideIndex.map {
@@ -233,29 +242,33 @@ struct UserDocumentsSectionBuilder {
 private extension UserDocumentsSectionBuilder {
   
   func documentFrontSideItem(for document: UserDocumentsModel.Document) -> Section.Item {
-    return .init(type: .documentFrontSide,
-                 mode: .photo(.init(image: document.frontImage)))
+    let photo = Section.Item.Mode.Photo(type: .frontSide, image: document.frontImage)
+    return .init(title: L.frontSide, mode: .photo(photo))
   }
   
   func documentBackSideItem(for document: UserDocumentsModel.Document) -> Section.Item {
-    return .init(type: .documentBackSide,
-                 mode: .photo(.init(image: document.backImage)))
+    let photo = Section.Item.Mode.Photo(type: .backSide, image: document.backImage)
+    return .init(title: L.backSide, mode: .photo(photo))
   }
   
   func documentCountryItem(country: String, items: [String]) -> Section.Item {
     let selectedIndex = items.firstIndex { $0 == country }
-    return .init(type: .documentCountry, mode: .field(.init(placeholder: nil,
-                                                            text: country,
-                                                            items: items,
-                                                            seletedItemIndex: selectedIndex)))
+    let field = Section.Item.Mode.Field(type: .documentCountry,
+                                        placeholder: nil,
+                                        text: country,
+                                        items: items,
+                                        seletedItemIndex: selectedIndex)
+    return .init(title: L.documentIssuingCountry, mode: .field(field))
   }
   
   func isAddressOnDocumentItem() -> Section.Item {
     let items = BoolModel.allCases
-    return .init(type: .isAddressOnDocument, mode: .field(.init(placeholder: L.selectAnswer,
-                                                                text: nil,
-                                                                items: items.map { $0.description },
-                                                                seletedItemIndex: nil)))
+    let field = Section.Item.Mode.Field(type: .isAddressOnDocument,
+                                        placeholder: L.selectAnswer,
+                                        text: nil,
+                                        items: items.map { $0.description },
+                                        seletedItemIndex: nil)
+    return .init(title: L.isAddressUpToDateDescription, mode: .field(field))
   }
   
   func updatePhotoCell(at index: Int, with item: Section.Item, in tableView: UITableView) {

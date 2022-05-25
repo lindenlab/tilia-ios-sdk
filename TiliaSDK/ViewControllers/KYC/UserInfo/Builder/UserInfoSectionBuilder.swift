@@ -23,7 +23,7 @@ struct UserInfoSectionBuilder {
       case contact
       
       static var defaultItems: [SectionType] {
-        return [.location, .personal, .tax, .contact]
+        return [.location, .personal, .contact]
       }
       
       var title: String {

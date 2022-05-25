@@ -45,9 +45,11 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int) {
+    guard case let .field(field) = item.mode else { return }
+    
     var isFieldChanged = false
     
-    switch item.type {
+    switch field.type {
     case .document:
       let wasNil = userDocumentsModel.document == nil
       let value = UserDocumentsModel.Document(str: text ?? "")
@@ -64,8 +66,6 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     case .isAddressOnDocument:
       let value = BoolModel(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)
-    default:
-      break
     }
     
     if isFieldChanged {
