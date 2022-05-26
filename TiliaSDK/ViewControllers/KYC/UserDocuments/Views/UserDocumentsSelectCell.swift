@@ -7,7 +7,21 @@
 
 import UIKit
 
+protocol UserDocumentsSelectCellDelegate: AnyObject {
+  func userDocumentsSelectCellAddButtonDidTap(_ cell: UserDocumentsSelectCell)
+}
+
 final class UserDocumentsSelectCell: LabelCell {
+  
+  private weak var delegate: UserDocumentsSelectCellDelegate?
+  
+  private let addButton: NonPrimaryButtonWithStyle = {
+    let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
+    button.setTitle(L.addDocument, for: .normal)
+    button.setImage(.addIcon?.withRenderingMode(.alwaysTemplate),
+                    for: .normal)
+    return button
+  }()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -18,6 +32,10 @@ final class UserDocumentsSelectCell: LabelCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  func configure(delegate: UserDocumentsSelectCellDelegate?) {
+    self.delegate = delegate
+  }
+  
 }
 
 // MARK: - Private Methods
@@ -25,10 +43,13 @@ final class UserDocumentsSelectCell: LabelCell {
 private extension UserDocumentsSelectCell {
   
   func setup() {
-    configure(title: L.supportingDocuments,
-              font: .boldSystemFont(ofSize: 16))
     configure(description: L.supportingDocumentsDescription,
               font: .systemFont(ofSize: 14))
+    addChildView(addButton)
+  }
+  
+  @objc func addButtonDidTap() {
+    delegate?.userDocumentsSelectCellAddButtonDidTap(self)
   }
   
 }

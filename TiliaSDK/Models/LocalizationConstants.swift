@@ -100,5 +100,6 @@ enum L {
   static let accessToCameraMessage = "accessToCameraMessage".localized
   static let notNow = "notNow".localized
   static let openSettings = "openSettings".localized
+  static let addDocument = "addDocument".localized
   
 }

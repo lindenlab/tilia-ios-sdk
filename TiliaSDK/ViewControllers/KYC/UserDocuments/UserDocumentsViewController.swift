@@ -31,6 +31,7 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(UserDocumentsFooterView.self)
     tableView.register(TextFieldCell.self)
+    tableView.register(UserDocumentsSelectCell.self)
     tableView.estimatedRowHeight = 100
     tableView.estimatedSectionHeaderHeight = 100
     tableView.estimatedSectionFooterHeight = 140

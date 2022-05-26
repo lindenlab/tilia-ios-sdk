@@ -50,12 +50,6 @@ struct UserDocumentsSectionBuilder {
         struct Photo {
           let type: PhotoType
           var image: UIImage?
-          
-          init(type: PhotoType,
-               image: UIImage?) {
-            self.type = type
-            self.image = image
-          }
         }
         
         struct Document {
@@ -99,7 +93,10 @@ struct UserDocumentsSectionBuilder {
       cell.configure(title: item.title, font: .systemFont(ofSize: 14))
       cell.configure(image: model.image, delegate: delegate)
       return cell
-    default: return UITableViewCell()
+    case let .additionalDocuments(document):
+      let cell = tableView.dequeue(UserDocumentsSelectCell.self, for: indexPath)
+      cell.configure(title: item.title, font: .boldSystemFont(ofSize: 16))
+      return cell
     }
   }
   
@@ -194,6 +191,8 @@ struct UserDocumentsSectionBuilder {
     
     if model.isUsResident {
       section.items.append(isAddressOnDocumentItem())
+    } else {
+      section.items.append(additionalDocumentsItem())
     }
     
     return (startIndex..<section.items.count).map { IndexPath(row: $0, section: 0) }
@@ -281,6 +280,10 @@ private extension UserDocumentsSectionBuilder {
                                         items: items.map { $0.description },
                                         seletedItemIndex: nil)
     return .init(title: L.isAddressUpToDateDescription, mode: .field(field))
+  }
+  
+  func additionalDocumentsItem() -> Section.Item {
+    return .init(title: L.supportingDocuments, mode: .additionalDocuments(.init()))
   }
   
   func updatePhotoCell(at index: Int, with item: Section.Item, in tableView: UITableView) {

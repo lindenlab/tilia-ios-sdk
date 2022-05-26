@@ -34,5 +34,6 @@ extension UIImage {
   static let passportIcon = UIImage(named: "passportIcon")
   static let residencePermitBackIcon = UIImage(named: "residencePermitBackIcon")
   static let residencePermitFrontIcon = UIImage(named: "residencePermitFrontIcon")
+  static let addIcon = UIImage(named: "addIcon")
   
 }
