@@ -7,12 +7,11 @@
 
 import UIKit
 
-final class LabelCell: TitleBaseCell {
+class LabelCell: TitleBaseCell {
   
   private let label: UILabel = {
     let label = UILabel()
     label.textColor = .secondaryTextColor
-    label.font = .systemFont(ofSize: 16)
     label.numberOfLines = 0
     return label
   }()
@@ -26,8 +25,9 @@ final class LabelCell: TitleBaseCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(description: String?) {
+  func configure(description: String?, font: UIFont = .systemFont(ofSize: 16)) {
     label.text = description
+    label.font = font
   }
   
 }

@@ -65,6 +65,7 @@
 		D18855E1282700D400BAC86F /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18855E0282700D400BAC86F /* UserInfoModel.swift */; };
 		D18855E3282910A200BAC86F /* TextFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18855E2282910A200BAC86F /* TextFieldsCell.swift */; };
 		D18855E9282912B400BAC86F /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18855E8282912B400BAC86F /* RoundedTextField.swift */; };
+		D18CDB74283F810C00AAC732 /* UserDocumentsSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18CDB73283F810C00AAC732 /* UserDocumentsSelectCell.swift */; };
 		D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EC2806052200A25DBD /* TosFlowUITests.swift */; };
 		D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */; };
 		D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */; };
@@ -222,6 +223,7 @@
 		D18855E0282700D400BAC86F /* UserInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
 		D18855E2282910A200BAC86F /* TextFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldsCell.swift; sourceTree = "<group>"; };
 		D18855E8282912B400BAC86F /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
+		D18CDB73283F810C00AAC732 /* UserDocumentsSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsSelectCell.swift; sourceTree = "<group>"; };
 		D190A3EC2806052200A25DBD /* TosFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosFlowUITests.swift; sourceTree = "<group>"; };
 		D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowUITests.swift; sourceTree = "<group>"; };
 		D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModelTests.swift; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 			isa = PBXGroup;
 			children = (
 				D19C798F2837958C0024BB6F /* UserDocumentsPhotoCell.swift */,
+				D18CDB73283F810C00AAC732 /* UserDocumentsSelectCell.swift */,
 				D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */,
 			);
 			path = Views;
@@ -1008,6 +1011,7 @@
 				D1B8720028351B4600C44441 /* UserDocumentsSectionBuilder.swift in Sources */,
 				D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */,
 				D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */,
+				D18CDB74283F810C00AAC732 /* UserDocumentsSelectCell.swift in Sources */,
 				D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */,
 				D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */,
 				D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */,

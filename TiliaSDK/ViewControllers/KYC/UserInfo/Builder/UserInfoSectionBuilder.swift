@@ -96,7 +96,7 @@ struct UserInfoSectionBuilder {
         }
         
         case fields(Fields)
-        case label
+        case label(UIFont)
         case button
       }
       
@@ -158,10 +158,10 @@ struct UserInfoSectionBuilder {
                      description: item.description,
                      delegate: delegate)
       return cell
-    case .label:
+    case let .label(font):
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
       cell.configure(title: item.title)
-      cell.configure(description: item.description)
+      cell.configure(description: item.description, font: font)
       return cell
     case .button:
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
@@ -404,7 +404,7 @@ private extension UserInfoSectionBuilder {
     return [
       Section.Item(mode: .fields(ssnField),
                    title: L.ssn),
-      Section.Item(mode: .label,
+      Section.Item(mode: .label(.systemFont(ofSize: 14)),
                    title: L.ssnAcceptionTitle,
                    description: L.ssnAcceptionMessage),
       Section.Item(mode: .fields(signatureField),
@@ -451,7 +451,7 @@ private extension UserInfoSectionBuilder {
                    title: model.isUsResident ? L.state : L.stateOrRegion),
       Section.Item(mode: .fields(postalCodeField),
                    title: L.postalCode),
-      Section.Item(mode: .label,
+      Section.Item(mode: .label(.systemFont(ofSize: 16)),
                    title: L.countryOfResidence,
                    description: model.countryOfResidence)
     ]

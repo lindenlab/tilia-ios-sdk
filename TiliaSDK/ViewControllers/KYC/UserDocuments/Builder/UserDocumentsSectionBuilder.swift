@@ -96,9 +96,8 @@ struct UserDocumentsSectionBuilder {
       return cell
     case let .photo(model):
       let cell = tableView.dequeue(UserDocumentsPhotoCell.self, for: indexPath)
-      cell.configure(title: item.title,
-                     image: model.image,
-                     delegate: delegate)
+      cell.configure(title: item.title, font: .systemFont(ofSize: 14))
+      cell.configure(image: model.image, delegate: delegate)
       return cell
     default: return UITableViewCell()
     }

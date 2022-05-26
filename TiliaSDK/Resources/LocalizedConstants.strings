@@ -72,7 +72,7 @@
 "documentIssuingCountry" = "Document issuing country";
 "isAddressUpToDateDescription" = "Is your address on this document and is it up to date?";
 "supportingDocuments" = "Supporting documents";
-"supportingDocumentsDescription" = "Because your address isn’t on your provided document or it isn’t up to date, we need one or more of the following:\n\nUtility bill\nBank statement\nPhone or internet bill\nRental agreement\nVoter registration\nInsurance statement";
+"supportingDocumentsDescription" = "Because your address isn’t on your provided document or it isn’t up to date, we need one or more of the following:\n\n• Utility bill\n• Bank statement\n• Phone or internet bill\n• Rental agreement\n• Voter registration\n• Insurance statement";
 "allSet" = "You’re all set!";
 "userDocumentsSuccessMessage" = "Thank you for providing this additional information.";
 "hangTight" = "Hang tight...";

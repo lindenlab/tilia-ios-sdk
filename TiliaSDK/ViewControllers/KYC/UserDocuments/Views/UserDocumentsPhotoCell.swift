@@ -12,16 +12,9 @@ protocol UserDocumentsPhotoCellDelegate: AnyObject {
   func userDocumentsPhotoCellNonPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell)
 }
 
-final class UserDocumentsPhotoCell: UITableViewCell {
+final class UserDocumentsPhotoCell: TitleBaseCell {
   
   private weak var delegate: UserDocumentsPhotoCellDelegate?
-  
-  private let titleLabel: UILabel = {
-    let label = UILabel()
-    label.font = .systemFont(ofSize: 14)
-    label.textColor = .primaryTextColor
-    return label
-  }()
   
   private let photoImageView: UIImageView = {
     let imageView = UIImageView()
@@ -54,11 +47,8 @@ final class UserDocumentsPhotoCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String?,
-                 image: UIImage?,
+  func configure(image: UIImage?,
                  delegate: UserDocumentsPhotoCellDelegate?) {
-    titleLabel.text = title
-    titleLabel.isHidden = title == nil
     self.delegate = delegate
     configure(image: image)
   }
@@ -85,23 +75,10 @@ private extension UserDocumentsPhotoCell {
                                                           nonPrimaryButton])
     buttonsStackView.spacing = 8
     
-    let stackView = UIStackView(arrangedSubviews: [titleLabel,
-                                                   photoImageView,
-                                                   buttonsStackView])
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.spacing = 16
-    stackView.setCustomSpacing(10, after: titleLabel)
-    stackView.axis = .vertical
-    contentView.addSubview(stackView)
-    
-    let bottomAnchor = stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
-    bottomAnchor.priority = UILayoutPriority(999)
+    addChildView(photoImageView, spacing: 16)
+    addChildView(buttonsStackView)
     
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-      stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-      stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      bottomAnchor,
       photoImageView.heightAnchor.constraint(equalTo: photoImageView.widthAnchor, multiplier: 0.65)
     ])
   }
