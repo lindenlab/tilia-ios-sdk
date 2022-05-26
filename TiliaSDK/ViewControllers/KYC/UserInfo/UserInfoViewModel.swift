@@ -10,7 +10,7 @@ import Foundation
 
 typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
-typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetAddressToDefault: Bool)
+typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetContactToDefault: Bool)
 
 protocol UserInfoViewModelInputProtocol {
   func viewDidLoad()

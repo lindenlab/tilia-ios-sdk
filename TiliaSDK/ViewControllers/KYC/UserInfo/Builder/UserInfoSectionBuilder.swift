@@ -311,12 +311,12 @@ struct UserInfoSectionBuilder {
   func updateSections(_ sections: inout [Section],
                       in tableView: UITableView,
                       countryOfResidenceDidChangeWith model: UserInfoModel,
-                      needToSetAddressToDefault: Bool) -> TableUpdate {
+                      needToSetContactToDefault: Bool) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
     
     guard let contactSectionIndex = sections.firstIndex(where: { $0.type == .contact }) else { return tableUpdate }
     
-    if needToSetAddressToDefault {
+    if needToSetContactToDefault {
       tableUpdate.deleteRows = updateSection(&sections[contactSectionIndex],
                                              with: model,
                                              in: tableView,
