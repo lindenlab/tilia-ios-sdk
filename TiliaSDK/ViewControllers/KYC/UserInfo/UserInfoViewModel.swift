@@ -77,6 +77,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       if wasNil {
         coutryOfResidenceDidSelect.send(userInfoModel)
       } else if isFieldChanged {
+        if !userInfoModel.isUsResident {
+          userInfoModel.setTaxToDefault()
+        }
         userInfoModel.setAddressToDefault()
         coutryOfResidenceDidChange.send(userInfoModel)
       }

@@ -42,6 +42,10 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
     buttonsView.primaryButton.isEnabled = isPrimaryButtonEnabled
   }
   
+  func configure(isLoading: Bool) {
+    buttonsView.primaryButton.isLoading = isLoading
+  }
+  
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     setup()

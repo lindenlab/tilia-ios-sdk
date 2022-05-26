@@ -66,4 +66,9 @@ struct UserInfoModel {
     canUseAddressFor1099 = nil
   }
   
+  mutating func setTaxToDefault() {
+    tax.ssn = nil
+    tax.signature = nil
+  }
+  
 }

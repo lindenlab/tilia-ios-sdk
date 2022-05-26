@@ -177,7 +177,13 @@ extension UserInfoViewController: ButtonsViewDelegate {
                               sectionType: section.type,
                               isExpanded: false)
     }
-    router.routeToUserDocumentsView()
+    // TODO: - Fix me
+    guard let footer = tableView.footerView(forSection: sections.count - 1) as? UserInfoFooterView else { return }
+    footer.configure(isLoading: true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+      footer.configure(isLoading: false)
+      self.router.routeToUserDocumentsView()
+    }
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
