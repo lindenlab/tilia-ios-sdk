@@ -95,7 +95,10 @@ struct UserDocumentsSectionBuilder {
       return cell
     case let .additionalDocuments(document):
       let cell = tableView.dequeue(UserDocumentsSelectCell.self, for: indexPath)
-      cell.configure(title: item.title, font: .boldSystemFont(ofSize: 16))
+      cell.configure(title: item.title,
+                     font: .boldSystemFont(ofSize: 16))
+      cell.configure(description: L.supportingDocumentsDescription,
+                     font: .systemFont(ofSize: 14))
       return cell
     }
   }

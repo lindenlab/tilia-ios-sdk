@@ -38,8 +38,9 @@ final class UserDocumentsViewController: BaseViewController {
     return tableView
   }()
   
-  init(manager: NetworkManager) {
-    let viewModel = UserDocumentsViewModel(manager: manager)
+  init(manager: NetworkManager, defaultCounty: String) {
+    let viewModel = UserDocumentsViewModel(manager: manager,
+                                           defaultCounty: defaultCounty)
     let router = UserDocumentsRouter()
     self.viewModel = viewModel
     self.router = router

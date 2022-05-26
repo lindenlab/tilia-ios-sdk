@@ -47,4 +47,9 @@ struct UserDocumentsModel {
     return documentCountry == "USA" // TODO: - Fix me
   }
   
+  mutating func setImagesToDefault() {
+    frontImage = nil
+    backImage = nil
+  }
+  
 }

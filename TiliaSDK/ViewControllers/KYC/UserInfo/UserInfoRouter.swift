@@ -21,7 +21,8 @@ final class UserInfoRouter: UserInfoRoutingProtocol {
   }
   
   func routeToUserDocumentsView() {
-    let userDocumentsViewController = UserDocumentsViewController(manager: dataStore.manager)
+    let userDocumentsViewController = UserDocumentsViewController(manager: dataStore.manager,
+                                                                  defaultCounty: dataStore.selectedCountry)
     viewController?.present(userDocumentsViewController, animated: true)
   }
   

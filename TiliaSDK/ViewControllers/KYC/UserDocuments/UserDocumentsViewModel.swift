@@ -38,10 +38,11 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
   
   private let manager: NetworkManager
-  private var userDocumentsModel = UserDocumentsModel(documentCountry: "USA") // TODO: - Fix me
+  private var userDocumentsModel: UserDocumentsModel
   
-  init(manager: NetworkManager) {
+  init(manager: NetworkManager, defaultCounty: String) {
     self.manager = manager
+    self.userDocumentsModel = UserDocumentsModel(documentCountry: defaultCounty)
   }
   
   func viewDidLoad() {
@@ -61,8 +62,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       if wasNil {
         documentDidSelect.send(userDocumentsModel)
       } else if isFieldChanged, let value = value {
-        userDocumentsModel.backImage = nil
-        userDocumentsModel.frontImage = nil
+        userDocumentsModel.setImagesToDefault()
         documentDidChange.send(value)
       }
     case .documentCountry:

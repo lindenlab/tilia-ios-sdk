@@ -43,8 +43,6 @@ final class UserDocumentsSelectCell: LabelCell {
 private extension UserDocumentsSelectCell {
   
   func setup() {
-    configure(description: L.supportingDocumentsDescription,
-              font: .systemFont(ofSize: 14))
     addChildView(addButton)
   }
   

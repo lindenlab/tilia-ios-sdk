@@ -10,6 +10,7 @@ import Foundation
 
 typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
+typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetAddressToDefault: Bool)
 
 protocol UserInfoViewModelInputProtocol {
   func viewDidLoad()
@@ -23,12 +24,13 @@ protocol UserInfoViewModelOutputProtocol {
   var content: PassthroughSubject<Void, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
-  var coutryOfResidenceDidChange: PassthroughSubject<UserInfoModel, Never> { get }
+  var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
   var coutryOfResidenceDidSelect: PassthroughSubject<UserInfoModel, Never> { get }
 }
 
 protocol UserInfoDataStore {
   var manager: NetworkManager { get }
+  var selectedCountry: String { get }
 }
 
 protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol { }
@@ -40,10 +42,11 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let content = PassthroughSubject<Void, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
-  let coutryOfResidenceDidChange = PassthroughSubject<UserInfoModel, Never>()
+  let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
   let coutryOfResidenceDidSelect = PassthroughSubject<UserInfoModel, Never>()
   
   let manager: NetworkManager
+  var selectedCountry: String { return userInfoModel.countryOfResidence ?? "" }
   private var userInfoModel = UserInfoModel()
   
   
@@ -73,6 +76,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     switch field.type {
     case .countryOfResidance:
       let wasNil = userInfoModel.countryOfResidence == nil
+      let wasUsResidence = userInfoModel.isUsResident
       isFieldChanged = isFieldUpdated(&userInfoModel.countryOfResidence, with: text)
       if wasNil {
         coutryOfResidenceDidSelect.send(userInfoModel)
@@ -80,8 +84,11 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
         if !userInfoModel.isUsResident {
           userInfoModel.setTaxToDefault()
         }
-        userInfoModel.setAddressToDefault()
-        coutryOfResidenceDidChange.send(userInfoModel)
+        let needToSetAddressToDefault = wasUsResidence || userInfoModel.isUsResident
+        if needToSetAddressToDefault {
+          userInfoModel.setAddressToDefault()
+        }
+        coutryOfResidenceDidChange.send((userInfoModel, needToSetAddressToDefault))
       }
     case .fullName:
       switch fieldIndex {

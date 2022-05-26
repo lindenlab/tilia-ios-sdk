@@ -310,23 +310,26 @@ struct UserInfoSectionBuilder {
   
   func updateSections(_ sections: inout [Section],
                       in tableView: UITableView,
-                      countryOfResidenceDidChangeWith model: UserInfoModel) -> TableUpdate {
+                      countryOfResidenceDidChangeWith model: UserInfoModel,
+                      needToSetAddressToDefault: Bool) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
     
-    sections.firstIndex(where: { $0.type == .contact }).map {
-      tableUpdate.deleteRows = updateSection(&sections[$0],
+    guard let contactSectionIndex = sections.firstIndex(where: { $0.type == .contact }) else { return tableUpdate }
+    
+    if needToSetAddressToDefault {
+      tableUpdate.deleteRows = updateSection(&sections[contactSectionIndex],
                                              with: model,
                                              in: tableView,
-                                             at: $0,
+                                             at: contactSectionIndex,
                                              isExpanded: false,
                                              isFilled: false)
     }
     
     if model.isUsResident {
-      if !sections.contains(where: { $0.type == .tax }), let index = sections.firstIndex(where: { $0.type == .contact }) {
+      if !sections.contains(where: { $0.type == .tax }) {
         let section = Section(type: .tax, mode: .normal, isFilled: false, items: [])
-        sections.insert(section, at: index)
-        tableUpdate.insertSection = [index]
+        sections.insert(section, at: contactSectionIndex)
+        tableUpdate.insertSection = [contactSectionIndex]
       }
     } else {
       sections.firstIndex(where: { $0.type == .tax }).map {
