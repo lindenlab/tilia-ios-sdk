@@ -34,3 +34,11 @@ struct ServerTestClient: ServerClientProtocol {
   }
   
 }
+
+extension TLManager {
+  
+  func setIsTestServer(_ isTest: Bool) {
+    networkManager.setServerClient(isTest ? ServerTestClient() : ServerClient())
+  }
+  
+}

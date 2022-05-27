@@ -179,16 +179,6 @@ public extension TLManager {
   
 }
 
-// MARK: - For Testing
-
-extension TLManager {
-  
-  func setIsTestServer(_ isTest: Bool) {
-    networkManager.setServerClient(isTest ? ServerTestClient() : ServerClient())
-  }
-  
-}
-
 // MARK: - Private Methods
 
 private extension TLManager {
