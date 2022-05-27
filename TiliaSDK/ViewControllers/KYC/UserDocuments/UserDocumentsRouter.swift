@@ -38,7 +38,7 @@ final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
     let selectFromGalleryAction = UIAlertAction(title: L.selectFromGallery, style: .default) { _ in
       self.routeToImagePickerView(sourceType: .photoLibrary, delegate: delegate)
     }
-    let makePhotoAction = UIAlertAction(title: L.makePhoto, style: .default) { _ in
+    let makePhotoAction = UIAlertAction(title: L.takePhoto, style: .default) { _ in
       self.routeToImagePickerView(sourceType: .camera, delegate: delegate)
     }
     let selectFromFilesAction = UIAlertAction(title: L.selectFromFiles, style: .default) { _ in

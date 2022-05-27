@@ -68,7 +68,7 @@
 "frontSide" = "Front side";
 "backSide" = "Back side";
 "captureOnCamera" = "Capture on camera";
-"pickFile" = "Pick a file";
+"pickPhoto" = "Pick a photo";
 "documentIssuingCountry" = "Document issuing country";
 "isAddressUpToDateDescription" = "Is your address on this document and is it up to date?";
 "supportingDocuments" = "Supporting documents";
@@ -92,5 +92,5 @@
 "addDocument" = "Add a document";
 "selectFileOrImage" = "Select file or image";
 "selectFromGallery" = "Select from Gallery";
-"makePhoto" = "Make a photo";
+"takePhoto" = "Take a photo";
 "selectFromFiles" = "Select from Files";

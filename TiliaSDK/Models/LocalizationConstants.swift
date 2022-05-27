@@ -79,7 +79,7 @@ enum L {
   static let frontSide = "frontSide".localized
   static let backSide = "backSide".localized
   static let captureOnCamera = "captureOnCamera".localized
-  static let pickFile = "pickFile".localized
+  static let pickPhoto = "pickPhoto".localized
   static let documentIssuingCountry = "documentIssuingCountry".localized
   static let isAddressUpToDateDescription = "isAddressUpToDateDescription".localized
   static let supportingDocuments = "supportingDocuments".localized
@@ -103,7 +103,7 @@ enum L {
   static let addDocument = "addDocument".localized
   static let selectFileOrImage = "selectFileOrImage".localized
   static let selectFromGallery = "selectFromGallery".localized
-  static let makePhoto = "makePhoto".localized
+  static let takePhoto = "takePhoto".localized
   static let selectFromFiles = "selectFromFiles".localized
   
 }

@@ -34,7 +34,7 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
     button.setImage(.documentIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
-    button.setTitle(L.pickFile, for: .normal)
+    button.setTitle(L.pickPhoto, for: .normal)
     return button
   }()
   
