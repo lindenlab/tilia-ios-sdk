@@ -14,7 +14,11 @@ final class TextFieldCell: TextFieldsCell {
     case datePicker(selectedDate: Date?)
   }
   
-  private let firstTextField = RoundedTextField()
+  private let firstTextField: RoundedTextField = {
+    let textField = RoundedTextField()
+    textField.autocorrectionType = .no
+    return textField
+  }()
   private var pickerDataSource: DatePickerDataSource?
   private var fieldMask: String? // "xxx-xxx", supports only digits
   private var maskSeparator: Character? // "-"

@@ -15,7 +15,18 @@ final class UserDocumentsViewController: BaseViewController {
   private let builder = UserDocumentsSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
   private var section: UserDocumentsSectionBuilder.Section!
-  private var selectedPhotoCellIndex: Int?
+  private lazy var pickersDelegate: PickersDelegate = {
+    let delegate = PickersDelegate { [weak self] index, image, url in
+      guard let self = self else { return }
+      self.viewModel.setImage(image,
+                              for: self.section.items[index],
+                              at: index,
+                              with: url)
+    } documentPickerHandler: { [weak self] index, urls in
+      self?.viewModel.setFiles(with: urls)
+    }
+    return delegate
+  }()
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -124,13 +135,15 @@ extension UserDocumentsViewController: TextFieldsCellDelegate {
 extension UserDocumentsViewController: UserDocumentsPhotoCellDelegate {
   
   func userDocumentsPhotoCellPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell) {
-    selectedPhotoCellIndex = tableView.indexPath(for: cell)?.row
-    router.routeToImagePickerView(sourceType: .camera, delegate: self)
+    guard let index = tableView.indexPath(for: cell)?.row else { return }
+    pickersDelegate.setIndex(index)
+    router.routeToImagePickerView(sourceType: .camera, delegate: pickersDelegate)
   }
   
   func userDocumentsPhotoCellNonPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell) {
-    selectedPhotoCellIndex = tableView.indexPath(for: cell)?.row
-    router.routeToImagePickerView(sourceType: .photoLibrary, delegate: self)
+    guard let index = tableView.indexPath(for: cell)?.row else { return }
+    pickersDelegate.setIndex(index)
+    router.routeToImagePickerView(sourceType: .photoLibrary, delegate: pickersDelegate)
   }
   
 }
@@ -140,7 +153,9 @@ extension UserDocumentsViewController: UserDocumentsPhotoCellDelegate {
 extension UserDocumentsViewController: UserDocumentsSelectCellDelegate {
   
   func userDocumentsSelectCellAddButtonDidTap(_ cell: UserDocumentsSelectCell) {
-    router.routeToDocumentPickerView(delegate: self)
+    guard let index = tableView.indexPath(for: cell)?.row else { return }
+    pickersDelegate.setIndex(index)
+    router.routeToDocumentPickerView(delegate: pickersDelegate)
   }
   
 }
@@ -155,34 +170,6 @@ extension UserDocumentsViewController: ButtonsViewDelegate {
   
   func buttonsViewPrimaryNonButtonDidTap() {
     router.dismiss()
-  }
-  
-}
-
-// MARK: - UIImagePickerControllerDelegate
-
-extension UserDocumentsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-  
-  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-    picker.dismiss(animated: true)
-    let url = info[.imageURL] as? URL
-    guard
-      let image = info[.originalImage] as? UIImage,
-      let index = selectedPhotoCellIndex else { return }
-    viewModel.setImage(image,
-                       for: section.items[index],
-                       at: index,
-                       with: url)
-  }
-  
-}
-
-// MARK: - UIDocumentPickerDelegate
-
-extension UserDocumentsViewController: UIDocumentPickerDelegate {
-  
-  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-    viewModel.setFiles(with: urls)
   }
   
 }
@@ -265,6 +252,39 @@ private extension UserDocumentsViewController {
   
   @objc func keyboardWillBeHidden() {
     tableView.contentInset.bottom = 0
+  }
+  
+}
+
+private extension UserDocumentsViewController {
+  
+  final class PickersDelegate: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIDocumentPickerDelegate {
+    
+    private let imagePickerHandler: (Int, UIImage?, URL?) -> Void
+    private let documentPickerHandler: (Int, [URL]) -> Void
+    private var index: Int!
+    
+    init(imagePickerHandler: @escaping (Int, UIImage?, URL?) -> Void,
+         documentPickerHandler: @escaping (Int, [URL]) -> Void) {
+      self.imagePickerHandler = imagePickerHandler
+      self.documentPickerHandler = documentPickerHandler
+    }
+    
+    func setIndex(_ index: Int) {
+      self.index = index
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+      picker.dismiss(animated: true)
+      let url = info[.imageURL] as? URL
+      let image = info[.originalImage] as? UIImage
+      imagePickerHandler(index, image, url)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+      documentPickerHandler(index, urls)
+    }
+    
   }
   
 }
