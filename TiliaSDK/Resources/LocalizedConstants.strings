@@ -90,3 +90,7 @@
 "notNow" = "Not now";
 "openSettings" = "Open Settings";
 "addDocument" = "Add a document";
+"selectFileOrImage" = "Select file or image";
+"selectFromGallery" = "Select from Gallery";
+"makePhoto" = "Make a photo";
+"selectFromFiles" = "Select from Files";

@@ -11,7 +11,7 @@ import CoreServices
 
 protocol UserDocumentsRoutingProtocol: RoutingProtocol {
   func routeToImagePickerView(sourceType: UIImagePickerController.SourceType, delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate)
-  func routeToDocumentPickerView(delegate: UIDocumentPickerDelegate)
+  func routeToSelectDocumentsView(delegate: UIDocumentPickerDelegate & UIImagePickerControllerDelegate & UINavigationControllerDelegate)
 }
 
 final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
@@ -19,23 +19,39 @@ final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
   weak var viewController: UIViewController?
   
   func routeToImagePickerView(sourceType: UIImagePickerController.SourceType, delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
-    guard AVCaptureDevice.authorizationStatus(for: .video) != .denied else {
+    if sourceType == .camera && AVCaptureDevice.authorizationStatus(for: .video) == .denied {
       showCameraAccessDeniedAlert()
-      return
+    } else if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+      let picker = UIImagePickerController()
+      picker.delegate = delegate
+      picker.sourceType = sourceType
+      viewController?.present(picker, animated: true)
     }
-    guard UIImagePickerController.isSourceTypeAvailable(sourceType) else { return }
-    let picker = UIImagePickerController()
-    picker.delegate = delegate
-    picker.sourceType = sourceType
-    viewController?.present(picker, animated: true)
   }
   
-  func routeToDocumentPickerView(delegate: UIDocumentPickerDelegate) {
-    let picker = UIDocumentPickerViewController(documentTypes: availableDocumentTypes,
-                                                in: .import)
-    picker.delegate = delegate
-    picker.allowsMultipleSelection = true
-    viewController?.present(picker, animated: true)
+  func routeToSelectDocumentsView(delegate: UIDocumentPickerDelegate & UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
+    let isPad = UIDevice.current.userInterfaceIdiom == .pad
+    let alertController = UIAlertController(title: L.selectFileOrImage,
+                                            message: nil,
+                                            preferredStyle: isPad ? .alert : .actionSheet)
+    
+    let selectFromGalleryAction = UIAlertAction(title: L.selectFromGallery, style: .default) { _ in
+      self.routeToImagePickerView(sourceType: .photoLibrary, delegate: delegate)
+    }
+    let makePhotoAction = UIAlertAction(title: L.makePhoto, style: .default) { _ in
+      self.routeToImagePickerView(sourceType: .camera, delegate: delegate)
+    }
+    let selectFromFilesAction = UIAlertAction(title: L.selectFromFiles, style: .default) { _ in
+      self.routeToDocumentPickerView(delegate: delegate)
+    }
+    let cancelAction = UIAlertAction(title: L.cancel, style: .cancel)
+    
+    alertController.addAction(selectFromGalleryAction)
+    alertController.addAction(makePhotoAction)
+    alertController.addAction(selectFromFilesAction)
+    alertController.addAction(cancelAction)
+    
+    viewController?.present(alertController, animated: true)
   }
   
 }
@@ -65,6 +81,14 @@ private extension UserDocumentsRouter {
     alertController.addAction(goToSettingsAction)
     
     viewController?.present(alertController, animated: true)
+  }
+  
+  func routeToDocumentPickerView(delegate: UIDocumentPickerDelegate) {
+    let picker = UIDocumentPickerViewController(documentTypes: availableDocumentTypes,
+                                                in: .import)
+    picker.delegate = delegate
+    picker.allowsMultipleSelection = true
+    viewController?.present(picker, animated: true)
   }
   
 }

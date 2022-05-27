@@ -155,7 +155,7 @@ extension UserDocumentsViewController: UserDocumentsSelectCellDelegate {
   func userDocumentsSelectCellAddButtonDidTap(_ cell: UserDocumentsSelectCell) {
     guard let index = tableView.indexPath(for: cell)?.row else { return }
     pickersDelegate.setIndex(index)
-    router.routeToDocumentPickerView(delegate: pickersDelegate)
+    router.routeToSelectDocumentsView(delegate: pickersDelegate)
   }
   
 }

@@ -101,5 +101,9 @@ enum L {
   static let notNow = "notNow".localized
   static let openSettings = "openSettings".localized
   static let addDocument = "addDocument".localized
+  static let selectFileOrImage = "selectFileOrImage".localized
+  static let selectFromGallery = "selectFromGallery".localized
+  static let makePhoto = "makePhoto".localized
+  static let selectFromFiles = "selectFromFiles".localized
   
 }
