@@ -39,6 +39,7 @@
 		D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165827E7C0AF0082A85B /* AccountRouter.swift */; };
 		D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165A27E7C0C50082A85B /* PaymentRouter.swift */; };
 		D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */; };
+		D18D730228415E8200660715 /* BundleToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18D730128415E8200660715 /* BundleToken.swift */; };
 		D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EC2806052200A25DBD /* TosFlowUITests.swift */; };
 		D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */; };
 		D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */; };
@@ -157,6 +158,7 @@
 		D188165827E7C0AF0082A85B /* AccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouter.swift; sourceTree = "<group>"; };
 		D188165A27E7C0C50082A85B /* PaymentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRouter.swift; sourceTree = "<group>"; };
 		D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouter.swift; sourceTree = "<group>"; };
+		D18D730128415E8200660715 /* BundleToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleToken.swift; sourceTree = "<group>"; };
 		D190A3EC2806052200A25DBD /* TosFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosFlowUITests.swift; sourceTree = "<group>"; };
 		D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowUITests.swift; sourceTree = "<group>"; };
 		D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
@@ -341,10 +343,14 @@
 		D135DC7727E74A4A0009D888 /* TiliaSDK */ = {
 			isa = PBXGroup;
 			children = (
-				D1CCE8D427F4C5AC00FD0E25 /* Demo */,
 				D1B872B8280442E400DD1F7B /* Testable */,
+				D1CCE8D427F4C5AC00FD0E25 /* Demo */,
 				D1CCE8CC27F4A62300FD0E25 /* Resources */,
-				D18CDB77284002F700AAC732 /* Code */,
+				D12443DD27EB9B0700C68811 /* ViewControllers */,
+				D192AD7E27E8DE8B00E3DC2A /* Extensions */,
+				D135DCB427E7702B0009D888 /* Managers */,
+				D135DCAD27E762790009D888 /* Routers */,
+				D135DCA827E75F320009D888 /* Models */,
 				D135DC7827E74A4A0009D888 /* AppDelegate.swift */,
 				D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */,
 				D135DC7E27E74A4A0009D888 /* Main.storyboard */,
@@ -386,6 +392,7 @@
 				D1C8A84927F6143E00BF2910 /* InvoiceDetailsModel.swift */,
 				D1C8A84727F60FFE00BF2910 /* InvoiceModel.swift */,
 				D1BA29DF27FCA96B00F046E8 /* ColorsConfiguration.swift */,
+				D18D730128415E8200660715 /* BundleToken.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -409,18 +416,6 @@
 				D1B872D02804A22F00DD1F7B /* NetworkManager.swift */,
 			);
 			path = Managers;
-			sourceTree = "<group>";
-		};
-		D18CDB77284002F700AAC732 /* Code */ = {
-			isa = PBXGroup;
-			children = (
-				D12443DD27EB9B0700C68811 /* ViewControllers */,
-				D192AD7E27E8DE8B00E3DC2A /* Extensions */,
-				D135DCB427E7702B0009D888 /* Managers */,
-				D135DCAD27E762790009D888 /* Routers */,
-				D135DCA827E75F320009D888 /* Models */,
-			);
-			path = Code;
 			sourceTree = "<group>";
 		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
@@ -791,6 +786,7 @@
 				D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */,
 				D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */,
 				D1D5B53C27F759E000E04EE1 /* CheckoutSectionBuilder.swift in Sources */,
+				D18D730228415E8200660715 /* BundleToken.swift in Sources */,
 				D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */,
 				D192AD8A27EA2D2B00E3DC2A /* BalanceModel.swift in Sources */,
 				D1C8A84C27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift in Sources */,
