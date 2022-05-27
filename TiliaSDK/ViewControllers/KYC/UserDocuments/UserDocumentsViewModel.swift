@@ -107,8 +107,9 @@ private extension UserDocumentsViewModel {
   }
   
   func deleteTempFile(at url: URL) {
-    // TODO: - Add here queue
-    try? FileManager.default.removeItem(at: url)
+    DispatchQueue.global().async {
+      try? FileManager.default.removeItem(at: url)
+    }
   }
   
 }
