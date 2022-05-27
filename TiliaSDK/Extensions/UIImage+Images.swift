@@ -9,17 +9,21 @@ import UIKit
 
 extension UIImage {
   
-  static let logoIcon = UIImage(named: "logoIcon")
-  static let successIcon = UIImage(named: "successIcon")
-  static let failureIcon = UIImage(named: "failureIcon")
-  static let walletIcon = UIImage(named: "walletIcon")
-  static let americanExpressIcon = UIImage(named: "americanExpressIcon")
-  static let chinaUnionpayIcon = UIImage(named: "chinaUnionpayIcon")
-  static let dinersClubIcon = UIImage(named: "dinersClubIcon")
-  static let discoverIcon = UIImage(named: "discoverIcon")
-  static let jcbIcon = UIImage(named: "jcbIcon")
-  static let maestroIcon = UIImage(named: "maestroIcon")
-  static let masterCardIcon = UIImage(named: "masterCardIcon")
-  static let visaIcon = UIImage(named: "visaIcon")
+  static let logoIcon = UIImage(str: "logoIcon")
+  static let successIcon = UIImage(str: "successIcon")
+  static let failureIcon = UIImage(str: "failureIcon")
+  static let walletIcon = UIImage(str: "walletIcon")
+  static let americanExpressIcon = UIImage(str: "americanExpressIcon")
+  static let chinaUnionpayIcon = UIImage(str: "chinaUnionpayIcon")
+  static let dinersClubIcon = UIImage(str: "dinersClubIcon")
+  static let discoverIcon = UIImage(str: "discoverIcon")
+  static let jcbIcon = UIImage(str: "jcbIcon")
+  static let maestroIcon = UIImage(str: "maestroIcon")
+  static let masterCardIcon = UIImage(str: "masterCardIcon")
+  static let visaIcon = UIImage(str: "visaIcon")
+  
+  private convenience init?(str: String) {
+    self.init(named: str, in: BundleToken.bundle, compatibleWith: nil)
+  }
   
 }
