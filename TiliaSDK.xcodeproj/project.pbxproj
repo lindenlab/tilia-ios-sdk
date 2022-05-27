@@ -341,10 +341,14 @@
 		D135DC7727E74A4A0009D888 /* TiliaSDK */ = {
 			isa = PBXGroup;
 			children = (
-				D1CCE8D427F4C5AC00FD0E25 /* Demo */,
 				D1B872B8280442E400DD1F7B /* Testable */,
+				D1CCE8D427F4C5AC00FD0E25 /* Demo */,
 				D1CCE8CC27F4A62300FD0E25 /* Resources */,
-				D18CDB77284002F700AAC732 /* Code */,
+				D12443DD27EB9B0700C68811 /* ViewControllers */,
+				D192AD7E27E8DE8B00E3DC2A /* Extensions */,
+				D135DCB427E7702B0009D888 /* Managers */,
+				D135DCAD27E762790009D888 /* Routers */,
+				D135DCA827E75F320009D888 /* Models */,
 				D135DC7827E74A4A0009D888 /* AppDelegate.swift */,
 				D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */,
 				D135DC7E27E74A4A0009D888 /* Main.storyboard */,
@@ -409,18 +413,6 @@
 				D1B872D02804A22F00DD1F7B /* NetworkManager.swift */,
 			);
 			path = Managers;
-			sourceTree = "<group>";
-		};
-		D18CDB77284002F700AAC732 /* Code */ = {
-			isa = PBXGroup;
-			children = (
-				D12443DD27EB9B0700C68811 /* ViewControllers */,
-				D192AD7E27E8DE8B00E3DC2A /* Extensions */,
-				D135DCB427E7702B0009D888 /* Managers */,
-				D135DCAD27E762790009D888 /* Routers */,
-				D135DCA827E75F320009D888 /* Models */,
-			);
-			path = Code;
 			sourceTree = "<group>";
 		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
