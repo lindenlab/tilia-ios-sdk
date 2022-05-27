@@ -9,9 +9,13 @@ import UIKit
 
 extension UIImage {
   
-  static let logoImage = UIImage(named: "logoIcon")
-  static let successIcon = UIImage(named: "successIcon")
-  static let walletIcon = UIImage(named: "walletIcon")
-  static let failureIcon = UIImage(named: "failureIcon")
+  static let logoImage = UIImage(str: "logoIcon")
+  static let successIcon = UIImage(str: "successIcon")
+  static let walletIcon = UIImage(str: "walletIcon")
+  static let failureIcon = UIImage(str: "failureIcon")
+  
+  private convenience init?(str: String) {
+    self.init(named: str, in: BundleToken.bundle, compatibleWith: nil)
+  }
   
 }

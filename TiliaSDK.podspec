@@ -6,8 +6,8 @@ Pod::Spec.new do |s|
   s.author = 'Tilia'
   s.source = { git: 'https://github.com/lindenlab/tilia-ios-sdk.git', tag: s.version.to_s }
   s.ios.deployment_target = '13.0'
-  s.source_files = 'TiliaSDK/Code/**/*'
+  s.source_files = 'TiliaSDK/ViewControllers/**/*.swift', 'TiliaSDK/Extensions/*.swift', 'TiliaSDK/Managers/*.swift', 'TiliaSDK/Routers/*.swift', 'TiliaSDK/Models/*.swift'
   s.resource_bundle = { 'TiliaSDK': 'TiliaSDK/Resources/**/*' }
   s.dependency 'Alamofire'
-  s.swift_versions = ['5.1']
+  s.swift_versions = ['5.3', '5.4', '5.5']
 end
