@@ -56,6 +56,7 @@ final class RoundedTextField: UITextField {
 private extension RoundedTextField {
   
   func setup() {
+    autocorrectionType = .no
     backgroundColor = .backgroundColor
     textColor = .primaryTextColor
     font = .systemFont(ofSize: 16)
