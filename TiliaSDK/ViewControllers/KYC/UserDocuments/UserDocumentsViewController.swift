@@ -125,12 +125,22 @@ extension UserDocumentsViewController: UserDocumentsPhotoCellDelegate {
   
   func userDocumentsPhotoCellPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell) {
     selectedPhotoCellIndex = tableView.indexPath(for: cell)?.row
-    router.routeToImageGalleryView(sourceType: .camera, delegate: self)
+    router.routeToImagePickerView(sourceType: .camera, delegate: self)
   }
   
   func userDocumentsPhotoCellNonPrimaryButtonDidTap(_ cell: UserDocumentsPhotoCell) {
     selectedPhotoCellIndex = tableView.indexPath(for: cell)?.row
-    router.routeToImageGalleryView(sourceType: .photoLibrary, delegate: self)
+    router.routeToImagePickerView(sourceType: .photoLibrary, delegate: self)
+  }
+  
+}
+
+// MARK: - UserDocumentsSelectCellDelegate
+
+extension UserDocumentsViewController: UserDocumentsSelectCellDelegate {
+  
+  func userDocumentsSelectCellAddButtonDidTap(_ cell: UserDocumentsSelectCell) {
+    router.routeToDocumentPickerView(delegate: self)
   }
   
 }
@@ -155,12 +165,24 @@ extension UserDocumentsViewController: UIImagePickerControllerDelegate, UINaviga
   
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
     picker.dismiss(animated: true)
+    let url = info[.imageURL] as? URL
     guard
       let image = info[.originalImage] as? UIImage,
       let index = selectedPhotoCellIndex else { return }
     viewModel.setImage(image,
                        for: section.items[index],
-                       at: index)
+                       at: index,
+                       with: url)
+  }
+  
+}
+
+// MARK: - UIDocumentPickerDelegate
+
+extension UserDocumentsViewController: UIDocumentPickerDelegate {
+  
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    viewModel.setFiles(with: urls)
   }
   
 }

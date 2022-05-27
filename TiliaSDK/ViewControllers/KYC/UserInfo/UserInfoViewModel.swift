@@ -8,13 +8,13 @@
 import Combine
 import Foundation
 
-typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool)
+typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool, expandNext: Bool)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
 typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetContactToDefault: Bool)
 
 protocol UserInfoViewModelInputProtocol {
   func viewDidLoad()
-  func updateSection(at index: Int, sectionType: UserInfoSectionBuilder.Section.SectionType, isExpanded: Bool)
+  func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSection: UserInfoSectionBuilder.Section?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
 }
 
@@ -58,11 +58,13 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     content.send(())// TODO: - Fix this
   }
   
-  func updateSection(at index: Int,
-                     sectionType: UserInfoSectionBuilder.Section.SectionType,
-                     isExpanded: Bool) {
-    let isSectionFilled = validator(for: sectionType).isFilled(for: userInfoModel)
-    expandSection.send((index, userInfoModel, isExpanded, isSectionFilled))
+  func updateSection(_ section: UserInfoSectionBuilder.Section,
+                     at index: Int,
+                     isExpanded: Bool,
+                     nextSection: UserInfoSectionBuilder.Section?) {
+    let isSectionFilled = validator(for: section.type).isFilled(for: userInfoModel)
+    let expandNext = nextSection?.mode == .normal
+    expandSection.send((index, userInfoModel, isExpanded, isSectionFilled, expandNext))
   }
   
   func setText(_ text: String?,

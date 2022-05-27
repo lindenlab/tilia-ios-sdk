@@ -145,10 +145,11 @@ extension UserInfoViewController: UserInfoNextButtonCellDelegate {
   
   func userInfoNextButtonCellButtonDidTap(_ cell: UserInfoNextButtonCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
-    let section = indexPath.section
-    viewModel.updateSection(at: section,
-                            sectionType: sections[section].type,
-                            isExpanded: false)
+    let index = indexPath.section
+    viewModel.updateSection(sections[index],
+                            at: index,
+                            isExpanded: false,
+                            nextSection: sections[index + 1])
   }
   
 }
@@ -160,9 +161,10 @@ extension UserInfoViewController: UserInfoHeaderViewDelegate {
   func userInfoHeaderView(_ header: UserInfoHeaderView, willExpand isExpanded: Bool) {
     tableView.endEditing(true)
     guard let index = getHeaderIndex(header) else { return }
-    viewModel.updateSection(at: index,
-                            sectionType: sections[index].type,
-                            isExpanded: isExpanded)
+    viewModel.updateSection(sections[index],
+                            at: index,
+                            isExpanded: isExpanded,
+                            nextSection: nil)
   }
   
 }
@@ -173,9 +175,10 @@ extension UserInfoViewController: ButtonsViewDelegate {
   
   func buttonsViewPrimaryButtonDidTap() {
     for (index, section) in sections.enumerated() where section.mode == .expanded {
-      viewModel.updateSection(at: index,
-                              sectionType: section.type,
-                              isExpanded: false)
+      viewModel.updateSection(section,
+                              at: index,
+                              isExpanded: false,
+                              nextSection: nil)
     }
     // TODO: - Fix me
     guard let footer = tableView.footerView(forSection: sections.count - 1) as? UserInfoFooterView else { return }
@@ -231,16 +234,23 @@ private extension UserInfoViewController {
     
     viewModel.expandSection.sink { [weak self] item in
       guard let self = self else { return }
-      let indexPaths = self.builder.updateSection(&self.sections[item.index],
-                                                  with: item.model,
-                                                  in: self.tableView,
-                                                  at: item.index,
-                                                  isExpanded: item.isExpanded,
-                                                  isFilled: item.isFilled)
-      if item.isExpanded {
-        self.tableView.insertRows(at: indexPaths, with: .fade)
-      } else {
-        self.tableView.deleteRows(at: indexPaths, with: .fade)
+      let tableUpdate = self.builder.updateSection(&self.sections[item.index],
+                                                   with: item.model,
+                                                   in: self.tableView,
+                                                   at: item.index,
+                                                   isExpanded: item.isExpanded,
+                                                   isFilled: item.isFilled)
+      self.tableView.performBatchUpdates {
+        tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .fade) }
+        tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
+      } completion: { _ in
+        if item.expandNext {
+          let nextIndex = item.index + 1
+          self.viewModel.updateSection(self.sections[nextIndex],
+                                       at: nextIndex,
+                                       isExpanded: true,
+                                       nextSection: nil)
+        }
       }
     }.store(in: &subscriptions)
     

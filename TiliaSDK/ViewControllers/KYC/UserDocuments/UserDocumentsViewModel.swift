@@ -14,7 +14,8 @@ typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
 protocol UserDocumentsViewModelInputProtocol {
   func viewDidLoad()
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
-  func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
+  func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?)
+  func setFiles(with urls: [URL])
 }
 
 protocol UserDocumentsViewModelOutputProtocol {
@@ -77,7 +78,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     }
   }
   
-  func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int) {
+  func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?) {
     guard case let .photo(model) = item.mode else { return }
     switch model.type {
     case .frontSide:
@@ -86,6 +87,11 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       userDocumentsModel.backImage = image
     }
     setImage.send((index, image))
+    url.map { deleteTempFile(at: $0) }
+  }
+  
+  func setFiles(with urls: [URL]) {
+    
   }
   
 }
@@ -98,6 +104,10 @@ private extension UserDocumentsViewModel {
     guard field != value else { return false }
     field = value
     return true
+  }
+  
+  func deleteTempFile(at url: URL) {
+    try? FileManager.default.removeItem(at: url)
   }
   
 }

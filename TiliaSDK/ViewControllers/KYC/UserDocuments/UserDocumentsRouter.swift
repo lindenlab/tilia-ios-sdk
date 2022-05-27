@@ -7,16 +7,18 @@
 
 import UIKit
 import AVFoundation
+import CoreServices
 
 protocol UserDocumentsRoutingProtocol: RoutingProtocol {
-  func routeToImageGalleryView(sourceType: UIImagePickerController.SourceType, delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate)
+  func routeToImagePickerView(sourceType: UIImagePickerController.SourceType, delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate)
+  func routeToDocumentPickerView(delegate: UIDocumentPickerDelegate)
 }
 
 final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
   
   weak var viewController: UIViewController?
   
-  func routeToImageGalleryView(sourceType: UIImagePickerController.SourceType, delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
+  func routeToImagePickerView(sourceType: UIImagePickerController.SourceType, delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate) {
     guard AVCaptureDevice.authorizationStatus(for: .video) != .denied else {
       showCameraAccessDeniedAlert()
       return
@@ -28,11 +30,26 @@ final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
     viewController?.present(picker, animated: true)
   }
   
+  func routeToDocumentPickerView(delegate: UIDocumentPickerDelegate) {
+    let picker = UIDocumentPickerViewController(documentTypes: availableDocumentTypes,
+                                                in: .import)
+    picker.delegate = delegate
+    picker.allowsMultipleSelection = true
+    viewController?.present(picker, animated: true)
+  }
+  
 }
 
 // MARK: - Private Methods
 
 private extension UserDocumentsRouter {
+  
+  var availableDocumentTypes: [String] {
+    let items: [CFString] = [
+      kUTTypePDF
+    ]
+    return items.map { String($0) }
+  }
   
   func showCameraAccessDeniedAlert() {
     let alertController = UIAlertController(title: L.accessToCameraTitle,

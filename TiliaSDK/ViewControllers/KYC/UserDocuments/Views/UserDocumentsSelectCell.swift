@@ -43,6 +43,7 @@ final class UserDocumentsSelectCell: LabelCell {
 private extension UserDocumentsSelectCell {
   
   func setup() {
+    addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
     addChildView(addButton)
   }
   

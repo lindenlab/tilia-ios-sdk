@@ -12,7 +12,7 @@ struct UserInfoSectionBuilder {
   typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
-  typealias TableUpdate = (insertSection: IndexSet?, deleteSection: IndexSet?, deleteRows: [IndexPath]?)
+  typealias TableUpdate = (insertSection: IndexSet?, deleteSection: IndexSet?, insertRows: [IndexPath]?, deleteRows: [IndexPath]?)
   
   struct Section {
     
@@ -220,7 +220,7 @@ struct UserInfoSectionBuilder {
                      in tableView: UITableView,
                      at sectionIndex: Int,
                      isExpanded: Bool,
-                     isFilled: Bool) -> [IndexPath] {
+                     isFilled: Bool) -> TableUpdate {
     let items: [Section.Item]
     let mode: UserInfoHeaderView.Mode
     if isExpanded {
@@ -247,8 +247,14 @@ struct UserInfoSectionBuilder {
                   in: tableView,
                   at: sectionIndex,
                   mode: mode)
-    
-    return items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) }
+    let indexPaths = items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) }
+    var tableUpdate: TableUpdate = (nil, nil, nil, nil)
+    if isExpanded {
+      tableUpdate.insertRows = indexPaths
+    } else {
+      tableUpdate.deleteRows = indexPaths
+    }
+    return tableUpdate
   }
   
   func updateSection(_ section: inout Section,
@@ -312,7 +318,7 @@ struct UserInfoSectionBuilder {
                       in tableView: UITableView,
                       countryOfResidenceDidChangeWith model: UserInfoModel,
                       needToSetContactToDefault: Bool) -> TableUpdate {
-    var tableUpdate: TableUpdate = (nil, nil, nil)
+    var tableUpdate: TableUpdate = (nil, nil, nil, nil)
     
     guard let contactSectionIndex = sections.firstIndex(where: { $0.type == .contact }) else { return tableUpdate }
     
@@ -322,7 +328,7 @@ struct UserInfoSectionBuilder {
                                              in: tableView,
                                              at: contactSectionIndex,
                                              isExpanded: false,
-                                             isFilled: false)
+                                             isFilled: false).deleteRows
     }
     
     if model.isUsResident {
