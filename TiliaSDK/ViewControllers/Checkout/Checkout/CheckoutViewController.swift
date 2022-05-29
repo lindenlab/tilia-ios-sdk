@@ -8,10 +8,11 @@
 import UIKit
 import Combine
 
-final class CheckoutViewController: BaseViewController, LoadableProtocol {
+final class CheckoutViewController: BaseViewController {
   
-  var hideableView: UIView { return tableView }
-  var spinnerPosition: CGPoint { return view.center }
+  override var hideableView: UIView {
+    return tableView
+  }
   
   private let viewModel: CheckoutViewModelProtocol
   private let router: CheckoutRoutingProtocol
