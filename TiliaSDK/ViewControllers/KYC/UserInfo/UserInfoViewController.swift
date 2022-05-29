@@ -8,10 +8,11 @@
 import UIKit
 import Combine
 
-final class UserInfoViewController: BaseViewController, LoadableProtocol {
+final class UserInfoViewController: BaseViewController {
   
-  var hideableView: UIView { return tableView }
-  var spinnerPosition: CGPoint { return view.center }
+  override var hideableView: UIView {
+    return tableView
+  }
   
   private let viewModel: UserInfoViewModelProtocol
   private let router: UserInfoRoutingProtocol
