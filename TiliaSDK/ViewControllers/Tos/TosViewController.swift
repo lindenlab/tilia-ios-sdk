@@ -8,10 +8,11 @@
 import UIKit
 import Combine
 
-final class TosViewController: BaseViewController, LoadableProtocol {
+final class TosViewController: BaseViewController {
   
-  var hideableView: UIView { return stackView }
-  var spinnerPosition: CGPoint { return stackView.center }
+  override var hideableView: UIView {
+    return stackView
+  }
   
   private let viewModel: TosViewModelProtocol
   private let router: TosRoutingProtocol
