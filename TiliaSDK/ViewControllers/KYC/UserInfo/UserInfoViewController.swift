@@ -267,12 +267,13 @@ private extension UserInfoViewController {
                                      in: self.tableView)
     }.store(in: &subscriptions)
     
-    viewModel.coutryOfResidenceDidChange.sink { [weak self] model in
+    viewModel.coutryOfResidenceDidChange.sink { [weak self] item in
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSections(&self.sections,
                                                     in: self.tableView,
-                                                    countryOfResidenceDidChangeWith: model.model,
-                                                    needToSetContactToDefault: model.needToSetContactToDefault)
+                                                    countryOfResidenceDidChangeWith: item.model,
+                                                    needToSetContactToDefault: item.needToSetContactToDefault,
+                                                    wasUsResidence: item.wasUsResidence)
       self.builder.updateTableFooter(for: self.sections,
                                      in: self.tableView)
       self.tableView.performBatchUpdates {
@@ -287,9 +288,7 @@ private extension UserInfoViewController {
       let indexSet = self.builder.updateSections(&self.sections,
                                                  in: self.tableView,
                                                  countryOfResidenceDidSelectWith: $0)
-      indexSet.map {
-        self.tableView.insertSections($0, with: .fade)
-      }
+      indexSet.map { self.tableView.insertSections($0, with: .fade) }
     }.store(in: &subscriptions)
   }
   

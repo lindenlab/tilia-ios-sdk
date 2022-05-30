@@ -35,19 +35,19 @@ final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
                                             message: nil,
                                             preferredStyle: isPad ? .alert : .actionSheet)
     
+    let takePhotoAction = UIAlertAction(title: L.takePhoto, style: .default) { _ in
+      self.routeToImagePickerView(sourceType: .camera, delegate: delegate)
+    }
     let selectFromGalleryAction = UIAlertAction(title: L.selectFromGallery, style: .default) { _ in
       self.routeToImagePickerView(sourceType: .photoLibrary, delegate: delegate)
-    }
-    let makePhotoAction = UIAlertAction(title: L.takePhoto, style: .default) { _ in
-      self.routeToImagePickerView(sourceType: .camera, delegate: delegate)
     }
     let selectFromFilesAction = UIAlertAction(title: L.selectFromFiles, style: .default) { _ in
       self.routeToDocumentPickerView(delegate: delegate)
     }
     let cancelAction = UIAlertAction(title: L.cancel, style: .cancel)
     
+    alertController.addAction(takePhotoAction)
     alertController.addAction(selectFromGalleryAction)
-    alertController.addAction(makePhotoAction)
     alertController.addAction(selectFromFilesAction)
     alertController.addAction(cancelAction)
     

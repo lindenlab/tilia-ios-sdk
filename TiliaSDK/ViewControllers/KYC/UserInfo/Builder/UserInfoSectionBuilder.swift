@@ -303,11 +303,7 @@ struct UserInfoSectionBuilder {
     }
     
     if model.isUsResident, let index = sections.firstIndex(where: { $0.type == .contact }) {
-      let section = Section(type: .tax,
-                            mode: .normal,
-                            isFilled: false,
-                            items: [])
-      sections.insert(section, at: index)
+      sections.insert(taxSection(), at: index)
       return [index]
     } else {
       return nil
@@ -317,7 +313,8 @@ struct UserInfoSectionBuilder {
   func updateSections(_ sections: inout [Section],
                       in tableView: UITableView,
                       countryOfResidenceDidChangeWith model: UserInfoModel,
-                      needToSetContactToDefault: Bool) -> TableUpdate {
+                      needToSetContactToDefault: Bool,
+                      wasUsResidence: Bool) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil, nil)
     
     guard let contactSectionIndex = sections.firstIndex(where: { $0.type == .contact }) else { return tableUpdate }
@@ -331,17 +328,12 @@ struct UserInfoSectionBuilder {
                                              isFilled: false).deleteRows
     }
     
-    if model.isUsResident {
-      if !sections.contains(where: { $0.type == .tax }) {
-        let section = Section(type: .tax, mode: .normal, isFilled: false, items: [])
-        sections.insert(section, at: contactSectionIndex)
-        tableUpdate.insertSection = [contactSectionIndex]
-      }
-    } else {
-      sections.firstIndex(where: { $0.type == .tax }).map {
-        sections.remove(at: $0)
-        tableUpdate.deleteSection = [$0]
-      }
+    if model.isUsResident, !sections.contains(where: { $0.type == .tax }) {
+      sections.insert(taxSection(), at: contactSectionIndex)
+      tableUpdate.insertSection = [contactSectionIndex]
+    } else if wasUsResidence, let index = sections.firstIndex(where: { $0.type == .tax })  {
+      sections.remove(at: index)
+      tableUpdate.deleteSection = [index]
     }
     
     return tableUpdate
@@ -360,6 +352,13 @@ struct UserInfoSectionBuilder {
 // MARK: - Private Methods
 
 private extension UserInfoSectionBuilder {
+  
+  func taxSection() -> Section {
+    return Section(type: .tax,
+                   mode: .normal,
+                   isFilled: false,
+                   items: [])
+  }
   
   func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {
     let items = ["USA", "Canada", "Ukraine"] // TODO: - Remove mock

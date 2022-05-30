@@ -25,6 +25,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var setImage: PassthroughSubject<UserDocumentsSetImage, Never> { get }
   var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
   var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
+  var documentCountryDidSelectUs: PassthroughSubject<UserDocumentsModel, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -37,6 +38,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let setImage = PassthroughSubject<UserDocumentsSetImage, Never>()
   let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
+  let documentCountryDidSelectUs = PassthroughSubject<UserDocumentsModel, Never>()
   
   private let manager: NetworkManager
   private var userDocumentsModel: UserDocumentsModel
@@ -67,7 +69,17 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         documentDidChange.send(value)
       }
     case .documentCountry:
+      let wasUsResidence = userDocumentsModel.isUsResident
       isFieldChanged = isFieldUpdated(&userDocumentsModel.documentCountry, with: text ?? "")
+      
+      
+      
+      if isFieldChanged, !userDocumentsModel.isUsResident {
+        userDocumentsModel.isAddressOnDocument = nil
+      }
+      if isFieldChanged {
+//        documentCountryDidChange.send(userDocumentsModel)
+      }
     case .isAddressOnDocument:
       let value = BoolModel(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)

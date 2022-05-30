@@ -10,7 +10,7 @@ import Foundation
 
 typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool, expandNext: Bool)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
-typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetContactToDefault: Bool)
+typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetContactToDefault: Bool, wasUsResidence: Bool)
 
 protocol UserInfoViewModelInputProtocol {
   func viewDidLoad()
@@ -83,14 +83,14 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       if wasNil {
         coutryOfResidenceDidSelect.send(userInfoModel)
       } else if isFieldChanged {
-        if !userInfoModel.isUsResident {
+        if wasUsResidence {
           userInfoModel.setTaxToDefault()
         }
         let needToSetAddressToDefault = wasUsResidence || userInfoModel.isUsResident
         if needToSetAddressToDefault {
           userInfoModel.setAddressToDefault()
         }
-        coutryOfResidenceDidChange.send((userInfoModel, needToSetAddressToDefault))
+        coutryOfResidenceDidChange.send((userInfoModel, needToSetAddressToDefault, wasUsResidence))
       }
     case .fullName:
       switch fieldIndex {
