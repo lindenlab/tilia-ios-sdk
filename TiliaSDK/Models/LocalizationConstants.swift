@@ -105,5 +105,7 @@ enum L {
   static let selectFromGallery = "selectFromGallery".localized
   static let takePhoto = "takePhoto".localized
   static let selectFromFiles = "selectFromFiles".localized
+  static let errorKycTitle = "errorKycTitle".localized
+  static let errorKycMessage = "errorKycMessage".localized
   
 }

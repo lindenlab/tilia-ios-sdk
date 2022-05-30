@@ -195,9 +195,8 @@ private extension UserDocumentsViewController {
   func bind() {
     viewModel.error.sink { [weak self] _ in
       guard let self = self else { return }
-      // TODO: - Fix me
-//      self.router.showToast(title: L.errorPaymentTitle,
-//                            message: L.errorPaymentMessage)
+      self.router.showToast(title: L.errorKycTitle,
+                            message: L.errorKycMessage)
     }.store(in: &subscriptions)
     
     viewModel.content.sink { [weak self] in

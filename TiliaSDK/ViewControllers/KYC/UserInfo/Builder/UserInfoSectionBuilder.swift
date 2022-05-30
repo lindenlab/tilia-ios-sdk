@@ -491,7 +491,7 @@ private extension UserInfoSectionBuilder {
                      mode: UserInfoHeaderView.Mode) {
     section.mode = mode
     if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
-      header.configure(mode: mode)
+      header.configure(mode: mode, animated: true)
     }
   }
   

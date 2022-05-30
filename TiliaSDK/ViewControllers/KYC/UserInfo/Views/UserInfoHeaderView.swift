@@ -25,11 +25,7 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
   
   private weak var delegate: UserInfoHeaderViewDelegate?
   private lazy var isExpanded = mode.isExpanded
-  private var mode: Mode = .normal {
-    didSet {
-      setupMode()
-    }
-  }
+  private var mode: Mode = .normal
   
   private let divider: DividerView = {
     let view = DividerView()
@@ -52,6 +48,7 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     setup()
+    setupMode(animated: false)
   }
   
   required init?(coder: NSCoder) {
@@ -61,13 +58,14 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
   func configure(title: String?,
                  mode: Mode,
                  delegate: UserInfoHeaderViewDelegate?) {
-    configure(mode: mode)
+    configure(mode: mode, animated: false)
     titleLabel.text = title
     self.delegate = delegate
   }
   
-  func configure(mode: Mode) {
+  func configure(mode: Mode, animated: Bool) {
     self.mode = mode
+    setupMode(animated: animated)
   }
   
 }
@@ -108,9 +106,8 @@ private extension UserInfoHeaderView {
     ])
   }
   
-  func setupMode() {
+  func setupMode(animated: Bool) {
     isUserInteractionEnabled = mode.isEnabled
-    contentView.backgroundColor = mode.backgroundColor
     isExpanded = mode.isExpanded
     divider.isHidden = mode.isDividerHidden
     titleLabel.textColor = mode.titleColor
@@ -119,6 +116,9 @@ private extension UserInfoHeaderView {
     imageView.transform = .identity
     if isExpanded {
       imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+    }
+    UIView.animate(withDuration: animated ? 0.3 : 0) {
+      self.contentView.backgroundColor = self.mode.backgroundColor
     }
   }
   
