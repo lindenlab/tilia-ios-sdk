@@ -9,7 +9,7 @@ import UIKit
 
 struct UserDocumentsSectionBuilder {
   
-  typealias CellDelegate = TextFieldsCellDelegate & UserDocumentsPhotoCellDelegate & UserDocumentsSelectCellDelegate
+  typealias CellDelegate = TextFieldsCellDelegate & UserDocumentsPhotoCellDelegate & UserDocumentsSelectDocumentCellDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
   typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?, reload: [IndexPath]?)
   
@@ -94,7 +94,7 @@ struct UserDocumentsSectionBuilder {
       cell.configure(image: model.image, delegate: delegate)
       return cell
     case let .additionalDocuments(document):
-      let cell = tableView.dequeue(UserDocumentsSelectCell.self, for: indexPath)
+      let cell = tableView.dequeue(UserDocumentsSelectDocumentCell.self, for: indexPath)
       cell.configure(delegate: delegate)
       cell.configure(title: item.title,
                      font: .boldSystemFont(ofSize: 16))
