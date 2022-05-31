@@ -17,22 +17,22 @@ To interact with Tilia SDK use TLManager. SDK supports customization for environ
 ## Configuration
 
 ### Set token
-```
+```swift
 TLManager.shared.setToken("USER_PASSWORD_TOKEN")
 ```
 
 ### Set timeout interval, in seconds
-```
+```swift
 TLManager.shared.setTimeoutInterval(10)
 ```
 
 ### Set environment
-```
+```swift
 TLManager.shared.setEnvironment(.production)
 ```
 
 ### Theme customization
-```
+```swift
 TLManager.shared.setBackgroundColor(forLightMode: UIColor(), andDarkMode: UIColor())
 TLManager.shared.setPrimaryColor(forLightMode: UIColor(), andDarkMode: UIColor())
 TLManager.shared.setSuccessBackgroundColor(forLightMode: UIColor(), andDarkMode: UIColor())
@@ -42,7 +42,7 @@ TLManager.shared.setFailureBackgroundColor(forLightMode: UIColor(), andDarkMode:
 ## Flows
 
 ### Terms of Service
-```
+```swift
 let yourViewControllerForPresenting = UIViewController()
 TLManager.shared.setToken("USER_PASSWORD_TOKEN")
 TLManager.shared.presentTosIsRequiredViewController(on: yourViewControllerForPresenting,
@@ -52,7 +52,7 @@ TLManager.shared.presentTosIsRequiredViewController(on: yourViewControllerForPre
 ```
 
 ### Checkout
-```
+```swift
 let yourViewControllerForPresenting = UIViewController()
 TLManager.shared.setToken("AUTHORIZED_USER_PASSWORD_TOKEN")
 TLManager.shared.presentCheckoutViewController(on: yourViewControllerForPresenting,
@@ -66,7 +66,7 @@ TLManager.shared.presentCheckoutViewController(on: yourViewControllerForPresenti
 ## Helper methods
 
 ### getTosRequiredForUser
-```
+```swift
 TLManager.shared.setToken("USER_PASSWORD_TOKEN")
 TLManager.shared.getTosRequiredForUser { result in
   print(result)
@@ -74,7 +74,7 @@ TLManager.shared.getTosRequiredForUser { result in
 ```
 
 ### getUserBalanceByCurrencyCode
-```
+```swift
 TLManager.shared.setToken("USER_PASSWORD_TOKEN")
 TLManager.shared.getUserBalanceByCurrencyCode("USD") { result in
   print(result)
