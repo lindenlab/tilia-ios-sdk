@@ -11,7 +11,7 @@ struct UserDocumentsSectionBuilder {
   
   typealias CellDelegate = TextFieldsCellDelegate & UserDocumentsPhotoCellDelegate & UserDocumentsSelectCellDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
-  typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?)
+  typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?, reload: [IndexPath]?)
   
   struct Section {
     
@@ -204,38 +204,23 @@ struct UserDocumentsSectionBuilder {
   
   func updateSection(_ section: inout Section,
                      in tableView: UITableView,
-                     didChangeDocument document: UserDocumentsModel.Document) -> TableUpdate {
-    var tableUpdate: TableUpdate = (nil, nil)
+                     documentDidChange document: UserDocumentsModel.Document) -> TableUpdate {
+    var tableUpdate: TableUpdate = (nil, nil, nil)
     
-    let documentFrontSideIndex = section.items.firstIndex {
-      if case let .photo(model) = $0.mode, model.type == .frontSide {
-        return true
-      } else {
-        return false
-      }
-    }
-    guard let documentFrontSideIndex = documentFrontSideIndex else { return tableUpdate }
+    guard let documentFrontSideIndex = documentSideIndex(in: section, for: .frontSide) else { return tableUpdate }
     
     section.items[documentFrontSideIndex] = documentFrontSideItem(for: document)
     updatePhotoCell(at: documentFrontSideIndex,
                     with: section.items[documentFrontSideIndex],
                     in: tableView)
     
-    let documentBackSideIndex = section.items.firstIndex {
-      if case let .photo(model) = $0.mode, model.type == .backSide {
-        return true
-      } else {
-        return false
-      }
-    }
-    
     if document == .passport {
-      documentBackSideIndex.map {
+      documentSideIndex(in: section, for: .backSide).map {
         section.items.remove(at: $0)
         tableUpdate.delete = [IndexPath(row: $0, section: 0)]
       }
     } else {
-      if let index = documentBackSideIndex {
+      if let index = documentSideIndex(in: section, for: .backSide) {
         section.items[index] = documentBackSideItem(for: document)
         updatePhotoCell(at: index,
                         with: section.items[index],
@@ -244,6 +229,29 @@ struct UserDocumentsSectionBuilder {
         let index = documentFrontSideIndex + 1
         section.items.insert(documentBackSideItem(for: document), at: index)
         tableUpdate.insert = [IndexPath(row: index, section: 0)]
+      }
+    }
+    
+    return tableUpdate
+  }
+  
+  func updateSection(_ section: inout Section,
+                     documentCountryDidChangeWith model: UserDocumentsModel,
+                     wasUsResidence: Bool) -> TableUpdate {
+    var tableUpdate: TableUpdate = (nil, nil, nil)
+    
+    if model.isUsResident {
+      additionalDocumentsIndex(in: section).map {
+        section.items[$0] = isAddressOnDocumentItem()
+        tableUpdate.reload = [IndexPath(row: $0, section: 0)]
+      }
+    } else if wasUsResidence, let isAddressOnDocumentIndex = isAddressOnDocumentIndex(in: section) {
+      if let _ = additionalDocumentsIndex(in: section) {
+        section.items.remove(at: isAddressOnDocumentIndex)
+        tableUpdate.delete = [IndexPath(row: isAddressOnDocumentIndex, section: 0)]
+      } else {
+        section.items[isAddressOnDocumentIndex] = additionalDocumentsItem()
+        tableUpdate.reload = [IndexPath(row: isAddressOnDocumentIndex, section: 0)]
       }
     }
     
@@ -298,6 +306,36 @@ private extension UserDocumentsSectionBuilder {
       cell.configure(image: model.image)
     default:
       break
+    }
+  }
+  
+  func documentSideIndex(in section: Section, for type: Section.Item.Mode.PhotoType) -> Int? {
+    return section.items.firstIndex {
+      if case let .photo(model) = $0.mode, model.type == type {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+  
+  func additionalDocumentsIndex(in section: Section) -> Int? {
+    return section.items.firstIndex {
+      if case .additionalDocuments = $0.mode {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+  
+  func isAddressOnDocumentIndex(in section: Section) -> Int? {
+    return section.items.firstIndex {
+      if case let .field(model) = $0.mode, model.type == .isAddressOnDocument {
+        return true
+      } else {
+        return false
+      }
     }
   }
   

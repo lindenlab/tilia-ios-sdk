@@ -10,6 +10,7 @@ import UIKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
+typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsResidence: Bool)
 
 protocol UserDocumentsViewModelInputProtocol {
   func viewDidLoad()
@@ -25,7 +26,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var setImage: PassthroughSubject<UserDocumentsSetImage, Never> { get }
   var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
   var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
-  var documentCountryDidChange: PassthroughSubject<UserDocumentsModel, Never> { get }
+  var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -38,7 +39,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let setImage = PassthroughSubject<UserDocumentsSetImage, Never>()
   let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
-  let documentCountryDidChange = PassthroughSubject<UserDocumentsModel, Never>()
+  let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
   
   private let manager: NetworkManager
   private var userDocumentsModel: UserDocumentsModel
@@ -76,6 +77,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         if wasUsResidence {
           userDocumentsModel.isAddressOnDocument = nil
         }
+        documentCountryDidChange.send((userDocumentsModel, wasUsResidence))
       }
     case .isAddressOnDocument:
       let value = BoolModel(str: text ?? "")

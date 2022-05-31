@@ -328,7 +328,7 @@ struct UserInfoSectionBuilder {
                                              isFilled: false).deleteRows
     }
     
-    if model.isUsResident, !sections.contains(where: { $0.type == .tax }) {
+    if model.isUsResident, sections.firstIndex(where: { $0.type == .tax }) == nil {
       sections.insert(taxSection(), at: contactSectionIndex)
       tableUpdate.insertSection = [contactSectionIndex]
     } else if wasUsResidence, let index = sections.firstIndex(where: { $0.type == .tax })  {

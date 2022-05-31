@@ -231,9 +231,20 @@ private extension UserDocumentsViewController {
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSection(&self.section,
                                                    in: self.tableView,
-                                                   didChangeDocument: $0)
+                                                   documentDidChange: $0)
       self.tableView.performBatchUpdates {
         tableUpdate.insert.map { self.tableView.insertRows(at: $0, with: .fade) }
+        tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
+      }
+    }.store(in: &subscriptions)
+    
+    viewModel.documentCountryDidChange.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updateSection(&self.section,
+                                                   documentCountryDidChangeWith: $0.model,
+                                                   wasUsResidence: $0.wasUsResidence)
+      self.tableView.performBatchUpdates {
+        tableUpdate.reload.map { self.tableView.reloadRows(at: $0, with: .fade) }
         tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
       }
     }.store(in: &subscriptions)

@@ -254,25 +254,25 @@ private extension UserInfoViewController {
       }
     }.store(in: &subscriptions)
     
-    viewModel.setSectionText.sink { [weak self] item in
+    viewModel.setSectionText.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updateSection(&self.sections[item.indexPath.section],
+      self.builder.updateSection(&self.sections[$0.indexPath.section],
                                  in: self.tableView,
-                                 at: item.indexPath,
-                                 text: item.text,
-                                 fieldIndex: item.fieldIndex,
-                                 isFilled: item.isFilled)
+                                 at: $0.indexPath,
+                                 text: $0.text,
+                                 fieldIndex: $0.fieldIndex,
+                                 isFilled: $0.isFilled)
       self.builder.updateTableFooter(for: self.sections,
                                      in: self.tableView)
     }.store(in: &subscriptions)
     
-    viewModel.coutryOfResidenceDidChange.sink { [weak self] item in
+    viewModel.coutryOfResidenceDidChange.sink { [weak self] in
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSections(&self.sections,
                                                     in: self.tableView,
-                                                    countryOfResidenceDidChangeWith: item.model,
-                                                    needToSetContactToDefault: item.needToSetContactToDefault,
-                                                    wasUsResidence: item.wasUsResidence)
+                                                    countryOfResidenceDidChangeWith: $0.model,
+                                                    needToSetContactToDefault: $0.needToSetContactToDefault,
+                                                    wasUsResidence: $0.wasUsResidence)
       self.builder.updateTableFooter(for: self.sections,
                                      in: self.tableView)
       self.tableView.performBatchUpdates {
