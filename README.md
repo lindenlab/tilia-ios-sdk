@@ -1,6 +1,8 @@
 # Tilia iOS SDK
 
-This is a repository for a Tilia iOS SDK. It includes demo app that shows all possibilities and flows.
+This is the repository for the Tilia iOS SDK.
+This SDK is meant to be used in concert with your own api server which communicates with Tilia APIs to retrieve authorized user access tokens and any additional data required by the SDK flow you are looking to use.
+This repository includes an interactive demo application which can guide you through what data is expected for each flow as well as how to customize the look of the SDK UI.
 
 ## Installation
 
@@ -28,7 +30,7 @@ TLManager.shared.setTimeoutInterval(10)
 
 ### Set environment
 ```swift
-TLManager.shared.setEnvironment(.production)
+TLManager.shared.setEnvironment(.staging)
 ```
 
 ### Theme customization
