@@ -70,15 +70,11 @@ TLManager.shared.presentCheckoutViewController(on: yourViewControllerForPresenti
 ### getTosRequiredForUser
 ```swift
 TLManager.shared.setToken("USER_PASSWORD_TOKEN")
-TLManager.shared.getTosRequiredForUser { result in
-  print(result)
-}
+TLManager.shared.getTosRequiredForUser { result in print(result) }
 ```
 
 ### getUserBalanceByCurrencyCode
 ```swift
 TLManager.shared.setToken("USER_PASSWORD_TOKEN")
-TLManager.shared.getUserBalanceByCurrencyCode("USD") { result in
-  print(result)
-}
+TLManager.shared.getUserBalanceByCurrencyCode("USD") { result in print(result) }
 ```
