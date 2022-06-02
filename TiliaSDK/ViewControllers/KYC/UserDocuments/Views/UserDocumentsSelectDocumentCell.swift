@@ -7,13 +7,15 @@
 
 import UIKit
 
-protocol UserDocumentsSelectDocumentCellDelegate: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+protocol UserDocumentsSelectDocumentCellDelegate: AnyObject {
   func userDocumentsSelectDocumentCellAddButtonDidTap(_ cell: UserDocumentsSelectDocumentCell)
+  func userDocumentsSelectDocumentCell(_ cell: UserDocumentsSelectDocumentCell, didDeleteItemAt index: Int)
 }
 
 final class UserDocumentsSelectDocumentCell: LabelCell {
-  
+    
   private weak var delegate: UserDocumentsSelectDocumentCellDelegate?
+  private var documents: [UserDocumentsSectionBuilder.Section.Item.Mode.Document] = []
   
   private let addButton: NonPrimaryButtonWithStyle = {
     let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
@@ -23,7 +25,7 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     return button
   }()
   
-  private let collectionView: UICollectionView = {
+  private lazy var collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.minimumLineSpacing = 8
     layout.minimumInteritemSpacing = 8
@@ -33,8 +35,16 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     collectionView.showsVerticalScrollIndicator = false
     collectionView.register(UserDocumentsDocumentCell.self)
     collectionView.isHidden = true
+    collectionView.delegate = self
+    collectionView.dataSource = self
     return collectionView
   }()
+  
+  private var collectionViewItemSize: CGSize {
+    let width = collectionView.frame.width / 2 - 1
+    let height = width * 1.3
+    return CGSize(width: width, height: height)
+  }
   
   private lazy var collectionViewHeightConstraint: NSLayoutConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
   
@@ -47,10 +57,48 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(delegate: UserDocumentsSelectDocumentCellDelegate?) {
+  func configure(documents: [UserDocumentsSectionBuilder.Section.Item.Mode.Document],
+                 delegate: UserDocumentsSelectDocumentCellDelegate?) {
+    self.documents = documents
     self.delegate = delegate
-    collectionView.delegate = delegate
-    collectionView.dataSource = delegate
+  }
+  
+}
+
+// MARK: - UICollectionViewDataSource
+
+extension UserDocumentsSelectDocumentCell: UICollectionViewDataSource {
+  
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return documents.count
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeue(UserDocumentsDocumentCell.self, for: indexPath)
+    cell.configure(document: documents[indexPath.item].document,
+                   delegate: self)
+    return cell
+  }
+  
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension UserDocumentsSelectDocumentCell: UICollectionViewDelegateFlowLayout {
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return collectionViewItemSize
+  }
+  
+}
+
+// MARK: - UserDocumentsDocumentCellDelegate
+
+extension UserDocumentsSelectDocumentCell: UserDocumentsDocumentCellDelegate {
+  
+  func userDocumentsDocumentCellCloseButtonDidTap(_ cell: UserDocumentsDocumentCell) {
+    guard let indexPath = collectionView.indexPath(for: cell) else { return }
+    delegate?.userDocumentsSelectDocumentCell(self, didDeleteItemAt: indexPath.item)
   }
   
 }
@@ -67,6 +115,13 @@ private extension UserDocumentsSelectDocumentCell {
   
   @objc func addButtonDidTap() {
     delegate?.userDocumentsSelectDocumentCellAddButtonDidTap(self)
+  }
+  
+  func setupCollectionViewHeightConstraint() {
+    let rowCount = CGFloat(documents.count / 2).rounded(.up)
+    let itemHeight = collectionViewItemSize.height
+    collectionViewHeightConstraint.constant = itemHeight * rowCount + (rowCount - 1) * 8
+    contentView.layoutIfNeeded()
   }
   
 }

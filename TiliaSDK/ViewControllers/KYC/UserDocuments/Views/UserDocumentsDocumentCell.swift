@@ -6,8 +6,31 @@
 //
 
 import UIKit
+import PDFKit
+
+protocol UserDocumentsDocumentCellDelegate: AnyObject {
+  func userDocumentsDocumentCellCloseButtonDidTap(_ cell: UserDocumentsDocumentCell)
+}
 
 final class UserDocumentsDocumentCell: UICollectionViewCell {
+  
+  private weak var delegate: UserDocumentsDocumentCellDelegate?
+  
+  private let pdfView: PDFView = {
+    let view = PDFView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
+    return view
+  }()
+  
+  private let deleteButton: PrimaryButton = {
+    let button = PrimaryButton()
+    button.setImage(.closeIcon?.withRenderingMode(.alwaysTemplate),
+                    for: .normal)
+    button.imageView?.tintColor = .primaryButtonTextColor
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }()
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -24,6 +47,11 @@ final class UserDocumentsDocumentCell: UICollectionViewCell {
     setupBorderColor()
   }
   
+  func configure(document: PDFDocument?, delegate: UserDocumentsDocumentCellDelegate?) {
+    self.delegate = delegate
+    pdfView.document = document
+  }
+  
 }
 
 private extension UserDocumentsDocumentCell {
@@ -33,6 +61,20 @@ private extension UserDocumentsDocumentCell {
     contentView.backgroundColor = .backgroundColor
     contentView.layer.cornerRadius = 8
     contentView.layer.borderWidth = 1
+    
+    contentView.addSubview(pdfView)
+    contentView.addSubview(deleteButton)
+    
+    NSLayoutConstraint.activate([
+      pdfView.topAnchor.constraint(equalTo: contentView.topAnchor),
+      pdfView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+      pdfView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+      pdfView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+      deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+      deleteButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
+      deleteButton.widthAnchor.constraint(equalToConstant: 40),
+      deleteButton.heightAnchor.constraint(equalToConstant: 40)
+    ])
   }
   
   func setupBorderColor() {

@@ -7,6 +7,7 @@
 
 import Combine
 import UIKit
+import PDFKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
@@ -95,15 +96,21 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?) {
-    guard case let .photo(model) = item.mode else { return }
-    switch model.type {
-    case .frontSide:
-      userDocumentsModel.frontImage = image
-    case .backSide:
-      userDocumentsModel.backImage = image
+    switch item.mode {
+    case let .photo(model):
+      switch model.type {
+      case .frontSide:
+        userDocumentsModel.frontImage = image
+      case .backSide:
+        userDocumentsModel.backImage = image
+      }
+      setImage.send((index, image))
+      url.map { deleteTempFile(at: $0) }
+    case .additionalDocuments:
+      print()
+    default:
+      break
     }
-    setImage.send((index, image))
-    url.map { deleteTempFile(at: $0) }
   }
   
   func setFiles(with urls: [URL]) {
@@ -126,6 +133,15 @@ private extension UserDocumentsViewModel {
     DispatchQueue.global().async {
       try? FileManager.default.removeItem(at: url)
     }
+  }
+  
+  func pdfDocument(from image: UIImage?) -> PDFDocument? {
+    guard
+      let image = image,
+        let page = PDFPage(image: image) else { return nil }
+    let document = PDFDocument()
+    document.insert(page, at: document.pageCount)
+    return document
   }
   
 }

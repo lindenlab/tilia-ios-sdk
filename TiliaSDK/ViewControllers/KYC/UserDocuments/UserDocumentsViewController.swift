@@ -117,31 +117,6 @@ extension UserDocumentsViewController: UITableViewDelegate {
   
 }
 
-// MARK: - UICollectionViewDataSource
-
-extension UserDocumentsViewController: UICollectionViewDataSource {
-  
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 1
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return UICollectionViewCell()
-  }
-  
-  
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension UserDocumentsViewController: UICollectionViewDelegateFlowLayout {
-  
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return .zero
-  }
-  
-}
-
 // MARK: - TextFieldsCellDelegate
 
 extension UserDocumentsViewController: TextFieldsCellDelegate {
@@ -181,6 +156,10 @@ extension UserDocumentsViewController: UserDocumentsSelectDocumentCellDelegate {
     guard let index = tableView.indexPath(for: cell)?.row else { return }
     pickersDelegate.setIndex(index)
     router.routeToSelectDocumentsView(delegate: pickersDelegate)
+  }
+  
+  func userDocumentsSelectDocumentCell(_ cell: UserDocumentsSelectDocumentCell, didDeleteItemAt index: Int) {
+    
   }
   
 }

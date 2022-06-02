@@ -35,6 +35,7 @@ extension UIImage {
   static let residencePermitBackIcon = UIImage(str: "residencePermitBackIcon")
   static let residencePermitFrontIcon = UIImage(str: "residencePermitFrontIcon")
   static let addIcon = UIImage(str: "addIcon")
+  static let closeIcon = UIImage(str: "closeIcon")
   
   private convenience init?(str: String) {
     self.init(named: str, in: BundleToken.bundle, compatibleWith: nil)

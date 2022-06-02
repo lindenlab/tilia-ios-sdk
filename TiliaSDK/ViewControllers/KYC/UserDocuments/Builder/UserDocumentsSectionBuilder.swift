@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PDFKit
 
 struct UserDocumentsSectionBuilder {
   
@@ -53,12 +54,12 @@ struct UserDocumentsSectionBuilder {
         }
         
         struct Document {
-          
+          let document: PDFDocument?
         }
         
         case field(Field)
         case photo(Photo)
-        case additionalDocuments(Document)
+        case additionalDocuments([Document])
       }
       
       let title: String
@@ -93,9 +94,10 @@ struct UserDocumentsSectionBuilder {
       cell.configure(title: item.title, font: .systemFont(ofSize: 14))
       cell.configure(image: model.image, delegate: delegate)
       return cell
-    case let .additionalDocuments(document):
+    case let .additionalDocuments(documents):
       let cell = tableView.dequeue(UserDocumentsSelectDocumentCell.self, for: indexPath)
-      cell.configure(delegate: delegate)
+      cell.configure(documents: documents,
+                     delegate: delegate)
       cell.configure(title: item.title,
                      font: .boldSystemFont(ofSize: 16))
       cell.configure(description: L.supportingDocumentsDescription,
