@@ -258,6 +258,21 @@ struct UserDocumentsSectionBuilder {
     return tableUpdate
   }
   
+  func updateSection(_ section: inout Section,
+                     isAddressOnDocumentDidChangeWith model: BoolModel) -> TableUpdate {
+    var tableUpdate: TableUpdate = (nil, nil, nil)
+    
+    if model == .no, additionalDocumentsIndex(in: section) == nil {
+      section.items.append(additionalDocumentsItem())
+      tableUpdate.insert = [IndexPath(row: section.items.endIndex - 1, section: 0)]
+    } else if let index = additionalDocumentsIndex(in: section) {
+      section.items.remove(at: index)
+      tableUpdate.delete = [IndexPath(row: index, section: 0)]
+    }
+    
+    return tableUpdate
+  }
+  
 }
 
 // MARK: - Private Methods

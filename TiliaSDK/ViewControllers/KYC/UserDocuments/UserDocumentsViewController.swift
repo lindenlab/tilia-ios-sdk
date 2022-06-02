@@ -273,6 +273,16 @@ private extension UserDocumentsViewController {
         tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
       }
     }.store(in: &subscriptions)
+    
+    viewModel.isAddressOnDocumentDidChange.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updateSection(&self.section,
+                                                   isAddressOnDocumentDidChangeWith: $0)
+      self.tableView.performBatchUpdates {
+        tableUpdate.insert.map { self.tableView.insertRows(at: $0, with: .fade) }
+        tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
+      }
+    }.store(in: &subscriptions)
   }
   
   @objc func keyboardWasShown(_ notificiation: NSNotification) {
