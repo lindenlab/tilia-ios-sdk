@@ -12,12 +12,15 @@ import PDFKit
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
 typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsResidence: Bool)
+typealias UserDocumentsAddDocument = (index: Int, document: PDFDocument?)
+typealias UserDocumentsDeleteDocument = (itemIndex: Int, documentIndex: Int)
 
 protocol UserDocumentsViewModelInputProtocol {
   func viewDidLoad()
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?)
   func setFiles(with urls: [URL])
+  func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int)
 }
 
 protocol UserDocumentsViewModelOutputProtocol {
@@ -29,6 +32,8 @@ protocol UserDocumentsViewModelOutputProtocol {
   var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
   var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
   var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel, Never> { get }
+  var addDocument: PassthroughSubject<UserDocumentsAddDocument, Never> { get }
+  var deleteDocument: PassthroughSubject<UserDocumentsDeleteDocument, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -43,6 +48,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
   let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
   let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel, Never>()
+  let addDocument = PassthroughSubject<UserDocumentsAddDocument, Never>()
+  let deleteDocument = PassthroughSubject<UserDocumentsDeleteDocument, Never>()
   
   private let manager: NetworkManager
   private var userDocumentsModel: UserDocumentsModel
@@ -107,7 +114,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       setImage.send((index, image))
       url.map { deleteTempFile(at: $0) }
     case .additionalDocuments:
-      print()
+      let document = pdfDocument(from: image)
+      addDocument.send((index, document))
     default:
       break
     }
@@ -115,6 +123,10 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
   func setFiles(with urls: [URL]) {
     
+  }
+  
+  func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {
+    deleteDocument.send((itemIndex, documentIndex))
   }
   
 }

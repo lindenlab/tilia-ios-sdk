@@ -19,16 +19,20 @@ final class UserDocumentsDocumentCell: UICollectionViewCell {
   private let pdfView: PDFView = {
     let view = PDFView()
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.isHidden = true
+    view.autoScales = true
+    view.isUserInteractionEnabled = false
+    view.backgroundColor = .backgroundColor
     return view
   }()
   
   private let deleteButton: PrimaryButton = {
     let button = PrimaryButton()
+    button.contentEdgeInsets = .zero
     button.setImage(.closeIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.imageView?.tintColor = .primaryButtonTextColor
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.layer.cornerRadius = 20
     return button
   }()
   
@@ -58,12 +62,14 @@ private extension UserDocumentsDocumentCell {
   
   func setup() {
     backgroundColor = .backgroundColor
+    contentView.clipsToBounds = true
     contentView.backgroundColor = .backgroundColor
     contentView.layer.cornerRadius = 8
     contentView.layer.borderWidth = 1
-    
     contentView.addSubview(pdfView)
     contentView.addSubview(deleteButton)
+    
+    deleteButton.addTarget(self, action: #selector(deleteButtonDidTap), for: .touchUpInside)
     
     NSLayoutConstraint.activate([
       pdfView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -79,6 +85,10 @@ private extension UserDocumentsDocumentCell {
   
   func setupBorderColor() {
     contentView.layer.borderColor = UIColor.borderColor.cgColor
+  }
+  
+  @objc func deleteButtonDidTap() {
+    delegate?.userDocumentsDocumentCellCloseButtonDidTap(self)
   }
   
 }

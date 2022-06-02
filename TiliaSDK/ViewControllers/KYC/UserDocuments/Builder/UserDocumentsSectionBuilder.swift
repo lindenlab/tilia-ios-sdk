@@ -275,6 +275,43 @@ struct UserDocumentsSectionBuilder {
     return tableUpdate
   }
   
+  func updateSection(_ section: inout Section,
+                     at index: Int,
+                     in tableView: UITableView,
+                     didAddDocument document: PDFDocument?) {
+    switch section.items[index].mode {
+    case var .additionalDocuments(documents):
+      let model = Section.Item.Mode.Document(document: document)
+      documents.append(model)
+      section.items[index].mode = .additionalDocuments(documents)
+      
+      let indexPath = IndexPath(row: index, section: 0)
+      if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
+        cell.appendDocument(model)
+      }
+    default:
+      break
+    }
+  }
+  
+  func updateSection(_ section: inout Section,
+                     at index: Int,
+                     in tableView: UITableView,
+                     didDeleteDocumentAt documentIndex: Int) {
+    switch section.items[index].mode {
+    case var .additionalDocuments(documents):
+      documents.remove(at: documentIndex)
+      section.items[index].mode = .additionalDocuments(documents)
+      
+      let indexPath = IndexPath(row: index, section: 0)
+      if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
+        cell.deleteDocument(at: documentIndex)
+      }
+    default:
+      break
+    }
+  }
+  
 }
 
 // MARK: - Private Methods

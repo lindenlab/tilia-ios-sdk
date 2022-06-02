@@ -41,7 +41,7 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
   }()
   
   private var collectionViewItemSize: CGSize {
-    let width = collectionView.frame.width / 2 - 1
+    let width = (collectionView.frame.width - 9) / 2
     let height = width * 1.3
     return CGSize(width: width, height: height)
   }
@@ -61,6 +61,20 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
                  delegate: UserDocumentsSelectDocumentCellDelegate?) {
     self.documents = documents
     self.delegate = delegate
+    collectionView.reloadData()
+    setupCollectionViewHeightConstraint()
+  }
+  
+  func appendDocument(_ document: UserDocumentsSectionBuilder.Section.Item.Mode.Document) {
+    documents.append(document)
+    collectionView.insertItems(at: [IndexPath(item: documents.endIndex - 1, section: 0)])
+    setupCollectionViewHeightConstraint()
+  }
+  
+  func deleteDocument(at index: Int) {
+    documents.remove(at: index)
+    collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+    setupCollectionViewHeightConstraint()
   }
   
 }
@@ -74,7 +88,8 @@ extension UserDocumentsSelectDocumentCell: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeue(UserDocumentsDocumentCell.self, for: indexPath)
+    let cell = collectionView.dequeue(UserDocumentsDocumentCell.self,
+                                      for: indexPath)
     cell.configure(document: documents[indexPath.item].document,
                    delegate: self)
     return cell
@@ -111,6 +126,7 @@ private extension UserDocumentsSelectDocumentCell {
     addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
     addChildView(addButton)
     addChildView(collectionView)
+    collectionViewHeightConstraint.isActive = true
   }
   
   @objc func addButtonDidTap() {
@@ -118,10 +134,18 @@ private extension UserDocumentsSelectDocumentCell {
   }
   
   func setupCollectionViewHeightConstraint() {
-    let rowCount = CGFloat(documents.count / 2).rounded(.up)
+    guard !documents.isEmpty else {
+      collectionView.isHidden = true
+      return
+    }
+    collectionView.isHidden = false
+    let rowCount = CGFloat(Double(documents.count) / 2.0).rounded(.up)
     let itemHeight = collectionViewItemSize.height
-    collectionViewHeightConstraint.constant = itemHeight * rowCount + (rowCount - 1) * 8
-    contentView.layoutIfNeeded()
+    let collectionViewHeight = itemHeight * rowCount + (rowCount - 1) * 8
+    if collectionViewHeightConstraint.constant != collectionViewHeight {
+      collectionViewHeightConstraint.constant = collectionViewHeight
+      contentView.layoutIfNeeded()
+    }
   }
   
 }

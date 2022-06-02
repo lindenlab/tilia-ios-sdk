@@ -159,7 +159,8 @@ extension UserDocumentsViewController: UserDocumentsSelectDocumentCellDelegate {
   }
   
   func userDocumentsSelectDocumentCell(_ cell: UserDocumentsSelectDocumentCell, didDeleteItemAt index: Int) {
-    
+    guard let itemIndex = tableView.indexPath(for: cell)?.row else { return }
+    viewModel.deleteDocument(forItemIndex: itemIndex, atDocumentIndex: index)
   }
   
 }
@@ -261,6 +262,24 @@ private extension UserDocumentsViewController {
         tableUpdate.insert.map { self.tableView.insertRows(at: $0, with: .fade) }
         tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
       }
+    }.store(in: &subscriptions)
+    
+    viewModel.addDocument.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.section,
+                                 at: $0.index,
+                                 in: self.tableView,
+                                 didAddDocument: $0.document)
+      self.tableView.performBatchUpdates(nil)
+    }.store(in: &subscriptions)
+    
+    viewModel.deleteDocument.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.section,
+                                 at: $0.itemIndex,
+                                 in: self.tableView,
+                                 didDeleteDocumentAt: $0.documentIndex)
+      self.tableView.performBatchUpdates(nil)
     }.store(in: &subscriptions)
   }
   
