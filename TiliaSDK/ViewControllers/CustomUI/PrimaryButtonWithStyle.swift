@@ -26,6 +26,13 @@ final class PrimaryButtonWithStyle: PrimaryButton {
     }
     set {
       super.isEnabled = isLoading ? false : newValue
+      titleColor(for: state).map { imageView?.tintColor = $0 }
+    }
+  }
+  
+  override var isHighlighted: Bool {
+    didSet {
+      titleColor(for: state).map { imageView?.tintColor = $0 }
     }
   }
   
@@ -37,6 +44,8 @@ final class PrimaryButtonWithStyle: PrimaryButton {
   init(style: Style, frame: CGRect = .zero) {
     self.style = style
     super.init(frame: frame)
+    adjustsImageWhenDisabled = false
+    adjustsImageWhenHighlighted = false
     switch style {
     case .titleAndImageCenter:
       semanticContentAttribute = .forceRightToLeft
@@ -95,6 +104,7 @@ private extension PrimaryButtonWithStyle {
     super.isEnabled = false
     let spinner = UIActivityIndicatorView(style: .medium)
     spinner.translatesAutoresizingMaskIntoConstraints = false
+    titleColor(for: state).map { spinner.color = $0 }
     spinner.startAnimating()
     self.spinner = spinner
     addSubview(spinner)

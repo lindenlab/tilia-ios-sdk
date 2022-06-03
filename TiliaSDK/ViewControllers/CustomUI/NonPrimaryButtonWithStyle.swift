@@ -14,8 +14,22 @@ final class NonPrimaryButtonWithStyle: NonPrimaryButton {
     case imageAndTitleCenter
   }
   
+  override var isEnabled: Bool {
+    didSet {
+      titleColor(for: state).map { imageView?.tintColor = $0 }
+    }
+  }
+  
+  override var isHighlighted: Bool {
+    didSet {
+      titleColor(for: state).map { imageView?.tintColor = $0 }
+    }
+  }
+  
   init(style: Style, frame: CGRect = .zero) {
     super.init(frame: frame)
+    adjustsImageWhenDisabled = false
+    adjustsImageWhenHighlighted = false
     switch style {
     case .titleAndImageCenter:
       semanticContentAttribute = .forceRightToLeft
