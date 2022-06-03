@@ -87,6 +87,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       if isFieldChanged {
         if wasUsResidence {
           userDocumentsModel.isAddressOnDocument = nil
+        } else if userDocumentsModel.isUsResident {
+          userDocumentsModel.additionalDocuments.removeAll()
         }
         documentCountryDidChange.send((userDocumentsModel, wasUsResidence))
       }
@@ -94,6 +96,9 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       let value = BoolModel(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)
       if isFieldChanged, let value = value {
+        if value == .yes {
+          userDocumentsModel.additionalDocuments.removeAll()
+        }
         isAddressOnDocumentDidChange.send(value)
       }
     }
@@ -116,6 +121,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       setImage.send((index, resizedImage))
     case .additionalDocuments:
       resizedImage.map {
+        userDocumentsModel.additionalDocuments.append(.image($0))
         addDocument.send((index, [$0]))
       }
     default:
@@ -125,11 +131,20 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setFiles(with urls: [URL], at index: Int) {
-    // TODO: - Impove me
-    let documents = urls.compactMap { PDFDocument(url: $0) }
-    let documentImages = documents.compactMap { image(from: $0) }
+    var documentImages: [UIImage] = []
+    urls.forEach { url in
+      PDFDocument(url: url).map { document in
+        if !document.isLocked {
+          userDocumentsModel.additionalDocuments.append(.pdfFile(document))
+          image(from: document).map { documentImages.append($0) }
+        } else {
+          // TODO: - Fix me
+        }
+      }
+      deleteTempFile(at: url)
+    }
     addDocument.send((index, documentImages))
-    urls.forEach { deleteTempFile(at: $0) }
+    
   }
   
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {
@@ -155,9 +170,11 @@ private extension UserDocumentsViewModel {
   }
   
   func image(from document: PDFDocument) -> UIImage? {
-    guard let page = document.page(at: 0) else { return nil }
-    let pageRect = page.bounds(for: .mediaBox)
-    return page.thumbnail(of: pageRect.size, for: .mediaBox)
+    processQueue.sync {
+      guard let page = document.page(at: 0) else { return nil }
+      let pageRect = page.bounds(for: .mediaBox)
+      return page.thumbnail(of: pageRect.size, for: .mediaBox)
+    }
   }
   
   func resizedImage(_ image: UIImage?) -> UIImage? {

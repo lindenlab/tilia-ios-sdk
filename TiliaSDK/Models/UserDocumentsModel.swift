@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PDFKit
 
 struct UserDocumentsModel {
   
@@ -37,11 +38,17 @@ struct UserDocumentsModel {
     
   }
   
+  enum AdditionalDocument {
+    case pdfFile(PDFDocument)
+    case image(UIImage)
+  }
+  
   var document: Document?
   var frontImage: UIImage?
   var backImage: UIImage?
   var documentCountry: String
   var isAddressOnDocument: BoolModel?
+  var additionalDocuments: [AdditionalDocument] = []
   
   var isUsResident: Bool {
     return documentCountry == "USA" // TODO: - Fix me
