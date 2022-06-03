@@ -155,6 +155,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {
+    userDocumentsModel.additionalDocuments.remove(at: documentIndex)
     deleteDocument.send((itemIndex, documentIndex))
   }
   
