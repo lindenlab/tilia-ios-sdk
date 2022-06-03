@@ -264,7 +264,7 @@ private extension UserDocumentsViewController {
       }
     }.store(in: &subscriptions)
     
-    viewModel.addDocument.sink { [weak self] in
+    viewModel.addDocuments.sink { [weak self] in
       guard let self = self else { return }
       self.builder.updateSection(&self.section,
                                  at: $0.index,

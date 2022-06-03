@@ -12,7 +12,7 @@ import PDFKit
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
 typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsResidence: Bool)
-typealias UserDocumentsAddDocument = (index: Int, documentImages: [UIImage])
+typealias UserDocumentsAddDocuments = (index: Int, documentImages: [UIImage])
 typealias UserDocumentsDeleteDocument = (itemIndex: Int, documentIndex: Int)
 
 protocol UserDocumentsViewModelInputProtocol {
@@ -32,7 +32,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
   var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
   var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel, Never> { get }
-  var addDocument: PassthroughSubject<UserDocumentsAddDocument, Never> { get }
+  var addDocuments: PassthroughSubject<UserDocumentsAddDocuments, Never> { get }
   var deleteDocument: PassthroughSubject<UserDocumentsDeleteDocument, Never> { get }
 }
 
@@ -48,7 +48,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
   let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
   let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel, Never>()
-  let addDocument = PassthroughSubject<UserDocumentsAddDocument, Never>()
+  let addDocuments = PassthroughSubject<UserDocumentsAddDocuments, Never>()
   let deleteDocument = PassthroughSubject<UserDocumentsDeleteDocument, Never>()
   
   private let manager: NetworkManager
@@ -122,7 +122,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     case .additionalDocuments:
       resizedImage.map {
         userDocumentsModel.additionalDocuments.append(.image($0))
-        addDocument.send((index, [$0]))
+        addDocuments.send((index, [$0]))
       }
     default:
       break
@@ -143,8 +143,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       }
       deleteTempFile(at: url)
     }
-    addDocument.send((index, documentImages))
-    
+    addDocuments.send((index, documentImages))
   }
   
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {
