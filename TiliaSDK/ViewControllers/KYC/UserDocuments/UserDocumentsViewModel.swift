@@ -33,6 +33,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
   var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel, Never> { get }
   var addDocuments: PassthroughSubject<UserDocumentsAddDocuments, Never> { get }
+  var addDocumentsDidFail: PassthroughSubject<Void, Never> { get }
   var deleteDocument: PassthroughSubject<UserDocumentsDeleteDocument, Never> { get }
 }
 
@@ -49,6 +50,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
   let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel, Never>()
   let addDocuments = PassthroughSubject<UserDocumentsAddDocuments, Never>()
+  let addDocumentsDidFail = PassthroughSubject<Void, Never>()
   let deleteDocument = PassthroughSubject<UserDocumentsDeleteDocument, Never>()
   
   private let manager: NetworkManager
@@ -131,6 +133,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setFiles(with urls: [URL], at index: Int) {
+    var addDocumentsFailed = false
     var documentImages: [UIImage] = []
     urls.forEach { url in
       PDFDocument(url: url).map { document in
@@ -138,12 +141,17 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
           userDocumentsModel.additionalDocuments.append(.pdfFile(document))
           image(from: document).map { documentImages.append($0) }
         } else {
-          // TODO: - Fix me
+          addDocumentsFailed = true
         }
       }
       deleteTempFile(at: url)
     }
-    addDocuments.send((index, documentImages))
+    if !documentImages.isEmpty {
+      addDocuments.send((index, documentImages))
+    }
+    if addDocumentsFailed {
+      addDocumentsDidFail.send(())
+    }
   }
   
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {

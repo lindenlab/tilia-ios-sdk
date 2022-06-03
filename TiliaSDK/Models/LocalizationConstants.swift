@@ -107,5 +107,7 @@ enum L {
   static let selectFromFiles = "selectFromFiles".localized
   static let errorKycTitle = "errorKycTitle".localized
   static let errorKycMessage = "errorKycMessage".localized
+  static let addDocumentsFailedTitle = "addDocumentsFailedTitle".localized
+  static let addDocumentsFailedMessage = "addDocumentsFailedMessage".localized
   
 }

@@ -273,6 +273,10 @@ private extension UserDocumentsViewController {
       self.tableView.performBatchUpdates(nil)
     }.store(in: &subscriptions)
     
+    viewModel.addDocumentsDidFail.sink { [weak self] _ in
+      self?.router.showAddDocumentsDidFailAlert()
+    }.store(in: &subscriptions)
+    
     viewModel.deleteDocument.sink { [weak self] in
       guard let self = self else { return }
       self.builder.updateSection(&self.section,
