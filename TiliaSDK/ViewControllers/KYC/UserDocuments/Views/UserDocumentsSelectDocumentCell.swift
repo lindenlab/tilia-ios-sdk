@@ -37,6 +37,7 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     collectionView.isHidden = true
     collectionView.delegate = self
     collectionView.dataSource = self
+    collectionView.delaysContentTouches = false
     return collectionView
   }()
   
