@@ -22,7 +22,7 @@ public final class TLManager {
   
   private let _networkManager = NetworkManager(serverClient: ServerClient())
   private let _colorsConfiguration = ColorsConfiguration()
-  private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue", attributes: .concurrent)
+  private let synchronizationQueue = DispatchQueue(label: "io.tilia.ios.sdk.TLManagerSynchronizationQueue", attributes: .concurrent)
   
   private init() { }
   

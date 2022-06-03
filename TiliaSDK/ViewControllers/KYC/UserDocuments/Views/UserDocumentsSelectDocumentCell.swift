@@ -144,7 +144,6 @@ private extension UserDocumentsSelectDocumentCell {
     let collectionViewHeight = itemHeight * rowCount + (rowCount - 1) * 8
     if collectionViewHeightConstraint.constant != collectionViewHeight {
       collectionViewHeightConstraint.constant = collectionViewHeight
-      contentView.layoutIfNeeded()
     }
   }
   

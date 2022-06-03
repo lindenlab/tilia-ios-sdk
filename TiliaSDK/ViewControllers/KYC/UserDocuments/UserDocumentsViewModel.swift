@@ -53,6 +53,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
   private let manager: NetworkManager
   private var userDocumentsModel: UserDocumentsModel
+  private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
   
   init(manager: NetworkManager, defaultCounty: String) {
     self.manager = manager
@@ -103,22 +104,23 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?) {
+    let resizedImage = resizedImage(image)
     switch item.mode {
     case let .photo(model):
       switch model.type {
       case .frontSide:
-        userDocumentsModel.frontImage = image
+        userDocumentsModel.frontImage = resizedImage
       case .backSide:
-        userDocumentsModel.backImage = image
+        userDocumentsModel.backImage = resizedImage
       }
-      setImage.send((index, image))
-      url.map { deleteTempFile(at: $0) }
+      setImage.send((index, resizedImage))
     case .additionalDocuments:
-      let document = pdfDocument(from: image)
+      let document = pdfDocument(from: resizedImage)
       addDocument.send((index, document))
     default:
       break
     }
+    url.map { deleteTempFile(at: $0) }
   }
   
   func setFiles(with urls: [URL]) {
@@ -142,7 +144,7 @@ private extension UserDocumentsViewModel {
   }
   
   func deleteTempFile(at url: URL) {
-    DispatchQueue.global().async {
+    processQueue.async {
       try? FileManager.default.removeItem(at: url)
     }
   }
@@ -154,6 +156,24 @@ private extension UserDocumentsViewModel {
     let document = PDFDocument()
     document.insert(page, at: document.pageCount)
     return document
+  }
+  
+  func resizedImage(_ image: UIImage?) -> UIImage? {
+    processQueue.sync {
+      guard let image = image else { return image }
+      
+      let newSize = CGSize(width: 1024, height: 1024)
+      var imageSize = image.size
+      guard imageSize.width > newSize.width || imageSize.height > newSize.height else { return image }
+      
+      let ratio = max(imageSize.width / newSize.width, imageSize.height / newSize.height)
+      imageSize.width = imageSize.width / ratio
+      imageSize.height = imageSize.height / ratio
+      let renderer = UIGraphicsImageRenderer(size: imageSize)
+      return renderer.image { _ in
+        image.draw(in: .init(origin: .zero, size: imageSize))
+      }
+    }
   }
   
 }
