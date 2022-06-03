@@ -103,7 +103,6 @@ private extension PrimaryButtonWithStyle {
     imageView?.layer.transform = CATransform3DMakeScale(0, 0, 0)
     super.isEnabled = false
     let spinner = UIActivityIndicatorView(style: .medium)
-    spinner.translatesAutoresizingMaskIntoConstraints = false
     titleColor(for: state).map { spinner.color = $0 }
     spinner.startAnimating()
     self.spinner = spinner
