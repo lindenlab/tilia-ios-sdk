@@ -62,19 +62,19 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     self.documents = documents
     self.delegate = delegate
     collectionView.reloadData()
-    setupCollectionViewHeightConstraint()
+    setupCollectionViewHeightConstraintIfNeeded()
   }
   
-  func appendDocument(_ document: UserDocumentsSectionBuilder.Section.Item.Mode.Document) {
-    documents.append(document)
-    collectionView.insertItems(at: [IndexPath(item: documents.endIndex - 1, section: 0)])
-    setupCollectionViewHeightConstraint()
+  func configure(documents: [UserDocumentsSectionBuilder.Section.Item.Mode.Document], insertIndex: Int) {
+    self.documents = documents
+    collectionView.insertItems(at: [IndexPath(item: insertIndex, section: 0)])
+    setupCollectionViewHeightConstraintIfNeeded()
   }
   
-  func deleteDocument(at index: Int) {
-    documents.remove(at: index)
-    collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
-    setupCollectionViewHeightConstraint()
+  func configure(documents: [UserDocumentsSectionBuilder.Section.Item.Mode.Document], deleteIndex: Int) {
+    self.documents = documents
+    collectionView.deleteItems(at: [IndexPath(item: deleteIndex, section: 0)])
+    setupCollectionViewHeightConstraintIfNeeded()
   }
   
 }
@@ -133,7 +133,7 @@ private extension UserDocumentsSelectDocumentCell {
     delegate?.userDocumentsSelectDocumentCellAddButtonDidTap(self)
   }
   
-  func setupCollectionViewHeightConstraint() {
+  func setupCollectionViewHeightConstraintIfNeeded() {
     guard !documents.isEmpty else {
       collectionView.isHidden = true
       return

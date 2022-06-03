@@ -287,7 +287,7 @@ struct UserDocumentsSectionBuilder {
       
       let indexPath = IndexPath(row: index, section: 0)
       if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
-        cell.appendDocument(model)
+        cell.configure(documents: documents, insertIndex: documents.endIndex - 1)
       }
     default:
       break
@@ -305,7 +305,7 @@ struct UserDocumentsSectionBuilder {
       
       let indexPath = IndexPath(row: index, section: 0)
       if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
-        cell.deleteDocument(at: documentIndex)
+        cell.configure(documents: documents, deleteIndex: documentIndex)
       }
     default:
       break
