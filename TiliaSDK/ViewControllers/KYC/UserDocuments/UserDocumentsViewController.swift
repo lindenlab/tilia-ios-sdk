@@ -270,7 +270,9 @@ private extension UserDocumentsViewController {
                                  at: $0.index,
                                  in: self.tableView,
                                  didAddDocumentsWith: $0.documentImages)
-      self.tableView.performBatchUpdates(nil)
+      UIView.performWithoutAnimation {
+        self.tableView.performBatchUpdates(nil)
+      }
     }.store(in: &subscriptions)
     
     viewModel.addDocumentsDidFail.sink { [weak self] _ in
@@ -283,7 +285,9 @@ private extension UserDocumentsViewController {
                                  at: $0.itemIndex,
                                  in: self.tableView,
                                  didDeleteDocumentAt: $0.documentIndex)
-      self.tableView.performBatchUpdates(nil)
+      UIView.performWithoutAnimation {
+        self.tableView.performBatchUpdates(nil)
+      }
     }.store(in: &subscriptions)
   }
   
