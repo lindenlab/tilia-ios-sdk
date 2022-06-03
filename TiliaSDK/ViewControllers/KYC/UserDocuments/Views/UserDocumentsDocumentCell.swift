@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PDFKit
 
 protocol UserDocumentsDocumentCellDelegate: AnyObject {
   func userDocumentsDocumentCellCloseButtonDidTap(_ cell: UserDocumentsDocumentCell)
@@ -16,12 +15,9 @@ final class UserDocumentsDocumentCell: UICollectionViewCell {
   
   private weak var delegate: UserDocumentsDocumentCellDelegate?
   
-  private let pdfView: PDFView = {
-    let view = PDFView()
+  private let imageView: UIImageView = {
+    let view = UIImageView()
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.autoScales = true
-    view.isUserInteractionEnabled = false
-    view.backgroundColor = .backgroundColor
     return view
   }()
   
@@ -51,9 +47,10 @@ final class UserDocumentsDocumentCell: UICollectionViewCell {
     setupBorderColor()
   }
   
-  func configure(document: PDFDocument?, delegate: UserDocumentsDocumentCellDelegate?) {
+  func configure(image: UIImage?,
+                 delegate: UserDocumentsDocumentCellDelegate?) {
+    imageView.image = image
     self.delegate = delegate
-    pdfView.document = document
   }
   
 }
@@ -66,16 +63,16 @@ private extension UserDocumentsDocumentCell {
     contentView.backgroundColor = .backgroundColor
     contentView.layer.cornerRadius = 8
     contentView.layer.borderWidth = 1
-    contentView.addSubview(pdfView)
+    contentView.addSubview(imageView)
     contentView.addSubview(deleteButton)
     
     deleteButton.addTarget(self, action: #selector(deleteButtonDidTap), for: .touchUpInside)
     
     NSLayoutConstraint.activate([
-      pdfView.topAnchor.constraint(equalTo: contentView.topAnchor),
-      pdfView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-      pdfView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-      pdfView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+      imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+      imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+      imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+      imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
       deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
       deleteButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
       deleteButton.widthAnchor.constraint(equalToConstant: 40),

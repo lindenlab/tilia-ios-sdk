@@ -15,7 +15,7 @@ protocol UserDocumentsSelectDocumentCellDelegate: AnyObject {
 final class UserDocumentsSelectDocumentCell: LabelCell {
     
   private weak var delegate: UserDocumentsSelectDocumentCellDelegate?
-  private var documents: [UserDocumentsSectionBuilder.Section.Item.Mode.Document] = []
+  private var documentImages: [UIImage] = []
   
   private let addButton: NonPrimaryButtonWithStyle = {
     let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
@@ -57,22 +57,24 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(documents: [UserDocumentsSectionBuilder.Section.Item.Mode.Document],
+  func configure(documentImages: [UIImage],
                  delegate: UserDocumentsSelectDocumentCellDelegate?) {
-    self.documents = documents
+    self.documentImages = documentImages
     self.delegate = delegate
     collectionView.reloadData()
     setupCollectionViewHeightConstraintIfNeeded()
   }
   
-  func configure(documents: [UserDocumentsSectionBuilder.Section.Item.Mode.Document], insertIndex: Int) {
-    self.documents = documents
-    collectionView.insertItems(at: [IndexPath(item: insertIndex, section: 0)])
+  func configure(documentImages: [UIImage],
+                 insertIndexesRange: ClosedRange<Int>) {
+    self.documentImages = documentImages
+    let indexPaths = (insertIndexesRange.lowerBound...insertIndexesRange.upperBound).map { IndexPath(item: $0, section: 0) }
+    collectionView.insertItems(at: indexPaths)
     setupCollectionViewHeightConstraintIfNeeded()
   }
   
-  func configure(documents: [UserDocumentsSectionBuilder.Section.Item.Mode.Document], deleteIndex: Int) {
-    self.documents = documents
+  func configure(documentImages: [UIImage], deleteIndex: Int) {
+    self.documentImages = documentImages
     collectionView.deleteItems(at: [IndexPath(item: deleteIndex, section: 0)])
     setupCollectionViewHeightConstraintIfNeeded()
   }
@@ -84,13 +86,13 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
 extension UserDocumentsSelectDocumentCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return documents.count
+    return documentImages.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeue(UserDocumentsDocumentCell.self,
                                       for: indexPath)
-    cell.configure(document: documents[indexPath.item].document,
+    cell.configure(image: documentImages[indexPath.item],
                    delegate: self)
     return cell
   }
@@ -134,12 +136,12 @@ private extension UserDocumentsSelectDocumentCell {
   }
   
   func setupCollectionViewHeightConstraintIfNeeded() {
-    guard !documents.isEmpty else {
+    guard !documentImages.isEmpty else {
       collectionView.isHidden = true
       return
     }
     collectionView.isHidden = false
-    let rowCount = CGFloat(Double(documents.count) / 2.0).rounded(.up)
+    let rowCount = CGFloat(Double(documentImages.count) / 2.0).rounded(.up)
     let itemHeight = collectionViewItemSize.height
     let collectionViewHeight = itemHeight * rowCount + (rowCount - 1) * 8
     if collectionViewHeightConstraint.constant != collectionViewHeight {

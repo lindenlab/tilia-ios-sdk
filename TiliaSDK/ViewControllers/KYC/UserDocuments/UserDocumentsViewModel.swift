@@ -12,14 +12,14 @@ import PDFKit
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
 typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsResidence: Bool)
-typealias UserDocumentsAddDocument = (index: Int, document: PDFDocument?)
+typealias UserDocumentsAddDocument = (index: Int, documentImages: [UIImage])
 typealias UserDocumentsDeleteDocument = (itemIndex: Int, documentIndex: Int)
 
 protocol UserDocumentsViewModelInputProtocol {
   func viewDidLoad()
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?)
-  func setFiles(with urls: [URL])
+  func setFiles(with urls: [URL], at index: Int)
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int)
 }
 
@@ -115,16 +115,21 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       }
       setImage.send((index, resizedImage))
     case .additionalDocuments:
-      let document = pdfDocument(from: resizedImage)
-      addDocument.send((index, document))
+      resizedImage.map {
+        addDocument.send((index, [$0]))
+      }
     default:
       break
     }
     url.map { deleteTempFile(at: $0) }
   }
   
-  func setFiles(with urls: [URL]) {
-    
+  func setFiles(with urls: [URL], at index: Int) {
+    // TODO: - Impove me
+    let documents = urls.compactMap { PDFDocument(url: $0) }
+    let documentImages = documents.compactMap { image(from: $0) }
+    addDocument.send((index, documentImages))
+    urls.forEach { deleteTempFile(at: $0) }
   }
   
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {
@@ -149,13 +154,10 @@ private extension UserDocumentsViewModel {
     }
   }
   
-  func pdfDocument(from image: UIImage?) -> PDFDocument? {
-    guard
-      let image = image,
-        let page = PDFPage(image: image) else { return nil }
-    let document = PDFDocument()
-    document.insert(page, at: document.pageCount)
-    return document
+  func image(from document: PDFDocument) -> UIImage? {
+    guard let page = document.page(at: 0) else { return nil }
+    let pageRect = page.bounds(for: .mediaBox)
+    return page.thumbnail(of: pageRect.size, for: .mediaBox)
   }
   
   func resizedImage(_ image: UIImage?) -> UIImage? {

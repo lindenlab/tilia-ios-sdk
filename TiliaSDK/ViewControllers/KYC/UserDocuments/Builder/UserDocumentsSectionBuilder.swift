@@ -53,13 +53,9 @@ struct UserDocumentsSectionBuilder {
           var image: UIImage?
         }
         
-        struct Document {
-          let document: PDFDocument?
-        }
-        
         case field(Field)
         case photo(Photo)
-        case additionalDocuments([Document])
+        case additionalDocuments([UIImage])
       }
       
       let title: String
@@ -94,9 +90,9 @@ struct UserDocumentsSectionBuilder {
       cell.configure(title: item.title, font: .systemFont(ofSize: 14))
       cell.configure(image: model.image, delegate: delegate)
       return cell
-    case let .additionalDocuments(documents):
+    case let .additionalDocuments(images):
       let cell = tableView.dequeue(UserDocumentsSelectDocumentCell.self, for: indexPath)
-      cell.configure(documents: documents,
+      cell.configure(documentImages: images,
                      delegate: delegate)
       cell.configure(title: item.title,
                      font: .boldSystemFont(ofSize: 16))
@@ -278,16 +274,18 @@ struct UserDocumentsSectionBuilder {
   func updateSection(_ section: inout Section,
                      at index: Int,
                      in tableView: UITableView,
-                     didAddDocument document: PDFDocument?) {
+                     didAddDocumentsWith documentImages: [UIImage]) {
     switch section.items[index].mode {
-    case var .additionalDocuments(documents):
-      let model = Section.Item.Mode.Document(document: document)
-      documents.append(model)
-      section.items[index].mode = .additionalDocuments(documents)
+    case var .additionalDocuments(additionalDocumentImages):
+      let startIndex = additionalDocumentImages.endIndex
+      additionalDocumentImages.append(contentsOf: documentImages)
+      section.items[index].mode = .additionalDocuments(additionalDocumentImages)
+      let endIndex = additionalDocumentImages.endIndex - 1
       
       let indexPath = IndexPath(row: index, section: 0)
       if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
-        cell.configure(documents: documents, insertIndex: documents.endIndex - 1)
+        cell.configure(documentImages: additionalDocumentImages,
+                       insertIndexesRange: startIndex...endIndex)
       }
     default:
       break
@@ -299,13 +297,14 @@ struct UserDocumentsSectionBuilder {
                      in tableView: UITableView,
                      didDeleteDocumentAt documentIndex: Int) {
     switch section.items[index].mode {
-    case var .additionalDocuments(documents):
-      documents.remove(at: documentIndex)
-      section.items[index].mode = .additionalDocuments(documents)
+    case var .additionalDocuments(documentImages):
+      documentImages.remove(at: documentIndex)
+      section.items[index].mode = .additionalDocuments(documentImages)
       
       let indexPath = IndexPath(row: index, section: 0)
       if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
-        cell.configure(documents: documents, deleteIndex: documentIndex)
+        cell.configure(documentImages: documentImages,
+                       deleteIndex: documentIndex)
       }
     default:
       break

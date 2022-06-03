@@ -23,7 +23,7 @@ final class UserDocumentsViewController: BaseViewController {
                               at: index,
                               with: url)
     } documentPickerHandler: { [weak self] index, urls in
-      self?.viewModel.setFiles(with: urls)
+      self?.viewModel.setFiles(with: urls, at: index)
     }
     return delegate
   }()
@@ -269,7 +269,7 @@ private extension UserDocumentsViewController {
       self.builder.updateSection(&self.section,
                                  at: $0.index,
                                  in: self.tableView,
-                                 didAddDocument: $0.document)
+                                 didAddDocumentsWith: $0.documentImages)
       self.tableView.performBatchUpdates(nil)
     }.store(in: &subscriptions)
     
