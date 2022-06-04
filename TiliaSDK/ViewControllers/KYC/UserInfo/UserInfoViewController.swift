@@ -110,14 +110,16 @@ extension UserInfoViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return builder.header(for: sections[section],
                           in: tableView,
-                          delegate: self)
+                          delegate: self,
+                          isUploading: viewModel.uploading.value)
   }
   
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections,
                           in: tableView,
                           at: section,
-                          delegate: self)
+                          delegate: self,
+                          isUploading: viewModel.uploading.value)
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -181,13 +183,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
                               isExpanded: false,
                               nextSection: nil)
     }
-    // TODO: - Fix me
-    guard let footer = tableView.footerView(forSection: sections.count - 1) as? UserInfoFooterView else { return }
-    footer.configure(isLoading: true)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-      footer.configure(isLoading: false)
-      self.router.routeToUserDocumentsView()
-    }
+    viewModel.upload()
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
@@ -215,7 +211,7 @@ private extension UserInfoViewController {
   }
   
   func bind() {
-    viewModel.loading.sink { [weak self] in
+    viewModel.contentLoading.sink { [weak self] in
       guard let self = self else { return }
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
@@ -288,6 +284,17 @@ private extension UserInfoViewController {
                                                  in: self.tableView,
                                                  countryOfResidenceDidSelectWith: $0)
       indexSet.map { self.tableView.insertSections($0, with: .fade) }
+    }.store(in: &subscriptions)
+    
+    viewModel.uploading.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateTable(self.tableView,
+                               for: self.sections,
+                               isUploading: $0)
+    }.store(in: &subscriptions)
+    
+    viewModel.uploadingDidSuccessfull.sink { [weak self] _ in
+      self?.router.routeToUserDocumentsView()
     }.store(in: &subscriptions)
   }
   

@@ -114,7 +114,7 @@ extension UserDocumentsSelectDocumentCell: UICollectionViewDelegateFlowLayout {
 
 extension UserDocumentsSelectDocumentCell: UserDocumentsDocumentCellDelegate {
   
-  func userDocumentsDocumentCellCloseButtonDidTap(_ cell: UserDocumentsDocumentCell) {
+  func userDocumentsDocumentCellDeleteButtonDidTap(_ cell: UserDocumentsDocumentCell) {
     guard let indexPath = collectionView.indexPath(for: cell) else { return }
     delegate?.userDocumentsSelectDocumentCell(self, didDeleteItemAt: indexPath.item)
   }

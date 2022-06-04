@@ -172,23 +172,27 @@ struct UserInfoSectionBuilder {
   
   func header(for section: Section,
               in tableView: UITableView,
-              delegate: SectionHeaderDelegate) -> UIView {
+              delegate: SectionHeaderDelegate,
+              isUploading: Bool) -> UIView {
     let view = tableView.dequeue(UserInfoHeaderView.self)
     view.configure(title: section.type.title,
                    mode: section.mode,
                    delegate: delegate)
+    view.isUserInteractionEnabled = !isUploading
     return view
   }
   
   func footer(for sections: [Section],
               in tableView: UITableView,
               at section: Int,
-              delegate: SectionFooterDelegate) -> UIView? {
+              delegate: SectionFooterDelegate,
+              isUploading: Bool) -> UIView? {
     switch sections[section].type {
     case .contact:
       let isPrimaryButtonEnabled = isAllSectionsFilled(sections)
       let view = tableView.dequeue(UserInfoFooterView.self)
       view.configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled,
+                     isLoading: isUploading,
                      delegate: delegate)
       return view
     default:
@@ -342,9 +346,25 @@ struct UserInfoSectionBuilder {
   func updateTableFooter(for sections: [Section],
                          in tableView: UITableView) {
     guard
-      let index = sections.lastIndex(where: { $0.type == .contact }),
+      let index = sections.firstIndex(where: { $0.type == .contact }),
       let footer = tableView.footerView(forSection: index) as? UserInfoFooterView else { return }
     footer.configure(isPrimaryButtonEnabled: isAllSectionsFilled(sections))
+  }
+  
+  func updateTable(_ tableView: UITableView,
+                   for sections: [Section],
+                   isUploading: Bool) {
+    var footerIndex: Int?
+    sections.enumerated().forEach {
+      tableView.headerView(forSection: $0.offset)?.isUserInteractionEnabled = !isUploading
+      if $0.element.type == .contact {
+        footerIndex = $0.offset
+      }
+    }
+    guard
+      let index = footerIndex,
+      let footer = tableView.footerView(forSection: index) as? UserInfoFooterView else { return }
+    footer.configure(isLoading: isUploading)
   }
   
 }

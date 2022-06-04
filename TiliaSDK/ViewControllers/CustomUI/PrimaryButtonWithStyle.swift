@@ -16,6 +16,7 @@ final class PrimaryButtonWithStyle: PrimaryButton {
   
   var isLoading: Bool = false {
     didSet {
+      guard oldValue != isLoading else { return }
       isLoading ? addSpinner() : removeSpinner()
     }
   }

@@ -33,8 +33,11 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
     return view
   }()
   
-  func configure(isPrimaryButtonEnabled: Bool, delegate: ButtonsViewDelegate?) {
+  func configure(isPrimaryButtonEnabled: Bool,
+                 isLoading: Bool,
+                 delegate: ButtonsViewDelegate?) {
     configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled)
+    configure(isLoading: isLoading)
     buttonsView.delegate = delegate
   }
   

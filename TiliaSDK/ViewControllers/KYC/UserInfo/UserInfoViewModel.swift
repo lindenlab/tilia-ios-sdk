@@ -16,16 +16,19 @@ protocol UserInfoViewModelInputProtocol {
   func viewDidLoad()
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSection: UserInfoSectionBuilder.Section?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
+  func upload()
 }
 
 protocol UserInfoViewModelOutputProtocol {
-  var loading: PassthroughSubject<Bool, Never> { get }
+  var contentLoading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<Error, Never> { get }
   var content: PassthroughSubject<Void, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
   var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
   var coutryOfResidenceDidSelect: PassthroughSubject<UserInfoModel, Never> { get }
+  var uploading: CurrentValueSubject<Bool, Never> { get }
+  var uploadingDidSuccessfull: PassthroughSubject<Void, Never> { get }
 }
 
 protocol UserInfoDataStore {
@@ -37,13 +40,15 @@ protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoView
 
 final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
-  let loading = PassthroughSubject<Bool, Never>()
+  let contentLoading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<Error, Never>()
   let content = PassthroughSubject<Void, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
   let coutryOfResidenceDidSelect = PassthroughSubject<UserInfoModel, Never>()
+  let uploading = CurrentValueSubject<Bool, Never>(false)
+  let uploadingDidSuccessfull = PassthroughSubject<Void, Never>()
   
   let manager: NetworkManager
   var selectedCountry: String { return userInfoModel.countryOfResidence ?? "" }
@@ -55,7 +60,12 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   }
   
   func viewDidLoad() {
-    content.send(())// TODO: - Fix this
+    // TODO: - Fix me
+    contentLoading.send(true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.contentLoading.send(false)
+      self.content.send(())
+    }
   }
   
   func updateSection(_ section: UserInfoSectionBuilder.Section,
@@ -131,6 +141,15 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     if isFieldChanged {
       let isSectionFilled = validator(for: section.type).isFilled(for: userInfoModel)
       setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
+    }
+  }
+  
+  func upload() {
+    // TODO: - Fix me
+    uploading.send(true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.uploading.send(false)
+      self.uploadingDidSuccessfull.send(())
     }
   }
   

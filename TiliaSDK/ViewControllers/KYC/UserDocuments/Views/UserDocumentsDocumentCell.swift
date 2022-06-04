@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UserDocumentsDocumentCellDelegate: AnyObject {
-  func userDocumentsDocumentCellCloseButtonDidTap(_ cell: UserDocumentsDocumentCell)
+  func userDocumentsDocumentCellDeleteButtonDidTap(_ cell: UserDocumentsDocumentCell)
 }
 
 final class UserDocumentsDocumentCell: UICollectionViewCell {
@@ -86,7 +86,7 @@ private extension UserDocumentsDocumentCell {
   }
   
   @objc func deleteButtonDidTap() {
-    delegate?.userDocumentsDocumentCellCloseButtonDidTap(self)
+    delegate?.userDocumentsDocumentCellDeleteButtonDidTap(self)
   }
   
 }
