@@ -10,6 +10,7 @@
 		4EB2150A50A139EE8FAFEC17 /* Pods_TiliaSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5263EBCF7E0ECCEC353A1C3 /* Pods_TiliaSDKTests.framework */; };
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
 		BEA7811AF6D7305C50D86039 /* Pods_TiliaSDK_TiliaSDKUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */; };
+		D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */; };
 		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
 		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
 		D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */; };
@@ -168,6 +169,7 @@
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
 		ACB62D50E07F050FD8D3E5E9 /* Pods-TiliaSDKUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKUITests.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDKUITests/Pods-TiliaSDKUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C5263EBCF7E0ECCEC353A1C3 /* Pods_TiliaSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidator.swift; sourceTree = "<group>"; };
 		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
 		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
 		D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosAcceptModel.swift; sourceTree = "<group>"; };
@@ -356,6 +358,14 @@
 				34896647544121E98FBF7C86 /* Pods-TiliaSDKTests.cicd.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		D113B020284E1F8C00CFEA18 /* Validator */ = {
+			isa = PBXGroup;
+			children = (
+				D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */,
+			);
+			path = Validator;
 			sourceTree = "<group>";
 		};
 		D120F2CC27F1DE4B009B30DD /* BaseProtocols */ = {
@@ -615,6 +625,7 @@
 		D1B871F628339ABA00C44441 /* UserDocuments */ = {
 			isa = PBXGroup;
 			children = (
+				D113B020284E1F8C00CFEA18 /* Validator */,
 				D1B871FE2835188F00C44441 /* Builder */,
 				D1B871FD28339BEE00C44441 /* Views */,
 				D1B871FB28339BE600C44441 /* UserDocumentsViewModel.swift */,
@@ -990,6 +1001,7 @@
 				D1C8A84427F5E49600BF2910 /* String+Helpers.swift in Sources */,
 				D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */,
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
+				D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
 				D1632D0D283B7D5F006BDF19 /* BoolModel.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */,

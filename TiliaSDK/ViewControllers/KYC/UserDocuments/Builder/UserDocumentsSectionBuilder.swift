@@ -64,6 +64,7 @@ struct UserDocumentsSectionBuilder {
     
     let type: SectionType
     var items: [Item]
+    var isFilled: Bool?
   }
   
   func numberOfRows(in section: Section) -> Int {
@@ -120,9 +121,17 @@ struct UserDocumentsSectionBuilder {
     let view = tableView.dequeue(UserDocumentsFooterView.self)
     switch section.type {
     case .documents:
-      view.configure(isPrimaryButtonEnabled: false, delegate: delegate)
+      view.configure(isPrimaryButtonEnabled: section.isFilled == true,
+                     isPrimaryButtonHidden: false,
+                     nonPrimaryButtonTitle: L.goBack,
+                     nonPrimaryButtonImage: .leftArrowicon?.withRenderingMode(.alwaysTemplate),
+                     delegate: delegate)
     case .success:
-      view.configure(isPrimaryButtonEnabled: false, delegate: delegate) // TODO: - Fix me
+      view.configure(isPrimaryButtonEnabled: false,
+                     isPrimaryButtonHidden: true,
+                     nonPrimaryButtonTitle: L.done,
+                     nonPrimaryButtonImage: nil,
+                     delegate: delegate)
     }
     return view
   }
@@ -138,7 +147,9 @@ struct UserDocumentsSectionBuilder {
     let items: [Section.Item] = [
       Section.Item(title: L.document, mode: .field(field))
     ]
-    return Section(type: .documents, items: items)
+    return Section(type: .documents,
+                   items: items,
+                   isFilled: false)
   }
   
   func successSection() -> Section {
@@ -147,32 +158,26 @@ struct UserDocumentsSectionBuilder {
   
   func updateSection(_ section: inout Section,
                      at index: Int,
-                     text: String?) {
-    switch section.items[index].mode {
-    case var .field(field):
-      let selectedIndex = field.items.firstIndex { $0 == text }
-      field.text = text
-      field.seletedItemIndex = selectedIndex
-      section.items[index].mode = .field(field)
-    default:
-      break
-    }
+                     text: String?,
+                     isFilled: Bool) {
+    guard case var .field(field) = section.items[index].mode else { return }
+    let selectedIndex = field.items.firstIndex { $0 == text }
+    field.text = text
+    field.seletedItemIndex = selectedIndex
+    section.items[index].mode = .field(field)
+    section.isFilled = isFilled
   }
   
   func updateSection(_ section: inout Section,
                      at index: Int,
                      in tableView: UITableView,
                      image: UIImage?) {
-    switch section.items[index].mode {
-    case var .photo(photo):
-      photo.image = image
-      section.items[index].mode = .photo(photo)
-      updatePhotoCell(at: index,
-                      with: section.items[index],
-                      in: tableView)
-    default:
-      break
-    }
+    guard case var .photo(photo) = section.items[index].mode else { return }
+    photo.image = image
+    section.items[index].mode = .photo(photo)
+    updatePhotoCell(at: index,
+                    with: section.items[index],
+                    in: tableView)
   }
   
   func updateSection(_ section: inout Section,
@@ -275,60 +280,49 @@ struct UserDocumentsSectionBuilder {
                      at index: Int,
                      in tableView: UITableView,
                      didAddDocumentsWith documentImages: [UIImage]) {
-    switch section.items[index].mode {
-    case var .additionalDocuments(additionalDocumentImages):
-      additionalDocumentImages.append(contentsOf: documentImages)
-      section.items[index].mode = .additionalDocuments(additionalDocumentImages)
-    default:
-      break
-    }
+    guard case var .additionalDocuments(additionalDocumentImages) = section.items[index].mode else { return }
+    additionalDocumentImages.append(contentsOf: documentImages)
+    section.items[index].mode = .additionalDocuments(additionalDocumentImages)
   }
   
   func updateSection(_ section: inout Section,
                      at index: Int,
                      in tableView: UITableView,
                      didDeleteDocumentAt documentIndex: Int) {
-    switch section.items[index].mode {
-    case var .additionalDocuments(documentImages):
-      documentImages.remove(at: documentIndex)
-      section.items[index].mode = .additionalDocuments(documentImages)
-    default:
-      break
-    }
+    guard case var .additionalDocuments(documentImages) = section.items[index].mode else { return }
+    documentImages.remove(at: documentIndex)
+    section.items[index].mode = .additionalDocuments(documentImages)
   }
   
   func updateCell(for section: Section,
                   at index: Int,
                   in tableView: UITableView,
                   didAddDocumentsWith documentImages: [UIImage]) {
-    switch section.items[index].mode {
-    case let .additionalDocuments(additionalDocumentImages):
-      let startIndex = additionalDocumentImages.endIndex - documentImages.count
-      let endIndex = additionalDocumentImages.endIndex - 1
-      let indexPath = IndexPath(row: index, section: 0)
-      if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
-        cell.configure(documentImages: additionalDocumentImages,
-                       insertIndexesRange: startIndex...endIndex)
-      }
-    default:
-      break
-    }
+    let indexPath = IndexPath(row: index, section: 0)
+    guard case let .additionalDocuments(additionalDocumentImages) = section.items[index].mode else { return }
+    let startIndex = additionalDocumentImages.endIndex - documentImages.count
+    let endIndex = additionalDocumentImages.endIndex - 1
+    guard let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell else { return }
+    cell.configure(documentImages: additionalDocumentImages,
+                   insertIndexesRange: startIndex...endIndex)
   }
   
   func updateCell(for section: Section,
                   at index: Int,
                   in tableView: UITableView,
                   didDeleteDocumentAt documentIndex: Int) {
-    switch section.items[index].mode {
-    case let .additionalDocuments(documentImages):
-      let indexPath = IndexPath(row: index, section: 0)
-      if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
-        cell.configure(documentImages: documentImages,
-                       deleteIndex: documentIndex)
-      }
-    default:
-      break
-    }
+    let indexPath = IndexPath(row: index, section: 0)
+    guard
+      case let .additionalDocuments(documentImages) = section.items[index].mode,
+      let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell else { return }
+    cell.configure(documentImages: documentImages,
+                   deleteIndex: documentIndex)
+  }
+  
+  func updateTableFooter(for section: Section,
+                         in tableView: UITableView) {
+    guard let footer = tableView.footerView(forSection: 0) as? UserDocumentsFooterView else { return }
+    footer.configure(isPrimaryButtonEnabled: section.isFilled == true)
   }
   
 }
@@ -373,13 +367,10 @@ private extension UserDocumentsSectionBuilder {
   
   func updatePhotoCell(at index: Int, with item: Section.Item, in tableView: UITableView) {
     let indexPath = IndexPath(row: index, section: 0)
-    guard let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsPhotoCell else { return }
-    switch item.mode {
-    case let .photo(model):
-      cell.configure(image: model.image)
-    default:
-      break
-    }
+    guard
+      case let .photo(model) = item.mode,
+      let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsPhotoCell else { return }
+    cell.configure(image: model.image)
   }
   
   func documentSideIndex(in section: Section, for type: Section.Item.Mode.PhotoType) -> Int? {

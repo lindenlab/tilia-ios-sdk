@@ -18,10 +18,6 @@ final class UserDocumentsFooterView: UITableViewHeaderFooterView {
                            for: .normal)
     
     let nonPrimaryButton = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
-    nonPrimaryButton.setTitle(L.goBack,
-                              for: .normal)
-    nonPrimaryButton.setImage(.leftArrowicon?.withRenderingMode(.alwaysTemplate),
-                              for: .normal)
     
     let view = ButtonsView(primaryButton: primaryButton,
                            nonPrimaryButton: nonPrimaryButton)
@@ -29,8 +25,17 @@ final class UserDocumentsFooterView: UITableViewHeaderFooterView {
     return view
   }()
   
-  func configure(isPrimaryButtonEnabled: Bool, delegate: ButtonsViewDelegate?) {
+  func configure(isPrimaryButtonEnabled: Bool,
+                 isPrimaryButtonHidden: Bool,
+                 nonPrimaryButtonTitle: String,
+                 nonPrimaryButtonImage: UIImage?,
+                 delegate: ButtonsViewDelegate?) {
     configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled)
+    buttonsView.primaryButton.isHidden = isPrimaryButtonHidden
+    buttonsView.nonPrimaryButton.setTitle(nonPrimaryButtonTitle,
+                                          for: .normal)
+    buttonsView.nonPrimaryButton.setImage(nonPrimaryButtonImage,
+                                          for: .normal)
     buttonsView.delegate = delegate
   }
   

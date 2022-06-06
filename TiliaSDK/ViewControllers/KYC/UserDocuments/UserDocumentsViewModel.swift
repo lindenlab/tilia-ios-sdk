@@ -9,7 +9,7 @@ import Combine
 import UIKit
 import PDFKit
 
-typealias UserDocumentsSetText = (index: Int, text: String?)
+typealias UserDocumentsSetText = (index: Int, text: String?, isFilled: Bool)
 typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
 typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsResidence: Bool)
 typealias UserDocumentsAddDocuments = (index: Int, documentImages: [UIImage])
@@ -106,7 +106,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     }
     
     if isFieldChanged {
-      setText.send((index, text))
+      let isSectionFilled = UserDocumentsValidator.isFilled(for: userDocumentsModel)
+      setText.send((index, text, isSectionFilled))
     }
   }
   

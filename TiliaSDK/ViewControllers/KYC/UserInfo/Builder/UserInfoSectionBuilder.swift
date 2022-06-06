@@ -267,17 +267,13 @@ struct UserInfoSectionBuilder {
                      text: String?,
                      fieldIndex: Int,
                      isFilled: Bool) {
-    switch section.items[indexPath.row].mode {
-    case var .fields(field):
-      field.fields[fieldIndex].text = text
-      if let inputMode = field.inputMode, case let .picker(items, _) = inputMode {
-        let selectedIndex = items.firstIndex { $0 == text }
-        field.inputMode = .picker(items: items, selectedIndex: selectedIndex)
-      }
-      section.items[indexPath.row].mode = .fields(field)
-    default:
-      break
+    guard case var .fields(field) = section.items[indexPath.row].mode else { return }
+    field.fields[fieldIndex].text = text
+    if let inputMode = field.inputMode, case let .picker(items, _) = inputMode {
+      let selectedIndex = items.firstIndex { $0 == text }
+      field.inputMode = .picker(items: items, selectedIndex: selectedIndex)
     }
+    section.items[indexPath.row].mode = .fields(field)
     
     section.isFilled = isFilled
     

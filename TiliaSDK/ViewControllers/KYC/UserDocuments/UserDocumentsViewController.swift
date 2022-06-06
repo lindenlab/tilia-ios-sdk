@@ -220,7 +220,10 @@ private extension UserDocumentsViewController {
       guard let self = self else { return }
       self.builder.updateSection(&self.section,
                                  at: $0.index,
-                                 text: $0.text)
+                                 text: $0.text,
+                                 isFilled: $0.isFilled)
+      self.builder.updateTableFooter(for: self.section,
+                                     in: self.tableView)
     }.store(in: &subscriptions)
     
     viewModel.setImage.sink { [weak self] in
