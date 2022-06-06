@@ -10,7 +10,9 @@ import Foundation
 enum UserDocumentsValidator {
   
   static func isFilled(for model: UserDocumentsModel) -> Bool {
-    return true
+    let isPhotosFilled = model.document == .passport ? model.frontImage != nil : model.frontImage != nil && model.backImage != nil
+    let isAdditionalDocumentsFilled = model.isAddressOnDocument == .yes ? true : !model.additionalDocuments.isEmpty
+    return isPhotosFilled && isAdditionalDocumentsFilled
   }
   
 }

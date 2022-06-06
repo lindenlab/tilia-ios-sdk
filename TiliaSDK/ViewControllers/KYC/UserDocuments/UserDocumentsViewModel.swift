@@ -9,7 +9,7 @@ import Combine
 import UIKit
 import PDFKit
 
-typealias UserDocumentsSetText = (index: Int, text: String?, isFilled: Bool)
+typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
 typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsResidence: Bool)
 typealias UserDocumentsAddDocuments = (index: Int, documentImages: [UIImage])
@@ -35,6 +35,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var addDocuments: PassthroughSubject<UserDocumentsAddDocuments, Never> { get }
   var addDocumentsDidFail: PassthroughSubject<Void, Never> { get }
   var deleteDocument: PassthroughSubject<UserDocumentsDeleteDocument, Never> { get }
+  var fillingContent: PassthroughSubject<Bool, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -52,6 +53,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let addDocuments = PassthroughSubject<UserDocumentsAddDocuments, Never>()
   let addDocumentsDidFail = PassthroughSubject<Void, Never>()
   let deleteDocument = PassthroughSubject<UserDocumentsDeleteDocument, Never>()
+  let fillingContent = PassthroughSubject<Bool, Never>()
   
   private let manager: NetworkManager
   private var userDocumentsModel: UserDocumentsModel
@@ -106,8 +108,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     }
     
     if isFieldChanged {
-      let isSectionFilled = UserDocumentsValidator.isFilled(for: userDocumentsModel)
-      setText.send((index, text, isSectionFilled))
+      setText.send((index, text))
+      updateFillingSectionObserver()
     }
   }
   
@@ -131,6 +133,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       break
     }
     url.map { deleteTempFile(at: $0) }
+    updateFillingSectionObserver()
   }
   
   func setFiles(with urls: [URL], at index: Int) {
@@ -149,6 +152,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     }
     if !documentImages.isEmpty {
       addDocuments.send((index, documentImages))
+      updateFillingSectionObserver()
     }
     if addDocumentsFailed {
       addDocumentsDidFail.send(())
@@ -158,6 +162,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {
     userDocumentsModel.additionalDocuments.remove(at: documentIndex)
     deleteDocument.send((itemIndex, documentIndex))
+    updateFillingSectionObserver()
   }
   
 }
@@ -202,6 +207,11 @@ private extension UserDocumentsViewModel {
         image.draw(in: .init(origin: .zero, size: imageSize))
       }
     }
+  }
+  
+  func updateFillingSectionObserver() {
+    let isSectionFilled = UserDocumentsValidator.isFilled(for: userDocumentsModel)
+    fillingContent.send(isSectionFilled)
   }
   
 }

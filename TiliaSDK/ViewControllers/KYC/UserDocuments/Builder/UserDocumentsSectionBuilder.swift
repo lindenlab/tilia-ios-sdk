@@ -158,14 +158,12 @@ struct UserDocumentsSectionBuilder {
   
   func updateSection(_ section: inout Section,
                      at index: Int,
-                     text: String?,
-                     isFilled: Bool) {
+                     text: String?) {
     guard case var .field(field) = section.items[index].mode else { return }
     let selectedIndex = field.items.firstIndex { $0 == text }
     field.text = text
     field.seletedItemIndex = selectedIndex
     section.items[index].mode = .field(field)
-    section.isFilled = isFilled
   }
   
   func updateSection(_ section: inout Section,
@@ -294,6 +292,14 @@ struct UserDocumentsSectionBuilder {
     section.items[index].mode = .additionalDocuments(documentImages)
   }
   
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     isFilled: Bool) {
+    section.isFilled = isFilled
+    guard let footer = tableView.footerView(forSection: 0) as? UserDocumentsFooterView else { return }
+    footer.configure(isPrimaryButtonEnabled: isFilled)
+  }
+  
   func updateCell(for section: Section,
                   at index: Int,
                   in tableView: UITableView,
@@ -317,12 +323,6 @@ struct UserDocumentsSectionBuilder {
       let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell else { return }
     cell.configure(documentImages: documentImages,
                    deleteIndex: documentIndex)
-  }
-  
-  func updateTableFooter(for section: Section,
-                         in tableView: UITableView) {
-    guard let footer = tableView.footerView(forSection: 0) as? UserDocumentsFooterView else { return }
-    footer.configure(isPrimaryButtonEnabled: section.isFilled == true)
   }
   
 }

@@ -220,10 +220,7 @@ private extension UserDocumentsViewController {
       guard let self = self else { return }
       self.builder.updateSection(&self.section,
                                  at: $0.index,
-                                 text: $0.text,
-                                 isFilled: $0.isFilled)
-      self.builder.updateTableFooter(for: self.section,
-                                     in: self.tableView)
+                                 text: $0.text)
     }.store(in: &subscriptions)
     
     viewModel.setImage.sink { [weak self] in
@@ -299,6 +296,13 @@ private extension UserDocumentsViewController {
                               at: $0.itemIndex,
                               in: self.tableView,
                               didDeleteDocumentAt: $0.documentIndex)
+    }.store(in: &subscriptions)
+    
+    viewModel.fillingContent.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.section,
+                                 in: self.tableView,
+                                 isFilled: $0)
     }.store(in: &subscriptions)
   }
   
