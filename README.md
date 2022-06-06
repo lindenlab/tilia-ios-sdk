@@ -1,8 +1,11 @@
 # Tilia iOS SDK
 
-This is the repository for the Tilia iOS SDK.
-This SDK is meant to be used in concert with your own api server which communicates with Tilia APIs to retrieve authorized user access tokens and any additional data required by the SDK flow you are looking to use.
-This repository includes an interactive demo application which can guide you through what data is expected for each flow as well as how to customize the look of the SDK UI.
+The Tilia iOS SDK makes it easy to add payments natively within mobile apps.
+
+This SDK is meant to be used in concert with your own api server which communicates with Tilia APIs to retrieve authorized user access tokens and any additional data required by the SDK flow you are looking to use.  
+The repository includes an interactive demo application which can guide you through what data is expected for each flow as well as how to customize the look of the SDK UI.
+
+For detailed information on how to integrate with Tilia and this SDK, please refer to our documentation [here](https://www.tilia.io/docs/sdks/ios-sdk/).
 
 ## Installation
 
