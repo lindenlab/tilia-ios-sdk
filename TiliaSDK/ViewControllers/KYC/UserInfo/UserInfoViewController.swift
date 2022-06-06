@@ -235,7 +235,7 @@ private extension UserInfoViewController {
                                                    in: self.tableView,
                                                    at: item.index,
                                                    isExpanded: item.isExpanded,
-                                                   isFilled: item.isFilled)
+                                                   headerMode: item.mode)
       self.tableView.performBatchUpdates {
         tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .fade) }
         tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
