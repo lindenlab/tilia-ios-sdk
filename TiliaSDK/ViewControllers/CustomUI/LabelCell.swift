@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LabelCell: TitleBaseCell {
+final class LabelCell: TitleBaseCell {
   
   private let label: UILabel = {
     let label = UILabel()
