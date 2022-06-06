@@ -163,6 +163,12 @@ extension UserDocumentsViewController: UserDocumentsSelectDocumentCellDelegate {
     viewModel.deleteDocument(forItemIndex: itemIndex, atDocumentIndex: index)
   }
   
+  func userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(_ cell: UserDocumentsSelectDocumentCell) {
+    UIView.performWithoutAnimation {
+      self.tableView.performBatchUpdates(nil)
+    }
+  }
+  
 }
 
 // MARK: - ButtonsViewDelegate
@@ -270,9 +276,10 @@ private extension UserDocumentsViewController {
                                  at: $0.index,
                                  in: self.tableView,
                                  didAddDocumentsWith: $0.documentImages)
-      UIView.performWithoutAnimation {
-        self.tableView.performBatchUpdates(nil)
-      }
+      self.builder.updateCell(for: self.section,
+                              at: $0.index,
+                              in: self.tableView,
+                              didAddDocumentsWith: $0.documentImages)
     }.store(in: &subscriptions)
     
     viewModel.addDocumentsDidFail.sink { [weak self] _ in
@@ -285,9 +292,10 @@ private extension UserDocumentsViewController {
                                  at: $0.itemIndex,
                                  in: self.tableView,
                                  didDeleteDocumentAt: $0.documentIndex)
-      UIView.performWithoutAnimation {
-        self.tableView.performBatchUpdates(nil)
-      }
+      self.builder.updateCell(for: self.section,
+                              at: $0.itemIndex,
+                              in: self.tableView,
+                              didDeleteDocumentAt: $0.documentIndex)
     }.store(in: &subscriptions)
   }
   

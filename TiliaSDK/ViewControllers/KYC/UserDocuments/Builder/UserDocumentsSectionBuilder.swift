@@ -277,16 +277,8 @@ struct UserDocumentsSectionBuilder {
                      didAddDocumentsWith documentImages: [UIImage]) {
     switch section.items[index].mode {
     case var .additionalDocuments(additionalDocumentImages):
-      let startIndex = additionalDocumentImages.endIndex
       additionalDocumentImages.append(contentsOf: documentImages)
       section.items[index].mode = .additionalDocuments(additionalDocumentImages)
-      let endIndex = additionalDocumentImages.endIndex - 1
-      
-      let indexPath = IndexPath(row: index, section: 0)
-      if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
-        cell.configure(documentImages: additionalDocumentImages,
-                       insertIndexesRange: startIndex...endIndex)
-      }
     default:
       break
     }
@@ -300,7 +292,35 @@ struct UserDocumentsSectionBuilder {
     case var .additionalDocuments(documentImages):
       documentImages.remove(at: documentIndex)
       section.items[index].mode = .additionalDocuments(documentImages)
-      
+    default:
+      break
+    }
+  }
+  
+  func updateCell(for section: Section,
+                  at index: Int,
+                  in tableView: UITableView,
+                  didAddDocumentsWith documentImages: [UIImage]) {
+    switch section.items[index].mode {
+    case let .additionalDocuments(additionalDocumentImages):
+      let startIndex = additionalDocumentImages.endIndex - documentImages.count
+      let endIndex = additionalDocumentImages.endIndex - 1
+      let indexPath = IndexPath(row: index, section: 0)
+      if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
+        cell.configure(documentImages: additionalDocumentImages,
+                       insertIndexesRange: startIndex...endIndex)
+      }
+    default:
+      break
+    }
+  }
+  
+  func updateCell(for section: Section,
+                  at index: Int,
+                  in tableView: UITableView,
+                  didDeleteDocumentAt documentIndex: Int) {
+    switch section.items[index].mode {
+    case let .additionalDocuments(documentImages):
       let indexPath = IndexPath(row: index, section: 0)
       if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell {
         cell.configure(documentImages: documentImages,

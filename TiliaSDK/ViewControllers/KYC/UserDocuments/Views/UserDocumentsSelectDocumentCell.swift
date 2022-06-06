@@ -10,6 +10,7 @@ import UIKit
 protocol UserDocumentsSelectDocumentCellDelegate: AnyObject {
   func userDocumentsSelectDocumentCellAddButtonDidTap(_ cell: UserDocumentsSelectDocumentCell)
   func userDocumentsSelectDocumentCell(_ cell: UserDocumentsSelectDocumentCell, didDeleteItemAt index: Int)
+  func userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(_ cell: UserDocumentsSelectDocumentCell)
 }
 
 final class UserDocumentsSelectDocumentCell: LabelCell {
@@ -62,22 +63,25 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
                  delegate: UserDocumentsSelectDocumentCellDelegate?) {
     self.documentImages = documentImages
     self.delegate = delegate
-    collectionView.reloadData()
     setupCollectionViewHeightConstraintIfNeeded()
+    collectionView.reloadData()
   }
   
   func configure(documentImages: [UIImage],
                  insertIndexesRange: ClosedRange<Int>) {
     self.documentImages = documentImages
+    setupCollectionViewHeightConstraintIfNeeded()
     let indexPaths = (insertIndexesRange.lowerBound...insertIndexesRange.upperBound).map { IndexPath(item: $0, section: 0) }
     collectionView.insertItems(at: indexPaths)
-    setupCollectionViewHeightConstraintIfNeeded()
   }
   
   func configure(documentImages: [UIImage], deleteIndex: Int) {
     self.documentImages = documentImages
-    collectionView.deleteItems(at: [IndexPath(item: deleteIndex, section: 0)])
-    setupCollectionViewHeightConstraintIfNeeded()
+    collectionView.performBatchUpdates {
+      collectionView.deleteItems(at: [IndexPath(item: deleteIndex, section: 0)])
+    } completion: { _ in
+      self.setupCollectionViewHeightConstraintIfNeeded()
+    }
   }
   
 }
@@ -138,7 +142,11 @@ private extension UserDocumentsSelectDocumentCell {
   
   func setupCollectionViewHeightConstraintIfNeeded() {
     guard !documentImages.isEmpty else {
-      collectionView.isHidden = true
+      if !collectionView.isHidden {
+        collectionView.isHidden = true
+        collectionViewHeightConstraint.constant = 0
+        delegate?.userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(self)
+      }
       return
     }
     collectionView.isHidden = false
@@ -147,6 +155,7 @@ private extension UserDocumentsSelectDocumentCell {
     let collectionViewHeight = itemHeight * rowCount + (rowCount - 1) * 8
     if collectionViewHeightConstraint.constant != collectionViewHeight {
       collectionViewHeightConstraint.constant = collectionViewHeight
+      delegate?.userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(self)
     }
   }
   
