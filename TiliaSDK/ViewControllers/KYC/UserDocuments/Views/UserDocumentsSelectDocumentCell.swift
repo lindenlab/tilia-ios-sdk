@@ -42,6 +42,7 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     return collectionView
   }()
   
+  private lazy var collectionViewWidth: CGFloat = 0
   private var collectionViewItemSize: CGSize {
     let width = (collectionView.frame.width - 9) / 2
     let height = width * 1.3
@@ -134,6 +135,10 @@ private extension UserDocumentsSelectDocumentCell {
     addChildView(addButton)
     addChildView(collectionView)
     collectionViewHeightConstraint.isActive = true
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(orientationDidChange),
+                                           name: UIDevice.orientationDidChangeNotification,
+                                           object: nil)
   }
   
   @objc func addButtonDidTap() {
@@ -157,6 +162,13 @@ private extension UserDocumentsSelectDocumentCell {
       collectionViewHeightConstraint.constant = collectionViewHeight
       delegate?.userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(self)
     }
+  }
+  
+  @objc func orientationDidChange() {
+    guard collectionView.frame.width != collectionViewWidth else { return }
+    collectionViewWidth = collectionView.frame.width
+    collectionView.collectionViewLayout.invalidateLayout()
+    setupCollectionViewHeightConstraintIfNeeded()
   }
   
 }
