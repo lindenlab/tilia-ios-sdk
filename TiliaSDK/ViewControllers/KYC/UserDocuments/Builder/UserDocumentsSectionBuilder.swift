@@ -74,7 +74,8 @@ struct UserDocumentsSectionBuilder {
   func cell(for section: Section,
             in tableView: UITableView,
             at indexPath: IndexPath,
-            delegate: CellDelegate) -> UITableViewCell {
+            delegate: CellDelegate,
+            isUploading: Bool) -> UITableViewCell {
     let item = section.items[indexPath.row]
     switch item.mode {
     case let .field(model):
@@ -85,11 +86,14 @@ struct UserDocumentsSectionBuilder {
                      delegate: delegate)
       cell.configure(inputMode: .picker(items: model.items,
                                         selectedIndex: model.seletedItemIndex))
+      cell.isUserInteractionEnabled = !isUploading
       return cell
     case let .photo(model):
       let cell = tableView.dequeue(UserDocumentsPhotoCell.self, for: indexPath)
       cell.configure(title: item.title, font: .systemFont(ofSize: 14))
-      cell.configure(image: model.image, delegate: delegate)
+      cell.configure(delegate: delegate)
+      cell.configure(image: model.image)
+      cell.isUserInteractionEnabled = !isUploading
       return cell
     case let .additionalDocuments(images):
       let cell = tableView.dequeue(UserDocumentsSelectDocumentCell.self, for: indexPath)
@@ -99,6 +103,7 @@ struct UserDocumentsSectionBuilder {
                      font: .boldSystemFont(ofSize: 16))
       cell.configure(description: L.supportingDocumentsDescription,
                      font: .systemFont(ofSize: 14))
+      cell.isUserInteractionEnabled = !isUploading
       return cell
     }
   }
@@ -117,18 +122,19 @@ struct UserDocumentsSectionBuilder {
   
   func footer(for section: Section,
               in tableView: UITableView,
-              delegate: SectionFooterDelegate) -> UIView {
+              delegate: SectionFooterDelegate,
+              isUploading: Bool) -> UIView {
     let view = tableView.dequeue(UserDocumentsFooterView.self)
     switch section.type {
     case .documents:
-      view.configure(isPrimaryButtonEnabled: section.isFilled == true,
-                     isPrimaryButtonHidden: false,
+      view.configure(isPrimaryButtonHidden: false,
                      nonPrimaryButtonTitle: L.goBack,
                      nonPrimaryButtonImage: .leftArrowicon?.withRenderingMode(.alwaysTemplate),
                      delegate: delegate)
+      view.configure(isPrimaryButtonEnabled: section.isFilled == true)
+      view.configure(isLoading: isUploading)
     case .success:
-      view.configure(isPrimaryButtonEnabled: false,
-                     isPrimaryButtonHidden: true,
+      view.configure(isPrimaryButtonHidden: true,
                      nonPrimaryButtonTitle: L.done,
                      nonPrimaryButtonImage: nil,
                      delegate: delegate)
@@ -304,8 +310,8 @@ struct UserDocumentsSectionBuilder {
                   at index: Int,
                   in tableView: UITableView,
                   didAddDocumentsWith documentImages: [UIImage]) {
-    let indexPath = IndexPath(row: index, section: 0)
     guard case let .additionalDocuments(additionalDocumentImages) = section.items[index].mode else { return }
+    let indexPath = IndexPath(row: index, section: 0)
     let startIndex = additionalDocumentImages.endIndex - documentImages.count
     let endIndex = additionalDocumentImages.endIndex - 1
     guard let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell else { return }
@@ -323,6 +329,15 @@ struct UserDocumentsSectionBuilder {
       let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell else { return }
     cell.configure(documentImages: documentImages,
                    deleteIndex: documentIndex)
+  }
+  
+  func updateTable(_ tableView: UITableView,
+                   isUploading: Bool) {
+    tableView.visibleCells.forEach {
+      $0.isUserInteractionEnabled = !isUploading
+    }
+    guard let footer = tableView.footerView(forSection: 0) as? UserDocumentsFooterView else { return }
+    footer.configure(isLoading: isUploading)
   }
   
 }

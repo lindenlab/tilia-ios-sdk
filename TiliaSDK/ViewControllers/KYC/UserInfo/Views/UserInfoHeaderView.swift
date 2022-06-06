@@ -56,9 +56,7 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
   }
   
   func configure(title: String?,
-                 mode: Mode,
                  delegate: UserInfoHeaderViewDelegate?) {
-    configure(mode: mode, animated: false)
     titleLabel.text = title
     self.delegate = delegate
   }

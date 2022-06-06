@@ -47,10 +47,8 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(image: UIImage?,
-                 delegate: UserDocumentsPhotoCellDelegate?) {
+  func configure(delegate: UserDocumentsPhotoCellDelegate?) {
     self.delegate = delegate
-    configure(image: image)
   }
   
   func configure(image: UIImage?) {

@@ -27,8 +27,7 @@ final class UserInfoNextButtonCell: UITableViewCell {
     return button
   }()
   
-  func configure(isButtonEnabled: Bool, delegate: UserInfoNextButtonCellDelegate?) {
-    configure(isButtonEnabled: isButtonEnabled)
+  func configure(delegate: UserInfoNextButtonCellDelegate?) {
     self.delegate = delegate
   }
   

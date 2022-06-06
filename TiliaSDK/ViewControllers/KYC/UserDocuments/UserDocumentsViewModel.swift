@@ -21,6 +21,7 @@ protocol UserDocumentsViewModelInputProtocol {
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?)
   func setFiles(with urls: [URL], at index: Int)
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int)
+  func upload()
 }
 
 protocol UserDocumentsViewModelOutputProtocol {
@@ -36,6 +37,8 @@ protocol UserDocumentsViewModelOutputProtocol {
   var addDocumentsDidFail: PassthroughSubject<Void, Never> { get }
   var deleteDocument: PassthroughSubject<UserDocumentsDeleteDocument, Never> { get }
   var fillingContent: PassthroughSubject<Bool, Never> { get }
+  var uploading: CurrentValueSubject<Bool, Never> { get }
+  var uploadingDidSuccessfull: PassthroughSubject<Void, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -54,6 +57,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let addDocumentsDidFail = PassthroughSubject<Void, Never>()
   let deleteDocument = PassthroughSubject<UserDocumentsDeleteDocument, Never>()
   let fillingContent = PassthroughSubject<Bool, Never>()
+  let uploading = CurrentValueSubject<Bool, Never>(false)
+  let uploadingDidSuccessfull = PassthroughSubject<Void, Never>()
   
   private let manager: NetworkManager
   private var userDocumentsModel: UserDocumentsModel
@@ -163,6 +168,15 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     userDocumentsModel.additionalDocuments.remove(at: documentIndex)
     deleteDocument.send((itemIndex, documentIndex))
     updateFillingSectionObserver()
+  }
+  
+  func upload() {
+    // TODO: - Fix me
+    uploading.send(true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      self.uploading.send(false)
+      self.uploadingDidSuccessfull.send(())
+    }
   }
   
 }

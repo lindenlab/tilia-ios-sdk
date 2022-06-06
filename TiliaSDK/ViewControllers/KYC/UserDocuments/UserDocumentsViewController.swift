@@ -95,7 +95,8 @@ extension UserDocumentsViewController: UITableViewDataSource {
     return builder.cell(for: section,
                         in: tableView,
                         at: indexPath,
-                        delegate: self)
+                        delegate: self,
+                        isUploading: viewModel.uploading.value)
   }
   
 }
@@ -112,7 +113,8 @@ extension UserDocumentsViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: self.section,
                           in: tableView,
-                          delegate: self)
+                          delegate: self,
+                          isUploading: viewModel.uploading.value)
   }
   
 }
@@ -176,7 +178,7 @@ extension UserDocumentsViewController: UserDocumentsSelectDocumentCellDelegate {
 extension UserDocumentsViewController: ButtonsViewDelegate {
   
   func buttonsViewPrimaryButtonDidTap() {
-    
+    viewModel.upload()
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
@@ -303,6 +305,16 @@ private extension UserDocumentsViewController {
       self.builder.updateSection(&self.section,
                                  in: self.tableView,
                                  isFilled: $0)
+    }.store(in: &subscriptions)
+    
+    viewModel.uploading.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateTable(self.tableView,
+                               isUploading: $0)
+    }.store(in: &subscriptions)
+    
+    viewModel.uploadingDidSuccessfull.sink { [weak self] _ in
+      // TODO: - Fix me
     }.store(in: &subscriptions)
   }
   

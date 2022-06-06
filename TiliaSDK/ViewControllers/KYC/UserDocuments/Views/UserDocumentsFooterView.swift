@@ -25,12 +25,10 @@ final class UserDocumentsFooterView: UITableViewHeaderFooterView {
     return view
   }()
   
-  func configure(isPrimaryButtonEnabled: Bool,
-                 isPrimaryButtonHidden: Bool,
+  func configure(isPrimaryButtonHidden: Bool,
                  nonPrimaryButtonTitle: String,
                  nonPrimaryButtonImage: UIImage?,
                  delegate: ButtonsViewDelegate?) {
-    configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled)
     buttonsView.primaryButton.isHidden = isPrimaryButtonHidden
     buttonsView.nonPrimaryButton.setTitle(nonPrimaryButtonTitle,
                                           for: .normal)
@@ -41,6 +39,10 @@ final class UserDocumentsFooterView: UITableViewHeaderFooterView {
   
   func configure(isPrimaryButtonEnabled: Bool) {
     buttonsView.primaryButton.isEnabled = isPrimaryButtonEnabled
+  }
+  
+  func configure(isLoading: Bool) {
+    buttonsView.primaryButton.isLoading = isLoading
   }
   
   override init(reuseIdentifier: String?) {

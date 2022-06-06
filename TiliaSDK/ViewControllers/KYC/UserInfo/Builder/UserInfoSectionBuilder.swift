@@ -165,7 +165,8 @@ struct UserInfoSectionBuilder {
       return cell
     case .button:
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
-      cell.configure(isButtonEnabled: section.isFilled, delegate: delegate)
+      cell.configure(delegate: delegate)
+      cell.configure(isButtonEnabled: section.isFilled)
       return cell
     }
   }
@@ -176,8 +177,8 @@ struct UserInfoSectionBuilder {
               isUploading: Bool) -> UIView {
     let view = tableView.dequeue(UserInfoHeaderView.self)
     view.configure(title: section.type.title,
-                   mode: section.mode,
                    delegate: delegate)
+    view.configure(mode: section.mode, animated: false)
     view.isUserInteractionEnabled = !isUploading
     return view
   }
@@ -191,9 +192,9 @@ struct UserInfoSectionBuilder {
     case .contact:
       let isPrimaryButtonEnabled = isAllSectionsFilled(sections)
       let view = tableView.dequeue(UserInfoFooterView.self)
-      view.configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled,
-                     isLoading: isUploading,
-                     delegate: delegate)
+      view.configure(delegate: delegate)
+      view.configure(isLoading: isUploading)
+      view.configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled)
       return view
     default:
       return nil
