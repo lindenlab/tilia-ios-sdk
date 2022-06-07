@@ -183,7 +183,9 @@ public extension TLManager {
   ///   - animated: animated flag
   func presentKycViewController(on viewController: UIViewController,
                                 animated: Bool) {
-    let userInfoViewController = UserInfoViewController(manager: networkManager)
+    let userInfoViewController = UserInfoViewController(manager: networkManager,
+                                                        onComplete: nil,
+                                                        onError: nil)
     viewController.present(userInfoViewController, animated: animated)
   }
   

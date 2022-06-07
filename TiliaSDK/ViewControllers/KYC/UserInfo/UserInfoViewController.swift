@@ -44,8 +44,12 @@ final class UserInfoViewController: BaseViewController {
     return tableView
   }()
   
-  init(manager: NetworkManager) {
-    let viewModel = UserInfoViewModel(manager: manager)
+  init(manager: NetworkManager,
+       onComplete: ((Bool) -> Void)?,
+       onError: ((Error) -> Void)?) {
+    let viewModel = UserInfoViewModel(manager: manager,
+                                      onComplete: onComplete,
+                                      onError: onError)
     let router = UserInfoRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
@@ -77,7 +81,7 @@ final class UserInfoViewController: BaseViewController {
 extension UserInfoViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    // TODO: - Add logic
+    viewModel.complete()
   }
   
 }
@@ -187,7 +191,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
-    router.dismiss()
+    router.dismiss() { self.viewModel.complete() }
   }
   
 }
@@ -293,8 +297,13 @@ private extension UserInfoViewController {
                                isUploading: $0)
     }.store(in: &subscriptions)
     
-    viewModel.uploadingDidSuccessfull.sink { [weak self] _ in
+    viewModel.successfulUploading.sink { [weak self] _ in
       self?.router.routeToUserDocumentsView()
+    }.store(in: &subscriptions)
+    
+    viewModel.dismiss.sink { [weak self] _ in
+      guard let self = self else { return }
+      self.router.dismiss() { self.viewModel.complete() }
     }.store(in: &subscriptions)
   }
   

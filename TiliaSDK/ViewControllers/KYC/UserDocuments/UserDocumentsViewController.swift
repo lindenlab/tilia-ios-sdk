@@ -50,9 +50,14 @@ final class UserDocumentsViewController: BaseViewController {
     return tableView
   }()
   
-  init(manager: NetworkManager, defaultCounty: String) {
+  init(manager: NetworkManager,
+       defaultCounty: String,
+       onComplete: @escaping (Bool) -> Void,
+       onError: ((Error) -> Void)?) {
     let viewModel = UserDocumentsViewModel(manager: manager,
-                                           defaultCounty: defaultCounty)
+                                           defaultCounty: defaultCounty,
+                                           onComplete: onComplete,
+                                           onError: onError)
     let router = UserDocumentsRouter()
     self.viewModel = viewModel
     self.router = router
@@ -79,7 +84,7 @@ final class UserDocumentsViewController: BaseViewController {
 extension UserDocumentsViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    // TODO: - Add logic
+    viewModel.complete()
   }
   
 }
@@ -193,7 +198,7 @@ extension UserDocumentsViewController: ButtonsViewDelegate {
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
-    router.dismiss()
+    router.dismiss { self.viewModel.complete() }
   }
   
 }
@@ -324,8 +329,8 @@ private extension UserDocumentsViewController {
                                isUploading: $0)
     }.store(in: &subscriptions)
     
-    viewModel.uploadingDidSuccessfull.sink { [weak self] _ in
-      guard let self = self else { return }
+    viewModel.successfulUploading.sink { [weak self] in
+      guard let self = self, $0 else { return }
       self.section = self.builder.successSection()
       self.tableView.reloadData()
     }.store(in: &subscriptions)

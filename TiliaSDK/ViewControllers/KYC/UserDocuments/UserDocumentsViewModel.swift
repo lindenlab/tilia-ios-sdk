@@ -22,6 +22,7 @@ protocol UserDocumentsViewModelInputProtocol {
   func setFiles(with urls: [URL], at index: Int)
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int)
   func upload()
+  func complete()
 }
 
 protocol UserDocumentsViewModelOutputProtocol {
@@ -38,7 +39,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var deleteDocument: PassthroughSubject<UserDocumentsDeleteDocument, Never> { get }
   var fillingContent: PassthroughSubject<Bool, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
-  var uploadingDidSuccessfull: PassthroughSubject<Void, Never> { get }
+  var successfulUploading: CurrentValueSubject<Bool, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -58,15 +59,22 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let deleteDocument = PassthroughSubject<UserDocumentsDeleteDocument, Never>()
   let fillingContent = PassthroughSubject<Bool, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
-  let uploadingDidSuccessfull = PassthroughSubject<Void, Never>()
+  let successfulUploading = CurrentValueSubject<Bool, Never>(false)
   
   private let manager: NetworkManager
   private var userDocumentsModel: UserDocumentsModel
+  private let onComplete: ((Bool) -> Void)
+  private let onError: ((Error) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
   
-  init(manager: NetworkManager, defaultCounty: String) {
+  init(manager: NetworkManager,
+       defaultCounty: String,
+       onComplete: @escaping (Bool) -> Void,
+       onError: ((Error) -> Void)?) {
     self.manager = manager
     self.userDocumentsModel = UserDocumentsModel(documentCountry: defaultCounty)
+    self.onComplete = onComplete
+    self.onError = onError
   }
   
   func viewDidLoad() {
@@ -175,8 +183,12 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     uploading.send(true)
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.uploading.send(false)
-      self.uploadingDidSuccessfull.send(())
+      self.successfulUploading.send(true)
     }
+  }
+  
+  func complete() {
+    onComplete(successfulUploading.value)
   }
   
 }
