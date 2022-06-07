@@ -43,6 +43,7 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.register(UserDocumentsFooterView.self)
     tableView.register(TextFieldCell.self)
     tableView.register(UserDocumentsSelectDocumentCell.self)
+    tableView.register(UserDocumentsSuccessCell.self)
     tableView.estimatedRowHeight = 100
     tableView.estimatedSectionHeaderHeight = 100
     tableView.estimatedSectionFooterHeight = 140
@@ -115,6 +116,12 @@ extension UserDocumentsViewController: UITableViewDelegate {
                           in: tableView,
                           delegate: self,
                           isUploading: viewModel.uploading.value)
+  }
+  
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    builder.updateSuccessCell(cell,
+                              for: section,
+                              in: tableView)
   }
   
 }
@@ -318,7 +325,9 @@ private extension UserDocumentsViewController {
     }.store(in: &subscriptions)
     
     viewModel.uploadingDidSuccessfull.sink { [weak self] _ in
-      // TODO: - Fix me
+      guard let self = self else { return }
+      self.section = self.builder.successSection()
+      self.tableView.reloadData()
     }.store(in: &subscriptions)
   }
   

@@ -56,9 +56,10 @@ struct UserDocumentsSectionBuilder {
         case field(Field)
         case photo(Photo)
         case additionalDocuments([UIImage])
+        case success
       }
       
-      let title: String
+      let title: String?
       var mode: Mode
     }
     
@@ -101,6 +102,9 @@ struct UserDocumentsSectionBuilder {
                      documentImages: images,
                      delegate: delegate)
       cell.isUserInteractionEnabled = !isUploading
+      return cell
+    case .success:
+      let cell = tableView.dequeue(UserDocumentsSuccessCell.self, for: indexPath)
       return cell
     }
   }
@@ -156,7 +160,7 @@ struct UserDocumentsSectionBuilder {
   }
   
   func successSection() -> Section {
-    return Section(type: .success, items: []) // TODO: - Fix me
+    return Section(type: .success, items: [.init(title: nil, mode: .success)])
   }
   
   func updateSection(_ section: inout Section,
@@ -326,6 +330,15 @@ struct UserDocumentsSectionBuilder {
       let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsSelectDocumentCell else { return }
     cell.configure(documentImages: documentImages,
                    deleteIndex: documentIndex)
+  }
+  
+  func updateSuccessCell(_ cell: UITableViewCell,
+                         for section: Section,
+                         in tableView: UITableView) {
+    guard
+      section.type == .success,
+      let successCell = cell as? UserDocumentsSuccessCell else { return }
+    successCell.startAnimatingIfNeeded()
   }
   
   func updateTable(_ tableView: UITableView,
