@@ -97,12 +97,9 @@ struct UserDocumentsSectionBuilder {
       return cell
     case let .additionalDocuments(images):
       let cell = tableView.dequeue(UserDocumentsSelectDocumentCell.self, for: indexPath)
-      cell.configure(documentImages: images,
-                     delegate: delegate)
       cell.configure(title: item.title,
-                     font: .boldSystemFont(ofSize: 16))
-      cell.configure(description: L.supportingDocumentsDescription,
-                     font: .systemFont(ofSize: 14))
+                     documentImages: images,
+                     delegate: delegate)
       cell.isUserInteractionEnabled = !isUploading
       return cell
     }

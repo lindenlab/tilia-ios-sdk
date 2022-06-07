@@ -10,13 +10,30 @@ import UIKit
 protocol UserDocumentsSelectDocumentCellDelegate: AnyObject {
   func userDocumentsSelectDocumentCellAddButtonDidTap(_ cell: UserDocumentsSelectDocumentCell)
   func userDocumentsSelectDocumentCell(_ cell: UserDocumentsSelectDocumentCell, didDeleteItemAt index: Int)
-  func userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(_ cell: UserDocumentsSelectDocumentCell)
+  func userDocumentsSelectDocumentCell(_ cell: UserDocumentsSelectDocumentCell, didChangeCollectionViewHeight animated: Bool)
 }
 
-final class UserDocumentsSelectDocumentCell: LabelCell {
+final class UserDocumentsSelectDocumentCell: UITableViewCell {
     
   private weak var delegate: UserDocumentsSelectDocumentCellDelegate?
   private var documentImages: [UIImage] = []
+  
+  private let titleLabel: UILabel = {
+    let label = UILabel()
+    label.numberOfLines = 0
+    label.textColor = .primaryTextColor
+    label.font = .boldSystemFont(ofSize: 16)
+    return label
+  }()
+  
+  private let descriptionLabel: UILabel = {
+    let label = UILabel()
+    label.text = L.supportingDocumentsDescription
+    label.textColor = .secondaryTextColor
+    label.numberOfLines = 0
+    label.font = .systemFont(ofSize: 14)
+    return label
+  }()
   
   private let addButton: NonPrimaryButtonWithStyle = {
     let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
@@ -60,8 +77,10 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(documentImages: [UIImage],
+  func configure(title: String,
+                 documentImages: [UIImage],
                  delegate: UserDocumentsSelectDocumentCellDelegate?) {
+    titleLabel.text = title
     self.documentImages = documentImages
     self.delegate = delegate
     setupCollectionViewHeightConstraintIfNeeded()
@@ -81,7 +100,7 @@ final class UserDocumentsSelectDocumentCell: LabelCell {
     collectionView.performBatchUpdates {
       collectionView.deleteItems(at: [IndexPath(item: deleteIndex, section: 0)])
     } completion: { _ in
-      self.setupCollectionViewHeightConstraintIfNeeded()
+      self.setupCollectionViewHeightConstraintIfNeeded(animated: true)
     }
   }
   
@@ -131,26 +150,52 @@ extension UserDocumentsSelectDocumentCell: UserDocumentsDocumentCellDelegate {
 private extension UserDocumentsSelectDocumentCell {
   
   func setup() {
+    selectionStyle = .none
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
+    
     addButton.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
-    addChildView(addButton)
-    addChildView(collectionView)
-    collectionViewHeightConstraint.isActive = true
+    
     NotificationCenter.default.addObserver(self,
                                            selector: #selector(orientationDidChange),
                                            name: UIDevice.orientationDidChangeNotification,
                                            object: nil)
+    
+    let stackView = UIStackView(arrangedSubviews: [titleLabel,
+                                                   descriptionLabel,
+                                                   addButton,
+                                                   collectionView])
+    stackView.axis = .vertical
+    stackView.spacing = 8
+    stackView.setCustomSpacing(16, after: descriptionLabel)
+    
+    let rootStackView = UIStackView(arrangedSubviews: [stackView])
+    rootStackView.alignment = .top
+    rootStackView.translatesAutoresizingMaskIntoConstraints = false
+    contentView.addSubview(rootStackView)
+    
+    let bottomAnchor = rootStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+    bottomAnchor.priority = UILayoutPriority(999)
+    
+    NSLayoutConstraint.activate([
+      rootStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+      rootStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+      rootStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+      bottomAnchor,
+      collectionViewHeightConstraint
+    ])
   }
   
   @objc func addButtonDidTap() {
     delegate?.userDocumentsSelectDocumentCellAddButtonDidTap(self)
   }
   
-  func setupCollectionViewHeightConstraintIfNeeded() {
+  func setupCollectionViewHeightConstraintIfNeeded(animated: Bool = false) {
     guard !documentImages.isEmpty else {
       if !collectionView.isHidden {
         collectionView.isHidden = true
         collectionViewHeightConstraint.constant = 0
-        delegate?.userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(self)
+        delegate?.userDocumentsSelectDocumentCell(self, didChangeCollectionViewHeight: animated)
       }
       return
     }
@@ -160,12 +205,14 @@ private extension UserDocumentsSelectDocumentCell {
     let collectionViewHeight = itemHeight * rowCount + (rowCount - 1) * 8
     if collectionViewHeightConstraint.constant != collectionViewHeight {
       collectionViewHeightConstraint.constant = collectionViewHeight
-      delegate?.userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(self)
+      delegate?.userDocumentsSelectDocumentCell(self, didChangeCollectionViewHeight: animated)
     }
   }
   
   @objc func orientationDidChange() {
-    guard collectionView.frame.width != collectionViewWidth else { return }
+    guard
+      !collectionView.isHidden,
+      collectionView.frame.width != collectionViewWidth else { return }
     collectionViewWidth = collectionView.frame.width
     collectionView.collectionViewLayout.invalidateLayout()
     setupCollectionViewHeightConstraintIfNeeded()

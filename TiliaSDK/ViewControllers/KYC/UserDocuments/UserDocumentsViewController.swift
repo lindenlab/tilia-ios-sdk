@@ -165,9 +165,13 @@ extension UserDocumentsViewController: UserDocumentsSelectDocumentCellDelegate {
     viewModel.deleteDocument(forItemIndex: itemIndex, atDocumentIndex: index)
   }
   
-  func userDocumentsSelectDocumentCellCollectionViewDidChangeHeight(_ cell: UserDocumentsSelectDocumentCell) {
-    UIView.performWithoutAnimation {
-      self.tableView.performBatchUpdates(nil)
+  func userDocumentsSelectDocumentCell(_ cell: UserDocumentsSelectDocumentCell, didChangeCollectionViewHeight animated: Bool) {
+    if animated {
+      tableView.performBatchUpdates(nil)
+    } else {
+      UIView.performWithoutAnimation {
+        self.tableView.performBatchUpdates(nil)
+      }
     }
   }
   
