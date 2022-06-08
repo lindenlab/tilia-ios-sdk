@@ -17,6 +17,7 @@ protocol UserInfoViewModelInputProtocol {
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSection: UserInfoSectionBuilder.Section?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
   func upload()
+  func complete()
 }
 
 protocol UserInfoViewModelOutputProtocol {
@@ -28,12 +29,15 @@ protocol UserInfoViewModelOutputProtocol {
   var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
   var coutryOfResidenceDidSelect: PassthroughSubject<UserInfoModel, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
-  var uploadingDidSuccessfull: PassthroughSubject<Void, Never> { get }
+  var successfulUploading: PassthroughSubject<Void, Never> { get }
+  var dismiss: PassthroughSubject<Void, Never> { get }
 }
 
 protocol UserInfoDataStore {
   var manager: NetworkManager { get }
   var selectedCountry: String { get }
+  var onUserDocumentsComplete: (Bool) -> Void { get }
+  var onUserDocumentsError: ((Error) -> Void)? { get }
 }
 
 protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol { }
@@ -48,15 +52,34 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
   let coutryOfResidenceDidSelect = PassthroughSubject<UserInfoModel, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
-  let uploadingDidSuccessfull = PassthroughSubject<Void, Never>()
+  let successfulUploading = PassthroughSubject<Void, Never>()
+  let dismiss = PassthroughSubject<Void, Never>()
   
   let manager: NetworkManager
   var selectedCountry: String { return userInfoModel.countryOfResidence ?? "" }
+  private(set) lazy var onUserDocumentsComplete: (Bool) -> Void = { [weak self] in
+    guard let self = self else { return }
+    if $0 {
+      self.isUserDocumentsUploaded = true
+      self.dismiss.send(())
+    }
+    self.onComplete?($0) // TODO: - Check here if we need to pass UserDocuments uploading state here
+  }
+  var onUserDocumentsError: ((Error) -> Void)? {
+    return onError
+  }
+  
+  private let onComplete: ((Bool) -> Void)?
+  private let onError: ((Error) -> Void)?
   private var userInfoModel = UserInfoModel()
+  private var isUserDocumentsUploaded = false
   
-  
-  init(manager: NetworkManager) {
+  init(manager: NetworkManager,
+       onComplete: ((Bool) -> Void)?,
+       onError: ((Error) -> Void)?) {
     self.manager = manager
+    self.onComplete = onComplete
+    self.onError = onError
   }
   
   func viewDidLoad() {
@@ -150,8 +173,12 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     uploading.send(true)
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
       self.uploading.send(false)
-      self.uploadingDidSuccessfull.send(())
+      self.successfulUploading.send(())
     }
+  }
+  
+  func complete() {
+    onComplete?(isUserDocumentsUploaded)
   }
   
 }

@@ -49,6 +49,9 @@
 		D1632D0D283B7D5F006BDF19 /* BoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0C283B7D5F006BDF19 /* BoolModel.swift */; };
 		D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */; };
 		D1632D13283BC411006BDF19 /* UserDocumentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D12283BC411006BDF19 /* UserDocumentsModel.swift */; };
+		D163D9E3284F52D400F478DA /* UserDocumentsSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */; };
+		D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* Animation+Animations.swift */; };
+		D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = D163D9E8284F556000F478DA /* SuccessAnimation.json */; };
 		D16D569F28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift */; };
 		D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A2282538F00088FB3D /* TitleBaseCell.swift */; };
 		D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A4282560DC0088FB3D /* ButtonsView.swift */; };
@@ -211,6 +214,9 @@
 		D1632D0C283B7D5F006BDF19 /* BoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolModel.swift; sourceTree = "<group>"; };
 		D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsFooterView.swift; sourceTree = "<group>"; };
 		D1632D12283BC411006BDF19 /* UserDocumentsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsModel.swift; sourceTree = "<group>"; };
+		D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsSuccessCell.swift; sourceTree = "<group>"; };
+		D163D9E4284F53CC00F478DA /* Animation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+Animations.swift"; sourceTree = "<group>"; };
+		D163D9E8284F556000F478DA /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
 		D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPrimaryButtonWithStyle.swift; sourceTree = "<group>"; };
 		D16D56A2282538F00088FB3D /* TitleBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBaseCell.swift; sourceTree = "<group>"; };
 		D16D56A4282560DC0088FB3D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
@@ -584,6 +590,7 @@
 				D15BA9F2282AABF900511785 /* Date+Helpers.swift */,
 				D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */,
 				D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */,
+				D163D9E4284F53CC00F478DA /* Animation+Animations.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -642,6 +649,7 @@
 				D18CDB73283F810C00AAC732 /* UserDocumentsSelectDocumentCell.swift */,
 				D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */,
 				D17EFFA2284645A700F4B6DD /* UserDocumentsDocumentCell.swift */,
+				D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -691,6 +699,7 @@
 			children = (
 				D1CCE8CD27F4A65100FD0E25 /* Icons.xcassets */,
 				D1C8A84527F5EC9A00BF2910 /* LocalizedConstants.strings */,
+				D163D9E8284F556000F478DA /* SuccessAnimation.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -855,6 +864,7 @@
 				D1CCE8CE27F4A65100FD0E25 /* Icons.xcassets in Resources */,
 				D1B872CD280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json in Resources */,
 				D1B872C728044CC900DD1F7B /* GetInvoiceDetailsResponse.json in Resources */,
+				D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */,
 				D1B872C528044CC900DD1F7B /* PayInvoiceResponse.json in Resources */,
 				D1B872C828044CC900DD1F7B /* GetTosRequiredForUserResponse.json in Resources */,
 				D135DC8027E74A4A0009D888 /* Main.storyboard in Resources */,
@@ -1062,6 +1072,7 @@
 				D16D569F28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift in Sources */,
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
+				D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */,
 				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
 				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,
 				D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */,
@@ -1089,6 +1100,7 @@
 				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */,
 				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,
+				D163D9E3284F52D400F478DA /* UserDocumentsSuccessCell.swift in Sources */,
 				D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,

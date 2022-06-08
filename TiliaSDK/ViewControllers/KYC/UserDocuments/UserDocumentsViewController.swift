@@ -43,15 +43,21 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.register(UserDocumentsFooterView.self)
     tableView.register(TextFieldCell.self)
     tableView.register(UserDocumentsSelectDocumentCell.self)
+    tableView.register(UserDocumentsSuccessCell.self)
     tableView.estimatedRowHeight = 100
     tableView.estimatedSectionHeaderHeight = 100
     tableView.estimatedSectionFooterHeight = 140
     return tableView
   }()
   
-  init(manager: NetworkManager, defaultCounty: String) {
+  init(manager: NetworkManager,
+       defaultCounty: String,
+       onComplete: @escaping (Bool) -> Void,
+       onError: ((Error) -> Void)?) {
     let viewModel = UserDocumentsViewModel(manager: manager,
-                                           defaultCounty: defaultCounty)
+                                           defaultCounty: defaultCounty,
+                                           onComplete: onComplete,
+                                           onError: onError)
     let router = UserDocumentsRouter()
     self.viewModel = viewModel
     self.router = router
@@ -78,7 +84,7 @@ final class UserDocumentsViewController: BaseViewController {
 extension UserDocumentsViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    // TODO: - Add logic
+    viewModel.complete()
   }
   
 }
@@ -115,6 +121,12 @@ extension UserDocumentsViewController: UITableViewDelegate {
                           in: tableView,
                           delegate: self,
                           isUploading: viewModel.uploading.value)
+  }
+  
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    builder.updateSuccessCell(cell,
+                              for: section,
+                              in: tableView)
   }
   
 }
@@ -186,7 +198,7 @@ extension UserDocumentsViewController: ButtonsViewDelegate {
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
-    router.dismiss()
+    router.dismiss { self.viewModel.complete() }
   }
   
 }
@@ -317,8 +329,10 @@ private extension UserDocumentsViewController {
                                isUploading: $0)
     }.store(in: &subscriptions)
     
-    viewModel.uploadingDidSuccessfull.sink { [weak self] _ in
-      // TODO: - Fix me
+    viewModel.successfulUploading.sink { [weak self] in
+      guard let self = self, $0 else { return }
+      self.section = self.builder.successSection()
+      self.tableView.reloadData()
     }.store(in: &subscriptions)
   }
   

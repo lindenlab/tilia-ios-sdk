@@ -77,7 +77,7 @@ final class UserDocumentsSelectDocumentCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String,
+  func configure(title: String?,
                  documentImages: [UIImage],
                  delegate: UserDocumentsSelectDocumentCellDelegate?) {
     titleLabel.text = title
