@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'TiliaSDK'
-  s.version = '0.1.0'
+  s.version = '2.0.0'
   s.summary = 'The Tilia SDK'
   s.homepage = 'https://github.com/lindenlab/tilia-ios-sdk'
   s.author = 'Tilia'
