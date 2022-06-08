@@ -73,12 +73,14 @@ final class TextFieldCell: TextFieldsCell {
     case let .datePicker(selectedDate):
       firstTextField.inputView = datePicker(selectedDate: selectedDate)
     }
+    firstTextField.inputAccessoryView = toolbar()
   }
   
   func configure(mask: String, separator: Character = "-") {
     fieldMask = mask
     maskSeparator = separator
     firstTextField.keyboardType = .numberPad
+    firstTextField.inputAccessoryView = toolbar()
   }
   
 }
@@ -146,8 +148,26 @@ private extension TextFieldCell {
     return datePicker
   }
   
+  func toolbar() -> UIToolbar {
+    let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                     target: self,
+                                     action: #selector(doneButtonTapped))
+    let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                     target: nil,
+                                     action: nil)
+    let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
+    let toolbar = UIToolbar(frame: frame)
+    toolbar.sizeToFit()
+    toolbar.setItems([flexButton, doneButton], animated: false)
+    return toolbar
+  }
+  
   @objc func datePickerDidChange(_ sender: UIDatePicker) {
     firstTextField.text = sender.date.string()
+  }
+  
+  @objc func doneButtonTapped() {
+    firstTextField.resignFirstResponder()
   }
   
 }

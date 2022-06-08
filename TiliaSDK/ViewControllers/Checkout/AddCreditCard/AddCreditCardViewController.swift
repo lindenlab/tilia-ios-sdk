@@ -8,11 +8,12 @@
 import UIKit
 import Combine
 
-final class AddCreditCardViewController: BaseViewController, LoadableProtocol {
+final class AddCreditCardViewController: BaseViewController {
   
-  var hideableView: UIView { return stackView }
-  var spinnerPosition: CGPoint { return stackView.center }
-
+  override var hideableView: UIView {
+    return stackView
+  }
+  
   private let viewModel: AddCreditCardViewModelProtocol
   private let router: AddCreditCardRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []

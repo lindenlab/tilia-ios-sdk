@@ -9,6 +9,10 @@ import UIKit
 
 class BaseViewController: UIViewController {
   
+  var hideableView: UIView {
+    return view
+  }
+  
   let logoImageView: UIImageView = {
     let imageView = UIImageView(image: .logoIcon)
     imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,9 +40,32 @@ class BaseViewController: UIViewController {
     return button
   }()
   
+  private var spinner: UIActivityIndicatorView?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setup()
+  }
+  
+  final func startLoading() {
+    guard spinner == nil else { return }
+    let spinner = UIActivityIndicatorView(style: .large)
+    self.spinner = spinner
+    spinner.startAnimating()
+    spinner.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(spinner)
+    NSLayoutConstraint.activate([
+      spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+    ])
+    hideableView.isHidden = true
+  }
+  
+  final func stopLoading() {
+    guard spinner != nil else { return }
+    spinner?.removeFromSuperview()
+    spinner = nil
+    hideableView.isHidden = false
   }
   
 }

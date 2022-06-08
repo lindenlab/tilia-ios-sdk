@@ -48,24 +48,22 @@ struct CheckoutSectionBuilder {
     case summary(Summary)
     case payment(Payment)
     case successfulPayment
-    
-    var numberOfRows: Int {
-      switch self {
-      case let .summary(model): return model.items.count
-      case let .payment(model): return model.items.count
-      case .successfulPayment: return 1
-      }
+  }
+  
+  func numberOfRows(in section: Section) -> Int {
+    switch section {
+    case let .summary(model): return model.items.count
+    case let .payment(model): return model.items.count
+    case .successfulPayment: return 1
     }
-    
-    var heightForHeader: CGFloat {
-      switch self {
-      case .successfulPayment: return .leastNormalMagnitude
-      case let .payment(model):
-        return model.isEmpty ? 20 : UITableView.automaticDimension
-      default: return UITableView.automaticDimension
-      }
+  }
+  
+  func heightForHeader(in section: Section) -> CGFloat {
+    switch section {
+    case .successfulPayment: return .leastNormalMagnitude
+    case let .payment(model): return model.isEmpty ? 20 : UITableView.automaticDimension
+    default: return UITableView.automaticDimension
     }
-    
   }
   
   func cell(for section: Section,
@@ -88,11 +86,11 @@ struct CheckoutSectionBuilder {
       let lastItemIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
       cell.configure(title: item.title,
                      subTitle: item.subTitle,
-                     isSelected: item.isSelected,
                      canSelect: model.canSelect,
                      isDividerHidden: lastItemIndex == indexPath.row,
                      icon: item.icon,
                      delegate: delegate)
+      cell.configure(isSelected: item.isSelected)
       return cell
     case .successfulPayment:
       return tableView.dequeue(CheckoutSuccessfulPaymentCell.self, for: indexPath)
@@ -127,22 +125,22 @@ struct CheckoutSectionBuilder {
     switch section {
     case let .summary(model):
       let view = tableView.dequeue(CheckoutPayloadSummaryFooterView.self)
-      view.configure(amount: model.amount, isLoading: model.isLoading)
+      view.configure(amount: model.amount)
+      view.configure(isLoading: model.isLoading)
       return view
     case let .payment(model):
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)
       view.configure(payButtonTitle: model.isEmpty ? nil : model.payButtonTitle,
                      closeButtonTitle: L.cancel,
-                     isPayButtonEnabled: model.isPayButtonEnabled,
                      isCreditCardButtonHidden: model.isCreditCardButtonHidden,
                      delegate: delegate,
                      textViewDelegate: model.isEmpty ? nil : delegate)
+      view.configure(isPayButtonEnabled: model.isPayButtonEnabled)
       return view
     case .successfulPayment:
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)
       view.configure(payButtonTitle: nil,
                      closeButtonTitle: L.done,
-                     isPayButtonEnabled: true,
                      isCreditCardButtonHidden: true,
                      delegate: delegate,
                      textViewDelegate: nil)
@@ -237,7 +235,7 @@ struct CheckoutSectionBuilder {
     case var .payment(model):
       model.isPayButtonEnabled = isPayButtonEnabled
       if let footer = tableView.footerView(forSection: sectionIndex) as? CheckoutPaymentFooterView {
-        footer.configure(isPrimaryButtonEnabled: isPayButtonEnabled)
+        footer.configure(isPayButtonEnabled: isPayButtonEnabled)
       }
       return .payment(model)
     default:

@@ -11,8 +11,7 @@ class TitleBaseCell: UITableViewCell {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 16)
-    label.textColor = .primaryTextColor
+    label.numberOfLines = 0
     return label
   }()
   
@@ -33,8 +32,13 @@ class TitleBaseCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  final func configure(title: String) {
+  final func configure(title: String?,
+                       font: UIFont = .systemFont(ofSize: 16),
+                       textColor: UIColor = .primaryTextColor) {
     titleLabel.text = title
+    titleLabel.isHidden = title == nil
+    titleLabel.font = font
+    titleLabel.textColor = textColor
   }
   
   final func addChildView(_ view: UIView, spacing: CGFloat = 8) {
@@ -54,11 +58,14 @@ private extension TitleBaseCell {
     contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     
+    let bottomAnchor = stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+    bottomAnchor.priority = UILayoutPriority(999)
+    
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+      bottomAnchor
     ])
   }
   

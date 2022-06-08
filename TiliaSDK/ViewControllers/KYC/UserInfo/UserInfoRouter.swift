@@ -7,10 +7,23 @@
 
 import UIKit
 
-protocol UserInfoRoutingProtocol: RoutingProtocol { }
+protocol UserInfoRoutingProtocol: RoutingProtocol {
+  func routeToUserDocumentsView()
+}
 
 final class UserInfoRouter: UserInfoRoutingProtocol {
   
   weak var viewController: UIViewController?
+  private let dataStore: UserInfoDataStore
+  
+  init(dataStore: UserInfoDataStore) {
+    self.dataStore = dataStore
+  }
+  
+  func routeToUserDocumentsView() {
+    let userDocumentsViewController = UserDocumentsViewController(manager: dataStore.manager,
+                                                                  defaultCounty: dataStore.selectedCountry)
+    viewController?.present(userDocumentsViewController, animated: true)
+  }
   
 }

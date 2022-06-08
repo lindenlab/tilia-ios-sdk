@@ -8,10 +8,11 @@
 import UIKit
 import Combine
 
-final class CheckoutViewController: BaseViewController, LoadableProtocol {
+final class CheckoutViewController: BaseViewController {
   
-  var hideableView: UIView { return tableView }
-  var spinnerPosition: CGPoint { return view.center }
+  override var hideableView: UIView {
+    return tableView
+  }
   
   private let viewModel: CheckoutViewModelProtocol
   private let router: CheckoutRoutingProtocol
@@ -28,6 +29,9 @@ final class CheckoutViewController: BaseViewController, LoadableProtocol {
     tableView.delaysContentTouches = false
     tableView.delegate = self
     tableView.dataSource = self
+    tableView.estimatedSectionHeaderHeight = 100
+    tableView.estimatedSectionFooterHeight = 300
+    tableView.estimatedRowHeight = 100
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(CheckoutPayloadSummaryFooterView.self)
     tableView.register(CheckoutPayloadCell.self)
@@ -77,7 +81,7 @@ extension CheckoutViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return sections[section].numberOfRows
+    return builder.numberOfRows(in: sections[section])
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,7 +109,7 @@ extension CheckoutViewController: UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return sections[section].heightForHeader
+    return builder.heightForHeader(in: sections[section])
   }
   
 }

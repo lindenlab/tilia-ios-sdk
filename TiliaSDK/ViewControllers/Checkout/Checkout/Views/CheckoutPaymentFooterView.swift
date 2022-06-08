@@ -84,12 +84,10 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   
   func configure(payButtonTitle: String?,
                  closeButtonTitle: String,
-                 isPayButtonEnabled: Bool,
                  isCreditCardButtonHidden: Bool,
                  delegate: CheckoutPaymentFooterViewDelegate?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
     payButton.setTitle(payButtonTitle, for: .normal)
-    payButton.isEnabled = isPayButtonEnabled
     payButton.isHidden = payButtonTitle == nil
     closeButton.setTitle(closeButtonTitle, for: .normal)
     addCreditCardButton.isHidden = isCreditCardButtonHidden
@@ -100,8 +98,8 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     self.delegate = delegate
   }
   
-  func configure(isPrimaryButtonEnabled: Bool) {
-    payButton.isEnabled = isPrimaryButtonEnabled
+  func configure(isPayButtonEnabled: Bool) {
+    payButton.isEnabled = isPayButtonEnabled
   }
   
 }

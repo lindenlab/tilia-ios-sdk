@@ -22,7 +22,7 @@ public final class TLManager {
   
   private let _networkManager = NetworkManager(serverClient: ServerClient())
   private let _colorsConfiguration = ColorsConfiguration()
-  private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue", attributes: .concurrent)
+  private let synchronizationQueue = DispatchQueue(label: "io.tilia.ios.sdk.TLManagerSynchronizationQueue", attributes: .concurrent)
   
   private init() { }
   
@@ -185,16 +185,6 @@ public extension TLManager {
                                 animated: Bool) {
     let userInfoViewController = UserInfoViewController(manager: networkManager)
     viewController.present(userInfoViewController, animated: animated)
-  }
-  
-}
-
-// MARK: - For Testing
-
-extension TLManager {
-  
-  func setIsTestServer(_ isTest: Bool) {
-    networkManager.setServerClient(isTest ? ServerTestClient() : ServerClient())
   }
   
 }

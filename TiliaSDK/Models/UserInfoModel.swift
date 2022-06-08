@@ -23,20 +23,20 @@ struct UserInfoModel {
     var postalCode: String?
   }
   
-  enum CanUseAddressFor1099: String, CaseIterable {
-    case yes = "Yes"
-    case no = "No"
+  struct Tax {
+    var ssn: String?
+    var signature: String?
   }
   
   var countryOfResidence: String?
   var fullName: FullName
   var dateOfBirth: Date?
-  var ssn: String?
   var address: Address
-  var canUseAddressFor1099: CanUseAddressFor1099?
+  var canUseAddressFor1099: BoolModel?
+  var tax: Tax
   
   var isUsResident: Bool {
-    return true
+    return countryOfResidence == "USA" // TODO: - Fix me
   }
   
   var dateOfBirthString: String? {
@@ -46,15 +46,29 @@ struct UserInfoModel {
   init(countryOfResidence: String? = nil,
        fullName: FullName = FullName(),
        dateOfBirth: Date? = nil,
-       ssn: String? = nil,
        address: Address = Address(),
-       canUseAddressFor1099: CanUseAddressFor1099? = nil) {
+       canUseAddressFor1099: BoolModel? = nil,
+       tax: Tax = Tax()) {
     self.countryOfResidence = countryOfResidence
     self.fullName = fullName
     self.dateOfBirth = dateOfBirth
-    self.ssn = ssn
     self.address = address
     self.canUseAddressFor1099 = canUseAddressFor1099
+    self.tax = tax
+  }
+  
+  mutating func setAddressToDefault() {
+    address.street = nil
+    address.apartment = nil
+    address.city = nil
+    address.region = nil
+    address.postalCode = nil
+    canUseAddressFor1099 = nil
+  }
+  
+  mutating func setTaxToDefault() {
+    tax.ssn = nil
+    tax.signature = nil
   }
   
 }

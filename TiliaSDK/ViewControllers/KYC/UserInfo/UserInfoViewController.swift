@@ -8,10 +8,11 @@
 import UIKit
 import Combine
 
-final class UserInfoViewController: BaseViewController, LoadableProtocol {
+final class UserInfoViewController: BaseViewController {
   
-  var hideableView: UIView { return tableView }
-  var spinnerPosition: CGPoint { return view.center }
+  override var hideableView: UIView {
+    return tableView
+  }
   
   private let viewModel: UserInfoViewModelProtocol
   private let router: UserInfoRoutingProtocol
@@ -29,22 +30,23 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.addClosingKeyboardOnTap()
-    tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(UserInfoHeaderView.self)
     tableView.register(UserInfoFooterView.self)
+    tableView.register(UserInfoNextButtonCell.self)
     tableView.register(TextFieldCell.self)
     tableView.register(TwoTextFieldsCell.self)
     tableView.register(ThreeTextFieldsCell.self)
     tableView.register(LabelCell.self)
     tableView.tableHeaderView = builder.tableHeader()
-    tableView.tableFooterView = builder.tableFooter(delegate: self)
-    tableView.estimatedRowHeight = 44
+    tableView.estimatedRowHeight = 150
+    tableView.estimatedSectionHeaderHeight = 50
+    tableView.estimatedSectionFooterHeight = 140
     return tableView
   }()
   
   init(manager: NetworkManager) {
     let viewModel = UserInfoViewModel(manager: manager)
-    let router = UserInfoRouter()
+    let router = UserInfoRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
     super.init(nibName: nil, bundle: nil)
@@ -65,8 +67,7 @@ final class UserInfoViewController: BaseViewController, LoadableProtocol {
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    tableView.updateTableHeaderHeight()
-    tableView.updateTableFooterHeight()
+    tableView.updateTableHeaderHeightIfNeeded()
   }
   
 }
@@ -90,7 +91,7 @@ extension UserInfoViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return sections[section].numberOfRows
+    return builder.numberOfRows(in: sections[section])
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -109,17 +110,20 @@ extension UserInfoViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return builder.header(for: sections[section],
                           in: tableView,
-                          delegate: self)
+                          delegate: self,
+                          isUploading: viewModel.uploading.value)
   }
   
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return builder.footer(for: sections[section],
+    return builder.footer(for: sections,
                           in: tableView,
-                          delegate: self)
+                          at: section,
+                          delegate: self,
+                          isUploading: viewModel.uploading.value)
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return sections[section].heightForFooter
+    return builder.heightForFooter(in: sections[section])
   }
   
 }
@@ -138,6 +142,21 @@ extension UserInfoViewController: TextFieldsCellDelegate {
   
 }
 
+// MARK: - UserInfoNextButtonCellDelegate
+
+extension UserInfoViewController: UserInfoNextButtonCellDelegate {
+  
+  func userInfoNextButtonCellButtonDidTap(_ cell: UserInfoNextButtonCell) {
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    let index = indexPath.section
+    viewModel.updateSection(sections[index],
+                            at: index,
+                            isExpanded: false,
+                            nextSection: sections[index + 1])
+  }
+  
+}
+
 // MARK: - UserInfoHeaderViewDelegate
 
 extension UserInfoViewController: UserInfoHeaderViewDelegate {
@@ -145,22 +164,10 @@ extension UserInfoViewController: UserInfoHeaderViewDelegate {
   func userInfoHeaderView(_ header: UserInfoHeaderView, willExpand isExpanded: Bool) {
     tableView.endEditing(true)
     guard let index = getHeaderIndex(header) else { return }
-    viewModel.updateSection(at: index,
-                            sectionType: sections[index].type,
-                            isExpanded: isExpanded)
-  }
-  
-}
-
-// MARK: - UserInfoFooterViewDelegate
-
-extension UserInfoViewController: UserInfoFooterViewDelegate {
-  
-  func userInfoFooterViewButtonDidTap(_ footer: UserInfoFooterView) {
-    guard let index = getFooterIndex(footer) else { return }
-    viewModel.updateSection(at: index,
-                            sectionType: sections[index].type,
-                            isExpanded: false)
+    viewModel.updateSection(sections[index],
+                            at: index,
+                            isExpanded: isExpanded,
+                            nextSection: nil)
   }
   
 }
@@ -169,11 +176,17 @@ extension UserInfoViewController: UserInfoFooterViewDelegate {
 
 extension UserInfoViewController: ButtonsViewDelegate {
   
-  func buttonsViewPrimaryButtonDidTap(_ view: ButtonsView) {
-    
+  func buttonsViewPrimaryButtonDidTap() {
+    for (index, section) in sections.enumerated() where section.mode == .expanded {
+      viewModel.updateSection(section,
+                              at: index,
+                              isExpanded: false,
+                              nextSection: nil)
+    }
+    viewModel.upload()
   }
   
-  func buttonsViewPrimaryNonButtonDidTap(_ view: ButtonsView) {
+  func buttonsViewPrimaryNonButtonDidTap() {
     router.dismiss()
   }
   
@@ -198,15 +211,15 @@ private extension UserInfoViewController {
   }
   
   func bind() {
-    viewModel.loading.sink { [weak self] in
+    viewModel.contentLoading.sink { [weak self] in
       guard let self = self else { return }
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
     
     viewModel.error.sink { [weak self] _ in
       guard let self = self else { return }
-      self.router.showToast(title: L.errorPaymentTitle,
-                            message: L.errorPaymentMessage)
+      self.router.showToast(title: L.errorKycTitle,
+                            message: L.errorKycMessage)
     }.store(in: &subscriptions)
     
     viewModel.content.sink { [weak self] _ in
@@ -217,51 +230,71 @@ private extension UserInfoViewController {
     
     viewModel.expandSection.sink { [weak self] item in
       guard let self = self else { return }
-      self.builder.updateSection(&self.sections[item.index],
-                                 with: item.model,
-                                 isExpanded: item.isExpanded,
-                                 isFilled: item.isFilled)
+      let tableUpdate = self.builder.updateSection(&self.sections[item.index],
+                                                   with: item.model,
+                                                   in: self.tableView,
+                                                   at: item.index,
+                                                   isExpanded: item.isExpanded,
+                                                   headerMode: item.mode)
       self.tableView.performBatchUpdates {
-        self.tableView.reloadSections([item.index], with: .fade)
+        tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .fade) }
+        tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
       } completion: { _ in
-        if item.isExpanded {
-          self.scrollToSection(at: item.index)
+        if item.expandNext {
+          let nextIndex = item.index + 1
+          self.viewModel.updateSection(self.sections[nextIndex],
+                                       at: nextIndex,
+                                       isExpanded: true,
+                                       nextSection: nil)
         }
       }
     }.store(in: &subscriptions)
     
-    viewModel.setSectionText.sink { [weak self] item in
+    viewModel.setSectionText.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updateSection(&self.sections[item.indexPath.section],
+      self.builder.updateSection(&self.sections[$0.indexPath.section],
                                  in: self.tableView,
-                                 at: item.indexPath,
-                                 text: item.text,
-                                 fieldIndex: item.fieldIndex,
-                                 isFilled: item.isFilled)
+                                 at: $0.indexPath,
+                                 text: $0.text,
+                                 fieldIndex: $0.fieldIndex,
+                                 isFilled: $0.isFilled)
       self.builder.updateTableFooter(for: self.sections,
                                      in: self.tableView)
     }.store(in: &subscriptions)
     
-    viewModel.coutryOfResidenceDidChange.sink { [weak self] text in
-      guard
-        let self = self,
-        let sectionIndex = self.sections.firstIndex(where: { $0.type == .contact }),
-        let itemIndex = self.sections[sectionIndex].items.firstIndex(where: { $0.type == .countryOfResidance }) else { return }
-      self.builder.updateSection(&self.sections[sectionIndex],
-                                 in: self.tableView,
-                                 at: IndexPath(row: itemIndex, section: sectionIndex),
-                                 countryOfResidenceDidChangeWith: text)
+    viewModel.coutryOfResidenceDidChange.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updateSections(&self.sections,
+                                                    in: self.tableView,
+                                                    countryOfResidenceDidChangeWith: $0.model,
+                                                    needToSetContactToDefault: $0.needToSetContactToDefault,
+                                                    wasUsResidence: $0.wasUsResidence)
+      self.builder.updateTableFooter(for: self.sections,
+                                     in: self.tableView)
+      self.tableView.performBatchUpdates {
+        tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
+        tableUpdate.insertSection.map { self.tableView.insertSections($0, with: .fade) }
+        tableUpdate.deleteSection.map { self.tableView.deleteSections($0, with: .fade) }
+      }
     }.store(in: &subscriptions)
     
-    viewModel.coutryOfResidenceDidSelect.sink { [weak self] _ in
+    viewModel.coutryOfResidenceDidSelect.sink { [weak self] in
       guard let self = self else { return }
-      let indices = self.sections.enumerated().filter { $1.mode == .disabled }
-      indices.forEach { index, _ in
-        self.builder.updateSection(&self.sections[index],
-                                   in: self.tableView,
-                                   at: index,
-                                   mode: .normal)
-      }
+      let indexSet = self.builder.updateSections(&self.sections,
+                                                 in: self.tableView,
+                                                 countryOfResidenceDidSelectWith: $0)
+      indexSet.map { self.tableView.insertSections($0, with: .fade) }
+    }.store(in: &subscriptions)
+    
+    viewModel.uploading.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateTable(self.tableView,
+                               for: self.sections,
+                               isUploading: $0)
+    }.store(in: &subscriptions)
+    
+    viewModel.uploadingDidSuccessfull.sink { [weak self] _ in
+      self?.router.routeToUserDocumentsView()
     }.store(in: &subscriptions)
   }
   
@@ -269,18 +302,6 @@ private extension UserInfoViewController {
     return sections.indices.firstIndex {
       return tableView.headerView(forSection: $0) === header
     }
-  }
-  
-  func getFooterIndex(_ footer: UITableViewHeaderFooterView) -> Int? {
-    return sections.indices.firstIndex {
-      return tableView.footerView(forSection: $0) === footer
-    }
-  }
-  
-  func scrollToSection(at index: Int) {
-    tableView.scrollToRow(at: IndexPath(row: NSNotFound, section: index),
-                          at: .top,
-                          animated: true)
   }
   
   @objc func keyboardWasShown(_ notificiation: NSNotification) {

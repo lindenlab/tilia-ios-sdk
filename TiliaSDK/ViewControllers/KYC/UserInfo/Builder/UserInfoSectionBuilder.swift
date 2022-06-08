@@ -9,22 +9,28 @@ import UIKit
 
 struct UserInfoSectionBuilder {
   
-  typealias CellDelegate = TextFieldsCellDelegate
+  typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
-  typealias SectionFooterDelegate = UserInfoFooterViewDelegate
-  typealias TableFooterDelegate = ButtonsViewDelegate
+  typealias SectionFooterDelegate = ButtonsViewDelegate
+  typealias TableUpdate = (insertSection: IndexSet?, deleteSection: IndexSet?, insertRows: [IndexPath]?, deleteRows: [IndexPath]?)
   
   struct Section {
     
-    enum SectionType: CaseIterable {
+    enum SectionType {
       case location
       case personal
+      case tax
       case contact
+      
+      static var defaultItems: [SectionType] {
+        return [.location, .personal, .contact]
+      }
       
       var title: String {
         switch self {
         case .location: return L.location
         case .personal: return L.personal
+        case .tax: return L.taxInfo
         case .contact: return L.contact
         }
       }
@@ -39,35 +45,20 @@ struct UserInfoSectionBuilder {
     
     struct Item {
       
-      enum ItemType {
-        case countryOfResidance
-        case fullName
-        case dateOfBirth
-        case ssn
-        case address
-        case city
-        case stateOrRegion
-        case state
-        case postalCode
-        case useAddressFor1099
-        
-        var title: String {
-          switch self {
-          case .countryOfResidance: return L.countryOfResidence
-          case .fullName: return L.fullName
-          case .dateOfBirth: return L.dateOfBirth
-          case .ssn: return L.ssn
-          case .address: return L.address
-          case .city: return L.city
-          case .stateOrRegion: return L.stateOrRegion
-          case .state: return L.state
-          case .postalCode: return L.postalCode
-          case .useAddressFor1099: return L.useAddressFor1099
-          }
-        }
-      }
-      
       enum Mode {
+        
+        enum FieldType {
+          case countryOfResidance
+          case fullName
+          case dateOfBirth
+          case ssn
+          case signature
+          case address
+          case city
+          case state
+          case postalCode
+          case useAddressFor1099
+        }
         
         struct Field {
           let placeholder: String?
@@ -84,17 +75,20 @@ struct UserInfoSectionBuilder {
         }
         
         struct Fields {
+          let type: FieldType
           var fields: [Field]
-          let inputMode: TextFieldCell.InputMode?
+          var inputMode: TextFieldCell.InputMode?
           let mask: String?
           
           var fieldsContent: [TextFieldsCell.FieldContent] {
             return fields.map { $0.fieldContent }
           }
           
-          init(fields: [Field],
+          init(type: FieldType,
+               fields: [Field],
                inputMode: TextFieldCell.InputMode? = nil,
                mask: String? = nil) {
+            self.type = type
             self.fields = fields
             self.inputMode = inputMode
             self.mask = mask
@@ -102,15 +96,18 @@ struct UserInfoSectionBuilder {
         }
         
         case fields(Fields)
-        case label(String?)
+        case label(UIFont)
+        case button
       }
       
-      let type: ItemType
+      let title: String?
       var mode: Mode
       let description: String?
       
-      init(type: ItemType, mode: Mode, description: String? = nil) {
-        self.type = type
+      init(mode: Mode,
+           title: String? = nil,
+           description: String? = nil) {
+        self.title = title
         self.mode = mode
         self.description = description
       }
@@ -122,10 +119,16 @@ struct UserInfoSectionBuilder {
     var items: [Item]
     
     var isExpanded: Bool { return mode == .expanded }
-    var numberOfRows: Int { return items.count }
-    
-    var heightForFooter: CGFloat {
-      return isExpanded ? UITableView.automaticDimension : .leastNormalMagnitude
+  }
+  
+  func numberOfRows(in section: Section) -> Int {
+    return section.items.count
+  }
+  
+  func heightForFooter(in section: Section) -> CGFloat {
+    switch section.type {
+    case .contact: return UITableView.automaticDimension
+    default: return .leastNormalMagnitude
     }
   }
   
@@ -150,42 +153,49 @@ struct UserInfoSectionBuilder {
       default:
         fatalError("For now we do not support more than 3 fields")
       }
-      cell.configure(title: item.type.title)
+      cell.configure(title: item.title)
       cell.configure(fieldsContent: model.fieldsContent,
                      description: item.description,
                      delegate: delegate)
       return cell
-    case let .label(model):
+    case let .label(font):
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
-      cell.configure(title: item.type.title)
-      cell.configure(description: model)
+      cell.configure(title: item.title)
+      cell.configure(description: item.description, font: font)
+      return cell
+    case .button:
+      let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
+      cell.configure(delegate: delegate)
+      cell.configure(isButtonEnabled: section.isFilled)
       return cell
     }
   }
   
   func header(for section: Section,
               in tableView: UITableView,
-              delegate: SectionHeaderDelegate) -> UIView {
+              delegate: SectionHeaderDelegate,
+              isUploading: Bool) -> UIView {
     let view = tableView.dequeue(UserInfoHeaderView.self)
     view.configure(title: section.type.title,
-                   mode: section.mode,
                    delegate: delegate)
+    view.configure(mode: section.mode, animated: false)
+    view.isUserInteractionEnabled = !isUploading
     return view
   }
   
-  func footer(for section: Section,
+  func footer(for sections: [Section],
               in tableView: UITableView,
-              delegate: SectionFooterDelegate) -> UIView? {
-    switch section.type {
-    case .location, .personal:
-      if section.isExpanded {
-        let view = tableView.dequeue(UserInfoFooterView.self)
-        view.configure(isButtonEnabled: section.isFilled,
-                       delegate: delegate)
-        return view
-      } else {
-        return nil
-      }
+              at section: Int,
+              delegate: SectionFooterDelegate,
+              isUploading: Bool) -> UIView? {
+    switch sections[section].type {
+    case .contact:
+      let isPrimaryButtonEnabled = isAllSectionsFilled(sections)
+      let view = tableView.dequeue(UserInfoFooterView.self)
+      view.configure(delegate: delegate)
+      view.configure(isLoading: isUploading)
+      view.configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled)
+      return view
     default:
       return nil
     }
@@ -201,29 +211,8 @@ struct UserInfoSectionBuilder {
     return view
   }
   
-  func tableFooter(delegate: TableFooterDelegate) -> UIView {
-    let primaryButton = PrimaryButtonWithStyle(.titleAndImageCenter)
-    primaryButton.setTitle(L.continueTitle,
-                           for: .normal)
-    primaryButton.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
-                           for: .normal)
-    primaryButton.imageView?.tintColor = .primaryButtonTextColor
-    primaryButton.isEnabled = false
-    
-    let nonPrimaryButton = NonPrimaryButton()
-    nonPrimaryButton.setTitle(L.cancel,
-                              for: .normal)
-    
-    let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-    let view = ButtonsView(primaryButton: primaryButton,
-                           nonPrimaryButton: nonPrimaryButton,
-                           insets: insets)
-    view.delegate = delegate
-    return view
-  }
-  
   func sections() -> [Section] {
-    return Section.SectionType.allCases.map {
+    return Section.SectionType.defaultItems.map {
       return Section(type: $0,
                      mode: $0.defaultMode,
                      isFilled: false,
@@ -233,23 +222,42 @@ struct UserInfoSectionBuilder {
   
   func updateSection(_ section: inout Section,
                      with model: UserInfoModel,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
                      isExpanded: Bool,
-                     isFilled: Bool) {
+                     headerMode: UserInfoHeaderView.Mode) -> TableUpdate {
+    let items: [Section.Item]
+    var mode = headerMode
     if isExpanded {
-      section.mode = .expanded
+      mode = .expanded
       switch section.type {
       case .location:
         section.items = itemsForLocationSection(with: model)
       case .personal:
         section.items = itemsForPersonalSection(with: model)
+      case .tax:
+        section.items = itemsForTaxSection(with: model)
       case .contact:
-        section.items = itemsForContactlSection(with: model)
+        section.items = itemsForContactSection(with: model)
       }
+      items = section.items
     } else {
-      section.mode = isFilled ? .passed : .normal
+      items = section.items
       section.items = []
     }
-    section.isFilled = isFilled
+    
+    updateSection(&section,
+                  in: tableView,
+                  at: sectionIndex,
+                  mode: mode)
+    let indexPaths = items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) }
+    var tableUpdate: TableUpdate = (nil, nil, nil, nil)
+    if isExpanded {
+      tableUpdate.insertRows = indexPaths
+    } else {
+      tableUpdate.deleteRows = indexPaths
+    }
+    return tableUpdate
   }
   
   func updateSection(_ section: inout Section,
@@ -258,50 +266,101 @@ struct UserInfoSectionBuilder {
                      text: String?,
                      fieldIndex: Int,
                      isFilled: Bool) {
-    switch section.items[indexPath.row].mode {
-    case var .fields(field):
-      field.fields[fieldIndex].text = text
-      section.items[indexPath.row].mode = .fields(field)
-    default:
-      break
+    guard case var .fields(field) = section.items[indexPath.row].mode else { return }
+    field.fields[fieldIndex].text = text
+    if let inputMode = field.inputMode, case let .picker(items, _) = inputMode {
+      let selectedIndex = items.firstIndex { $0 == text }
+      field.inputMode = .picker(items: items, selectedIndex: selectedIndex)
     }
+    section.items[indexPath.row].mode = .fields(field)
     
     section.isFilled = isFilled
-    if let footer = tableView.footerView(forSection: indexPath.section) as? UserInfoFooterView {
-      footer.configure(isButtonEnabled: isFilled)
-    }
-  }
-  
-  func updateSection(_ section: inout Section,
-                     in tableView: UITableView,
-                     at indexPath: IndexPath,
-                     countryOfResidenceDidChangeWith text: String?) {
-    switch section.items[indexPath.row].mode {
-    case .label:
-      section.items[indexPath.row].mode = .label(text)
-      if let cell = tableView.cellForRow(at: indexPath) as? LabelCell {
-        cell.configure(description: text)
+    
+    section.items.firstIndex {
+      if case .button = $0.mode {
+        return true
+      } else {
+        return false
       }
-    default:
-      break
+    }.map {
+      let nextButtonCellIndexPath = IndexPath(row: $0,
+                                              section: indexPath.section)
+      if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
+        nextButtonCell.configure(isButtonEnabled: isFilled)
+      }
     }
   }
   
-  func updateSection(_ section: inout Section,
-                     in tableView: UITableView,
-                     at sectionIndex: Int,
-                     mode: UserInfoHeaderView.Mode) {
-    section.mode = mode
-    if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
-      header.configure(mode: mode)
+  func updateSections(_ sections: inout [Section],
+                      in tableView: UITableView,
+                      countryOfResidenceDidSelectWith model: UserInfoModel) -> IndexSet? {
+    sections.enumerated().filter { $1.mode == .disabled }.forEach {
+      updateSection(&sections[$0.offset],
+                    in: tableView,
+                    at: $0.offset,
+                    mode: .normal)
     }
+    
+    if model.isUsResident, let index = sections.firstIndex(where: { $0.type == .contact }) {
+      sections.insert(taxSection(), at: index)
+      return [index]
+    } else {
+      return nil
+    }
+  }
+  
+  func updateSections(_ sections: inout [Section],
+                      in tableView: UITableView,
+                      countryOfResidenceDidChangeWith model: UserInfoModel,
+                      needToSetContactToDefault: Bool,
+                      wasUsResidence: Bool) -> TableUpdate {
+    var tableUpdate: TableUpdate = (nil, nil, nil, nil)
+    
+    guard let contactSectionIndex = sections.firstIndex(where: { $0.type == .contact }) else { return tableUpdate }
+    
+    if needToSetContactToDefault {
+      sections[contactSectionIndex].isFilled = false
+      tableUpdate.deleteRows = updateSection(&sections[contactSectionIndex],
+                                             with: model,
+                                             in: tableView,
+                                             at: contactSectionIndex,
+                                             isExpanded: false,
+                                             headerMode: .normal).deleteRows
+    }
+    
+    if model.isUsResident, sections.firstIndex(where: { $0.type == .tax }) == nil {
+      sections.insert(taxSection(), at: contactSectionIndex)
+      tableUpdate.insertSection = [contactSectionIndex]
+    } else if wasUsResidence, let index = sections.firstIndex(where: { $0.type == .tax })  {
+      sections.remove(at: index)
+      tableUpdate.deleteSection = [index]
+    }
+    
+    return tableUpdate
   }
   
   func updateTableFooter(for sections: [Section],
                          in tableView: UITableView) {
-    guard let tableFooterView = tableView.tableFooterView as? ButtonsView else { return }
-    let isPrimaryButtonEnabled = sections.filter { $0.isFilled }.count == sections.count
-    tableFooterView.primaryButton.isEnabled = isPrimaryButtonEnabled
+    guard
+      let index = sections.firstIndex(where: { $0.type == .contact }),
+      let footer = tableView.footerView(forSection: index) as? UserInfoFooterView else { return }
+    footer.configure(isPrimaryButtonEnabled: isAllSectionsFilled(sections))
+  }
+  
+  func updateTable(_ tableView: UITableView,
+                   for sections: [Section],
+                   isUploading: Bool) {
+    var footerIndex: Int?
+    sections.enumerated().forEach {
+      tableView.headerView(forSection: $0.offset)?.isUserInteractionEnabled = !isUploading
+      if $0.element.type == .contact {
+        footerIndex = $0.offset
+      }
+    }
+    guard
+      let index = footerIndex,
+      let footer = tableView.footerView(forSection: index) as? UserInfoFooterView else { return }
+    footer.configure(isLoading: isUploading)
   }
   
 }
@@ -310,100 +369,146 @@ struct UserInfoSectionBuilder {
 
 private extension UserInfoSectionBuilder {
   
+  func taxSection() -> Section {
+    return Section(type: .tax,
+                   mode: .normal,
+                   isFilled: false,
+                   items: [])
+  }
+  
   func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {
     let items = ["USA", "Canada", "Ukraine"] // TODO: - Remove mock
     let selectedIndex = items.firstIndex { $0 == model.countryOfResidence }
-    let countryOfResidenceField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectCountry,
+    let countryOfResidenceField = Section.Item.Mode.Fields(type: .countryOfResidance,
+                                                           fields: [.init(placeholder: L.selectCountry,
                                                                           text: model.countryOfResidence)],
                                                            inputMode: .picker(items: items,
                                                                               selectedIndex: selectedIndex))
     return [
-      Section.Item(type: .countryOfResidance,
-                   mode: .fields(countryOfResidenceField))
+      Section.Item(mode: .fields(countryOfResidenceField),
+                   title: L.countryOfResidence),
+      Section.Item(mode: .button)
     ]
   }
   
   func itemsForPersonalSection(with model: UserInfoModel) -> [Section.Item] {
-    let fullNameField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.firstName,
+    let fullNameField = Section.Item.Mode.Fields(type: .fullName,
+                                                 fields: [.init(placeholder: L.firstName,
                                                                 text: model.fullName.first),
                                                           .init(placeholder: L.middleName,
                                                                 text: model.fullName.middle),
                                                           .init(placeholder: L.lastName,
                                                                 text: model.fullName.last)])
     
-    let dateOfBirthField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectDateOfBirth,
+    let dateOfBirthField = Section.Item.Mode.Fields(type: .dateOfBirth,
+                                                    fields: [.init(placeholder: L.selectDateOfBirth,
                                                                    text: model.dateOfBirthString)],
                                                     inputMode: .datePicker(selectedDate: model.dateOfBirth))
     
-    var items: [Section.Item] = [
-      Section.Item(type: .fullName,
-                   mode: .fields(fullNameField)),
-      Section.Item(type: .dateOfBirth,
-                   mode: .fields(dateOfBirthField))
+    return [
+      Section.Item(mode: .fields(fullNameField),
+                   title: L.fullName),
+      Section.Item(mode: .fields(dateOfBirthField),
+                   title: L.dateOfBirth),
+      Section.Item(mode: .button)
     ]
-    
-    if model.isUsResident {
-      let mask = "xxx-xx-xxxx"
-      let ssnField = Section.Item.Mode.Fields(fields: [.init(placeholder: mask,
-                                                             text: model.ssn)],
-                                              mask: mask)
-      items.append(Section.Item(type: .ssn,
-                                mode: .fields(ssnField)))
-    }
-    
-    return items
   }
   
-  func itemsForContactlSection(with model: UserInfoModel) -> [Section.Item] {
-    let addressField = Section.Item.Mode.Fields(fields: [.init(placeholder:L.streetAddress,
+  func itemsForTaxSection(with model: UserInfoModel) -> [Section.Item] {
+    let ssnFieldMask = "xxx-xx-xxxx"
+    let ssnField = Section.Item.Mode.Fields(type: .ssn,
+                                            fields: [.init(placeholder: ssnFieldMask,
+                                                           text: model.tax.ssn)],
+                                            mask: ssnFieldMask)
+    
+    let signatureField = Section.Item.Mode.Fields(type: .signature,
+                                                  fields: [.init(placeholder: L.yourFullName,
+                                                                 text: model.tax.signature)])
+    
+    return [
+      Section.Item(mode: .fields(ssnField),
+                   title: L.ssn),
+      Section.Item(mode: .label(.systemFont(ofSize: 14)),
+                   title: L.ssnAcceptionTitle,
+                   description: L.ssnAcceptionMessage),
+      Section.Item(mode: .fields(signatureField),
+                   title: L.signatureTitle,
+                   description: L.signatureDescription),
+      Section.Item(mode: .button)
+    ]
+  }
+  
+  func itemsForContactSection(with model: UserInfoModel) -> [Section.Item] {
+    let addressField = Section.Item.Mode.Fields(type: .address,
+                                                fields: [.init(placeholder:L.streetAddress,
                                                                text: model.address.street),
                                                          .init(placeholder:L.apartment,
                                                                text: model.address.apartment)])
     
-    let cityField = Section.Item.Mode.Fields(fields: [.init(text: model.address.city)])
+    let cityField = Section.Item.Mode.Fields(type: .city,
+                                             fields: [.init(text: model.address.city)])
     
     let regionField: Section.Item.Mode.Fields
     if model.isUsResident {
       let regions = ["Florida", "Montana", "Alaska"] // TODO: - Remove mock
       let selectedRegionIndex = regions.firstIndex { $0 == model.address.region }
-      regionField = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectState,
+      regionField = Section.Item.Mode.Fields(type: .state,
+                                             fields: [.init(placeholder: L.selectState,
                                                             text: model.address.region)],
                                              inputMode: .picker(items: regions,
                                                                 selectedIndex: selectedRegionIndex))
       
     } else {
-      regionField = Section.Item.Mode.Fields(fields: [.init(text: model.address.region)])
+      regionField = Section.Item.Mode.Fields(type: .state,
+                                             fields: [.init(text: model.address.region)])
     }
     
-    let postalCodeField = Section.Item.Mode.Fields(fields: [.init(text: model.address.postalCode)])
+    let postalCodeField = Section.Item.Mode.Fields(type: .postalCode,
+                                                   fields: [.init(text: model.address.postalCode)])
     
     var items: [Section.Item] = [
-      Section.Item(type: .address,
-                   mode: .fields(addressField)),
-      Section.Item(type: .city,
-                   mode: .fields(cityField)),
-      Section.Item(type: model.isUsResident ? .state : .stateOrRegion,
-                   mode: .fields(regionField)),
-      Section.Item(type: .postalCode,
-                   mode: .fields(postalCodeField)),
-      Section.Item(type: .countryOfResidance,
-                   mode: .label(model.countryOfResidence))
+      Section.Item(mode: .fields(addressField),
+                   title: L.address),
+      Section.Item(mode: .fields(cityField),
+                   title: L.city),
+      Section.Item(mode: .fields(regionField),
+                   title: model.isUsResident ? L.state : L.stateOrRegion),
+      Section.Item(mode: .fields(postalCodeField),
+                   title: L.postalCode),
+      Section.Item(mode: .label(.systemFont(ofSize: 16)),
+                   title: L.countryOfResidence,
+                   description: model.countryOfResidence)
     ]
     
     if model.isUsResident {
-      let canUseAddressFor1099Items = UserInfoModel.CanUseAddressFor1099.allCases.map { $0.rawValue }
-      let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099?.rawValue }
+      let canUseAddressFor1099Items = BoolModel.allCases
+      let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099 }
       
-      let canUseAddressFor1099Field = Section.Item.Mode.Fields(fields: [.init(placeholder: L.selectAnswer,
-                                                                              text: model.canUseAddressFor1099?.rawValue)],
-                                                               inputMode: .picker(items: canUseAddressFor1099Items,
+      let canUseAddressFor1099Field = Section.Item.Mode.Fields(type: .useAddressFor1099,
+                                                               fields: [.init(placeholder: L.selectAnswer,
+                                                                              text: model.canUseAddressFor1099?.description)],
+                                                               inputMode: .picker(items: canUseAddressFor1099Items.map { $0.description },
                                                                                   selectedIndex: canUseAddressFor1099SelectedIndex))
-      items.append(Section.Item(type: .useAddressFor1099,
-                                mode: .fields(canUseAddressFor1099Field),
+      items.append(Section.Item(mode: .fields(canUseAddressFor1099Field),
+                                title: L.useAddressFor1099,
                                 description: L.useAddressFor1099Description))
     }
     
     return items
+  }
+  
+  func isAllSectionsFilled(_ sections: [Section]) -> Bool {
+    return sections.filter { $0.isFilled }.count == sections.count
+  }
+  
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
+                     mode: UserInfoHeaderView.Mode) {
+    section.mode = mode
+    if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
+      header.configure(mode: mode, animated: true)
+    }
   }
   
 }

@@ -52,9 +52,8 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(amount: String, isLoading: Bool) {
+  func configure(amount: String) {
     amountLabel.text = amount
-    configure(isLoading: isLoading)
   }
   
   func configure(isLoading: Bool) {
