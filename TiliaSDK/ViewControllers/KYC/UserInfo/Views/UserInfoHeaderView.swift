@@ -131,7 +131,7 @@ private extension UserInfoHeaderView.Mode {
   var backgroundColor: UIColor {
     switch self {
     case .expanded: return .primaryColor
-    default: return .clear
+    default: return .backgroundColor
     }
   }
   
