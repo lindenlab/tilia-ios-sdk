@@ -1417,7 +1417,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = PHKQX3FHH9;
+				DEVELOPMENT_TEAM = 2XN8B766D8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TiliaSDK/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera.";
