@@ -45,6 +45,15 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
     return imageView
   }()
   
+  override var isUserInteractionEnabled: Bool {
+    get {
+      return super.isUserInteractionEnabled
+    }
+    set {
+      super.isUserInteractionEnabled = mode == .disabled ? false : newValue
+    }
+  }
+  
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     setup()
@@ -105,7 +114,7 @@ private extension UserInfoHeaderView {
   }
   
   func setupMode(animated: Bool) {
-    isUserInteractionEnabled = mode.isEnabled
+    super.isUserInteractionEnabled = mode.isEnabled
     isExpanded = mode.isExpanded
     divider.isHidden = mode.isDividerHidden
     titleLabel.textColor = mode.titleColor
