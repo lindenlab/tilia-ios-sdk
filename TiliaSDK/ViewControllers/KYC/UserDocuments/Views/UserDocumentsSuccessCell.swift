@@ -60,31 +60,10 @@ private extension UserDocumentsSuccessCell {
   }
   
   func setupColors() {
-    // Main circle
-    animationView.setValueProvider(ColorValueProvider(UIColor.blue.lottieColorValue),
-                                   keypath: .init(keypath: "instance:precomp_1.sparkles-1.sparkles-1 shape group.Layer.Color"))
-    animationView.setValueProvider(ColorValueProvider(UIColor.blue.lottieColorValue),
-                                   keypath: .init(keypath: "instance:precomp_1.ring-01.ring-01 shape group.Layer.Color"))
-    
-    // Stars
-    animationView.setValueProvider(ColorValueProvider(UIColor.yellow.lottieColorValue),
-                                   keypath: .init(keypath: "instance:precomp_1.sparkles-2.sparkles-2 shape group.Layer.Color"))
-    animationView.setValueProvider(ColorValueProvider(UIColor.yellow.lottieColorValue),
-                                   keypath: .init(keypath: "instance:precomp_1.sparkles-3.sparkles-3 shape group.Layer.Color"))
-    
-    // Small circles
-    animationView.setValueProvider(ColorValueProvider(UIColor.green.lottieColorValue),
-                                   keypath: .init(keypath: "instance:precomp_1.sparkles-4.sparkles-4 shape group.Layer.Color"))
-    animationView.setValueProvider(ColorValueProvider(UIColor.green.lottieColorValue),
-                                   keypath: .init(keypath: "instance:precomp_1.sparkles-5.sparkles-5 shape group.Layer.Color"))
-    
-    // Diamonds
-    animationView.setValueProvider(ColorValueProvider(UIColor.red.lottieColorValue),
-                                   keypath: .init(keypath: "instance:precomp_1.sparkles-6.sparkles-6 shape group.Layer.Color"))
-    animationView.setValueProvider(ColorValueProvider(UIColor.red.lottieColorValue),
-                                   keypath: .init(keypath: "instance:precomp_1.sparkles-7.sparkles-7 shape group.Layer.Color"))
-    
-    
+    animationView.setValueProvider(ColorValueProvider(UIColor.primaryColor.lottieColorValue),
+                                   keypath: .init(keypath: "Shape Layer 1.Ellipse 1.Fill 1.Color"))
+    animationView.setValueProvider(ColorValueProvider(UIColor.primaryColor.lottieColorValue),
+                                   keypath: .init(keypath: "**.Shape Layer 1.Shape 1.Stroke 1.Color"))
   }
   
 }
