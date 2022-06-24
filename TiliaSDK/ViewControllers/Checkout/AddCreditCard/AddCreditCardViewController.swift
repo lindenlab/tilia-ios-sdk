@@ -25,11 +25,11 @@ final class AddCreditCardViewController: BaseViewController {
     return view
   }()
   
-  private lazy var openButton: PrimaryButton = {
+  private lazy var openBrowserButton: PrimaryButton = {
     let button = PrimaryButton()
     button.setTitle(L.openBrowser, for: .normal)
-    button.addTarget(self, action: #selector(openButtonDidTap), for: .touchUpInside)
-    button.accessibilityIdentifier = "openButton"
+    button.addTarget(self, action: #selector(openBrowserButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "openBrowserButton"
     return button
   }()
   
@@ -43,7 +43,7 @@ final class AddCreditCardViewController: BaseViewController {
   
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [titleInfoView,
-                                                   openButton,
+                                                   openBrowserButton,
                                                    goBackButton])
     stackView.axis = .vertical
     stackView.spacing = 16
@@ -117,7 +117,7 @@ private extension AddCreditCardViewController {
     }.store(in: &subscriptions)
   }
   
-  @objc func openButtonDidTap() {
+  @objc func openBrowserButtonDidTap() {
     viewModel.openBrowser()
   }
   
