@@ -59,10 +59,12 @@ final class AddCreditCardViewController: BaseViewController {
   }
   
   init(manager: NetworkManager,
-       onReload: @escaping (Bool) -> Void) {
+       onReload: @escaping (Bool) -> Void,
+       onError: ((TLErrorCallback) -> Void)?) {
     let router = AddCreditCardRouter()
     self.viewModel = AddCreditCardViewModel(manager: manager,
-                                            onReload: onReload)
+                                            onReload: onReload,
+                                            onError: onError)
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self

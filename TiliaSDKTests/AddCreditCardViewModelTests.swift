@@ -25,7 +25,8 @@ class AddCreditCardViewModelTests: XCTestCase {
     let reloadExpectation = XCTestExpectation(description: "testSuccessOpenBrowser_Reload")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = AddCreditCardViewModel(manager: networkManager,
-                                           onReload: { needToReload = $0; reloadExpectation.fulfill() })
+                                           onReload: { needToReload = $0; reloadExpectation.fulfill() },
+                                           onError: nil)
     
     let loadingExpectation = XCTestExpectation(description: "testSuccessOpenBrowser_Loading")
     viewModel.loading.sink {
@@ -40,6 +41,7 @@ class AddCreditCardViewModelTests: XCTestCase {
       openUrlExpectation.fulfill()
     }.store(in: &subscriptions)
     
+    TLManager.shared.setToken(UUID().uuidString)
     viewModel.openBrowser()
     
     let expectations = [
@@ -53,8 +55,32 @@ class AddCreditCardViewModelTests: XCTestCase {
     XCTAssertNotNil(url)
   }
   
-  func testError() {
-    // TODO: - Need to add later
+  func testErrorOpenBrowser() {
+    var error: Error?
+    var errorCallback: TLErrorCallback?
+    var needToReload: Bool?
+    
+    let errorCallbackExpectation = XCTestExpectation(description: "testErrorOpenBrowser_ErrorCallback")
+    let reloadExpectation = XCTestExpectation(description: "testErrorOpenBrowser_Reload")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = AddCreditCardViewModel(manager: networkManager,
+                                           onReload: { needToReload = $0; reloadExpectation.fulfill() },
+                                           onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
+    
+    let errorExpectation = XCTestExpectation(description: "testErrorOpenBrowser_Error")
+    viewModel.error.sink { [weak viewModel] in
+      error = $0
+      viewModel?.complete()
+      errorExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken("")
+    viewModel.openBrowser()
+    
+    wait(for: [errorExpectation, errorCallbackExpectation, reloadExpectation], timeout: 2)
+    XCTAssertNotNil(error)
+    XCTAssertNotNil(errorCallback)
+    XCTAssertEqual(needToReload, false)
   }
   
 }
