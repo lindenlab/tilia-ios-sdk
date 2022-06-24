@@ -1,0 +1,9 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "nonce_auth_id": "f3503b1e-a490-4e21-a3c1-f85e589d78d5",
+        "redirect": "https://pub.staging.tilia-inc.com/tilia-sdks/addcard/f3503b1e-a490-4e21-a3c1-f85e589d78d5"
+    }
+}

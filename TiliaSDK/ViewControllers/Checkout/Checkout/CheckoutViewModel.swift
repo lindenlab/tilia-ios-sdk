@@ -36,6 +36,7 @@ protocol CheckoutDataStore {
   var onTosComplete: (TLCompleteCallback) -> Void { get }
   var onTosError: ((TLErrorCallback) -> Void)? { get }
   var onReload: (Bool) -> Void { get }
+  var onAddCreditCardError: ((TLErrorCallback) -> Void)? { get }
 }
 
 protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutViewModelOutputProtocol { }
@@ -69,6 +70,9 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   private(set) lazy var onReload: (Bool) -> Void = { [weak self] in
     guard $0 else { return }
     self?.getUserBalance()
+  }
+  var onAddCreditCardError: ((TLErrorCallback) -> Void)? {
+    return onError
   }
   
   private let onComplete: ((TLCompleteCallback) -> Void)?
