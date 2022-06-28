@@ -183,7 +183,7 @@ private extension UserInfoHeaderView.Mode {
   func icon(isExpanded: Bool) -> UIImage? {
     let image: UIImage?
     switch self {
-    case .normal, .expanded, .disabled: image = isExpanded ? .chevronDownIcon : .chevronUpIcon
+    case .normal, .expanded, .disabled: image = isExpanded ? .chevronUpIcon : .chevronDownIcon
     case .passed: image = .successIcon
     case .failed: image = .failureIcon
     }
