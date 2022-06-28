@@ -29,9 +29,6 @@ final class CheckoutViewController: BaseViewController {
     tableView.delaysContentTouches = false
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.estimatedSectionHeaderHeight = 100
-    tableView.estimatedSectionFooterHeight = 300
-    tableView.estimatedRowHeight = 100
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(CheckoutPayloadSummaryFooterView.self)
     tableView.register(CheckoutPayloadCell.self)
