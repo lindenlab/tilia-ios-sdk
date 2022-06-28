@@ -179,4 +179,21 @@ class NetworkManagerTests: XCTestCase {
     XCTAssertTrue(isSuccess)
   }
 
+  func testGetAddCreditCardRedirectUrlSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var url: URL?
+    let expectation = XCTestExpectation(description: "testGetAddCreditCardRedirectUrlSuccess")
+    networkManager.getAddCreditCardRedirectUrl { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let model):
+        url = model.url
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(url)
+  }
+  
 }

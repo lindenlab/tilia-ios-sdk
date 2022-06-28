@@ -29,21 +29,34 @@ final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
   
   private let manager: NetworkManager
   private let onReload: (Bool) -> Void
+  private let onError: ((TLErrorCallback) -> Void)?
   private var needToReload = false
   
   init(manager: NetworkManager,
-       onReload: @escaping (Bool) -> Void) {
+       onReload: @escaping (Bool) -> Void,
+       onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
     self.onReload = onReload
+    self.onError = onError
   }
   
   func openBrowser() {
-    // TODO: - Added here logic for getting url
     loading.send(true)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.needToReload = true
+    manager.getAddCreditCardRedirectUrl { [weak self] result in
+      guard let self = self else { return }
       self.loading.send(false)
-      self.openUrl.send(URL(string: "https://www.google.com")!)
+      switch result {
+      case .success(let model):
+        self.needToReload = true
+        self.openUrl.send(model.url)
+      case .failure(let error):
+        self.error.send(error)
+        let event = TLEvent(flow: .checkout, action: .error)
+        let model = TLErrorCallback(event: event,
+                                    error: L.addCreditCardTitle,
+                                    message: error.localizedDescription)
+        self.onError?(model)
+      }
     }
   }
   

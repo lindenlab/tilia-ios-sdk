@@ -25,7 +25,7 @@ class BaseViewController: UIViewController {
     return divider
   }()
   
-  lazy var closeButton: NonPrimaryButton = {
+  final lazy var closeButton: NonPrimaryButton = {
     let button = NonPrimaryButton()
     button.setTitle(L.close, for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false

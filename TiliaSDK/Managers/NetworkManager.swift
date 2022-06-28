@@ -72,6 +72,11 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
+  func getAddCreditCardRedirectUrl(completion: @escaping CompletionResultHandler<RedirectUrlModel>) {
+    let router = AuthRouter.getAddCreditCardRedirectUrl
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
 }
 
 // MARK: - For Testing
