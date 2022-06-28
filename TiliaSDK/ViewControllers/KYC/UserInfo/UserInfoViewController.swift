@@ -38,7 +38,6 @@ final class UserInfoViewController: BaseViewController {
     tableView.register(ThreeTextFieldsCell.self)
     tableView.register(LabelCell.self)
     tableView.tableHeaderView = builder.tableHeader()
-    tableView.estimatedSectionHeaderHeight = 50
     return tableView
   }()
   
