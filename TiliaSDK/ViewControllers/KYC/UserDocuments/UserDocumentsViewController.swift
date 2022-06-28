@@ -44,6 +44,7 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.register(TextFieldCell.self)
     tableView.register(UserDocumentsSelectDocumentCell.self)
     tableView.register(UserDocumentsSuccessCell.self)
+    tableView.estimatedRowHeight = 100
     return tableView
   }()
   
