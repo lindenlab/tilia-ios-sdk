@@ -20,7 +20,7 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
     primaryButton.setTitleForLoadingState(L.hangTight)
     primaryButton.setTitle(L.continueTitle,
                            for: .normal)
-    primaryButton.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
+    primaryButton.setImage(.arrowRightIcon?.withRenderingMode(.alwaysTemplate),
                            for: .normal)
     
     let nonPrimaryButton = NonPrimaryButton()

@@ -26,6 +26,7 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     button.setImage(.cameraIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.setContentHuggingPriority(UILayoutPriority(251), for: .horizontal)
+    button.setContentCompressionResistancePriority(UILayoutPriority(751), for: .horizontal)
     button.setTitle(L.captureOnCamera, for: .normal)
     return button
   }()

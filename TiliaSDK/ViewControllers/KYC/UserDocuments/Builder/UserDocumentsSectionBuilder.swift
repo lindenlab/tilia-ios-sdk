@@ -130,7 +130,7 @@ struct UserDocumentsSectionBuilder {
     case .documents:
       view.configure(isPrimaryButtonHidden: false,
                      nonPrimaryButtonTitle: L.goBack,
-                     nonPrimaryButtonImage: .leftArrowicon?.withRenderingMode(.alwaysTemplate),
+                     nonPrimaryButtonImage: .arrowLeftIcon?.withRenderingMode(.alwaysTemplate),
                      delegate: delegate)
       view.configure(isPrimaryButtonEnabled: section.isFilled == true)
       view.configure(isLoading: isUploading)

@@ -118,12 +118,8 @@ private extension UserInfoHeaderView {
     isExpanded = mode.isExpanded
     divider.isHidden = mode.isDividerHidden
     titleLabel.textColor = mode.titleColor
-    imageView.image = mode.icon
+    imageView.image = mode.icon(isExpanded: isExpanded)
     imageView.tintColor = mode.iconColor
-    imageView.transform = .identity
-    if isExpanded {
-      imageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-    }
     UIView.animate(withDuration: animated ? 0.3 : 0) {
       self.contentView.backgroundColor = self.mode.backgroundColor
     }
@@ -160,16 +156,6 @@ private extension UserInfoHeaderView.Mode {
     }
   }
   
-  var icon: UIImage? {
-    let image: UIImage?
-    switch self {
-    case .normal, .expanded, .disabled: image = .bottomArrowIcon
-    case .passed: image = .successIcon
-    case .failed: image = .failureIcon
-    }
-    return image?.withRenderingMode(.alwaysTemplate)
-  }
-  
   var iconColor: UIColor {
     switch self {
     case .normal: return .primaryTextColor
@@ -192,6 +178,16 @@ private extension UserInfoHeaderView.Mode {
     case .disabled: return false
     default: return true
     }
+  }
+  
+  func icon(isExpanded: Bool) -> UIImage? {
+    let image: UIImage?
+    switch self {
+    case .normal, .expanded, .disabled: image = isExpanded ? .chevronDownIcon : .chevronUpIcon
+    case .passed: image = .successIcon
+    case .failed: image = .failureIcon
+    }
+    return image?.withRenderingMode(.alwaysTemplate)
   }
   
 }

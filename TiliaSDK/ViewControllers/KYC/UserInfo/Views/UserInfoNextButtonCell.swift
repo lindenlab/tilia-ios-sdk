@@ -19,7 +19,7 @@ final class UserInfoNextButtonCell: UITableViewCell {
     let button = NonPrimaryButtonWithStyle(style: .titleAndImageCenter)
     button.setTitle(L.next,
                     for: .normal)
-    button.setImage(.rightArrowIcon?.withRenderingMode(.alwaysTemplate),
+    button.setImage(.arrowRightIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.setBackgroundColor(.backgroundColor, for: .disabled)
     button.setTitleColor(.borderColor, for: .disabled)
