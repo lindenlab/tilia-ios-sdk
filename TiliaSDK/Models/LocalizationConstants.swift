@@ -78,8 +78,8 @@ enum L {
   static let residencePermit = "residencePermit".localized
   static let frontSide = "frontSide".localized
   static let backSide = "backSide".localized
-  static let captureOnCamera = "captureOnCamera".localized
-  static let pickPhoto = "pickPhoto".localized
+  static let capture = "capture".localized
+  static let choose = "choose".localized
   static let documentIssuingCountry = "documentIssuingCountry".localized
   static let isAddressUpToDateDescription = "isAddressUpToDateDescription".localized
   static let supportingDocuments = "supportingDocuments".localized

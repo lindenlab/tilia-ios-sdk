@@ -25,9 +25,7 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     let button = PrimaryButtonWithStyle(style: .imageAndTitleCenter)
     button.setImage(.cameraIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
-    button.setContentHuggingPriority(UILayoutPriority(251), for: .horizontal)
-    button.setContentCompressionResistancePriority(UILayoutPriority(751), for: .horizontal)
-    button.setTitle(L.captureOnCamera, for: .normal)
+    button.setTitle(L.capture, for: .normal)
     return button
   }()
   
@@ -35,7 +33,7 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
     button.setImage(.documentIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
-    button.setTitle(L.pickPhoto, for: .normal)
+    button.setTitle(L.choose, for: .normal)
     return button
   }()
   
@@ -73,6 +71,7 @@ private extension UserDocumentsPhotoCell {
     let buttonsStackView = UIStackView(arrangedSubviews: [primaryButton,
                                                           nonPrimaryButton])
     buttonsStackView.spacing = 8
+    buttonsStackView.distribution = .fillEqually
     
     addChildView(photoImageView, spacing: 16)
     addChildView(buttonsStackView)
