@@ -176,7 +176,7 @@ struct UserDocumentsSectionBuilder {
   func updateSection(_ section: inout Section,
                      at index: Int,
                      in tableView: UITableView,
-                     image: UIImage?) {
+                     didSetDocumentImage image: UIImage?) {
     guard case var .photo(photo) = section.items[index].mode else { return }
     photo.image = image
     section.items[index].mode = .photo(photo)
@@ -284,7 +284,7 @@ struct UserDocumentsSectionBuilder {
   func updateSection(_ section: inout Section,
                      at index: Int,
                      in tableView: UITableView,
-                     didAddDocumentsWith documentImages: [UIImage]) {
+                     didAddAdditionalDocumentsWith documentImages: [UIImage]) {
     guard case var .additionalDocuments(additionalDocumentImages) = section.items[index].mode else { return }
     additionalDocumentImages.append(contentsOf: documentImages)
     section.items[index].mode = .additionalDocuments(additionalDocumentImages)
@@ -310,7 +310,7 @@ struct UserDocumentsSectionBuilder {
   func updateCell(for section: Section,
                   at index: Int,
                   in tableView: UITableView,
-                  didAddDocumentsWith documentImages: [UIImage]) {
+                  didAddAdditionalDocumentsWith documentImages: [UIImage]) {
     guard case let .additionalDocuments(additionalDocumentImages) = section.items[index].mode else { return }
     let indexPath = IndexPath(row: index, section: 0)
     let startIndex = additionalDocumentImages.endIndex - documentImages.count
@@ -323,7 +323,7 @@ struct UserDocumentsSectionBuilder {
   func updateCell(for section: Section,
                   at index: Int,
                   in tableView: UITableView,
-                  didDeleteDocumentAt documentIndex: Int) {
+                  didDeleteAdditionalDocumentAt documentIndex: Int) {
     let indexPath = IndexPath(row: index, section: 0)
     guard
       case let .additionalDocuments(documentImages) = section.items[index].mode,

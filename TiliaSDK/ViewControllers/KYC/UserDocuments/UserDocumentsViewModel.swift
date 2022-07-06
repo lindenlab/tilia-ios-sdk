@@ -10,10 +10,10 @@ import UIKit
 import PDFKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
-typealias UserDocumentsSetImage = (index: Int, image: UIImage?)
+typealias UserDocumentsSetDocumentImage = (index: Int, image: UIImage?)
 typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsResidence: Bool)
-typealias UserDocumentsAddDocuments = (index: Int, documentImages: [UIImage])
-typealias UserDocumentsDeleteDocument = (itemIndex: Int, documentIndex: Int)
+typealias UserDocumentsAddAdditionalDocuments = (index: Int, documentImages: [UIImage])
+typealias UserDocumentsDeleteAdditionalDocument = (itemIndex: Int, documentIndex: Int)
 
 protocol UserDocumentsViewModelInputProtocol {
   func viewDidLoad()
@@ -29,14 +29,14 @@ protocol UserDocumentsViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
   var content: PassthroughSubject<UserDocumentsModel, Never> { get }
   var setText: PassthroughSubject<UserDocumentsSetText, Never> { get }
-  var setImage: PassthroughSubject<UserDocumentsSetImage, Never> { get }
+  var setDocumentImage: PassthroughSubject<UserDocumentsSetDocumentImage, Never> { get }
   var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
   var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
   var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
   var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel, Never> { get }
-  var addDocuments: PassthroughSubject<UserDocumentsAddDocuments, Never> { get }
-  var addDocumentsDidFail: PassthroughSubject<Void, Never> { get }
-  var deleteDocument: PassthroughSubject<UserDocumentsDeleteDocument, Never> { get }
+  var addAdditionalDocuments: PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never> { get }
+  var addAdditionalDocumentsDidFail: PassthroughSubject<Void, Never> { get }
+  var deleteAdditionalDocument: PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never> { get }
   var fillingContent: PassthroughSubject<Bool, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
   var successfulUploading: CurrentValueSubject<Bool, Never> { get }
@@ -49,14 +49,14 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let error = PassthroughSubject<Error, Never>()
   let content = PassthroughSubject<UserDocumentsModel, Never>()
   let setText = PassthroughSubject<UserDocumentsSetText, Never>()
-  let setImage = PassthroughSubject<UserDocumentsSetImage, Never>()
+  let setDocumentImage = PassthroughSubject<UserDocumentsSetDocumentImage, Never>()
   let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
   let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
   let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel, Never>()
-  let addDocuments = PassthroughSubject<UserDocumentsAddDocuments, Never>()
-  let addDocumentsDidFail = PassthroughSubject<Void, Never>()
-  let deleteDocument = PassthroughSubject<UserDocumentsDeleteDocument, Never>()
+  let addAdditionalDocuments = PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never>()
+  let addAdditionalDocumentsDidFail = PassthroughSubject<Void, Never>()
+  let deleteAdditionalDocument = PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never>()
   let fillingContent = PassthroughSubject<Bool, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
   let successfulUploading = CurrentValueSubject<Bool, Never>(false)
@@ -136,11 +136,11 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       case .backSide:
         userDocumentsModel.backImage = resizedImage
       }
-      setImage.send((index, resizedImage))
+      setDocumentImage.send((index, resizedImage))
     case .additionalDocuments:
       resizedImage.map {
         userDocumentsModel.additionalDocuments.append(.image($0))
-        addDocuments.send((index, [$0]))
+        addAdditionalDocuments.send((index, [$0]))
       }
     default:
       break
@@ -164,17 +164,17 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       deleteTempFile(at: url)
     }
     if !documentImages.isEmpty {
-      addDocuments.send((index, documentImages))
+      addAdditionalDocuments.send((index, documentImages))
       updateFillingSectionObserver()
     }
     if addDocumentsFailed {
-      addDocumentsDidFail.send(())
+      addAdditionalDocumentsDidFail.send(())
     }
   }
   
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {
     userDocumentsModel.additionalDocuments.remove(at: documentIndex)
-    deleteDocument.send((itemIndex, documentIndex))
+    deleteAdditionalDocument.send((itemIndex, documentIndex))
     updateFillingSectionObserver()
   }
   

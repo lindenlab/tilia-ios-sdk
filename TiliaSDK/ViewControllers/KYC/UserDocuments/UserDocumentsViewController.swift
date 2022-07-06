@@ -75,6 +75,11 @@ final class UserDocumentsViewController: BaseViewController {
     viewModel.viewDidLoad()
   }
   
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    
+  }
+  
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
@@ -239,12 +244,12 @@ private extension UserDocumentsViewController {
                                  text: $0.text)
     }.store(in: &subscriptions)
     
-    viewModel.setImage.sink { [weak self] in
+    viewModel.setDocumentImage.sink { [weak self] in
       guard let self = self else { return }
       self.builder.updateSection(&self.section,
                                  at: $0.index,
                                  in: self.tableView,
-                                 image: $0.image)
+                                 didSetDocumentImage: $0.image)
     }.store(in: &subscriptions)
     
     viewModel.documentDidSelect.sink { [weak self] in
@@ -286,23 +291,23 @@ private extension UserDocumentsViewController {
       }
     }.store(in: &subscriptions)
     
-    viewModel.addDocuments.sink { [weak self] in
+    viewModel.addAdditionalDocuments.sink { [weak self] in
       guard let self = self else { return }
       self.builder.updateSection(&self.section,
                                  at: $0.index,
                                  in: self.tableView,
-                                 didAddDocumentsWith: $0.documentImages)
+                                 didAddAdditionalDocumentsWith: $0.documentImages)
       self.builder.updateCell(for: self.section,
                               at: $0.index,
                               in: self.tableView,
-                              didAddDocumentsWith: $0.documentImages)
+                              didAddAdditionalDocumentsWith: $0.documentImages)
     }.store(in: &subscriptions)
     
-    viewModel.addDocumentsDidFail.sink { [weak self] _ in
+    viewModel.addAdditionalDocumentsDidFail.sink { [weak self] _ in
       self?.router.showAddDocumentsDidFailAlert()
     }.store(in: &subscriptions)
     
-    viewModel.deleteDocument.sink { [weak self] in
+    viewModel.deleteAdditionalDocument.sink { [weak self] in
       guard let self = self else { return }
       self.builder.updateSection(&self.section,
                                  at: $0.itemIndex,
@@ -311,7 +316,7 @@ private extension UserDocumentsViewController {
       self.builder.updateCell(for: self.section,
                               at: $0.itemIndex,
                               in: self.tableView,
-                              didDeleteDocumentAt: $0.documentIndex)
+                              didDeleteAdditionalDocumentAt: $0.documentIndex)
     }.store(in: &subscriptions)
     
     viewModel.fillingContent.sink { [weak self] in
