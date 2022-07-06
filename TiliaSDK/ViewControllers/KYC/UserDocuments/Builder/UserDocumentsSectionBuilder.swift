@@ -50,13 +50,15 @@ struct UserDocumentsSectionBuilder {
         
         struct Photo {
           let type: PhotoType
+          let placeholderImage: SVGImage?
+          
           var image: UIImage? {
             get { return _image ?? placeholderImage?.uiImage }
             set { _image = newValue }
           }
+          var isPhotoImageEmpty: Bool { return _image == nil }
           
           private var _image: UIImage?
-          private let placeholderImage: SVGImage?
           
           init(type: PhotoType, placeholderImage: SVGImage?) {
             self.type = type
@@ -350,6 +352,16 @@ struct UserDocumentsSectionBuilder {
       section.type == .success,
       let successCell = cell as? UserDocumentsSuccessCell else { return }
     successCell.startAnimatingIfNeeded()
+  }
+  
+  func updateDocumentPhotoCells(for section: Section,
+                                in tableView: UITableView) {
+    for (index, item) in section.items.enumerated() {
+      guard case let .photo(photo) = item.mode else { continue }
+      guard photo.isPhotoImageEmpty else { continue }
+      photo.placeholderImage?.setupLayersColor()
+      updatePhotoCell(at: index, with: item, in: tableView)
+    }
   }
   
   func updateTable(_ tableView: UITableView,

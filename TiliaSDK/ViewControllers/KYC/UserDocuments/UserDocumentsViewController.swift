@@ -77,7 +77,8 @@ final class UserDocumentsViewController: BaseViewController {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    
+    guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+    builder.updateDocumentPhotoCells(for: section, in: tableView)
   }
   
 }

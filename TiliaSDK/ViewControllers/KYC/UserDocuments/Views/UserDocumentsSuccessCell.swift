@@ -29,6 +29,7 @@ final class UserDocumentsSuccessCell: UITableViewCell {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
+    guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
     setupColors()
   }
   

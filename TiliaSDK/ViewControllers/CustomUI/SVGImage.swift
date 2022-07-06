@@ -26,12 +26,9 @@ final class SVGImage: SVGImageView {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
+    guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
     setupLayersColor()
   }
-  
-}
-
-private extension SVGImage {
   
   func setupLayersColor() {
     guard let layers = layer.sublayers?.compactMap({ $0 as? CAShapeLayer }) else { return }
