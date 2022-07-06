@@ -20,6 +20,13 @@
 		D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E027EB9C8100C68811 /* TosViewController.swift */; };
 		D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E427EB9F0300C68811 /* TextViewWithLink.swift */; };
 		D124DA1727F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D124DA1627F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift */; };
+		D126AF152875872F00CAC5F2 /* IdentityCardBackImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF0E2875872F00CAC5F2 /* IdentityCardBackImage.svg */; };
+		D126AF162875872F00CAC5F2 /* IdentityCardFrontImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF0F2875872F00CAC5F2 /* IdentityCardFrontImage.svg */; };
+		D126AF172875872F00CAC5F2 /* DriversLicenseBackImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF102875872F00CAC5F2 /* DriversLicenseBackImage.svg */; };
+		D126AF182875872F00CAC5F2 /* ResedencePermitBackImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF112875872F00CAC5F2 /* ResedencePermitBackImage.svg */; };
+		D126AF192875872F00CAC5F2 /* DriversLicenseFrontImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF122875872F00CAC5F2 /* DriversLicenseFrontImage.svg */; };
+		D126AF1A2875872F00CAC5F2 /* PassportImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF132875872F00CAC5F2 /* PassportImage.svg */; };
+		D126AF1B2875872F00CAC5F2 /* ResedencePermitFrontImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */; };
 		D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7827E74A4A0009D888 /* AppDelegate.swift */; };
 		D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */; };
 		D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7C27E74A4A0009D888 /* DemoViewController.swift */; };
@@ -90,13 +97,13 @@
 		D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */; };
 		D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */; };
 		D19C79902837958C0024BB6F /* UserDocumentsPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19C798F2837958C0024BB6F /* UserDocumentsPhotoCell.swift */; };
+		D1B80AA528659E9700E1C9BD /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B80AA428659E9700E1C9BD /* AuthRouter.swift */; };
+		D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */; };
+		D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */; };
 		D1B871F828339B2A00C44441 /* UserDocumentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871F728339B2A00C44441 /* UserDocumentsViewController.swift */; };
 		D1B871FA28339B5400C44441 /* UserDocumentsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871F928339B5400C44441 /* UserDocumentsRouter.swift */; };
 		D1B871FC28339BE600C44441 /* UserDocumentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871FB28339BE600C44441 /* UserDocumentsViewModel.swift */; };
 		D1B8720028351B4600C44441 /* UserDocumentsSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871FF28351B4600C44441 /* UserDocumentsSectionBuilder.swift */; };
-		D1B80AA528659E9700E1C9BD /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B80AA428659E9700E1C9BD /* AuthRouter.swift */; };
-		D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */; };
-		D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */; };
 		D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872B92804498500DD1F7B /* ServerTestClient.swift */; };
 		D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */; };
 		D1B872C528044CC900DD1F7B /* PayInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */; };
@@ -185,6 +192,13 @@
 		D12443E027EB9C8100C68811 /* TosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewController.swift; sourceTree = "<group>"; };
 		D12443E427EB9F0300C68811 /* TextViewWithLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewWithLink.swift; sourceTree = "<group>"; };
 		D124DA1627F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutSuccessfulPaymentCell.swift; sourceTree = "<group>"; };
+		D126AF0E2875872F00CAC5F2 /* IdentityCardBackImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = IdentityCardBackImage.svg; sourceTree = "<group>"; };
+		D126AF0F2875872F00CAC5F2 /* IdentityCardFrontImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = IdentityCardFrontImage.svg; sourceTree = "<group>"; };
+		D126AF102875872F00CAC5F2 /* DriversLicenseBackImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DriversLicenseBackImage.svg; sourceTree = "<group>"; };
+		D126AF112875872F00CAC5F2 /* ResedencePermitBackImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ResedencePermitBackImage.svg; sourceTree = "<group>"; };
+		D126AF122875872F00CAC5F2 /* DriversLicenseFrontImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DriversLicenseFrontImage.svg; sourceTree = "<group>"; };
+		D126AF132875872F00CAC5F2 /* PassportImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PassportImage.svg; sourceTree = "<group>"; };
+		D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ResedencePermitFrontImage.svg; sourceTree = "<group>"; };
 		D135DC7527E74A4A0009D888 /* TiliaSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiliaSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D135DC7827E74A4A0009D888 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -258,13 +272,13 @@
 		D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowTestViewController.swift; sourceTree = "<group>"; };
 		D19C798F2837958C0024BB6F /* UserDocumentsPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsPhotoCell.swift; sourceTree = "<group>"; };
+		D1B80AA428659E9700E1C9BD /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
+		D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectUrlModel.swift; sourceTree = "<group>"; };
+		D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetAddCreditCardRedirectUrlResponse.json; sourceTree = "<group>"; };
 		D1B871F728339B2A00C44441 /* UserDocumentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewController.swift; sourceTree = "<group>"; };
 		D1B871F928339B5400C44441 /* UserDocumentsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsRouter.swift; sourceTree = "<group>"; };
 		D1B871FB28339BE600C44441 /* UserDocumentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModel.swift; sourceTree = "<group>"; };
 		D1B871FF28351B4600C44441 /* UserDocumentsSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsSectionBuilder.swift; sourceTree = "<group>"; };
-		D1B80AA428659E9700E1C9BD /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
-		D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectUrlModel.swift; sourceTree = "<group>"; };
-		D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetAddCreditCardRedirectUrlResponse.json; sourceTree = "<group>"; };
 		D1B872B92804498500DD1F7B /* ServerTestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTestClient.swift; sourceTree = "<group>"; };
 		D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CreateInvoiceResponse.json; sourceTree = "<group>"; };
 		D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PayInvoiceResponse.json; sourceTree = "<group>"; };
@@ -709,6 +723,13 @@
 				D1CCE8CD27F4A65100FD0E25 /* Icons.xcassets */,
 				D1C8A84527F5EC9A00BF2910 /* LocalizedConstants.strings */,
 				D163D9E8284F556000F478DA /* SuccessAnimation.json */,
+				D126AF102875872F00CAC5F2 /* DriversLicenseBackImage.svg */,
+				D126AF122875872F00CAC5F2 /* DriversLicenseFrontImage.svg */,
+				D126AF0E2875872F00CAC5F2 /* IdentityCardBackImage.svg */,
+				D126AF0F2875872F00CAC5F2 /* IdentityCardFrontImage.svg */,
+				D126AF132875872F00CAC5F2 /* PassportImage.svg */,
+				D126AF112875872F00CAC5F2 /* ResedencePermitBackImage.svg */,
+				D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -866,15 +887,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D126AF162875872F00CAC5F2 /* IdentityCardFrontImage.svg in Resources */,
+				D126AF192875872F00CAC5F2 /* DriversLicenseFrontImage.svg in Resources */,
+				D126AF152875872F00CAC5F2 /* IdentityCardBackImage.svg in Resources */,
+				D126AF1B2875872F00CAC5F2 /* ResedencePermitFrontImage.svg in Resources */,
 				D135DC8527E74A520009D888 /* LaunchScreen.storyboard in Resources */,
 				D135DC8227E74A510009D888 /* Assets.xcassets in Resources */,
 				D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */,
 				D1B872C928044CC900DD1F7B /* GetUserBalanceByCurrencyCodeResponse.json in Resources */,
 				D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */,
+				D126AF182875872F00CAC5F2 /* ResedencePermitBackImage.svg in Resources */,
 				D1CCE8CE27F4A65100FD0E25 /* Icons.xcassets in Resources */,
+				D126AF172875872F00CAC5F2 /* DriversLicenseBackImage.svg in Resources */,
 				D1B872CD280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json in Resources */,
 				D1B872C728044CC900DD1F7B /* GetInvoiceDetailsResponse.json in Resources */,
 				D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */,
+				D126AF1A2875872F00CAC5F2 /* PassportImage.svg in Resources */,
 				D1B872C528044CC900DD1F7B /* PayInvoiceResponse.json in Resources */,
 				D1B872C828044CC900DD1F7B /* GetTosRequiredForUserResponse.json in Resources */,
 				D135DC8027E74A4A0009D888 /* Main.storyboard in Resources */,
