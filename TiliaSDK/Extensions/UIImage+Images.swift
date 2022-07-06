@@ -33,13 +33,13 @@ extension UIImage {
   static let addIcon = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
   static let closeIcon = UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
   
-  static var driversLicenseBackIcon: UIImage? { return svgImage(for: "DriversLicenseBackImage") }
-  static var driversLicenseFrontIcon: UIImage? { return svgImage(for: "DriversLicenseFrontImage") }
-  static var identityCardBackIcon: UIImage? { return svgImage(for: "IdentityCardBackImage") }
-  static var identityCardFrontIcon: UIImage? { return svgImage(for: "IdentityCardFrontImage") }
-  static var passportIcon: UIImage? { return svgImage(for: "PassportImage") }
-  static var residencePermitBackIcon: UIImage? { return svgImage(for: "ResedencePermitBackImage") }
-  static var residencePermitFrontIcon: UIImage? { return svgImage(for: "ResedencePermitFrontImage") }
+  static let driversLicenseBackIcon = SVGImage(name: "DriversLicenseBackImage")
+  static let driversLicenseFrontIcon = SVGImage(name: "DriversLicenseFrontImage")
+  static let identityCardBackIcon = SVGImage(name: "IdentityCardBackImage")
+  static let identityCardFrontIcon = SVGImage(name: "IdentityCardFrontImage")
+  static let passportIcon = SVGImage(name: "PassportImage")
+  static let residencePermitBackIcon = SVGImage(name: "ResedencePermitBackImage")
+  static let residencePermitFrontIcon = SVGImage(name: "ResedencePermitFrontImage")
   
 }
 
@@ -47,35 +47,6 @@ private extension UIImage {
   
   convenience init?(str: String) {
     self.init(named: str, in: BundleToken.bundle, compatibleWith: nil)
-  }
-  
-  static func svgImage(for name: String) -> UIImage? {
-    guard let path = BundleToken.bundle.url(forResource: name, withExtension: "svg") else { return nil }
-    let imageView = SVGImageView(contentsOf: path)
-    imageView.frame = imageView.viewBox
-    imageView.layer.layoutIfNeeded()
-    
-    guard let layers = imageView.layer.sublayers?.compactMap({ $0 as? CAShapeLayer }) else { return nil }
-    layers.forEach { layer in
-      if let fillColor = layer.fillColor, var components = fillColor.components {
-        components.removeLast()
-        if components != [1, 1, 1] {
-          layer.fillColor = UIColor.primaryColor.cgColor
-        }
-      }
-      if let strokeColor = layer.strokeColor, var components = strokeColor.components {
-        components.removeLast()
-        if components != [1, 1, 1] {
-          layer.strokeColor = UIColor.primaryColor.cgColor
-        }
-      }
-    }
-    
-    var size = imageView.viewBox.size
-    size.height += 2
-    size.width += 2
-    let renderer = UIGraphicsImageRenderer(size: size)
-    return renderer.image { imageView.layer.render(in: $0.cgContext) }
   }
   
 }

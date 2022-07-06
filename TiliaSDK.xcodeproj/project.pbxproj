@@ -27,6 +27,7 @@
 		D126AF192875872F00CAC5F2 /* DriversLicenseFrontImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF122875872F00CAC5F2 /* DriversLicenseFrontImage.svg */; };
 		D126AF1A2875872F00CAC5F2 /* PassportImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF132875872F00CAC5F2 /* PassportImage.svg */; };
 		D126AF1B2875872F00CAC5F2 /* ResedencePermitFrontImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */; };
+		D126AF1F2875F99C00CAC5F2 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126AF1E2875F99C00CAC5F2 /* SVGImage.swift */; };
 		D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7827E74A4A0009D888 /* AppDelegate.swift */; };
 		D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */; };
 		D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7C27E74A4A0009D888 /* DemoViewController.swift */; };
@@ -199,6 +200,7 @@
 		D126AF122875872F00CAC5F2 /* DriversLicenseFrontImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DriversLicenseFrontImage.svg; sourceTree = "<group>"; };
 		D126AF132875872F00CAC5F2 /* PassportImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PassportImage.svg; sourceTree = "<group>"; };
 		D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ResedencePermitFrontImage.svg; sourceTree = "<group>"; };
+		D126AF1E2875F99C00CAC5F2 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
 		D135DC7527E74A4A0009D888 /* TiliaSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiliaSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D135DC7827E74A4A0009D888 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 				D15BA9EE282A9B6500511785 /* TwoTextFieldsCell.swift */,
 				D15BA9F0282A9B9500511785 /* ThreeTextFieldsCell.swift */,
 				D1E8F8FA28297AD00037EA8F /* LabelCell.swift */,
+				D126AF1E2875F99C00CAC5F2 /* SVGImage.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -1143,6 +1146,7 @@
 				D163D9E3284F52D400F478DA /* UserDocumentsSuccessCell.swift in Sources */,
 				D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
+				D126AF1F2875F99C00CAC5F2 /* SVGImage.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,
 				D1B871FA28339B5400C44441 /* UserDocumentsRouter.swift in Sources */,
 				D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */,

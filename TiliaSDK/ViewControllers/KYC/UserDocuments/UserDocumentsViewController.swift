@@ -312,7 +312,7 @@ private extension UserDocumentsViewController {
       self.builder.updateSection(&self.section,
                                  at: $0.itemIndex,
                                  in: self.tableView,
-                                 didDeleteDocumentAt: $0.documentIndex)
+                                 didDeleteAdditionalDocumentAt: $0.documentIndex)
       self.builder.updateCell(for: self.section,
                               at: $0.itemIndex,
                               in: self.tableView,

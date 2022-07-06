@@ -50,7 +50,18 @@ struct UserDocumentsSectionBuilder {
         
         struct Photo {
           let type: PhotoType
-          var image: UIImage?
+          var image: UIImage? {
+            get { return _image ?? placeholderImage?.uiImage }
+            set { _image = newValue }
+          }
+          
+          private var _image: UIImage?
+          private let placeholderImage: SVGImage?
+          
+          init(type: PhotoType, placeholderImage: SVGImage?) {
+            self.type = type
+            self.placeholderImage = placeholderImage
+          }
         }
         
         case field(Field)
@@ -293,7 +304,7 @@ struct UserDocumentsSectionBuilder {
   func updateSection(_ section: inout Section,
                      at index: Int,
                      in tableView: UITableView,
-                     didDeleteDocumentAt documentIndex: Int) {
+                     didDeleteAdditionalDocumentAt documentIndex: Int) {
     guard case var .additionalDocuments(documentImages) = section.items[index].mode else { return }
     documentImages.remove(at: documentIndex)
     section.items[index].mode = .additionalDocuments(documentImages)
@@ -357,12 +368,14 @@ struct UserDocumentsSectionBuilder {
 private extension UserDocumentsSectionBuilder {
   
   func documentFrontSideItem(for document: UserDocumentsModel.Document) -> Section.Item {
-    let photo = Section.Item.Mode.Photo(type: .frontSide, image: document.frontImage)
+    let photo = Section.Item.Mode.Photo(type: .frontSide,
+                                        placeholderImage: document.frontSvgImage)
     return .init(title: L.frontSide, mode: .photo(photo))
   }
   
   func documentBackSideItem(for document: UserDocumentsModel.Document) -> Section.Item {
-    let photo = Section.Item.Mode.Photo(type: .backSide, image: document.backImage)
+    let photo = Section.Item.Mode.Photo(type: .backSide,
+                                        placeholderImage: document.backSvgImage)
     return .init(title: L.backSide, mode: .photo(photo))
   }
   
@@ -432,21 +445,21 @@ private extension UserDocumentsSectionBuilder {
 
 private extension UserDocumentsModel.Document {
   
-  var frontImage: UIImage? {
+  var frontSvgImage: SVGImage? {
     switch self {
-    case .passport: return .passportIcon
-    case .driversLicense: return .driversLicenseFrontIcon
-    case .identityCard: return .identityCardFrontIcon
-    case .residencePermit: return .residencePermitFrontIcon
+    case .passport: return UIImage.passportIcon
+    case .driversLicense: return UIImage.driversLicenseFrontIcon
+    case .identityCard: return UIImage.identityCardFrontIcon
+    case .residencePermit: return UIImage.residencePermitFrontIcon
     }
   }
   
-  var backImage: UIImage? {
+  var backSvgImage: SVGImage? {
     switch self {
     case .passport: return nil
-    case .driversLicense: return .driversLicenseBackIcon
-    case .identityCard: return .identityCardBackIcon
-    case .residencePermit: return .residencePermitBackIcon
+    case .driversLicense: return UIImage.driversLicenseBackIcon
+    case .identityCard: return UIImage.identityCardBackIcon
+    case .residencePermit: return UIImage.residencePermitBackIcon
     }
   }
   
