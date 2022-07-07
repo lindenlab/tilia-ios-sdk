@@ -14,7 +14,7 @@ final class UserDocumentsViewController: BaseViewController {
   private let router: UserDocumentsRoutingProtocol
   private let builder = UserDocumentsSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
-  private var section: UserDocumentsSectionBuilder.Section!
+  private lazy var section: UserDocumentsSectionBuilder.Section = builder.documentsSection()
   private lazy var pickersDelegate: PickersDelegate = {
     let delegate = PickersDelegate { [weak self] index, image, url in
       guard let self = self else { return }
@@ -72,7 +72,6 @@ final class UserDocumentsViewController: BaseViewController {
     super.viewDidLoad()
     setup()
     bind()
-    viewModel.viewDidLoad()
   }
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -230,12 +229,6 @@ private extension UserDocumentsViewController {
       guard let self = self else { return }
       self.router.showToast(title: L.errorKycTitle,
                             message: L.errorKycMessage)
-    }.store(in: &subscriptions)
-    
-    viewModel.content.sink { [weak self] in
-      guard let self = self else { return }
-      self.section = self.builder.documetsSection(with: $0)
-      self.tableView.reloadData()
     }.store(in: &subscriptions)
     
     viewModel.setText.sink { [weak self] in

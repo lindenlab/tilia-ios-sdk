@@ -18,7 +18,7 @@ final class UserInfoViewController: BaseViewController {
   private let router: UserInfoRoutingProtocol
   private let builder = UserInfoSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
-  private var sections: [UserInfoSectionBuilder.Section] = []
+  private lazy var sections: [UserInfoSectionBuilder.Section] = builder.sections()
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -65,7 +65,6 @@ final class UserInfoViewController: BaseViewController {
     super.viewDidLoad()
     setup()
     bind()
-    viewModel.viewDidLoad()
   }
   
   override func viewDidLayoutSubviews() {
@@ -214,23 +213,6 @@ private extension UserInfoViewController {
   }
   
   func bind() {
-    viewModel.contentLoading.sink { [weak self] in
-      guard let self = self else { return }
-      $0 ? self.startLoading() : self.stopLoading()
-    }.store(in: &subscriptions)
-    
-    viewModel.error.sink { [weak self] _ in
-      guard let self = self else { return }
-      self.router.showToast(title: L.errorKycTitle,
-                            message: L.errorKycMessage)
-    }.store(in: &subscriptions)
-    
-    viewModel.content.sink { [weak self] _ in
-      guard let self = self else { return }
-      self.sections = self.builder.sections()
-      self.tableView.reloadData()
-    }.store(in: &subscriptions)
-    
     viewModel.expandSection.sink { [weak self] item in
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSection(&self.sections[item.index],

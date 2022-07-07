@@ -13,7 +13,6 @@ typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text:
 typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetContactToDefault: Bool, wasUsResidence: Bool)
 
 protocol UserInfoViewModelInputProtocol {
-  func viewDidLoad()
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSection: UserInfoSectionBuilder.Section?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
   func upload()
@@ -21,9 +20,6 @@ protocol UserInfoViewModelInputProtocol {
 }
 
 protocol UserInfoViewModelOutputProtocol {
-  var contentLoading: PassthroughSubject<Bool, Never> { get }
-  var error: PassthroughSubject<Error, Never> { get }
-  var content: PassthroughSubject<Void, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
   var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
@@ -44,9 +40,6 @@ protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoView
 
 final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
-  let contentLoading = PassthroughSubject<Bool, Never>()
-  let error = PassthroughSubject<Error, Never>()
-  let content = PassthroughSubject<Void, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
@@ -80,15 +73,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     self.manager = manager
     self.onComplete = onComplete
     self.onError = onError
-  }
-  
-  func viewDidLoad() {
-    // TODO: - Fix me
-    contentLoading.send(true)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.contentLoading.send(false)
-      self.content.send(())
-    }
   }
   
   func updateSection(_ section: UserInfoSectionBuilder.Section,

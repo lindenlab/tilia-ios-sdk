@@ -16,7 +16,6 @@ typealias UserDocumentsAddAdditionalDocuments = (index: Int, documentImages: [UI
 typealias UserDocumentsDeleteAdditionalDocument = (itemIndex: Int, documentIndex: Int)
 
 protocol UserDocumentsViewModelInputProtocol {
-  func viewDidLoad()
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?)
   func setFiles(with urls: [URL], at index: Int)
@@ -27,7 +26,6 @@ protocol UserDocumentsViewModelInputProtocol {
 
 protocol UserDocumentsViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
-  var content: PassthroughSubject<UserDocumentsModel, Never> { get }
   var setText: PassthroughSubject<UserDocumentsSetText, Never> { get }
   var setDocumentImage: PassthroughSubject<UserDocumentsSetDocumentImage, Never> { get }
   var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
@@ -47,7 +45,6 @@ protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, Us
 final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
   let error = PassthroughSubject<Error, Never>()
-  let content = PassthroughSubject<UserDocumentsModel, Never>()
   let setText = PassthroughSubject<UserDocumentsSetText, Never>()
   let setDocumentImage = PassthroughSubject<UserDocumentsSetDocumentImage, Never>()
   let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
@@ -75,10 +72,6 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     self.userDocumentsModel = UserDocumentsModel(documentCountry: defaultCounty)
     self.onComplete = onComplete
     self.onError = onError
-  }
-  
-  func viewDidLoad() {
-    content.send(userDocumentsModel)// TODO: - Fix this
   }
   
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int) {

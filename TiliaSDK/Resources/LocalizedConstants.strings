@@ -95,6 +95,6 @@
 "takePhoto" = "Take a photo";
 "selectFromFiles" = "Select from Files";
 "errorKycTitle" = "Error processing information";
-"errorKycMessage" = "Sorry, we were unable to your information. Please try again later.";
+"errorKycMessage" = "Sorry, we were unable to upload your information. Please try again later.";
 "addDocumentsFailedTitle" = "Failed to select";
-"addDocumentsFailedMessage" = "Some files can not be uploaded because that have password";
+"addDocumentsFailedMessage" = "Some files can not be uploaded because they have password";

@@ -156,14 +156,13 @@ struct UserDocumentsSectionBuilder {
     return view
   }
   
-  func documetsSection(with model: UserDocumentsModel) -> Section {
+  func documentsSection() -> Section {
     let documents = UserDocumentsModel.Document.allCases
-    let selectedDocumentIndex = documents.firstIndex { $0 == model.document }
     let field = Section.Item.Mode.Field(type: .document,
                                         placeholder: L.selectDocument,
-                                        text: model.document?.description,
+                                        text: nil,
                                         items: documents.map { $0.description },
-                                        seletedItemIndex: selectedDocumentIndex)
+                                        seletedItemIndex: nil)
     let items: [Section.Item] = [
       Section.Item(title: L.document, mode: .field(field))
     ]
