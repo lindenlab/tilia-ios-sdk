@@ -33,18 +33,18 @@ final class AddCreditCardViewController: BaseViewController {
     return button
   }()
   
-  private lazy var goBackButton: NonPrimaryButton = {
+  private lazy var doneButton: NonPrimaryButton = {
     let button = NonPrimaryButton()
-    button.setTitle(L.goBack, for: .normal)
-    button.addTarget(self, action: #selector(goBackButtonDidTap), for: .touchUpInside)
-    button.accessibilityIdentifier = "goBackButton"
+    button.setTitle(L.done, for: .normal)
+    button.addTarget(self, action: #selector(doneButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "doneButton"
     return button
   }()
   
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [titleInfoView,
                                                    openBrowserButton,
-                                                   goBackButton])
+                                                   doneButton])
     stackView.axis = .vertical
     stackView.spacing = 16
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +121,7 @@ private extension AddCreditCardViewController {
     viewModel.openBrowser()
   }
   
-  @objc func goBackButtonDidTap() {
+  @objc func doneButtonDidTap() {
     router.dismiss { self.viewModel.complete() }
   }
   
