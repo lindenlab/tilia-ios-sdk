@@ -173,27 +173,23 @@ struct UserInfoSectionBuilder {
   
   func header(for section: Section,
               in tableView: UITableView,
-              delegate: SectionHeaderDelegate,
-              isUploading: Bool) -> UIView {
+              delegate: SectionHeaderDelegate) -> UIView {
     let view = tableView.dequeue(UserInfoHeaderView.self)
     view.configure(title: section.type.title,
                    delegate: delegate)
     view.configure(mode: section.mode, animated: false)
-    view.isUserInteractionEnabled = !isUploading
     return view
   }
   
   func footer(for sections: [Section],
               in tableView: UITableView,
               at section: Int,
-              delegate: SectionFooterDelegate,
-              isUploading: Bool) -> UIView? {
+              delegate: SectionFooterDelegate) -> UIView? {
     switch sections[section].type {
     case .contact:
       let isPrimaryButtonEnabled = isAllSectionsFilled(sections)
       let view = tableView.dequeue(UserInfoFooterView.self)
       view.configure(delegate: delegate)
-      view.configure(isLoading: isUploading)
       view.configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled)
       return view
     default:
@@ -345,22 +341,6 @@ struct UserInfoSectionBuilder {
       let index = sections.firstIndex(where: { $0.type == .contact }),
       let footer = tableView.footerView(forSection: index) as? UserInfoFooterView else { return }
     footer.configure(isPrimaryButtonEnabled: isAllSectionsFilled(sections))
-  }
-  
-  func updateTable(_ tableView: UITableView,
-                   for sections: [Section],
-                   isUploading: Bool) {
-    var footerIndex: Int?
-    sections.enumerated().forEach {
-      tableView.headerView(forSection: $0.offset)?.isUserInteractionEnabled = !isUploading
-      if $0.element.type == .contact {
-        footerIndex = $0.offset
-      }
-    }
-    guard
-      let index = footerIndex,
-      let footer = tableView.footerView(forSection: index) as? UserInfoFooterView else { return }
-    footer.configure(isLoading: isUploading)
   }
   
 }

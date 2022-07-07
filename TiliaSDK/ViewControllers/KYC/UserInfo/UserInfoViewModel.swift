@@ -15,7 +15,6 @@ typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetC
 protocol UserInfoViewModelInputProtocol {
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSection: UserInfoSectionBuilder.Section?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
-  func upload()
   func complete()
 }
 
@@ -24,8 +23,6 @@ protocol UserInfoViewModelOutputProtocol {
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
   var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
   var coutryOfResidenceDidSelect: PassthroughSubject<UserInfoModel, Never> { get }
-  var uploading: CurrentValueSubject<Bool, Never> { get }
-  var successfulUploading: PassthroughSubject<Void, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
 }
 
@@ -44,8 +41,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
   let coutryOfResidenceDidSelect = PassthroughSubject<UserInfoModel, Never>()
-  let uploading = CurrentValueSubject<Bool, Never>(false)
-  let successfulUploading = PassthroughSubject<Void, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
   
   let manager: NetworkManager
@@ -149,15 +144,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     if isFieldChanged {
       let isSectionFilled = validator(for: section.type).isFilled(for: userInfoModel)
       setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
-    }
-  }
-  
-  func upload() {
-    // TODO: - Fix me
-    uploading.send(true)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.uploading.send(false)
-      self.successfulUploading.send(())
     }
   }
   

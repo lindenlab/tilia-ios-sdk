@@ -112,16 +112,14 @@ extension UserInfoViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return builder.header(for: sections[section],
                           in: tableView,
-                          delegate: self,
-                          isUploading: viewModel.uploading.value)
+                          delegate: self)
   }
   
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections,
                           in: tableView,
                           at: section,
-                          delegate: self,
-                          isUploading: viewModel.uploading.value)
+                          delegate: self)
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -185,7 +183,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
                               isExpanded: false,
                               nextSection: nil)
     }
-    viewModel.upload()
+    router.routeToUserDocumentsView()
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
@@ -269,17 +267,6 @@ private extension UserInfoViewController {
                                                  in: self.tableView,
                                                  countryOfResidenceDidSelectWith: $0)
       indexSet.map { self.tableView.insertSections($0, with: .fade) }
-    }.store(in: &subscriptions)
-    
-    viewModel.uploading.sink { [weak self] in
-      guard let self = self else { return }
-      self.builder.updateTable(self.tableView,
-                               for: self.sections,
-                               isUploading: $0)
-    }.store(in: &subscriptions)
-    
-    viewModel.successfulUploading.sink { [weak self] _ in
-      self?.router.routeToUserDocumentsView()
     }.store(in: &subscriptions)
     
     viewModel.dismiss.sink { [weak self] _ in

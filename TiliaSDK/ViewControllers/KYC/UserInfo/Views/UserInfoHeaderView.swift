@@ -18,7 +18,6 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
     case normal
     case expanded
     case passed
-    case failed
     case disabled
     
   }
@@ -45,19 +44,9 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
     return imageView
   }()
   
-  override var isUserInteractionEnabled: Bool {
-    get {
-      return super.isUserInteractionEnabled
-    }
-    set {
-      super.isUserInteractionEnabled = mode == .disabled ? false : newValue
-    }
-  }
-  
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     setup()
-    setupMode(animated: false)
   }
   
   required init?(coder: NSCoder) {
@@ -151,7 +140,6 @@ private extension UserInfoHeaderView.Mode {
     switch self {
     case .normal, .passed: return .primaryTextColor
     case .expanded: return .primaryButtonTextColor
-    case .failed: return .failureBackgroundColor
     case .disabled: return .tertiaryTextColor
     }
   }
@@ -161,7 +149,6 @@ private extension UserInfoHeaderView.Mode {
     case .normal: return .primaryTextColor
     case .expanded: return .primaryButtonTextColor
     case .passed: return .successBackgroundColor
-    case .failed: return .failureBackgroundColor
     case .disabled: return .tertiaryTextColor
     }
   }
@@ -185,7 +172,6 @@ private extension UserInfoHeaderView.Mode {
     switch self {
     case .normal, .expanded, .disabled: image = isExpanded ? .chevronUpIcon : .chevronDownIcon
     case .passed: image = .successIcon
-    case .failed: image = .failureIcon
     }
     return image?.withRenderingMode(.alwaysTemplate)
   }
