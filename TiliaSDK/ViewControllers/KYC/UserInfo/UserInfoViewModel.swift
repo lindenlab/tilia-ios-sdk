@@ -49,7 +49,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     guard let self = self else { return }
     if $0 {
       self.isUserDocumentsUploaded = true
-      self.dismiss.send(())
+      self.dismiss.send()
     }
     self.onComplete?($0) // TODO: - Check here if we need to pass UserDocuments uploading state here
   }

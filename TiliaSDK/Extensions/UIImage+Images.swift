@@ -43,6 +43,8 @@ extension UIImage {
   
 }
 
+// MARK: - Helpers
+
 private extension UIImage {
   
   convenience init?(str: String) {

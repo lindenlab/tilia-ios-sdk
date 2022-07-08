@@ -57,6 +57,8 @@ final class UserDocumentsDocumentCell: UICollectionViewCell {
   
 }
 
+// MARK: - Private Methods
+
 private extension UserDocumentsDocumentCell {
   
   func setup() {

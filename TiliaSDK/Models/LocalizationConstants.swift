@@ -109,5 +109,14 @@ enum L {
   static let errorKycMessage = "errorKycMessage".localized
   static let addDocumentsFailedTitle = "addDocumentsFailedTitle".localized
   static let addDocumentsFailedMessage = "addDocumentsFailedMessage".localized
+  static let waitingForResults = "waitingForResults".localized
+  static let waitingForResultsMessage = "waitingForResultsMessage".localized
+  static let gettingStarted = "gettingStarted".localized
+  static let gatheringInformation = "gatheringInformation".localized
+  static let verifyingInformation = "verifyingInformation".localized
+  static let dottingInformation = "dottingInformation".localized
+  static let checkingInformation = "checkingInformation".localized
+  static let almostThereWithDots = "almostThereWithDots".localized
+  static let takingWhile = "takingWhile".localized
   
 }

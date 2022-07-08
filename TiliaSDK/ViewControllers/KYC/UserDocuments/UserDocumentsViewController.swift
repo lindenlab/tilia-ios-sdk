@@ -44,6 +44,7 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.register(TextFieldCell.self)
     tableView.register(UserDocumentsSelectDocumentCell.self)
     tableView.register(UserDocumentsSuccessCell.self)
+    tableView.register(UserDocumentsWaitingCell.self)
     tableView.estimatedRowHeight = 100
     return tableView
   }()
@@ -297,7 +298,7 @@ private extension UserDocumentsViewController {
                               didAddAdditionalDocumentsWith: $0.documentImages)
     }.store(in: &subscriptions)
     
-    viewModel.addAdditionalDocumentsDidFail.sink { [weak self] _ in
+    viewModel.addAdditionalDocumentsDidFail.sink { [weak self] in
       self?.router.showAddDocumentsDidFailAlert()
     }.store(in: &subscriptions)
     
@@ -327,7 +328,24 @@ private extension UserDocumentsViewController {
     }.store(in: &subscriptions)
     
     viewModel.successfulUploading.sink { [weak self] in
-      guard let self = self, $0 else { return }
+      guard let self = self else { return }
+      self.section = self.builder.waitingSection()
+      self.tableView.reloadData()
+    }.store(in: &subscriptions)
+    
+    viewModel.waiting.sink { [weak self] in
+      guard let self = self else { return }
+      if self.builder.updateWaitingSection(&self.section, in: self.tableView) {
+        UIView.performWithoutAnimation {
+          self.tableView.performBatchUpdates(nil)
+        }
+      } else {
+        self.viewModel.invalidateTimer()
+      }
+    }.store(in: &subscriptions)
+    
+    viewModel.successfulWaiting.sink { [weak self] in
+      guard let self = self else { return }
       self.section = self.builder.successSection()
       self.tableView.reloadData()
     }.store(in: &subscriptions)

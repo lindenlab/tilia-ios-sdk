@@ -21,6 +21,7 @@ protocol UserDocumentsViewModelInputProtocol {
   func setFiles(with urls: [URL], at index: Int)
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int)
   func upload()
+  func invalidateTimer()
   func complete()
 }
 
@@ -37,7 +38,9 @@ protocol UserDocumentsViewModelOutputProtocol {
   var deleteAdditionalDocument: PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never> { get }
   var fillingContent: PassthroughSubject<Bool, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
-  var successfulUploading: CurrentValueSubject<Bool, Never> { get }
+  var successfulUploading: PassthroughSubject<Void, Never> { get }
+  var waiting: PassthroughSubject<Void, Never> { get }
+  var successfulWaiting: PassthroughSubject<Void, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -56,13 +59,17 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let deleteAdditionalDocument = PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never>()
   let fillingContent = PassthroughSubject<Bool, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
-  let successfulUploading = CurrentValueSubject<Bool, Never>(false)
+  let successfulUploading = PassthroughSubject<Void, Never>()
+  let waiting = PassthroughSubject<Void, Never>()
+  let successfulWaiting = PassthroughSubject<Void, Never>()
   
   private let manager: NetworkManager
   private var userDocumentsModel: UserDocumentsModel
   private let onComplete: ((Bool) -> Void)
   private let onError: ((Error) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
+  private var isUploaded = false
+  private var timer: Timer?
   
   init(manager: NetworkManager,
        defaultCounty: String,
@@ -161,7 +168,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       updateFillingSectionObserver()
     }
     if addDocumentsFailed {
-      addAdditionalDocumentsDidFail.send(())
+      addAdditionalDocumentsDidFail.send()
     }
   }
   
@@ -175,13 +182,24 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     // TODO: - Fix me
     uploading.send(true)
     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.uploading.send(false)
-      self.successfulUploading.send(true)
+      self.isUploaded = true
+      self.successfulUploading.send()
+      self.updateWaitingObserver()
     }
   }
   
+  func invalidateTimer() {
+    successfulWaiting.send() // TODO: - Delete when API is ready
+    timer?.invalidate()
+    timer = nil
+  }
+  
   func complete() {
-    onComplete(successfulUploading.value)
+    onComplete(isUploaded)
+  }
+  
+  deinit {
+    timer?.invalidate()
   }
   
 }
@@ -231,6 +249,12 @@ private extension UserDocumentsViewModel {
   func updateFillingSectionObserver() {
     let isSectionFilled = UserDocumentsValidator.isFilled(for: userDocumentsModel)
     fillingContent.send(isSectionFilled)
+  }
+  
+  func updateWaitingObserver() {
+    timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+      self?.waiting.send()
+    }
   }
   
 }

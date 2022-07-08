@@ -18,6 +18,7 @@ struct UserDocumentsSectionBuilder {
     
     enum SectionType {
       case documents
+      case waiting
       case success
     }
     
@@ -66,9 +67,47 @@ struct UserDocumentsSectionBuilder {
           }
         }
         
+        enum Waiting {
+          case gettingStarted
+          case gatheringInformation
+          case verifyingInformation
+          case dottingInformation
+          case checkingInformation
+          case hangTight
+          case almostThereWithDots
+          case takingWhile
+          
+          var title: String {
+            switch self {
+            case .gettingStarted: return L.gettingStarted
+            case .gatheringInformation: return L.gatheringInformation
+            case .verifyingInformation: return L.verifyingInformation
+            case .dottingInformation: return L.dottingInformation
+            case .checkingInformation: return L.checkingInformation
+            case .hangTight: return L.hangTight
+            case .almostThereWithDots: return L.almostThereWithDots
+            case .takingWhile: return L.takingWhile
+            }
+          }
+          
+          var onNext: Waiting? {
+            switch self {
+            case .gettingStarted: return .gatheringInformation
+            case .gatheringInformation: return .verifyingInformation
+            case .verifyingInformation: return .dottingInformation
+            case .dottingInformation: return .checkingInformation
+            case .checkingInformation: return .hangTight
+            case .hangTight: return .almostThereWithDots
+            case .almostThereWithDots: return .takingWhile
+            case .takingWhile: return nil
+            }
+          }
+        }
+        
         case field(Field)
         case photo(Photo)
         case additionalDocuments([UIImage])
+        case waiting(Waiting)
         case success
       }
       
@@ -116,6 +155,10 @@ struct UserDocumentsSectionBuilder {
                      delegate: delegate)
       cell.isUserInteractionEnabled = !isUploading
       return cell
+    case let .waiting(model):
+      let cell = tableView.dequeue(UserDocumentsWaitingCell.self, for: indexPath)
+      cell.configure(title: model.title)
+      return cell
     case .success:
       let cell = tableView.dequeue(UserDocumentsSuccessCell.self, for: indexPath)
       return cell
@@ -128,6 +171,8 @@ struct UserDocumentsSectionBuilder {
     switch section.type {
     case .documents:
       view.configure(title: L.almostThere, subTitle: L.userDocumentsMessage)
+    case .waiting:
+      view.configure(title: L.waitingForResults, subTitle: L.waitingForResultsMessage)
     case .success:
       view.configure(title: L.allSet, subTitle: L.userDocumentsSuccessMessage)
     }
@@ -147,6 +192,11 @@ struct UserDocumentsSectionBuilder {
                      delegate: delegate)
       view.configure(isPrimaryButtonEnabled: section.isFilled == true)
       view.configure(isLoading: isUploading)
+    case .waiting:
+      view.configure(isPrimaryButtonHidden: true,
+                     nonPrimaryButtonTitle: L.cancel,
+                     nonPrimaryButtonImage: nil,
+                     delegate: delegate)
     case .success:
       view.configure(isPrimaryButtonHidden: true,
                      nonPrimaryButtonTitle: L.done,
@@ -169,6 +219,10 @@ struct UserDocumentsSectionBuilder {
     return Section(type: .documents,
                    items: items,
                    isFilled: false)
+  }
+  
+  func waitingSection() -> Section {
+    return Section(type: .waiting, items: [.init(title: nil, mode: .waiting(.gettingStarted))])
   }
   
   func successSection() -> Section {
@@ -370,6 +424,19 @@ struct UserDocumentsSectionBuilder {
     }
     guard let footer = tableView.footerView(forSection: 0) as? UserDocumentsFooterView else { return }
     footer.configure(isLoading: isUploading)
+  }
+  
+  func updateWaitingSection(_ section: inout Section,
+                            in tableView: UITableView) -> Bool {
+    guard
+      case let .waiting(model) = section.items.first?.mode,
+      let nextItem = model.onNext else { return false }
+    section.items[0].mode = .waiting(nextItem)
+    let indexPath = IndexPath(row: 0, section: 0)
+    if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsWaitingCell {
+      cell.configure(title: nextItem.title)
+    }
+    return true
   }
   
 }

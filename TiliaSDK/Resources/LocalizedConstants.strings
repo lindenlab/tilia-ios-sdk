@@ -98,3 +98,12 @@
 "errorKycMessage" = "Sorry, we were unable to upload your information. Please try again later.";
 "addDocumentsFailedTitle" = "Failed to select";
 "addDocumentsFailedMessage" = "Some files can not be uploaded because they have password";
+"waitingForResults" = "Waiting for results";
+"waitingForResultsMessage" = "Hold on while we verify your identity. We'll also email you an update on your identity verification, so feel free to close this screen if needed.";
+"gettingStarted" = "Getting started...";
+"gatheringInformation" = "Gathering information...";
+"verifyingInformation" = "Verifying information...";
+"dottingInformation" = "Dotting the I's and crossing the T's...";
+"checkingInformation" = "Checking for one more thing...";
+"almostThereWithDots" = "Almost there...";
+"takingWhile" = "Hmm, this is taking a while. Feel free to close this page and we'll send you an email with any updates.";
