@@ -308,21 +308,18 @@ struct UserInfoSectionBuilder {
   func updateSections(_ sections: inout [Section],
                       in tableView: UITableView,
                       countryOfResidenceDidChangeWith model: UserInfoModel,
-                      needToSetContactToDefault: Bool,
                       wasUsResidence: Bool) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil, nil)
     
     guard let contactSectionIndex = sections.firstIndex(where: { $0.type == .contact }) else { return tableUpdate }
     
-    if needToSetContactToDefault {
-      sections[contactSectionIndex].isFilled = false
-      tableUpdate.deleteRows = updateSection(&sections[contactSectionIndex],
-                                             with: model,
-                                             in: tableView,
-                                             at: contactSectionIndex,
-                                             isExpanded: false,
-                                             headerMode: .normal).deleteRows
-    }
+    sections[contactSectionIndex].isFilled = false
+    tableUpdate.deleteRows = updateSection(&sections[contactSectionIndex],
+                                           with: model,
+                                           in: tableView,
+                                           at: contactSectionIndex,
+                                           isExpanded: false,
+                                           headerMode: .normal).deleteRows
     
     if model.isUsResident, sections.firstIndex(where: { $0.type == .tax }) == nil {
       sections.insert(taxSection(), at: contactSectionIndex)
@@ -357,12 +354,12 @@ private extension UserInfoSectionBuilder {
   }
   
   func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {
-    let items = ["USA", "Canada", "Ukraine"] // TODO: - Remove mock
-    let selectedIndex = items.firstIndex { $0 == model.countryOfResidence }
+    let countries = UserInfoModel.Country.countryNames
+    let selectedIndex = countries.firstIndex { $0 == model.countryOfResidence?.name }
     let countryOfResidenceField = Section.Item.Mode.Fields(type: .countryOfResidance,
                                                            fields: [.init(placeholder: L.selectCountry,
-                                                                          text: model.countryOfResidence)],
-                                                           inputMode: .picker(items: items,
+                                                                          text: model.countryOfResidence?.name)],
+                                                           inputMode: .picker(items: countries,
                                                                               selectedIndex: selectedIndex))
     return [
       Section.Item(mode: .fields(countryOfResidenceField),
@@ -398,12 +395,12 @@ private extension UserInfoSectionBuilder {
     let ssnFieldMask = "xxx-xx-xxxx"
     let ssnField = Section.Item.Mode.Fields(type: .ssn,
                                             fields: [.init(placeholder: ssnFieldMask,
-                                                           text: model.tax.ssn)],
+                                                           text: model.tax?.ssn)],
                                             mask: ssnFieldMask)
     
     let signatureField = Section.Item.Mode.Fields(type: .signature,
                                                   fields: [.init(placeholder: L.yourFullName,
-                                                                 text: model.tax.signature)])
+                                                                 text: model.tax?.signature)])
     
     return [
       Section.Item(mode: .fields(ssnField),
@@ -429,18 +426,21 @@ private extension UserInfoSectionBuilder {
                                              fields: [.init(text: model.address.city)])
     
     let regionField: Section.Item.Mode.Fields
-    if model.isUsResident {
-      let regions = ["Florida", "Montana", "Alaska"] // TODO: - Remove mock
-      let selectedRegionIndex = regions.firstIndex { $0 == model.address.region }
+    let hasStates: Bool
+    if let states = model.countryOfResidence?.states {
+      let regions = states.compactMap { $0.name }
+      let selectedRegionIndex = regions.firstIndex { $0 == model.address.region.name }
+      hasStates = true
       regionField = Section.Item.Mode.Fields(type: .state,
                                              fields: [.init(placeholder: L.selectState,
-                                                            text: model.address.region)],
+                                                            text: model.address.region.name)],
                                              inputMode: .picker(items: regions,
                                                                 selectedIndex: selectedRegionIndex))
       
     } else {
+      hasStates = false
       regionField = Section.Item.Mode.Fields(type: .state,
-                                             fields: [.init(text: model.address.region)])
+                                             fields: [.init(text: model.address.region.name)])
     }
     
     let postalCodeField = Section.Item.Mode.Fields(type: .postalCode,
@@ -452,12 +452,12 @@ private extension UserInfoSectionBuilder {
       Section.Item(mode: .fields(cityField),
                    title: L.city),
       Section.Item(mode: .fields(regionField),
-                   title: model.isUsResident ? L.state : L.stateOrRegion),
+                   title: hasStates ? L.state : L.stateOrRegion),
       Section.Item(mode: .fields(postalCodeField),
                    title: L.postalCode),
       Section.Item(mode: .label(.systemFont(ofSize: 16)),
                    title: L.countryOfResidence,
-                   description: model.countryOfResidence)
+                   description: model.countryOfResidence?.name)
     ]
     
     if model.isUsResident {

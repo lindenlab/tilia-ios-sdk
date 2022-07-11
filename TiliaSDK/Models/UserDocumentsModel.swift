@@ -26,6 +26,14 @@ struct UserDocumentsModel {
       }
     }
     
+    var code: String {
+      switch self {
+      case .passport: return "PP"
+      case .driversLicense: return "DL"
+      case .identityCard, .residencePermit: return "ID"
+      }
+    }
+    
     init?(str: String) {
       switch str {
       case Document.passport.description: self = .passport

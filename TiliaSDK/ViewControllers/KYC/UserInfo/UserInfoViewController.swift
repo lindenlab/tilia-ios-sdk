@@ -250,7 +250,6 @@ private extension UserInfoViewController {
       let tableUpdate = self.builder.updateSections(&self.sections,
                                                     in: self.tableView,
                                                     countryOfResidenceDidChangeWith: $0.model,
-                                                    needToSetContactToDefault: $0.needToSetContactToDefault,
                                                     wasUsResidence: $0.wasUsResidence)
       self.builder.updateTableFooter(for: self.sections,
                                      in: self.tableView)

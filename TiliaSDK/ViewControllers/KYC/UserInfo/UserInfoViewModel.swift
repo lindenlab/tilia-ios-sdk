@@ -10,7 +10,7 @@ import Foundation
 
 typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, mode: UserInfoHeaderView.Mode, expandNext: Bool)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
-typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, needToSetContactToDefault: Bool, wasUsResidence: Bool)
+typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, wasUsResidence: Bool)
 
 protocol UserInfoViewModelInputProtocol {
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSection: UserInfoSectionBuilder.Section?)
@@ -44,7 +44,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let dismiss = PassthroughSubject<Void, Never>()
   
   let manager: NetworkManager
-  var selectedCountry: String { return userInfoModel.countryOfResidence ?? "" }
+  var selectedCountry: String { return "" } // TODO: - Fix me
   private(set) lazy var onUserDocumentsComplete: (Bool) -> Void = { [weak self] in
     guard let self = self else { return }
     if $0 {
@@ -91,19 +91,21 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     switch field.type {
     case .countryOfResidance:
       let wasNil = userInfoModel.countryOfResidence == nil
-      let wasUsResidence = userInfoModel.isUsResident
-      isFieldChanged = isFieldUpdated(&userInfoModel.countryOfResidence, with: text)
       if wasNil {
+        isFieldChanged = true
+        userInfoModel.countryOfResidence = UserInfoModel.Country.countries.first { $0.name == text }
         coutryOfResidenceDidSelect.send(userInfoModel)
-      } else if isFieldChanged {
+      } else if userInfoModel.countryOfResidence?.name != text {
+        let wasUsResidence = userInfoModel.isUsResident
+        isFieldChanged = true
+        userInfoModel.countryOfResidence = UserInfoModel.Country.countries.first { $0.name == text }
         if wasUsResidence {
-          userInfoModel.setTaxToDefault()
+          userInfoModel.tax = nil
+        } else if userInfoModel.isUsResident {
+          userInfoModel.tax = .init()
         }
-        let needToSetAddressToDefault = wasUsResidence || userInfoModel.isUsResident
-        if needToSetAddressToDefault {
-          userInfoModel.setAddressToDefault()
-        }
-        coutryOfResidenceDidChange.send((userInfoModel, needToSetAddressToDefault, wasUsResidence))
+        userInfoModel.setAddressToDefault()
+        coutryOfResidenceDidChange.send((userInfoModel, wasUsResidence))
       }
     case .fullName:
       switch fieldIndex {
@@ -119,9 +121,15 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       let date = DateFormatter.defaultFormatter.date(from: text ?? "")
       isFieldChanged = isFieldUpdated(&userInfoModel.dateOfBirth, with: date)
     case .ssn:
-      isFieldChanged = isFieldUpdated(&userInfoModel.tax.ssn, with: text)
+      if userInfoModel.tax?.ssn != text {
+        isFieldChanged = true
+        userInfoModel.tax?.ssn = text
+      }
     case .signature:
-      isFieldChanged = isFieldUpdated(&userInfoModel.tax.signature, with: text)
+      if userInfoModel.tax?.signature != text {
+        isFieldChanged = true
+        userInfoModel.tax?.signature = text
+      }
     case .address:
       switch fieldIndex {
       case 0:
@@ -133,7 +141,14 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     case .city:
       isFieldChanged = isFieldUpdated(&userInfoModel.address.city, with: text)
     case .state:
-      isFieldChanged = isFieldUpdated(&userInfoModel.address.region , with: text)
+      if userInfoModel.address.region.name != text {
+        isFieldChanged = true
+        if let states = userInfoModel.countryOfResidence?.states, let state = states.first(where: { $0.name == text }) {
+          userInfoModel.address.region = state
+        } else {
+          userInfoModel.address.region.name = text
+        }
+      }
     case .postalCode:
       isFieldChanged = isFieldUpdated(&userInfoModel.address.postalCode, with: text)
     case .useAddressFor1099:
