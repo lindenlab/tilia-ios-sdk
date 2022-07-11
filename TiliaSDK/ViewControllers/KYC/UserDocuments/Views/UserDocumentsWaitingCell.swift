@@ -55,10 +55,10 @@ private extension UserDocumentsWaitingCell {
     contentView.addSubview(stackView)
 
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32),
+      stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -32),
+      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
     ])
   }
   
