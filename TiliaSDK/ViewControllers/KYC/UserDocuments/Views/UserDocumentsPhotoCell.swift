@@ -16,6 +16,8 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
   
   private weak var delegate: UserDocumentsPhotoCellDelegate?
   
+  private var placeholderView: SVGImage?
+  
   private let photoImageView: UIImageView = {
     let imageView = UIImageView()
     return imageView
@@ -50,8 +52,11 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     self.delegate = delegate
   }
   
-  func configure(image: UIImage?) {
+  func configure(image: UIImage?, placeholderView: SVGImage?) {
     photoImageView.image = image
+    self.placeholderView?.removeFromSuperview()
+    self.placeholderView = placeholderView
+    setupPlaceholderView()
   }
   
 }
@@ -78,6 +83,18 @@ private extension UserDocumentsPhotoCell {
     
     NSLayoutConstraint.activate([
       photoImageView.heightAnchor.constraint(equalTo: photoImageView.widthAnchor, multiplier: 0.65)
+    ])
+  }
+  
+  func setupPlaceholderView() {
+    guard let placeholderView = placeholderView, photoImageView.image == nil else { return }
+    placeholderView.translatesAutoresizingMaskIntoConstraints = false
+    contentView.addSubview(placeholderView)
+    NSLayoutConstraint.activate([
+      placeholderView.leftAnchor.constraint(equalTo: photoImageView.leftAnchor),
+      placeholderView.rightAnchor.constraint(equalTo: photoImageView.rightAnchor),
+      placeholderView.topAnchor.constraint(equalTo: photoImageView.topAnchor),
+      placeholderView.bottomAnchor.constraint(equalTo: photoImageView.bottomAnchor)
     ])
   }
   

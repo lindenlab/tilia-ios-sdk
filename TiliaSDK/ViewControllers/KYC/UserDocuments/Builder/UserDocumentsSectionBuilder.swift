@@ -52,19 +52,7 @@ struct UserDocumentsSectionBuilder {
         struct Photo {
           let type: PhotoType
           let placeholderImage: SVGImage?
-          
-          var image: UIImage? {
-            get { return _image ?? placeholderImage?.uiImage }
-            set { _image = newValue }
-          }
-          var isPhotoImageEmpty: Bool { return _image == nil }
-          
-          private var _image: UIImage?
-          
-          init(type: PhotoType, placeholderImage: SVGImage?) {
-            self.type = type
-            self.placeholderImage = placeholderImage
-          }
+          var image: UIImage?
         }
         
         enum Waiting {
@@ -145,7 +133,7 @@ struct UserDocumentsSectionBuilder {
       let cell = tableView.dequeue(UserDocumentsPhotoCell.self, for: indexPath)
       cell.configure(title: item.title, font: .systemFont(ofSize: 14))
       cell.configure(delegate: delegate)
-      cell.configure(image: model.image)
+      cell.configure(image: model.image, placeholderView: model.placeholderImage)
       cell.isUserInteractionEnabled = !isUploading
       return cell
     case let .additionalDocuments(images):
@@ -407,16 +395,6 @@ struct UserDocumentsSectionBuilder {
     successCell.startAnimatingIfNeeded()
   }
   
-  func updateDocumentPhotoCells(for section: Section,
-                                in tableView: UITableView) {
-    for (index, item) in section.items.enumerated() {
-      guard case let .photo(photo) = item.mode else { continue }
-      guard photo.isPhotoImageEmpty else { continue }
-      photo.placeholderImage?.setupLayersColor()
-      updatePhotoCell(at: index, with: item, in: tableView)
-    }
-  }
-  
   func updateTable(_ tableView: UITableView,
                    isUploading: Bool) {
     tableView.visibleCells.forEach {
@@ -486,7 +464,7 @@ private extension UserDocumentsSectionBuilder {
     guard
       case let .photo(model) = item.mode,
       let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsPhotoCell else { return }
-    cell.configure(image: model.image)
+    cell.configure(image: model.image, placeholderView: model.placeholderImage)
   }
   
   func documentSideIndex(in section: Section, for type: Section.Item.Mode.PhotoType) -> Int? {

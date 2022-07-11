@@ -9,18 +9,9 @@ import PocketSVG
 
 final class SVGImage: SVGImageView {
   
-  var uiImage: UIImage {
-    let size = CGSize(width: viewBox.size.width + 2,
-                      height: viewBox.size.height + 2)
-    let renderer = UIGraphicsImageRenderer(size: size)
-    return renderer.image { return layer.render(in: $0.cgContext) }
-  }
-  
   convenience init?(name: String) {
     guard let url = BundleToken.bundle.url(forResource: name, withExtension: "svg") else { return nil }
     self.init(contentsOf: url)
-    frame = viewBox
-    layer.layoutIfNeeded()
     setupLayersColor()
   }
   
@@ -30,21 +21,53 @@ final class SVGImage: SVGImageView {
     setupLayersColor()
   }
   
+}
+
+// MARK: - Private Methods
+
+private extension SVGImage {
+  
   func setupLayersColor() {
-    guard let layers = layer.sublayers?.compactMap({ $0 as? CAShapeLayer }) else { return }
-    layers.forEach { layer in
-      if let fillColor = layer.fillColor, var components = fillColor.components {
+    paths.enumerated().forEach { index, path in
+      var attributes: [String: Any] = [:]
+      if let fillColor = cgColor(from: path.svgAttributes["fill"]), var components = fillColor.components {
         components.removeLast()
-        if components != [1, 1, 1] {
-          layer.fillColor = UIColor.primaryColor.cgColor
+        if !isColorWhite(components: components) {
+          let newColor = UIColor.primaryColor.cgColor
+          attributes["fill"] = newColor
+          if let layer = layer.sublayers?[index] as? CAShapeLayer {
+            layer.fillColor = newColor
+          }
         }
       }
-      if let strokeColor = layer.strokeColor, var components = strokeColor.components {
+      
+      if let strokeColor = cgColor(from: path.svgAttributes["stroke"]), var components = strokeColor.components {
         components.removeLast()
-        if components != [1, 1, 1] {
-          layer.strokeColor = UIColor.primaryColor.cgColor
+        if !isColorWhite(components: components) {
+          let newColor = UIColor.primaryColor.cgColor
+          attributes["stroke"] = newColor
+          if let layer = layer.sublayers?[index] as? CAShapeLayer {
+            layer.fillColor = newColor
+          }
         }
       }
+      if !attributes.isEmpty {
+        paths[index] = path.settingSVGAttributes(attributes)
+      }
+    }
+  }
+  
+  func isColorWhite(components: [CGFloat]) -> Bool {
+    return components == [1, 1, 1]
+  }
+  
+  func cgColor(from value: Any?) -> CGColor? {
+    guard value != nil else { return nil }
+    let ref = value as CFTypeRef
+    if CFGetTypeID(ref) == CGColor.typeID {
+      return (ref as! CGColor)
+    } else {
+      return nil
     }
   }
   
