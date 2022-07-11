@@ -44,6 +44,8 @@ private extension UserDocumentsWaitingCell {
   
   func setup() {
     selectionStyle = .none
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
     
     let stackView = UIStackView(arrangedSubviews: [spinner, titleLabel])
     stackView.axis = .vertical
