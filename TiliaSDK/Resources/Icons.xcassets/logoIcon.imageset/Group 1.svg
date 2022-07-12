@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="body_1" width="90" height="36">
+
+<g transform="matrix(0.09944751 0 0 0.09944751 0.09944751 -0)">
+    <path d="M279 68L179 68L179 354L100 354L100 68L1 68L1 4L279 4L279 68z" stroke="#004D99" stroke-width="1" fill="#004D99" fill-rule="nonzero" />
+    <path d="M392 357L315 357L315 105L392 105L392 357z" stroke="#004D99" stroke-width="1" fill="#004D99" fill-rule="nonzero" />
+    <path d="M519 357L442 357L442 4L519 4L519 357z" stroke="#004D99" stroke-width="1" fill="#004D99" fill-rule="nonzero" />
+    <path d="M643 357L566 357L566 105L643 105L643 357z" stroke="#004D99" stroke-width="1" fill="#004D99" fill-rule="nonzero" />
+    <path d="M902 355L829 355L829 319L828 319C 811.203 346.978 785.933 361 753 361C 728.696 361 709.932 353.742 696 340C 682.068 326.258 675.013 307.895 675 285C 675 236.539 703.443 208.494 761 201L761 201L829 193C 829 165.689 814.674 152 785 152C 755.166 152 726.935 160.274 700 178L700 178L700 120C 710.759 114.478 725.326 109.237 744 105C 762.674 100.763 779.679 98.9867 795 99C 866.416 99 902 134.93 902 206L902 206L902 355zM829 253L829 237L784 242C 758.895 245.257 746 256.649 746 276C 746 284.786 748.889 292.398 755 298C 761.111 303.602 769.561 305.987 780 306C 794.52 306 806.877 300.992 816 291C 825.123 281.008 828.993 268.308 829 253z" stroke="#004D99" stroke-width="1" fill="#004D99" fill-rule="nonzero" />
+    <path d="M354 83C 376.92 83 395 64.6437 395 42C 395 19.3563 376.92 1 354 1C 331.08 1 312 19.3563 312 42C 312 64.6437 331.08 83 354 83z" stroke="#2E8AE6" stroke-width="1" fill="#2E8AE6" fill-rule="nonzero" />
+    <path d="M607 83C 629.92 83 648 64.6437 648 42C 648 19.3563 629.92 1 607 1C 584.08 1 565 19.3563 565 42C 565 64.6437 584.08 83 607 83z" stroke="#2E8AE6" stroke-width="1" fill="#2E8AE6" fill-rule="nonzero" />
+</g>
+</svg>

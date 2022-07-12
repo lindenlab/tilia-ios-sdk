@@ -37,7 +37,7 @@ final class NetworkManager {
       completion(.failure(TLError.invalidCurrencyCode))
       return
     }
-    let completionHandler: CompletionResultHandler<BalancesModel> = { result in
+    getUserBalance { result in
       switch result {
       case .success(let model):
         if let balanceModel = model.balances[currencyCode] {
@@ -49,8 +49,11 @@ final class NetworkManager {
         completion(.failure(error))
       }
     }
+  }
+  
+  func getUserBalance(completion: @escaping CompletionResultHandler<BalanceInfoModel>) {
     let router = PaymentRouter.getUserBalanceByCurrencyCode
-    serverClient.performRequestWithDecodableModel(router: router, completion: completionHandler)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
   func getInvoiceDetails(with id: String, completion: @escaping CompletionResultHandler<InvoiceDetailsModel>) {
@@ -58,13 +61,19 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
-  func createInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<InvoiceModel>) {
-    let router = InvoiceRouter.createInvoice(id: id, isEscrow: isEscrow)
+  func createInvoice(withId id: String, isEscrow: Bool, paymentMethod: PaymentMethodModel?, completion: @escaping CompletionResultHandler<InvoiceModel>) {
+    let model = CreateInvoiceModel(invoiceId: id, paymentMethods: paymentMethod.map { [$0] })
+    let router = InvoiceRouter.createInvoice(isEscrow: isEscrow, model: model)
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
   func payInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<EmptyModel>) {
     let router = InvoiceRouter.payInvoice(id: id, isEscrow: isEscrow)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  func getAddCreditCardRedirectUrl(completion: @escaping CompletionResultHandler<RedirectUrlModel>) {
+    let router = AuthRouter.getAddCreditCardRedirectUrl
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   

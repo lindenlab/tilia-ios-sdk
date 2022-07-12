@@ -62,6 +62,7 @@ private extension RadioButton {
   }
   
   @objc func didTap() {
+    guard !isRadioSelected else { return }
     isRadioSelected.toggle()
   }
   

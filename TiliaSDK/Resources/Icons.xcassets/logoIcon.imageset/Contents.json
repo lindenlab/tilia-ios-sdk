@@ -1,19 +1,18 @@
 {
   "images" : [
     {
-      "filename" : "Tilia Logo.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename" : "Group 1.svg",
+      "idiom" : "universal"
     },
     {
-      "filename" : "Tilia Logo@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Tilia Logo@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Group 2.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {

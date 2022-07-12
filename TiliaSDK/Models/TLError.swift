@@ -29,6 +29,11 @@ public enum TLError: Error {
   ///   - currency: currency code
   case userBalanceDoesNotExistForCurrency(String)
   
+  /// URL does not exist for string
+  /// - Parameters:
+  ///   - str: string representation of URL
+  case urlDoesNotExistForString(String)
+  
 }
 
 // MARK: - LocalizedError
@@ -47,6 +52,8 @@ extension TLError: LocalizedError {
       return error
     case .userBalanceDoesNotExistForCurrency(let currency):
       return "User balance does not exist for currency: \(currency)"
+    case .urlDoesNotExistForString(let str):
+      return "URL does not exist for string: \(str)"
     }
   }
   

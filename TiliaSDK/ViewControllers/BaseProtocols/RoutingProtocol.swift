@@ -12,8 +12,6 @@ protocol RoutingProtocol {
   var viewController: UIViewController? { get }
   
   func dismiss(animated: Bool, completion: (() -> Void)?)
-  func showToast(title: String, message: String)
-  func showWebView(with link: String)
 }
 
 // MARK: - Default Implementation
@@ -36,7 +34,11 @@ extension RoutingProtocol {
   
   func showWebView(with link: String) {
     guard let model = TosAcceptModel(str: link) else { return }
-    let safariViewController = SFSafariViewController(url: model.url)
+    showWebView(with: model.url)
+  }
+  
+  func showWebView(with url: URL) {
+    let safariViewController = SFSafariViewController(url: url)
     viewController?.present(safariViewController, animated: true)
   }
   

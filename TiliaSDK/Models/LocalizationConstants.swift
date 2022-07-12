@@ -21,6 +21,7 @@ enum L {
   static let choosePaymentMethod = "choosePaymentMethod".localized
   static let walletBalance = "walletBalance".localized
   static let pay = "pay".localized
+  static let usePaymentMethods = "usePaymentMethods".localized
   static let done = "done".localized
   static let payAcceptDescription = "payAcceptDescription".localized
   static let success = "success".localized
@@ -32,5 +33,12 @@ enum L {
   static let errorTosMessage = "errorTosMessage".localized
   static let close = "close".localized
   static let missedRequiredData = "missedRequiredData".localized
+  static let addPaymentMethodTitle = "addPaymentMethodTitle".localized
+  static let addCreditCardTitle = "addCreditCardTitle".localized
+  static let addCreditCardMessage = "addCreditCardMessage".localized
+  static let openBrowser = "openBrowser".localized
+  static let goBack = "goBack".localized
+  static let errorAddCreditTitle = "errorAddCreditTitle".localized
+  static let errorAddCreditMessage = "errorAddCreditMessage".localized
   
 }

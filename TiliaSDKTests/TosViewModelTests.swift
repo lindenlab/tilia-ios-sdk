@@ -22,31 +22,31 @@ class TosViewModelTests: XCTestCase {
     var loading: Bool?
     var completeCallback: TLCompleteCallback?
     
-    let completeCallbackExpactation = XCTestExpectation(description: "testSuccessAcceptTos_CompleteCallback")
+    let completeCallbackExpectation = XCTestExpectation(description: "testSuccessAcceptTos_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = TosViewModel(manager: networkManager,
-                                 onComplete: { completeCallback = $0; completeCallbackExpactation.fulfill() },
+                                 onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
                                  onError: nil)
     
-    let acceptExpactation = XCTestExpectation(description: "testSuccessAcceptTos_Accept")
+    let acceptExpectation = XCTestExpectation(description: "testSuccessAcceptTos_Accept")
     viewModel.accept.sink { [weak viewModel] in
       accept = $0
       if $0 {
         viewModel?.complete()
-        acceptExpactation.fulfill()
+        acceptExpectation.fulfill()
       }
     }.store(in: &subscriptions)
     
-    let loadingExpactation = XCTestExpectation(description: "testSuccessAcceptTos_Loading")
+    let loadingExpectation = XCTestExpectation(description: "testSuccessAcceptTos_Loading")
     viewModel.loading.sink {
       loading = $0
-      loadingExpactation.fulfill()
+      loadingExpectation.fulfill()
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
     viewModel.acceptTos()
     
-    wait(for: [acceptExpactation, loadingExpactation, completeCallbackExpactation], timeout: 2)
+    wait(for: [acceptExpectation, loadingExpectation, completeCallbackExpectation], timeout: 2)
     XCTAssertEqual(accept, true)
     XCTAssertNotNil(loading)
     XCTAssertEqual(completeCallback?.state, .completed)
@@ -56,22 +56,22 @@ class TosViewModelTests: XCTestCase {
     var error: Error?
     var errorCallback: TLErrorCallback?
     
-    let errorCallbackExpactation = XCTestExpectation(description: "testErrorAcceptTos_ErrorCallback")
+    let errorCallbackExpectation = XCTestExpectation(description: "testErrorAcceptTos_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = TosViewModel(manager: networkManager,
                                  onComplete: nil,
-                                 onError: { errorCallback = $0; errorCallbackExpactation.fulfill() })
+                                 onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     
-    let errorExpactation = XCTestExpectation(description: "testErrorAcceptTos_Error")
+    let errorExpectation = XCTestExpectation(description: "testErrorAcceptTos_Error")
     viewModel.error.sink {
       error = $0
-      errorExpactation.fulfill()
+      errorExpectation.fulfill()
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken("")
     viewModel.acceptTos()
     
-    wait(for: [errorExpactation, errorCallbackExpactation], timeout: 2)
+    wait(for: [errorExpectation, errorCallbackExpectation], timeout: 2)
     XCTAssertNotNil(error)
     XCTAssertNotNil(errorCallback)
   }

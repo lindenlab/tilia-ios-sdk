@@ -10,6 +10,7 @@
 "choosePaymentMethod" = "Choose your payment method";
 "walletBalance" = "Wallet balance";
 "pay" = "Pay";
+"usePaymentMethods" = "Use this payment method";
 "done" = "Done";
 "payAcceptDescription" = "By clicking the “Pay” button, you agree to the Tilia Terms of Service. Items and services purchased by United States users are sold by Tilia Inc. located at 945 Battery Street, San Francisco, CA 94111. Items and services purchased by all other users are sold by Tilia Pay UK Ltd. located at Suite 4, Unit 20 - 22 Grove Trading Estate, Dorchester, England, DT1 1ST.";
 "success" = "Success";
@@ -21,3 +22,10 @@
 "errorTosMessage" =  "Sorry, we were unable to accept Terms Of Service. Please try again later.";
 "close" = "Close";
 "missedRequiredData" = "Missed required data.";
+"addPaymentMethodTitle" = "Add a payment method to your account";
+"addCreditCardTitle" = "Add credit card";
+"addCreditCardMessage" = "Tap the button below to securely provide your credit card information in a browser. When you're done, click the 'Done' button.";
+"openBrowser" = "Open browser";
+"goBack" = "Go back";
+"errorAddCreditTitle" =  "Error processing adding credit card";
+"errorAddCreditMessage" =  "Sorry, we were unable to process adding your credit card. Please try again later.";

@@ -32,6 +32,11 @@
 		D135DCB627E7703D0009D888 /* TLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB527E7703D0009D888 /* TLManager.swift */; };
 		D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB727E771100009D888 /* ServerConfiguration.swift */; };
 		D135DCBA27E777030009D888 /* ServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB927E777030009D888 /* ServerClient.swift */; };
+		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
+		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
+		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
+		D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD482811E320003976CB /* AddCreditCardViewController.swift */; };
+		D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD4A2811E785003976CB /* BaseViewController.swift */; };
 		D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */; };
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
@@ -42,12 +47,18 @@
 		D18D730228415E8200660715 /* BundleToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18D730128415E8200660715 /* BundleToken.swift */; };
 		D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EC2806052200A25DBD /* TosFlowUITests.swift */; };
 		D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */; };
+		D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */; };
 		D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */; };
 		D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */; };
 		D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */; };
 		D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8327E8DF3D00E3DC2A /* Data+Serialization.swift */; };
 		D192AD8827E8F53900E3DC2A /* TosModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8727E8F53900E3DC2A /* TosModel.swift */; };
-		D192AD8A27EA2D2B00E3DC2A /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8927EA2D2B00E3DC2A /* BalanceModel.swift */; };
+		D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */; };
+		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
+		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
+		D1B80AA528659E9700E1C9BD /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B80AA428659E9700E1C9BD /* AuthRouter.swift */; };
+		D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */; };
+		D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */; };
 		D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872B92804498500DD1F7B /* ServerTestClient.swift */; };
 		D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */; };
 		D1B872C528044CC900DD1F7B /* PayInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */; };
@@ -65,7 +76,6 @@
 		D1BA29E227FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E127FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift */; };
 		D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */; };
 		D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29F628009D5700F046E8 /* ToastView.swift */; };
-		D1C8A83227F4ED7500BF2910 /* ChekoutTitleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83127F4ED7500BF2910 /* ChekoutTitleHeaderView.swift */; };
 		D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */; };
 		D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83527F4F5D100BF2910 /* DividerView.swift */; };
 		D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */; };
@@ -80,7 +90,6 @@
 		D1C8A84C27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A84B27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift */; };
 		D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8BD27F38BF200FD0E25 /* UIColor+Colors.swift */; };
 		D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8BF27F3927F00FD0E25 /* NonPrimaryButton.swift */; };
-		D1CCE8C227F3A6B900FD0E25 /* LoadableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */; };
 		D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */; };
 		D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */; };
 		D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */; };
@@ -151,6 +160,11 @@
 		D135DCB527E7703D0009D888 /* TLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLManager.swift; sourceTree = "<group>"; };
 		D135DCB727E771100009D888 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 		D135DCB927E777030009D888 /* ServerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClient.swift; sourceTree = "<group>"; };
+		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
+		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
+		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
+		D154AD482811E320003976CB /* AddCreditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewController.swift; sourceTree = "<group>"; };
+		D154AD4A2811E785003976CB /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLErrorCallback.swift; sourceTree = "<group>"; };
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
@@ -161,12 +175,18 @@
 		D18D730128415E8200660715 /* BundleToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleToken.swift; sourceTree = "<group>"; };
 		D190A3EC2806052200A25DBD /* TosFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosFlowUITests.swift; sourceTree = "<group>"; };
 		D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowUITests.swift; sourceTree = "<group>"; };
+		D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModelTests.swift; sourceTree = "<group>"; };
 		D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
 		D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+DecodeObject.swift"; sourceTree = "<group>"; };
 		D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+EncodeData.swift"; sourceTree = "<group>"; };
 		D192AD8327E8DF3D00E3DC2A /* Data+Serialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Serialization.swift"; sourceTree = "<group>"; };
 		D192AD8727E8F53900E3DC2A /* TosModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosModel.swift; sourceTree = "<group>"; };
-		D192AD8927EA2D2B00E3DC2A /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
+		D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceInfoModel.swift; sourceTree = "<group>"; };
+		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
+		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
+		D1B80AA428659E9700E1C9BD /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
+		D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectUrlModel.swift; sourceTree = "<group>"; };
+		D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetAddCreditCardRedirectUrlResponse.json; sourceTree = "<group>"; };
 		D1B872B92804498500DD1F7B /* ServerTestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTestClient.swift; sourceTree = "<group>"; };
 		D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CreateInvoiceResponse.json; sourceTree = "<group>"; };
 		D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PayInvoiceResponse.json; sourceTree = "<group>"; };
@@ -184,7 +204,6 @@
 		D1BA29E127FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithBackgroundColor.swift; sourceTree = "<group>"; };
 		D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetColorsTestViewController.swift; sourceTree = "<group>"; };
 		D1BA29F628009D5700F046E8 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		D1C8A83127F4ED7500BF2910 /* ChekoutTitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChekoutTitleHeaderView.swift; sourceTree = "<group>"; };
 		D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadCell.swift; sourceTree = "<group>"; };
 		D1C8A83527F4F5D100BF2910 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadSummaryFooterView.swift; sourceTree = "<group>"; };
@@ -199,7 +218,6 @@
 		D1C8A84B27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentFooterView.swift; sourceTree = "<group>"; };
 		D1CCE8BD27F38BF200FD0E25 /* UIColor+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Colors.swift"; sourceTree = "<group>"; };
 		D1CCE8BF27F3927F00FD0E25 /* NonPrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPrimaryButton.swift; sourceTree = "<group>"; };
-		D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableProtocol.swift; sourceTree = "<group>"; };
 		D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewController.swift; sourceTree = "<group>"; };
 		D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewModel.swift; sourceTree = "<group>"; };
 		D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutRouter.swift; sourceTree = "<group>"; };
@@ -278,7 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */,
-				D1CCE8C127F3A6B900FD0E25 /* LoadableProtocol.swift */,
+				D154AD4A2811E785003976CB /* BaseViewController.swift */,
 			);
 			path = BaseProtocols;
 			sourceTree = "<group>";
@@ -314,6 +332,8 @@
 				D1C8A83527F4F5D100BF2910 /* DividerView.swift */,
 				D1D5B54127F7675C00E04EE1 /* RadioButton.swift */,
 				D1BA29F628009D5700F046E8 /* ToastView.swift */,
+				D19A0D95281FD9F700483DDC /* TitleInfoView.swift */,
+				D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -369,6 +389,7 @@
 				D1B872D22804C27300DD1F7B /* UIColorTests.swift */,
 				D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */,
 				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
+				D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";
@@ -383,7 +404,7 @@
 				D16EDD492808470900A1E413 /* TLCompleteCallback.swift */,
 				D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */,
 				D192AD8727E8F53900E3DC2A /* TosModel.swift */,
-				D192AD8927EA2D2B00E3DC2A /* BalanceModel.swift */,
+				D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */,
 				D135DCB727E771100009D888 /* ServerConfiguration.swift */,
 				D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */,
 				D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */,
@@ -392,7 +413,9 @@
 				D1C8A84927F6143E00BF2910 /* InvoiceDetailsModel.swift */,
 				D1C8A84727F60FFE00BF2910 /* InvoiceModel.swift */,
 				D1BA29DF27FCA96B00F046E8 /* ColorsConfiguration.swift */,
+				D154AD41280F071E003976CB /* CreateInvoiceModel.swift */,
 				D18D730128415E8200660715 /* BundleToken.swift */,
+				D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -404,6 +427,7 @@
 				D188165827E7C0AF0082A85B /* AccountRouter.swift */,
 				D188165A27E7C0C50082A85B /* PaymentRouter.swift */,
 				D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */,
+				D1B80AA428659E9700E1C9BD /* AuthRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -416,6 +440,16 @@
 				D1B872D02804A22F00DD1F7B /* NetworkManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		D154AD432811E2D5003976CB /* AddCreditCard */ = {
+			isa = PBXGroup;
+			children = (
+				D154AD442811E302003976CB /* AddCreditCardViewModel.swift */,
+				D154AD462811E313003976CB /* AddCreditCardRouter.swift */,
+				D154AD482811E320003976CB /* AddCreditCardViewController.swift */,
+			);
+			path = AddCreditCard;
 			sourceTree = "<group>";
 		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
@@ -432,6 +466,18 @@
 				D1C8A84327F5E49600BF2910 /* String+Localization.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D19A0DA1281FED0500483DDC /* Checkout */ = {
+			isa = PBXGroup;
+			children = (
+				D1D5B53A27F759CC00E04EE1 /* Builder */,
+				D1CCE8CF27F4A6C200FD0E25 /* Views */,
+				D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */,
+				D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */,
+				D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */,
+			);
+			path = Checkout;
 			sourceTree = "<group>";
 		};
 		D1B872B8280442E400DD1F7B /* Testable */ = {
@@ -453,6 +499,7 @@
 				D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */,
 				D1B872CB280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json */,
 				D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */,
+				D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */,
 			);
 			path = JSONFiles;
 			sourceTree = "<group>";
@@ -460,11 +507,8 @@
 		D1CCE8C527F4872F00FD0E25 /* Checkout */ = {
 			isa = PBXGroup;
 			children = (
-				D1D5B53A27F759CC00E04EE1 /* Builder */,
-				D1CCE8CF27F4A6C200FD0E25 /* Views */,
-				D1CCE8C827F4A42800FD0E25 /* CheckoutViewModel.swift */,
-				D1CCE8CA27F4A43D00FD0E25 /* CheckoutRouter.swift */,
-				D1CCE8C627F4A41600FD0E25 /* CheckoutViewController.swift */,
+				D19A0DA1281FED0500483DDC /* Checkout */,
+				D154AD432811E2D5003976CB /* AddCreditCard */,
 			);
 			path = Checkout;
 			sourceTree = "<group>";
@@ -481,7 +525,6 @@
 		D1CCE8CF27F4A6C200FD0E25 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D1C8A83127F4ED7500BF2910 /* ChekoutTitleHeaderView.swift */,
 				D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */,
 				D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */,
 				D1C8A84B27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift */,
@@ -635,6 +678,7 @@
 				D135DC8227E74A510009D888 /* Assets.xcassets in Resources */,
 				D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */,
 				D1B872C928044CC900DD1F7B /* GetUserBalanceByCurrencyCodeResponse.json in Resources */,
+				D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */,
 				D1CCE8CE27F4A65100FD0E25 /* Icons.xcassets in Resources */,
 				D1B872CD280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json in Resources */,
 				D1B872C728044CC900DD1F7B /* GetInvoiceDetailsResponse.json in Resources */,
@@ -776,10 +820,12 @@
 				D1C8A84227F5E42500BF2910 /* LocalizationConstants.swift in Sources */,
 				D1CCE8D627F4C5CF00FD0E25 /* TosRequiredForUserTestViewController.swift in Sources */,
 				D1C8A84427F5E49600BF2910 /* String+Localization.swift in Sources */,
+				D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */,
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */,
 				D124DA1727F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift in Sources */,
+				D1B80AA528659E9700E1C9BD /* AuthRouter.swift in Sources */,
 				D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */,
 				D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */,
 				D1C8A83A27F4FDA800BF2910 /* UITableView+Helpers.swift in Sources */,
@@ -788,7 +834,7 @@
 				D1D5B53C27F759E000E04EE1 /* CheckoutSectionBuilder.swift in Sources */,
 				D18D730228415E8200660715 /* BundleToken.swift in Sources */,
 				D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */,
-				D192AD8A27EA2D2B00E3DC2A /* BalanceModel.swift in Sources */,
+				D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */,
 				D1C8A84C27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift in Sources */,
 				D1B872D12804A22F00DD1F7B /* NetworkManager.swift in Sources */,
 				D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */,
@@ -796,7 +842,9 @@
 				D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */,
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
+				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
 				D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */,
+				D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */,
 				D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */,
 				D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */,
 				D135DCAC27E762460009D888 /* RouterProtocol.swift in Sources */,
@@ -807,11 +855,13 @@
 				D1C8A84027F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift in Sources */,
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
 				D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */,
-				D1CCE8C227F3A6B900FD0E25 /* LoadableProtocol.swift in Sources */,
 				D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */,
+				D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */,
+				D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */,
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,
+				D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */,
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
 				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
@@ -819,12 +869,12 @@
 				D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */,
 				D1CCE8DC27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift in Sources */,
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,
+				D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */,
 				D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */,
 				D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
 				D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */,
 				D1D5B54027F7654500E04EE1 /* CheckoutPaymentMethodCell.swift in Sources */,
-				D1C8A83227F4ED7500BF2910 /* ChekoutTitleHeaderView.swift in Sources */,
 				D135DCB627E7703D0009D888 /* TLManager.swift in Sources */,
 				D135DCAF27E763130009D888 /* TLEnvironment.swift in Sources */,
 				D1BA29E227FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift in Sources */,
@@ -835,6 +885,7 @@
 				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,
+				D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -845,6 +896,7 @@
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
+				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
 				D1B872D32804C27300DD1F7B /* UIColorTests.swift in Sources */,
 			);

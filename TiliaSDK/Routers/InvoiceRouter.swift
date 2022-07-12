@@ -10,7 +10,7 @@ import Alamofire
 enum InvoiceRouter: RouterProtocol {
   
   case getInvoiceDetails(id: String)
-  case createInvoice(id: String, isEscrow: Bool)
+  case createInvoice(isEscrow: Bool, model: CreateInvoiceModel)
   case payInvoice(id: String, isEscrow: Bool)
   
   var method: HTTPMethod {
@@ -22,7 +22,7 @@ enum InvoiceRouter: RouterProtocol {
   
   var bodyParameters: Parameters? {
     switch self {
-    case let .createInvoice(id, _): return ["authorized_invoice_id": id]
+    case let .createInvoice(_, model): return model.encodedParameters
     default: return nil
     }
   }
@@ -32,7 +32,7 @@ enum InvoiceRouter: RouterProtocol {
   var endpoint: String {
     switch self {
     case let .getInvoiceDetails(id): return "/v2/authorize/invoice/\(id)"
-    case let .createInvoice(_, isEscrow): return isEscrow ? "/v2/escrow" : "/v2/invoice"
+    case let .createInvoice(isEscrow, _): return isEscrow ? "/v2/escrow" : "/v2/invoice"
     case let .payInvoice(id, isEscrow): return isEscrow ? "/v2/escrow/\(id)/pay" : "/v2/invoice/\(id)/pay"
     }
   }
@@ -47,7 +47,7 @@ extension InvoiceRouter {
     switch self {
     case .getInvoiceDetails:
       return readJSONFromFile("GetInvoiceDetailsResponse")
-    case let .createInvoice(_, isEscrow):
+    case let .createInvoice(isEscrow, _):
       return isEscrow ? readJSONFromFile("CreateEscrowInvoiceResponse") : readJSONFromFile("CreateInvoiceResponse")
     case .payInvoice:
       return readJSONFromFile("PayInvoiceResponse")

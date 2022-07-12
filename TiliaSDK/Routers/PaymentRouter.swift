@@ -21,7 +21,7 @@ enum PaymentRouter: RouterProtocol {
   
   var endpoint: String {
     switch self {
-    case .getUserBalanceByCurrencyCode: return "/transaction-methods"
+    case .getUserBalanceByCurrencyCode: return "/transaction-methods?capability=purchase"
     }
   }
   

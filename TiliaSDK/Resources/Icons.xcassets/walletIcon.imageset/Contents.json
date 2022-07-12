@@ -1,19 +1,18 @@
 {
   "images" : [
     {
-      "filename" : "Tilia.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "filename" : "id=wallet.svg",
+      "idiom" : "universal"
     },
     {
-      "filename" : "Tilia@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Tilia@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "id=wallet-white.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
