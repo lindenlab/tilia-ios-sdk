@@ -11,7 +11,7 @@ import PDFKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetDocumentImage = (index: Int, image: UIImage?)
-typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsResidence: Bool)
+typealias UserDocumentsDocumentCountryDidChange = (model: UserInfoModel, wasUsResidence: Bool)
 typealias UserDocumentsAddAdditionalDocuments = (index: Int, documentImages: [UIImage])
 typealias UserDocumentsDeleteAdditionalDocument = (itemIndex: Int, documentIndex: Int)
 
@@ -29,10 +29,10 @@ protocol UserDocumentsViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
   var setText: PassthroughSubject<UserDocumentsSetText, Never> { get }
   var setDocumentImage: PassthroughSubject<UserDocumentsSetDocumentImage, Never> { get }
-  var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
-  var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
+  var documentDidSelect: PassthroughSubject<UserInfoModel, Never> { get }
+  var documentDidChange: PassthroughSubject<UserInfoModel.Document, Never> { get }
   var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
-  var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel, Never> { get }
+  var isAddressOnDocumentDidChange: PassthroughSubject<UserInfoModel.BoolModel, Never> { get }
   var addAdditionalDocuments: PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never> { get }
   var addAdditionalDocumentsDidFail: PassthroughSubject<Void, Never> { get }
   var deleteAdditionalDocument: PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never> { get }
@@ -50,10 +50,10 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let error = PassthroughSubject<Error, Never>()
   let setText = PassthroughSubject<UserDocumentsSetText, Never>()
   let setDocumentImage = PassthroughSubject<UserDocumentsSetDocumentImage, Never>()
-  let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
-  let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
+  let documentDidSelect = PassthroughSubject<UserInfoModel, Never>()
+  let documentDidChange = PassthroughSubject<UserInfoModel.Document, Never>()
   let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
-  let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel, Never>()
+  let isAddressOnDocumentDidChange = PassthroughSubject<UserInfoModel.BoolModel, Never>()
   let addAdditionalDocuments = PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never>()
   let addAdditionalDocumentsDidFail = PassthroughSubject<Void, Never>()
   let deleteAdditionalDocument = PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never>()
@@ -64,7 +64,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let successfulWaiting = PassthroughSubject<Void, Never>()
   
   private let manager: NetworkManager
-  private var userDocumentsModel: UserDocumentsModel
+  private let userDocumentsModel: UserInfoModel
   private let onComplete: ((Bool) -> Void)
   private let onError: ((Error) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
@@ -72,11 +72,11 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   private var timer: Timer?
   
   init(manager: NetworkManager,
-       defaultCounty: String,
+       model: UserInfoModel,
        onComplete: @escaping (Bool) -> Void,
        onError: ((Error) -> Void)?) {
     self.manager = manager
-    self.userDocumentsModel = UserDocumentsModel(documentCountry: defaultCounty)
+    self.userDocumentsModel = model
     self.onComplete = onComplete
     self.onError = onError
   }
@@ -89,19 +89,19 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     switch field.type {
     case .document:
       let wasNil = userDocumentsModel.document == nil
-      let value = UserDocumentsModel.Document(str: text ?? "")
+      let value = UserInfoModel.Document(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.document, with: value)
       if wasNil {
         documentDidSelect.send(userDocumentsModel)
       } else if isFieldChanged, let value = value {
-        userDocumentsModel.setImagesToDefault()
+        userDocumentsModel.setDocumentImagesToDefault()
         documentDidChange.send(value)
       }
     case .documentCountry:
-      let wasUsResidence = userDocumentsModel.isUsResident
-      isFieldChanged = isFieldUpdated(&userDocumentsModel.documentCountry, with: text ?? "")
-      
-      if isFieldChanged {
+      if userDocumentsModel.documentCountry?.name != text {
+        let wasUsResidence = userDocumentsModel.isUsResident
+        isFieldChanged = true
+        userDocumentsModel.documentCountry = UserInfoModel.Country.countries.first { $0.name == text }
         if wasUsResidence {
           userDocumentsModel.isAddressOnDocument = nil
         } else if userDocumentsModel.isUsResident {
@@ -110,7 +110,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         documentCountryDidChange.send((userDocumentsModel, wasUsResidence))
       }
     case .isAddressOnDocument:
-      let value = BoolModel(str: text ?? "")
+      let value = UserInfoModel.BoolModel(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)
       if isFieldChanged, let value = value {
         if value == .yes {

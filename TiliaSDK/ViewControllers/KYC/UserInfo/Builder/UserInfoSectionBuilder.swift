@@ -461,7 +461,7 @@ private extension UserInfoSectionBuilder {
     ]
     
     if model.isUsResident {
-      let canUseAddressFor1099Items = BoolModel.allCases
+      let canUseAddressFor1099Items = UserInfoModel.BoolModel.allCases
       let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099 }
       
       let canUseAddressFor1099Field = Section.Item.Mode.Fields(type: .useAddressFor1099,

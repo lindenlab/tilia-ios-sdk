@@ -5,9 +5,48 @@
 //  Created by Serhii.Petrishenko on 07.05.2022.
 //
 
-import Foundation
+import UIKit
+import PDFKit
 
-struct UserInfoModel {
+final class UserInfoModel {
+  
+  var countryOfResidence: Country?
+  var fullName: FullName = FullName()
+  var dateOfBirth: Date?
+  var address: Address = Address(region: CountryState())
+  var canUseAddressFor1099: BoolModel?
+  var tax: Tax?
+  
+  var document: Document?
+  var frontImage: UIImage?
+  var backImage: UIImage?
+  lazy var documentCountry: Country? = countryOfResidence
+  var isAddressOnDocument: BoolModel?
+  var additionalDocuments: [AdditionalDocument] = []
+  
+  var isUsDocumentCountry: Bool { return documentCountry?.isUs == true }
+  var isUsResident: Bool { return countryOfResidence?.isUs == true }
+  var dateOfBirthString: String? { return dateOfBirth.map { $0.string() } }
+  
+  func setAddressToDefault() {
+    address.street = nil
+    address.apartment = nil
+    address.city = nil
+    address.region.name = nil
+    address.postalCode = nil
+    canUseAddressFor1099 = nil
+  }
+  
+  func setDocumentImagesToDefault() {
+    frontImage = nil
+    backImage = nil
+  }
+  
+}
+
+// MARK: - Additional Models
+
+extension UserInfoModel {
   
   struct FullName {
     var first: String?
@@ -57,42 +96,68 @@ struct UserInfoModel {
     }
   }
   
-  var countryOfResidence: Country?
-  var fullName: FullName
-  var dateOfBirth: Date?
-  var address: Address
-  var canUseAddressFor1099: BoolModel?
-  var tax: Tax?
-  
-  var isUsResident: Bool { return countryOfResidence?.isUs == true }
-  var dateOfBirthString: String? { return dateOfBirth.map { $0.string() } }
-  
-  init(countryOfResidence: Country? = nil,
-       fullName: FullName = FullName(),
-       dateOfBirth: Date? = nil,
-       address: Address = Address(region: CountryState()),
-       canUseAddressFor1099: BoolModel? = nil,
-       tax: Tax? = nil) {
-    self.countryOfResidence = countryOfResidence
-    self.fullName = fullName
-    self.dateOfBirth = dateOfBirth
-    self.address = address
-    self.canUseAddressFor1099 = canUseAddressFor1099
-    self.tax = tax
+  enum BoolModel: CustomStringConvertible, CaseIterable {
+    case yes
+    case no
+    
+    var description: String {
+      switch self {
+      case .yes: return L.yes
+      case .no: return L.no
+      }
+    }
+    
+    init?(str: String) {
+      switch str {
+      case BoolModel.yes.description: self = .yes
+      case BoolModel.no.description: self = .no
+      default: return nil
+      }
+    }
   }
   
-  mutating func setAddressToDefault() {
-    address.street = nil
-    address.apartment = nil
-    address.city = nil
-    address.region.name = nil
-    address.postalCode = nil
-    canUseAddressFor1099 = nil
+  enum Document: CustomStringConvertible, CaseIterable {
+    case passport
+    case driversLicense
+    case identityCard
+    case residencePermit
+    
+    var description: String {
+      switch self {
+      case .passport: return L.passport
+      case .driversLicense: return L.driversLicense
+      case .identityCard: return L.identityCard
+      case .residencePermit: return L.residencePermit
+      }
+    }
+    
+    var code: String {
+      switch self {
+      case .passport: return "PP"
+      case .driversLicense: return "DL"
+      case .identityCard, .residencePermit: return "ID"
+      }
+    }
+    
+    init?(str: String) {
+      switch str {
+      case Document.passport.description: self = .passport
+      case Document.driversLicense.description: self = .driversLicense
+      case Document.identityCard.description: self = .identityCard
+      case Document.residencePermit.description: self = .residencePermit
+      default: return nil
+      }
+    }
+  }
+  
+  enum AdditionalDocument {
+    case pdfFile(PDFDocument)
+    case image(UIImage)
   }
   
 }
 
-// MARK: - State Static Lists
+// MARK: - States Lists
 
 extension UserInfoModel.CountryState {
   
@@ -174,7 +239,7 @@ extension UserInfoModel.CountryState {
   
 }
 
-// MARK: - Countries Static Lists
+// MARK: - Countries Lists
 
 extension UserInfoModel.Country {
   

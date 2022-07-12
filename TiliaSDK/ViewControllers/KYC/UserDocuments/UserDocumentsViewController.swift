@@ -50,11 +50,11 @@ final class UserDocumentsViewController: BaseViewController {
   }()
   
   init(manager: NetworkManager,
-       defaultCounty: String,
+       model: UserInfoModel,
        onComplete: @escaping (Bool) -> Void,
        onError: ((Error) -> Void)?) {
     let viewModel = UserDocumentsViewModel(manager: manager,
-                                           defaultCounty: defaultCounty,
+                                           model: model,
                                            onComplete: onComplete,
                                            onError: onError)
     let router = UserDocumentsRouter()

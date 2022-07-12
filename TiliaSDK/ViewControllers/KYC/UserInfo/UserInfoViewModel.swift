@@ -28,7 +28,7 @@ protocol UserInfoViewModelOutputProtocol {
 
 protocol UserInfoDataStore {
   var manager: NetworkManager { get }
-  var selectedCountry: String { get }
+  var userInfoModel: UserInfoModel { get }
   var onUserDocumentsComplete: (Bool) -> Void { get }
   var onUserDocumentsError: ((Error) -> Void)? { get }
 }
@@ -44,7 +44,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let dismiss = PassthroughSubject<Void, Never>()
   
   let manager: NetworkManager
-  var selectedCountry: String { return "" } // TODO: - Fix me
+  let userInfoModel = UserInfoModel()
   private(set) lazy var onUserDocumentsComplete: (Bool) -> Void = { [weak self] in
     guard let self = self else { return }
     if $0 {
@@ -59,7 +59,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   private let onComplete: ((Bool) -> Void)?
   private let onError: ((Error) -> Void)?
-  private var userInfoModel = UserInfoModel()
   private var isUserDocumentsUploaded = false
   
   init(manager: NetworkManager,
@@ -94,6 +93,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       if wasNil {
         isFieldChanged = true
         userInfoModel.countryOfResidence = UserInfoModel.Country.countries.first { $0.name == text }
+        if userInfoModel.isUsResident {
+          userInfoModel.tax = .init()
+        }
         coutryOfResidenceDidSelect.send(userInfoModel)
       } else if userInfoModel.countryOfResidence?.name != text {
         let wasUsResidence = userInfoModel.isUsResident
@@ -152,7 +154,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     case .postalCode:
       isFieldChanged = isFieldUpdated(&userInfoModel.address.postalCode, with: text)
     case .useAddressFor1099:
-      let value = BoolModel(str: text ?? "")
+      let value = UserInfoModel.BoolModel(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userInfoModel.canUseAddressFor1099, with: value)
     }
     

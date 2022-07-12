@@ -195,7 +195,7 @@ struct UserDocumentsSectionBuilder {
   }
   
   func documentsSection() -> Section {
-    let documents = UserDocumentsModel.Document.allCases
+    let documents = UserInfoModel.Document.allCases
     let field = Section.Item.Mode.Field(type: .document,
                                         placeholder: L.selectDocument,
                                         text: nil,
@@ -240,7 +240,7 @@ struct UserDocumentsSectionBuilder {
   }
   
   func updateSection(_ section: inout Section,
-                     didSelectDocumentWith model: UserDocumentsModel) -> [IndexPath] {
+                     didSelectDocumentWith model: UserInfoModel) -> [IndexPath] {
     guard let document = model.document else { return [] }
     
     let startIndex = section.items.count
@@ -251,11 +251,9 @@ struct UserDocumentsSectionBuilder {
       section.items.append(documentBackSideItem(for: document))
     }
     
-    let countryItems =  ["USA", "Canada", "Ukraine"]
-    section.items.append(documentCountryItem(country: model.documentCountry,
-                                             items: countryItems))
+    section.items.append(documentCountryItem(country: model.documentCountry?.name))
     
-    if model.isUsResident {
+    if model.isUsDocumentCountry {
       section.items.append(isAddressOnDocumentItem())
     } else {
       section.items.append(additionalDocumentsItem())
@@ -266,7 +264,7 @@ struct UserDocumentsSectionBuilder {
   
   func updateSection(_ section: inout Section,
                      in tableView: UITableView,
-                     documentDidChange document: UserDocumentsModel.Document) -> TableUpdate {
+                     documentDidChange document: UserInfoModel.Document) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
     
     guard let documentFrontSideIndex = documentSideIndex(in: section, for: .frontSide) else { return tableUpdate }
@@ -298,11 +296,11 @@ struct UserDocumentsSectionBuilder {
   }
   
   func updateSection(_ section: inout Section,
-                     documentCountryDidChangeWith model: UserDocumentsModel,
+                     documentCountryDidChangeWith model: UserInfoModel,
                      wasUsResidence: Bool) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
     
-    if model.isUsResident {
+    if model.isUsDocumentCountry {
       additionalDocumentsIndex(in: section).map {
         section.items[$0] = isAddressOnDocumentItem()
         tableUpdate.reload = [IndexPath(row: $0, section: 0)]
@@ -321,7 +319,7 @@ struct UserDocumentsSectionBuilder {
   }
   
   func updateSection(_ section: inout Section,
-                     isAddressOnDocumentDidChangeWith model: BoolModel) -> TableUpdate {
+                     isAddressOnDocumentDidChangeWith model: UserInfoModel.BoolModel) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
     
     if model == .no, additionalDocumentsIndex(in: section) == nil {
@@ -423,30 +421,31 @@ struct UserDocumentsSectionBuilder {
 
 private extension UserDocumentsSectionBuilder {
   
-  func documentFrontSideItem(for document: UserDocumentsModel.Document) -> Section.Item {
+  func documentFrontSideItem(for document: UserInfoModel.Document) -> Section.Item {
     let photo = Section.Item.Mode.Photo(type: .frontSide,
                                         placeholderImage: document.frontSvgImage)
     return .init(title: L.frontSide, mode: .photo(photo))
   }
   
-  func documentBackSideItem(for document: UserDocumentsModel.Document) -> Section.Item {
+  func documentBackSideItem(for document: UserInfoModel.Document) -> Section.Item {
     let photo = Section.Item.Mode.Photo(type: .backSide,
                                         placeholderImage: document.backSvgImage)
     return .init(title: L.backSide, mode: .photo(photo))
   }
   
-  func documentCountryItem(country: String, items: [String]) -> Section.Item {
-    let selectedIndex = items.firstIndex { $0 == country }
+  func documentCountryItem(country: String?) -> Section.Item {
+    let countries = UserInfoModel.Country.countryNames
+    let selectedIndex = countries.firstIndex { $0 == country }
     let field = Section.Item.Mode.Field(type: .documentCountry,
                                         placeholder: nil,
                                         text: country,
-                                        items: items,
+                                        items: countries,
                                         seletedItemIndex: selectedIndex)
     return .init(title: L.documentIssuingCountry, mode: .field(field))
   }
   
   func isAddressOnDocumentItem() -> Section.Item {
-    let items = BoolModel.allCases
+    let items = UserInfoModel.BoolModel.allCases
     let field = Section.Item.Mode.Field(type: .isAddressOnDocument,
                                         placeholder: L.selectAnswer,
                                         text: nil,
@@ -499,7 +498,7 @@ private extension UserDocumentsSectionBuilder {
   
 }
 
-private extension UserDocumentsModel.Document {
+private extension UserInfoModel.Document {
   
   var frontSvgImage: SVGImage? {
     switch self {

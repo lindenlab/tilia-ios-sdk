@@ -55,9 +55,7 @@
 		D15BA9F3282AABF900511785 /* Date+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9F2282AABF900511785 /* Date+Helpers.swift */; };
 		D15BA9F5282AACE200511785 /* DateFormatter+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */; };
 		D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */; };
-		D1632D0D283B7D5F006BDF19 /* BoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0C283B7D5F006BDF19 /* BoolModel.swift */; };
 		D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */; };
-		D1632D13283BC411006BDF19 /* UserDocumentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D12283BC411006BDF19 /* UserDocumentsModel.swift */; };
 		D163D9E3284F52D400F478DA /* UserDocumentsSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */; };
 		D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* Animation+Animations.swift */; };
 		D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = D163D9E8284F556000F478DA /* SuccessAnimation.json */; };
@@ -232,9 +230,7 @@
 		D15BA9F2282AABF900511785 /* Date+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helpers.swift"; sourceTree = "<group>"; };
 		D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Helpers.swift"; sourceTree = "<group>"; };
 		D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoNextButtonCell.swift; sourceTree = "<group>"; };
-		D1632D0C283B7D5F006BDF19 /* BoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolModel.swift; sourceTree = "<group>"; };
 		D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsFooterView.swift; sourceTree = "<group>"; };
-		D1632D12283BC411006BDF19 /* UserDocumentsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsModel.swift; sourceTree = "<group>"; };
 		D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsSuccessCell.swift; sourceTree = "<group>"; };
 		D163D9E4284F53CC00F478DA /* Animation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+Animations.swift"; sourceTree = "<group>"; };
 		D163D9E8284F556000F478DA /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
@@ -533,8 +529,6 @@
 				D1BA29DF27FCA96B00F046E8 /* ColorsConfiguration.swift */,
 				D154AD41280F071E003976CB /* CreateInvoiceModel.swift */,
 				D18855E0282700D400BAC86F /* UserInfoModel.swift */,
-				D1632D0C283B7D5F006BDF19 /* BoolModel.swift */,
-				D1632D12283BC411006BDF19 /* UserDocumentsModel.swift */,
 				D18D730128415E8200660715 /* BundleToken.swift */,
 				D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */,
 			);
@@ -1057,7 +1051,6 @@
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
 				D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
-				D1632D0D283B7D5F006BDF19 /* BoolModel.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */,
 				D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */,
 				D124DA1727F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift in Sources */,
@@ -1074,7 +1067,6 @@
 				D18D730228415E8200660715 /* BundleToken.swift in Sources */,
 				D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */,
 				D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */,
-				D1632D13283BC411006BDF19 /* UserDocumentsModel.swift in Sources */,
 				D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */,
 				D1C8A84C27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift in Sources */,
 				D1B872D12804A22F00DD1F7B /* NetworkManager.swift in Sources */,
