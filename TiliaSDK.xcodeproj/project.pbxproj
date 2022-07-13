@@ -121,8 +121,12 @@
 		D1BA29E227FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E127FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift */; };
 		D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */; };
 		D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29F628009D5700F046E8 /* ToastView.swift */; };
-		D1BB633D287EE055007616DE /* KycUploadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB633C287EE055007616DE /* KycUploadModel.swift */; };
+		D1BB633D287EE055007616DE /* SubmitKycModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB633C287EE055007616DE /* SubmitKycModel.swift */; };
 		D1BB6343287F0A40007616DE /* KycRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB6342287F0A40007616DE /* KycRouter.swift */; };
+		D1BB6345287F2B8B007616DE /* SubmittedKycModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB6344287F2B8B007616DE /* SubmittedKycModel.swift */; };
+		D1BB6347287F2CC0007616DE /* SubmittedKycResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1BB6346287F2CC0007616DE /* SubmittedKycResponse.json */; };
+		D1BB6349287F3012007616DE /* SubmittedKycStatusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB6348287F3012007616DE /* SubmittedKycStatusModel.swift */; };
+		D1BB634B287F3121007616DE /* SubmittedKycStatusResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1BB634A287F3121007616DE /* SubmittedKycStatusResponse.json */; };
 		D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */; };
 		D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83527F4F5D100BF2910 /* DividerView.swift */; };
 		D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */; };
@@ -298,8 +302,12 @@
 		D1BA29E127FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithBackgroundColor.swift; sourceTree = "<group>"; };
 		D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetColorsTestViewController.swift; sourceTree = "<group>"; };
 		D1BA29F628009D5700F046E8 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		D1BB633C287EE055007616DE /* KycUploadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycUploadModel.swift; sourceTree = "<group>"; };
+		D1BB633C287EE055007616DE /* SubmitKycModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitKycModel.swift; sourceTree = "<group>"; };
 		D1BB6342287F0A40007616DE /* KycRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycRouter.swift; sourceTree = "<group>"; };
+		D1BB6344287F2B8B007616DE /* SubmittedKycModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedKycModel.swift; sourceTree = "<group>"; };
+		D1BB6346287F2CC0007616DE /* SubmittedKycResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SubmittedKycResponse.json; sourceTree = "<group>"; };
+		D1BB6348287F3012007616DE /* SubmittedKycStatusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedKycStatusModel.swift; sourceTree = "<group>"; };
+		D1BB634A287F3121007616DE /* SubmittedKycStatusResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SubmittedKycStatusResponse.json; sourceTree = "<group>"; };
 		D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadCell.swift; sourceTree = "<group>"; };
 		D1C8A83527F4F5D100BF2910 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadSummaryFooterView.swift; sourceTree = "<group>"; };
@@ -535,7 +543,9 @@
 				D18855E0282700D400BAC86F /* UserInfoModel.swift */,
 				D18D730128415E8200660715 /* BundleToken.swift */,
 				D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */,
-				D1BB633C287EE055007616DE /* KycUploadModel.swift */,
+				D1BB633C287EE055007616DE /* SubmitKycModel.swift */,
+				D1BB6344287F2B8B007616DE /* SubmittedKycModel.swift */,
+				D1BB6348287F3012007616DE /* SubmittedKycStatusModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -710,6 +720,8 @@
 				D1B872CB280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json */,
 				D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */,
 				D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */,
+				D1BB6346287F2CC0007616DE /* SubmittedKycResponse.json */,
+				D1BB634A287F3121007616DE /* SubmittedKycStatusResponse.json */,
 			);
 			path = JSONFiles;
 			sourceTree = "<group>";
@@ -895,6 +907,7 @@
 			files = (
 				D126AF162875872F00CAC5F2 /* IdentityCardFrontImage.svg in Resources */,
 				D126AF192875872F00CAC5F2 /* DriversLicenseFrontImage.svg in Resources */,
+				D1BB6347287F2CC0007616DE /* SubmittedKycResponse.json in Resources */,
 				D126AF152875872F00CAC5F2 /* IdentityCardBackImage.svg in Resources */,
 				D126AF1B2875872F00CAC5F2 /* ResedencePermitFrontImage.svg in Resources */,
 				D135DC8527E74A520009D888 /* LaunchScreen.storyboard in Resources */,
@@ -903,6 +916,7 @@
 				D1B872C928044CC900DD1F7B /* GetUserBalanceByCurrencyCodeResponse.json in Resources */,
 				D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */,
 				D126AF182875872F00CAC5F2 /* ResedencePermitBackImage.svg in Resources */,
+				D1BB634B287F3121007616DE /* SubmittedKycStatusResponse.json in Resources */,
 				D1CCE8CE27F4A65100FD0E25 /* Icons.xcassets in Resources */,
 				D126AF172875872F00CAC5F2 /* DriversLicenseBackImage.svg in Resources */,
 				D1B872CD280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json in Resources */,
@@ -1066,6 +1080,7 @@
 				D1C8A83A27F4FDA800BF2910 /* UITableView+Helpers.swift in Sources */,
 				D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */,
 				D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */,
+				D1BB6345287F2B8B007616DE /* SubmittedKycModel.swift in Sources */,
 				D1D5B53C27F759E000E04EE1 /* CheckoutSectionBuilder.swift in Sources */,
 				D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */,
 				D15BA9F5282AACE200511785 /* DateFormatter+Helpers.swift in Sources */,
@@ -1085,6 +1100,7 @@
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
 				D126AF212878365300CAC5F2 /* UserDocumentsWaitingCell.swift in Sources */,
 				D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */,
+				D1BB6349287F3012007616DE /* SubmittedKycStatusModel.swift in Sources */,
 				D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */,
 				D1B8720028351B4600C44441 /* UserDocumentsSectionBuilder.swift in Sources */,
 				D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */,
@@ -1102,7 +1118,7 @@
 				D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */,
 				D1C8A84027F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift in Sources */,
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
-				D1BB633D287EE055007616DE /* KycUploadModel.swift in Sources */,
+				D1BB633D287EE055007616DE /* SubmitKycModel.swift in Sources */,
 				D17EFFA3284645A700F4B6DD /* UserDocumentsDocumentCell.swift in Sources */,
 				D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */,
 				D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */,

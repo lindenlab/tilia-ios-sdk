@@ -1,5 +1,5 @@
 //
-//  KycUploadModel.swift
+//  SubmitKycModel.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 13.07.2022.
@@ -8,7 +8,7 @@
 import UIKit
 import PDFKit
 
-struct KycUploadModel: Encodable {
+struct SubmitKycModel: Encodable {
   
   private enum CodingKeys: String, CodingKey {
     case userInfo = "kyc_pii"
@@ -27,7 +27,7 @@ struct KycUploadModel: Encodable {
 
 // MARK: - Additional Models
 
-private extension KycUploadModel {
+private extension SubmitKycModel {
   
   struct UserInfo: Encodable {
     
@@ -151,8 +151,8 @@ private extension UIImage {
 private extension PDFDocument {
   
   // TODO: - Check if it is correct
-  var ext: String { return "" }
-  var mimeType: String { return "" }
+  var ext: String { return ".pdf" }
+  var mimeType: String { return "application/pdf" }
   var base64EncodedString: String? { return self.dataRepresentation()?.base64EncodedString() }
   
 }
