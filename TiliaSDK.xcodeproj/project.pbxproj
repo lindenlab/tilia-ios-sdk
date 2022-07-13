@@ -121,6 +121,7 @@
 		D1BA29E227FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E127FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift */; };
 		D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */; };
 		D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29F628009D5700F046E8 /* ToastView.swift */; };
+		D1BB633D287EE055007616DE /* KycUploadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB633C287EE055007616DE /* KycUploadModel.swift */; };
 		D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */; };
 		D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83527F4F5D100BF2910 /* DividerView.swift */; };
 		D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */; };
@@ -296,6 +297,7 @@
 		D1BA29E127FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithBackgroundColor.swift; sourceTree = "<group>"; };
 		D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetColorsTestViewController.swift; sourceTree = "<group>"; };
 		D1BA29F628009D5700F046E8 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		D1BB633C287EE055007616DE /* KycUploadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycUploadModel.swift; sourceTree = "<group>"; };
 		D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadCell.swift; sourceTree = "<group>"; };
 		D1C8A83527F4F5D100BF2910 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadSummaryFooterView.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				D18855E0282700D400BAC86F /* UserInfoModel.swift */,
 				D18D730128415E8200660715 /* BundleToken.swift */,
 				D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */,
+				D1BB633C287EE055007616DE /* KycUploadModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1095,6 +1098,7 @@
 				D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */,
 				D1C8A84027F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift in Sources */,
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
+				D1BB633D287EE055007616DE /* KycUploadModel.swift in Sources */,
 				D17EFFA3284645A700F4B6DD /* UserDocumentsDocumentCell.swift in Sources */,
 				D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */,
 				D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */,
