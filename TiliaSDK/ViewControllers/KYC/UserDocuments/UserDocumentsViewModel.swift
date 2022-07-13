@@ -11,7 +11,7 @@ import PDFKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetDocumentImage = (index: Int, image: UIImage?)
-typealias UserDocumentsDocumentCountryDidChange = (model: UserInfoModel, wasUsResidence: Bool)
+typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUs: Bool)
 typealias UserDocumentsAddAdditionalDocuments = (index: Int, documentImages: [UIImage])
 typealias UserDocumentsDeleteAdditionalDocument = (itemIndex: Int, documentIndex: Int)
 
@@ -21,7 +21,6 @@ protocol UserDocumentsViewModelInputProtocol {
   func setFiles(with urls: [URL], at index: Int)
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int)
   func upload()
-  func invalidateTimer()
   func complete()
 }
 
@@ -29,10 +28,10 @@ protocol UserDocumentsViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
   var setText: PassthroughSubject<UserDocumentsSetText, Never> { get }
   var setDocumentImage: PassthroughSubject<UserDocumentsSetDocumentImage, Never> { get }
-  var documentDidSelect: PassthroughSubject<UserInfoModel, Never> { get }
-  var documentDidChange: PassthroughSubject<UserInfoModel.Document, Never> { get }
+  var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
+  var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
   var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
-  var isAddressOnDocumentDidChange: PassthroughSubject<UserInfoModel.BoolModel, Never> { get }
+  var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel, Never> { get }
   var addAdditionalDocuments: PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never> { get }
   var addAdditionalDocumentsDidFail: PassthroughSubject<Void, Never> { get }
   var deleteAdditionalDocument: PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never> { get }
@@ -50,10 +49,10 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let error = PassthroughSubject<Error, Never>()
   let setText = PassthroughSubject<UserDocumentsSetText, Never>()
   let setDocumentImage = PassthroughSubject<UserDocumentsSetDocumentImage, Never>()
-  let documentDidSelect = PassthroughSubject<UserInfoModel, Never>()
-  let documentDidChange = PassthroughSubject<UserInfoModel.Document, Never>()
+  let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
+  let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
   let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
-  let isAddressOnDocumentDidChange = PassthroughSubject<UserInfoModel.BoolModel, Never>()
+  let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel, Never>()
   let addAdditionalDocuments = PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never>()
   let addAdditionalDocumentsDidFail = PassthroughSubject<Void, Never>()
   let deleteAdditionalDocument = PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never>()
@@ -64,7 +63,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let successfulWaiting = PassthroughSubject<Void, Never>()
   
   private let manager: NetworkManager
-  private let userDocumentsModel: UserInfoModel
+  private let userInfoModel: UserInfoModel
+  private var userDocumentsModel: UserDocumentsModel
   private let onComplete: ((Bool) -> Void)
   private let onError: ((Error) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
@@ -72,11 +72,12 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   private var timer: Timer?
   
   init(manager: NetworkManager,
-       model: UserInfoModel,
+       userInfoModel: UserInfoModel,
        onComplete: @escaping (Bool) -> Void,
        onError: ((Error) -> Void)?) {
     self.manager = manager
-    self.userDocumentsModel = model
+    self.userInfoModel = userInfoModel
+    self.userDocumentsModel = UserDocumentsModel(model: userInfoModel)
     self.onComplete = onComplete
     self.onError = onError
   }
@@ -89,7 +90,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     switch field.type {
     case .document:
       let wasNil = userDocumentsModel.document == nil
-      let value = UserInfoModel.Document(str: text ?? "")
+      let value = UserDocumentsModel.Document(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.document, with: value)
       if wasNil {
         documentDidSelect.send(userDocumentsModel)
@@ -99,18 +100,18 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       }
     case .documentCountry:
       if userDocumentsModel.documentCountry?.name != text {
-        let wasUsResidence = userDocumentsModel.isUsResident
+        let wasUsResidence = userDocumentsModel.isUsDocumentCountry
         isFieldChanged = true
-        userDocumentsModel.documentCountry = UserInfoModel.Country.countries.first { $0.name == text }
+        userDocumentsModel.documentCountry = CountryModel.countries.first { $0.name == text }
         if wasUsResidence {
           userDocumentsModel.isAddressOnDocument = nil
-        } else if userDocumentsModel.isUsResident {
+        } else if userDocumentsModel.isUsDocumentCountry {
           userDocumentsModel.additionalDocuments.removeAll()
         }
         documentCountryDidChange.send((userDocumentsModel, wasUsResidence))
       }
     case .isAddressOnDocument:
-      let value = UserInfoModel.BoolModel(str: text ?? "")
+      let value = BoolModel(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)
       if isFieldChanged, let value = value {
         if value == .yes {
@@ -127,26 +128,27 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?) {
-    let resizedImage = resizedImage(image)
-    switch item.mode {
-    case let .photo(model):
-      switch model.type {
-      case .frontSide:
-        userDocumentsModel.frontImage = resizedImage
-      case .backSide:
-        userDocumentsModel.backImage = resizedImage
+    resizedImage(image) { resizedImage in
+      switch item.mode {
+      case let .photo(model):
+        switch model.type {
+        case .frontSide:
+          self.userDocumentsModel.frontImage = resizedImage
+        case .backSide:
+          self.userDocumentsModel.backImage = resizedImage
+        }
+        self.setDocumentImage.send((index, resizedImage))
+      case .additionalDocuments:
+        resizedImage.map {
+          self.userDocumentsModel.additionalDocuments.append(.image($0))
+          self.addAdditionalDocuments.send((index, [$0]))
+        }
+      default:
+        break
       }
-      setDocumentImage.send((index, resizedImage))
-    case .additionalDocuments:
-      resizedImage.map {
-        userDocumentsModel.additionalDocuments.append(.image($0))
-        addAdditionalDocuments.send((index, [$0]))
-      }
-    default:
-      break
+      self.updateFillingSectionObserver()
     }
     url.map { deleteTempFile(at: $0) }
-    updateFillingSectionObserver()
   }
   
   func setFiles(with urls: [URL], at index: Int) {
@@ -179,19 +181,21 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func upload() {
-    // TODO: - Fix me
     uploading.send(true)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      self.isUploaded = true
-      self.successfulUploading.send()
-      self.updateWaitingObserver()
+    submitModel() { submitModel in
+      self.manager.submitKyc(with: submitModel) { [weak self] result in
+        guard let self = self else { return }
+        self.uploading.send(false)
+        switch result {
+        case .success(let model):
+          self.isUploaded = true
+          self.successfulUploading.send()
+          self.resumeTimer(kycId: model.kycId)
+        case .failure(let error):
+          self.error.send(error)
+        }
+      }
     }
-  }
-  
-  func invalidateTimer() {
-    successfulWaiting.send() // TODO: - Delete when API is ready
-    timer?.invalidate()
-    timer = nil
   }
   
   func complete() {
@@ -221,28 +225,40 @@ private extension UserDocumentsViewModel {
   }
   
   func image(from document: PDFDocument) -> UIImage? {
-    processQueue.sync {
-      guard let page = document.page(at: 0) else { return nil }
-      let pageRect = page.bounds(for: .mediaBox)
-      return page.thumbnail(of: pageRect.size, for: .mediaBox)
-    }
+    guard let page = document.page(at: 0) else { return nil }
+    let pageRect = page.bounds(for: .mediaBox)
+    return page.thumbnail(of: pageRect.size, for: .mediaBox)
   }
   
-  func resizedImage(_ image: UIImage?) -> UIImage? {
-    processQueue.sync {
-      guard let image = image else { return image }
-      
+  func resizedImage(_ image: UIImage?, completion: @escaping (UIImage?) -> Void) {
+    processQueue.async {
+      guard let image = image else {
+        DispatchQueue.main.async { completion(image) }
+        return
+      }
       let newSize = CGSize(width: 1024, height: 1024)
       var imageSize = image.size
-      guard imageSize.width > newSize.width || imageSize.height > newSize.height else { return image }
+      guard imageSize.width > newSize.width || imageSize.height > newSize.height else {
+        DispatchQueue.main.async { completion(image) }
+        return
+      }
       
       let ratio = max(imageSize.width / newSize.width, imageSize.height / newSize.height)
       imageSize.width = imageSize.width / ratio
       imageSize.height = imageSize.height / ratio
       let renderer = UIGraphicsImageRenderer(size: imageSize)
-      return renderer.image { _ in
+      let newImage = renderer.image { _ in
         image.draw(in: .init(origin: .zero, size: imageSize))
       }
+      DispatchQueue.main.async { completion(newImage) }
+    }
+  }
+  
+  func submitModel(completion: @escaping (SubmitKycModel) -> Void) {
+    processQueue.async {
+      let model = SubmitKycModel(userInfoModel: self.userInfoModel,
+                                 userDocumentsModel: self.userDocumentsModel)
+      DispatchQueue.main.async { completion(model) }
     }
   }
   
@@ -251,10 +267,42 @@ private extension UserDocumentsViewModel {
     fillingContent.send(isSectionFilled)
   }
   
-  func updateWaitingObserver() {
-    timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
-      self?.waiting.send()
+  func resumeTimer(kycId: String) {
+    timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
+      guard let self = self else { return }
+      self.waiting.send()
+      self.getSubmittedStatus(for: kycId)
     }
+  }
+  
+  func invalidateTimer() {
+    timer?.invalidate()
+    timer = nil
+  }
+  
+  func getSubmittedStatus(for kycId: String) {
+    invalidateTimer()
+    manager.getSubmittedKycStatus(with: kycId) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let model):
+        if model.state == .accepted {
+          self.successfulWaiting.send()
+        } else {
+          self.resumeTimer(kycId: kycId)
+        }
+      case .failure:
+        self.resumeTimer(kycId: kycId)
+      }
+    }
+  }
+  
+}
+
+private extension UserDocumentsModel {
+  
+  init(model: UserInfoModel) {
+    self.documentCountry = model.countryOfResidence
   }
   
 }

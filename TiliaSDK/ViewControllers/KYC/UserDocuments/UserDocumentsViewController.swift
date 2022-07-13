@@ -50,11 +50,11 @@ final class UserDocumentsViewController: BaseViewController {
   }()
   
   init(manager: NetworkManager,
-       model: UserInfoModel,
+       userInfoModel: UserInfoModel,
        onComplete: @escaping (Bool) -> Void,
        onError: ((Error) -> Void)?) {
     let viewModel = UserDocumentsViewModel(manager: manager,
-                                           model: model,
+                                           userInfoModel: userInfoModel,
                                            onComplete: onComplete,
                                            onError: onError)
     let router = UserDocumentsRouter()
@@ -263,7 +263,7 @@ private extension UserDocumentsViewController {
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSection(&self.section,
                                                    documentCountryDidChangeWith: $0.model,
-                                                   wasUsResidence: $0.wasUsResidence)
+                                                   wasUs: $0.wasUs)
       self.tableView.performBatchUpdates {
         tableUpdate.reload.map { self.tableView.reloadRows(at: $0, with: .fade) }
         tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
@@ -328,13 +328,11 @@ private extension UserDocumentsViewController {
     }.store(in: &subscriptions)
     
     viewModel.waiting.sink { [weak self] in
-      guard let self = self else { return }
-      if self.builder.updateWaitingSection(&self.section, in: self.tableView) {
-        UIView.performWithoutAnimation {
-          self.tableView.performBatchUpdates(nil)
-        }
-      } else {
-        self.viewModel.invalidateTimer()
+      guard
+        let self = self,
+        self.builder.updateWaitingSection(&self.section, in: self.tableView) else { return }
+      UIView.performWithoutAnimation {
+        self.tableView.performBatchUpdates(nil)
       }
     }.store(in: &subscriptions)
     

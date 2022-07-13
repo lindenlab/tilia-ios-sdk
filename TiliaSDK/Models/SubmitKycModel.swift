@@ -18,9 +18,11 @@ struct SubmitKycModel: Encodable {
   private let userInfo: UserInfo
   private let files: [File]
   
-  init(userInfoModel: UserInfoModel) {
-    self.userInfo = UserInfo(userInfoModel: userInfoModel)
-    self.files = userInfoModel.additionalDocuments.enumerated().map { File(additionalDocument: $0.element, index: $0.offset + 1) }
+  init(userInfoModel: UserInfoModel, userDocumentsModel: UserDocumentsModel) {
+    self.userInfo = UserInfo(userInfoModel: userInfoModel,
+                             userDocumentsModel: userDocumentsModel)
+    self.files = userDocumentsModel.additionalDocuments.enumerated().map { File(additionalDocument: $0.element,
+                                                                                index: $0.offset + 1) }
   }
   
 }
@@ -69,7 +71,7 @@ private extension SubmitKycModel {
     let documentBack: String?
     let documentCountry: String
     
-    init(userInfoModel: UserInfoModel) {
+    init(userInfoModel: UserInfoModel, userDocumentsModel: UserDocumentsModel) {
       self.country = userInfoModel.countryOfResidence?.code ?? ""
       self.firstName = userInfoModel.fullName.first ?? ""
       self.middleName = userInfoModel.fullName.middle ?? ""
@@ -83,10 +85,10 @@ private extension SubmitKycModel {
       self.canUseAddressFor1099 = userInfoModel.canUseAddressFor1099?.boolValue
       self.ssn = userInfoModel.tax?.ssn
       self.signature = userInfoModel.tax?.signature
-      self.document = userInfoModel.document?.code ?? ""
-      self.documentFront = Self.documentBase64EncodedString(for: userInfoModel.frontImage) ?? ""
-      self.documentBack = Self.documentBase64EncodedString(for: userInfoModel.backImage)
-      self.documentCountry = userInfoModel.documentCountry?.code ?? ""
+      self.document = userDocumentsModel.document?.code ?? ""
+      self.documentFront = Self.documentBase64EncodedString(for: userDocumentsModel.frontImage) ?? ""
+      self.documentBack = Self.documentBase64EncodedString(for: userDocumentsModel.backImage)
+      self.documentCountry = userDocumentsModel.documentCountry?.code ?? ""
     }
     
     private static func documentBase64EncodedString(for image: UIImage?) -> String? {
@@ -116,7 +118,7 @@ private extension SubmitKycModel {
     let mimeType: String
     let content: String
     
-    init(additionalDocument: UserInfoModel.AdditionalDocument, index: Int) {
+    init(additionalDocument: UserDocumentsModel.AdditionalDocument, index: Int) {
       self.name = "my_file_\(String(index))"
       self.ext = additionalDocument.ext
       self.mimeType = additionalDocument.mimeType
@@ -128,7 +130,7 @@ private extension SubmitKycModel {
 
 // MARK: - Additional Helpers
 
-private extension UserInfoModel.Document {
+private extension UserDocumentsModel.Document {
   
   var code: String {
     switch self {
@@ -150,14 +152,13 @@ private extension UIImage {
 
 private extension PDFDocument {
   
-  // TODO: - Check if it is correct
   var ext: String { return ".pdf" }
   var mimeType: String { return "application/pdf" }
   var base64EncodedString: String? { return self.dataRepresentation()?.base64EncodedString() }
   
 }
 
-private extension UserInfoModel.AdditionalDocument {
+private extension UserDocumentsModel.AdditionalDocument {
   
   var ext: String {
     switch self {
@@ -182,13 +183,13 @@ private extension UserInfoModel.AdditionalDocument {
   
 }
 
-private extension UserInfoModel.CountryState {
+private extension CountryStateModel {
   
   var region: String? { return code ?? name }
   
 }
 
-private extension UserInfoModel.BoolModel {
+private extension BoolModel {
   
   var boolValue: Bool {
     switch self {

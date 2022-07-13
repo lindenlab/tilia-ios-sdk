@@ -196,4 +196,39 @@ class NetworkManagerTests: XCTestCase {
     XCTAssertNotNil(url)
   }
   
+  func testSubmitKycSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var kycId: String?
+    let expectation = XCTestExpectation(description: "testSubmitKycSuccess")
+    let model = SubmitKycModel(userInfoModel: .init())
+    networkManager.submitKyc(with: model) { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let model):
+        kycId = model.kycId
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(kycId)
+  }
+  
+  func testGetSubmittedKycStatusSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var state: SubmittedKycStateModel?
+    let expectation = XCTestExpectation(description: "testGetSubmittedKycStatusSuccess")
+    networkManager.getSubmittedKycStatus(with: "") { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let model):
+        state = model.state
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertEqual(state, .accepted)
+  }
+  
 }

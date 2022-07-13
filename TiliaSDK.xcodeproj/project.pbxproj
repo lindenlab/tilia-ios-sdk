@@ -97,6 +97,10 @@
 		D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */; };
 		D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */; };
 		D19C79902837958C0024BB6F /* UserDocumentsPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19C798F2837958C0024BB6F /* UserDocumentsPhotoCell.swift */; };
+		D1A165B0287F5C0C00EFD999 /* UserDocumentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A165AF287F5C0C00EFD999 /* UserDocumentsModel.swift */; };
+		D1A165B2287F5C3100EFD999 /* BoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A165B1287F5C3100EFD999 /* BoolModel.swift */; };
+		D1A165B4287F5C9500EFD999 /* CountryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A165B3287F5C9500EFD999 /* CountryModel.swift */; };
+		D1A165B6287F5CB900EFD999 /* CountryStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A165B5287F5CB900EFD999 /* CountryStateModel.swift */; };
 		D1B80AA528659E9700E1C9BD /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B80AA428659E9700E1C9BD /* AuthRouter.swift */; };
 		D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */; };
 		D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */; };
@@ -278,6 +282,10 @@
 		D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowTestViewController.swift; sourceTree = "<group>"; };
 		D19C798F2837958C0024BB6F /* UserDocumentsPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsPhotoCell.swift; sourceTree = "<group>"; };
+		D1A165AF287F5C0C00EFD999 /* UserDocumentsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsModel.swift; sourceTree = "<group>"; };
+		D1A165B1287F5C3100EFD999 /* BoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolModel.swift; sourceTree = "<group>"; };
+		D1A165B3287F5C9500EFD999 /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryModel.swift; sourceTree = "<group>"; };
+		D1A165B5287F5CB900EFD999 /* CountryStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryStateModel.swift; sourceTree = "<group>"; };
 		D1B80AA428659E9700E1C9BD /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
 		D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectUrlModel.swift; sourceTree = "<group>"; };
 		D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetAddCreditCardRedirectUrlResponse.json; sourceTree = "<group>"; };
@@ -541,6 +549,10 @@
 				D1BA29DF27FCA96B00F046E8 /* ColorsConfiguration.swift */,
 				D154AD41280F071E003976CB /* CreateInvoiceModel.swift */,
 				D18855E0282700D400BAC86F /* UserInfoModel.swift */,
+				D1A165AF287F5C0C00EFD999 /* UserDocumentsModel.swift */,
+				D1A165B3287F5C9500EFD999 /* CountryModel.swift */,
+				D1A165B5287F5CB900EFD999 /* CountryStateModel.swift */,
+				D1A165B1287F5C3100EFD999 /* BoolModel.swift */,
 				D18D730128415E8200660715 /* BundleToken.swift */,
 				D1B80AA62865A1E500E1C9BD /* RedirectUrlModel.swift */,
 				D1BB633C287EE055007616DE /* SubmitKycModel.swift */,
@@ -1109,9 +1121,11 @@
 				D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */,
 				D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */,
 				D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */,
+				D1A165B2287F5C3100EFD999 /* BoolModel.swift in Sources */,
 				D135DCAC27E762460009D888 /* RouterProtocol.swift in Sources */,
 				D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */,
 				D1BA29E027FCA96B00F046E8 /* ColorsConfiguration.swift in Sources */,
+				D1A165B0287F5C0C00EFD999 /* UserDocumentsModel.swift in Sources */,
 				D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */,
 				D18855E9282912B400BAC86F /* RoundedTextField.swift in Sources */,
 				D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */,
@@ -1149,10 +1163,12 @@
 				D15BA9F3282AABF900511785 /* Date+Helpers.swift in Sources */,
 				D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */,
 				D179123B282C3A2B0053DB10 /* UserInfoValidators.swift in Sources */,
+				D1A165B6287F5CB900EFD999 /* CountryStateModel.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
 				D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */,
 				D19A0DA7281FED6600483DDC /* UserInfoRouter.swift in Sources */,
 				D1D5B54027F7654500E04EE1 /* CheckoutPaymentMethodCell.swift in Sources */,
+				D1A165B4287F5C9500EFD999 /* CountryModel.swift in Sources */,
 				D135DCB627E7703D0009D888 /* TLManager.swift in Sources */,
 				D135DCAF27E763130009D888 /* TLEnvironment.swift in Sources */,
 				D15BA9F1282A9B9500511785 /* ThreeTextFieldsCell.swift in Sources */,
