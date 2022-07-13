@@ -17,6 +17,8 @@ enum PaymentRouter: RouterProtocol {
     }
   }
   
+  var queryParameters: Parameters? { return ["capability": "purchase"] }
+  
   var service: String { return "payments" }
   
   var endpoint: String {
@@ -24,8 +26,6 @@ enum PaymentRouter: RouterProtocol {
     case .getUserBalanceByCurrencyCode: return "/transaction-methods"
     }
   }
-  
-  var queryParameters: Parameters? { return ["capability": "purchase"] }
   
 }
 

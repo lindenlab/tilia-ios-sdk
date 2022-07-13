@@ -122,6 +122,7 @@
 		D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */; };
 		D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29F628009D5700F046E8 /* ToastView.swift */; };
 		D1BB633D287EE055007616DE /* KycUploadModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB633C287EE055007616DE /* KycUploadModel.swift */; };
+		D1BB6343287F0A40007616DE /* KycRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB6342287F0A40007616DE /* KycRouter.swift */; };
 		D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */; };
 		D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83527F4F5D100BF2910 /* DividerView.swift */; };
 		D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */; };
@@ -298,6 +299,7 @@
 		D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetColorsTestViewController.swift; sourceTree = "<group>"; };
 		D1BA29F628009D5700F046E8 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		D1BB633C287EE055007616DE /* KycUploadModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycUploadModel.swift; sourceTree = "<group>"; };
+		D1BB6342287F0A40007616DE /* KycRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycRouter.swift; sourceTree = "<group>"; };
 		D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadCell.swift; sourceTree = "<group>"; };
 		D1C8A83527F4F5D100BF2910 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadSummaryFooterView.swift; sourceTree = "<group>"; };
@@ -546,6 +548,7 @@
 				D188165A27E7C0C50082A85B /* PaymentRouter.swift */,
 				D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */,
 				D1B80AA428659E9700E1C9BD /* AuthRouter.swift */,
+				D1BB6342287F0A40007616DE /* KycRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1076,6 +1079,7 @@
 				D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */,
 				D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */,
 				D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */,
+				D1BB6343287F0A40007616DE /* KycRouter.swift in Sources */,
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
