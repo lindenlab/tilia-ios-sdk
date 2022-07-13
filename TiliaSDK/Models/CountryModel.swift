@@ -24,8 +24,7 @@ struct CountryModel: PossiblyEmpty {
   
   static let countries: [CountryModel] = {
     var items: [CountryModel] = [.usa, .canada]
-    let disabledCodes = Self.disabledCodes
-    for code in Locale.isoRegionCodes where !disabledCodes.contains(code) {
+    for code in Locale.isoRegionCodes where !Self.disabledCodes.contains(code) {
       items.append(.init(name: Locale.current.localizedString(forRegionCode: code) ?? "",
                          code: code))
     }
@@ -34,8 +33,7 @@ struct CountryModel: PossiblyEmpty {
   
   static let countryNames: [String] = {
     var items: [String] = [Self.usa.name, Self.canada.name]
-    let disabledCodes = Self.disabledCodes
-    for code in Locale.isoRegionCodes where !disabledCodes.contains(code) {
+    for code in Locale.isoRegionCodes where !Self.disabledCodes.contains(code) {
       items.append(Locale.current.localizedString(forRegionCode: code) ?? "")
     }
     return items
@@ -45,15 +43,13 @@ struct CountryModel: PossiblyEmpty {
   private static let canadaCode = "CA"
   
   private static let usa: CountryModel = {
-    let code = Self.usaCode
-    return .init(name: Locale.current.localizedString(forRegionCode: code) ?? "",
-                 code: code)
+    return .init(name: Locale.current.localizedString(forRegionCode: Self.usaCode) ?? "",
+                 code: Self.usaCode)
   }()
   
   private static let canada: CountryModel = {
-    let code = Self.canadaCode
-    return .init(name: Locale.current.localizedString(forRegionCode: code) ?? "",
-                 code: code)
+    return .init(name: Locale.current.localizedString(forRegionCode: Self.canadaCode) ?? "",
+                 code: Self.canadaCode)
   }()
   
   private static let disabledCodes: Set<String> = [Self.usaCode, Self.canadaCode]
