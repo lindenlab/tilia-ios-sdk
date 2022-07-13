@@ -10,6 +10,7 @@ import Alamofire
 protocol RouterProtocol: URLRequestConvertible {
   var serverConfiguration: ServerConfiguration { get }
   var method: HTTPMethod { get }
+  var queryParameters: Parameters? { get }
   var bodyParameters: Parameters? { get }
   var service: String { get }
   var endpoint: String { get }
@@ -26,6 +27,8 @@ extension RouterProtocol {
     return TLManager.shared.networkManager.serverConfiguration
   }
   
+  var queryParameters: Parameters? { return nil }
+  
   var bodyParameters: Parameters? { return nil }
   
   func requestHeaders() throws -> [String: String] {
@@ -41,7 +44,7 @@ extension RouterProtocol {
     let stringUrl = "https://\(service).\(serverConfiguration.environment.description).com\(endpoint)"
     let url = try stringUrl.asURL()
     
-    var urlRequest = URLRequest(url: url)
+    var urlRequest = try URLEncoding.default.encode(URLRequest(url: url), with: queryParameters)
     urlRequest.timeoutInterval = serverConfiguration.timeoutInterval
     urlRequest.httpMethod = method.rawValue
     

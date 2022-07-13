@@ -16,14 +16,16 @@ enum PaymentRouter: RouterProtocol {
     case .getUserBalanceByCurrencyCode: return .get
     }
   }
-    
+  
   var service: String { return "payments" }
   
   var endpoint: String {
     switch self {
-    case .getUserBalanceByCurrencyCode: return "/transaction-methods?capability=purchase"
+    case .getUserBalanceByCurrencyCode: return "/transaction-methods"
     }
   }
+  
+  var queryParameters: Parameters? { return ["capability": "purchase"] }
   
 }
 
