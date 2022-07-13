@@ -297,7 +297,7 @@ struct UserDocumentsSectionBuilder {
   
   func updateSection(_ section: inout Section,
                      documentCountryDidChangeWith model: UserDocumentsModel,
-                     wasUs: Bool) -> TableUpdate {
+                     wasUsDocumentCountry: Bool) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
     
     if model.isUsDocumentCountry {
@@ -305,7 +305,7 @@ struct UserDocumentsSectionBuilder {
         section.items[$0] = isAddressOnDocumentItem()
         tableUpdate.reload = [IndexPath(row: $0, section: 0)]
       }
-    } else if wasUs, let isAddressOnDocumentIndex = isAddressOnDocumentIndex(in: section) {
+    } else if wasUsDocumentCountry, let isAddressOnDocumentIndex = isAddressOnDocumentIndex(in: section) {
       if let _ = additionalDocumentsIndex(in: section) {
         section.items.remove(at: isAddressOnDocumentIndex)
         tableUpdate.delete = [IndexPath(row: isAddressOnDocumentIndex, section: 0)]

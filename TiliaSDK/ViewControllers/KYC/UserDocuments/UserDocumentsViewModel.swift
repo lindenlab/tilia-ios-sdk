@@ -11,7 +11,7 @@ import PDFKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetDocumentImage = (index: Int, image: UIImage?)
-typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUs: Bool)
+typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsDocumentCountry: Bool)
 typealias UserDocumentsAddAdditionalDocuments = (index: Int, documentImages: [UIImage])
 typealias UserDocumentsDeleteAdditionalDocument = (itemIndex: Int, documentIndex: Int)
 
@@ -100,15 +100,15 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       }
     case .documentCountry:
       if userDocumentsModel.documentCountry?.name != text {
-        let wasUsResidence = userDocumentsModel.isUsDocumentCountry
+        let wasUsDocumentCountry = userDocumentsModel.isUsDocumentCountry
         isFieldChanged = true
         userDocumentsModel.documentCountry = CountryModel.countries.first { $0.name == text }
-        if wasUsResidence {
+        if wasUsDocumentCountry {
           userDocumentsModel.isAddressOnDocument = nil
         } else if userDocumentsModel.isUsDocumentCountry {
           userDocumentsModel.additionalDocuments.removeAll()
         }
-        documentCountryDidChange.send((userDocumentsModel, wasUsResidence))
+        documentCountryDidChange.send((userDocumentsModel, wasUsDocumentCountry))
       }
     case .isAddressOnDocument:
       let value = BoolModel(str: text ?? "")

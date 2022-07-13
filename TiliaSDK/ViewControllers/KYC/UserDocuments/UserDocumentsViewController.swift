@@ -263,7 +263,7 @@ private extension UserDocumentsViewController {
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSection(&self.section,
                                                    documentCountryDidChangeWith: $0.model,
-                                                   wasUs: $0.wasUs)
+                                                   wasUsDocumentCountry: $0.wasUsDocumentCountry)
       self.tableView.performBatchUpdates {
         tableUpdate.reload.map { self.tableView.reloadRows(at: $0, with: .fade) }
         tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
