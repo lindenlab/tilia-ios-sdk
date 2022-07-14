@@ -146,7 +146,7 @@ private extension UIImage {
   
   var ext: String { return ".png" }
   var mimeType: String { return "img/png" }
-  var base64EncodedString: String? { return self.pngData()?.base64EncodedString() }
+  var base64EncodedString: String? { return self.pngData()?.base64EncodedString(options: .init(rawValue: 0)) }
   
 }
 
@@ -154,7 +154,7 @@ private extension PDFDocument {
   
   var ext: String { return ".pdf" }
   var mimeType: String { return "application/pdf" }
-  var base64EncodedString: String? { return self.dataRepresentation()?.base64EncodedString() }
+  var base64EncodedString: String? { return self.dataRepresentation()?.base64EncodedString(options: .init(rawValue: 0)) }
   
 }
 

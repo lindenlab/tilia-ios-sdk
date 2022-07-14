@@ -182,9 +182,9 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
   func upload() {
     uploading.send(true)
-    submitModel() { submitModel in
-      self.manager.submitKyc(with: submitModel) { [weak self] result in
-        guard let self = self else { return }
+    submitModel() { [weak self] submitModel in
+      guard let self = self else { return }
+      self.manager.submitKyc(with: submitModel) { result in
         self.uploading.send(false)
         switch result {
         case .success(let model):
