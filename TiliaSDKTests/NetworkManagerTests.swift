@@ -200,7 +200,7 @@ class NetworkManagerTests: XCTestCase {
     TLManager.shared.setToken(UUID().uuidString)
     var kycId: String?
     let expectation = XCTestExpectation(description: "testSubmitKycSuccess")
-    let model = SubmitKycModel(userInfoModel: .init())
+    let model = SubmitKycModel(userInfoModel: .init(), userDocumentsModel: .init())
     networkManager.submitKyc(with: model) { result in
       expectation.fulfill()
       switch result {
