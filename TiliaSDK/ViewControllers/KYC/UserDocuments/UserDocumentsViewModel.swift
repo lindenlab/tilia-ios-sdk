@@ -156,6 +156,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     var documentImages: [UIImage] = []
     urls.forEach { url in
       PDFDocument(url: url).map { document in
+        guard document.pageCount != 0 else { return }
         if !document.isLocked {
           userDocumentsModel.additionalDocuments.append(.pdfFile(document))
           image(from: document).map { documentImages.append($0) }
