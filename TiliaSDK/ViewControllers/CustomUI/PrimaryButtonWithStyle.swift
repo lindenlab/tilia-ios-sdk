@@ -29,8 +29,7 @@ final class PrimaryButtonWithStyle: PrimaryButton {
       return isLoading ? false : super.isEnabled
     }
     set {
-      guard !isLoading, newValue != super.isEnabled else { return }
-      super.isEnabled = newValue
+      super.isEnabled = isLoading ? false : newValue
       titleColor(for: state).map { imageView?.tintColor = $0 }
     }
   }
