@@ -16,6 +16,9 @@ final class PrimaryButtonWithStyle: PrimaryButton {
   
   var isLoading: Bool = false {
     didSet {
+      if isLoading {
+        spinner?.startAnimating()
+      }
       guard oldValue != isLoading else { return }
       isLoading ? addSpinner() : removeSpinner()
     }
@@ -26,7 +29,8 @@ final class PrimaryButtonWithStyle: PrimaryButton {
       return isLoading ? false : super.isEnabled
     }
     set {
-      super.isEnabled = isLoading ? false : newValue
+      guard !isLoading, newValue != super.isEnabled else { return }
+      super.isEnabled = newValue
       titleColor(for: state).map { imageView?.tintColor = $0 }
     }
   }
