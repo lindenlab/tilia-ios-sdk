@@ -278,7 +278,6 @@ private extension UserDocumentsViewModel {
   func resumeTimer(kycId: String) {
     timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
       guard let self = self else { return }
-      self.waiting.send()
       self.getSubmittedStatus(for: kycId)
     }
   }
@@ -298,9 +297,11 @@ private extension UserDocumentsViewModel {
           self.successfulWaiting.send()
         } else {
           self.resumeTimer(kycId: kycId)
+          self.waiting.send()
         }
       case .failure:
         self.resumeTimer(kycId: kycId)
+        self.waiting.send()
       }
     }
   }

@@ -103,7 +103,7 @@ private extension UserInfoHeaderView {
   }
   
   func setupMode(animated: Bool) {
-    super.isUserInteractionEnabled = mode.isEnabled
+    isUserInteractionEnabled = mode.isEnabled
     isExpanded = mode.isExpanded
     divider.isHidden = mode.isDividerHidden
     titleLabel.textColor = mode.titleColor
