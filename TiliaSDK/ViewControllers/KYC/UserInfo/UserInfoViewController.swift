@@ -149,7 +149,15 @@ extension UserInfoViewController: UserInfoNextButtonCellDelegate {
   func userInfoNextButtonCellButtonDidTap(_ cell: UserInfoNextButtonCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
     let index = indexPath.section
-    let nextSectionIndex = sections[index..<sections.count].firstIndex { $0.mode == .normal }
+    var nextSectionIndex: Int?
+    for i in index + 1..<sections.count {
+      if sections[i].mode == .expanded {
+        break
+      } else if sections[i].mode == .normal {
+        nextSectionIndex = i
+        break
+      }
+    }
     viewModel.updateSection(sections[index],
                             at: index,
                             isExpanded: false,
