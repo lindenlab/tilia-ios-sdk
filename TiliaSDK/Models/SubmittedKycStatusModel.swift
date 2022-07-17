@@ -16,6 +16,7 @@ struct SubmittedKycStatusModel: Decodable {
 enum SubmittedKycStateModel: String, Decodable {
   
   case noData = "NODATA"
+  case processing = "PROCESSING"
   case accepted = "ACCEPT"
   case denied = "DENY"
   case needManualReview = "MANUAL_REVIEW"

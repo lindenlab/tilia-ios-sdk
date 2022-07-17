@@ -299,9 +299,8 @@ private extension UserDocumentsViewModel {
           self.resumeTimer(kycId: kycId)
           self.waiting.send()
         }
-      case .failure:
-        self.resumeTimer(kycId: kycId)
-        self.waiting.send()
+      case .failure(let error):
+        self.error.send(error)
       }
     }
   }
