@@ -10,7 +10,7 @@ import UIKit
 import PDFKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
-typealias UserDocumentsSetDocumentImage = (index: Int, image: UIImage?)
+typealias UserDocumentsSetDocumentImage = (index: Int, image: UIImage)
 typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsDocumentCountry: Bool)
 typealias UserDocumentsAddAdditionalDocuments = (index: Int, documentImages: [UIImage])
 typealias UserDocumentsDeleteAdditionalDocument = (itemIndex: Int, documentIndex: Int)

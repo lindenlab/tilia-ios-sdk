@@ -230,7 +230,7 @@ struct UserDocumentsSectionBuilder {
   func updateSection(_ section: inout Section,
                      at index: Int,
                      in tableView: UITableView,
-                     didSetDocumentImage image: UIImage?) {
+                     didSetDocumentImage image: UIImage) {
     guard case var .photo(photo) = section.items[index].mode else { return }
     photo.image = image
     section.items[index].mode = .photo(photo)
