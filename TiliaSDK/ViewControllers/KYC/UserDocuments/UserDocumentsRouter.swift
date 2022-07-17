@@ -12,7 +12,7 @@ import CoreServices
 protocol UserDocumentsRoutingProtocol: RoutingProtocol {
   func routeToImagePickerView(sourceType: UIImagePickerController.SourceType, delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate)
   func routeToSelectDocumentsView(delegate: UIDocumentPickerDelegate & UIImagePickerControllerDelegate & UINavigationControllerDelegate)
-  func showAddDocumentsDidFailAlert()
+  func showFailureAlert(with error: String)
 }
 
 final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
@@ -55,9 +55,9 @@ final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
     viewController?.present(alertController, animated: true)
   }
   
-  func showAddDocumentsDidFailAlert() {
-    let alertController = UIAlertController(title: L.addDocumentsFailedTitle,
-                                            message: L.addDocumentsFailedMessage,
+  func showFailureAlert(with error: String) {
+    let alertController = UIAlertController(title: L.failedToSelect,
+                                            message: error,
                                             preferredStyle: .alert)
     let cancelAction = UIAlertAction(title: L.ok, style: .cancel)
     alertController.addAction(cancelAction)

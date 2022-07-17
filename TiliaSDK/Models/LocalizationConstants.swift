@@ -107,7 +107,10 @@ enum L {
   static let selectFromFiles = "selectFromFiles".localized
   static let errorKycTitle = "errorKycTitle".localized
   static let errorKycMessage = "errorKycMessage".localized
-  static let addDocumentsFailedTitle = "addDocumentsFailedTitle".localized
+  static let failedToSelect = "failedToSelect".localized
+  static let failedToSelectHasPassword = "failedToSelectHasPassword".localized
+  static let failedToSelectBigImage = "failedToSelectBigImage".localized
+  static let failedToSelectReachedMaxSize = "failedToSelectReachedMaxSize".localized
   static let addDocumentsFailedMessage = "addDocumentsFailedMessage".localized
   static let waitingForResults = "waitingForResults".localized
   static let waitingForResultsMessage = "waitingForResultsMessage".localized

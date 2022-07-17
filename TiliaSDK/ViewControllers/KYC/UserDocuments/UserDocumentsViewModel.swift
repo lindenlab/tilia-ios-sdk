@@ -33,8 +33,8 @@ protocol UserDocumentsViewModelOutputProtocol {
   var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
   var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel, Never> { get }
   var addAdditionalDocuments: PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never> { get }
-  var addAdditionalDocumentsDidFail: PassthroughSubject<Void, Never> { get }
   var deleteAdditionalDocument: PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never> { get }
+  var chooseFileDidFail: PassthroughSubject<String, Never> { get }
   var fillingContent: PassthroughSubject<Bool, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
   var successfulUploading: PassthroughSubject<Void, Never> { get }
@@ -54,8 +54,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
   let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel, Never>()
   let addAdditionalDocuments = PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never>()
-  let addAdditionalDocumentsDidFail = PassthroughSubject<Void, Never>()
   let deleteAdditionalDocument = PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never>()
+  let chooseFileDidFail = PassthroughSubject<String, Never>()
   let fillingContent = PassthroughSubject<Bool, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
   let successfulUploading = PassthroughSubject<Void, Never>()
@@ -128,21 +128,28 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?) {
-    resizedImage(image) { resizedImage in
+    guard let image = image else { return }
+    resizeImage(image) { (resizedImage, compressedImage) in
+      guard let compressedImage = compressedImage else {
+        self.chooseFileDidFail.send(L.failedToSelectBigImage)
+        return
+      }
+      
+      let documentImage = UserDocumentsModel.DocumentImage(image: resizedImage,
+                                                           data: compressedImage,
+                                                           type: .image)
       switch item.mode {
       case let .photo(model):
         switch model.type {
         case .frontSide:
-          self.userDocumentsModel.frontImage = resizedImage
+          self.userDocumentsModel.frontImage = documentImage
         case .backSide:
-          self.userDocumentsModel.backImage = resizedImage
+          self.userDocumentsModel.backImage = documentImage
         }
         self.setDocumentImage.send((index, resizedImage))
       case .additionalDocuments:
-        resizedImage.map {
-          self.userDocumentsModel.additionalDocuments.append(.image($0))
-          self.addAdditionalDocuments.send((index, [$0]))
-        }
+        self.userDocumentsModel.additionalDocuments.append(documentImage)
+        self.addAdditionalDocuments.send((index, [resizedImage]))
       default:
         break
       }
@@ -152,26 +159,17 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setFiles(with urls: [URL], at index: Int) {
-    var addDocumentsFailed = false
-    var documentImages: [UIImage] = []
-    urls.forEach { url in
-      PDFDocument(url: url).map { document in
-        guard document.pageCount != 0 else { return }
-        if !document.isLocked {
-          userDocumentsModel.additionalDocuments.append(.pdfFile(document))
-          image(from: document).map { documentImages.append($0) }
-        } else {
-          addDocumentsFailed = true
-        }
+    let initialDocumentsSize = getDocumentsSize(userDocumentsModel.additionalDocuments)
+    processFiles(with: urls, initialDocumentsSize: initialDocumentsSize) { errors, documents in
+      if !documents.isEmpty {
+        self.userDocumentsModel.additionalDocuments.append(contentsOf: documents)
+        self.addAdditionalDocuments.send((index, documents.map { $0.image }))
+        self.updateFillingSectionObserver()
       }
-      deleteTempFile(at: url)
-    }
-    if !documentImages.isEmpty {
-      addAdditionalDocuments.send((index, documentImages))
-      updateFillingSectionObserver()
-    }
-    if addDocumentsFailed {
-      addAdditionalDocumentsDidFail.send()
+      if !errors.isEmpty {
+        self.chooseFileDidFail.send(errors.joined(separator: "\n"))
+      }
+      urls.forEach { url in self.deleteTempFile(at: url) }
     }
   }
   
@@ -183,18 +181,16 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
   func upload() {
     uploading.send(true)
-    submitModel() { [weak self] submitModel in
+    submit { [weak self] result in
       guard let self = self else { return }
-      self.manager.submitKyc(with: submitModel) { result in
-        self.uploading.send(false)
-        switch result {
-        case .success(let model):
-          self.isUploaded = true
-          self.successfulUploading.send()
-          self.resumeTimer(kycId: model.kycId)
-        case .failure(let error):
-          self.error.send(error)
-        }
+      self.uploading.send(false)
+      switch result {
+      case .success(let model):
+        self.isUploaded = true
+        self.successfulUploading.send()
+        self.resumeTimer(kycId: model.kycId)
+      case .failure(let error):
+        self.error.send(error)
       }
     }
   }
@@ -231,35 +227,46 @@ private extension UserDocumentsViewModel {
     return page.thumbnail(of: pageRect.size, for: .mediaBox)
   }
   
-  func resizedImage(_ image: UIImage?, completion: @escaping (UIImage?) -> Void) {
+  func resizeImage(_ image: UIImage, completion: @escaping (UIImage, Data?) -> Void) {
     processQueue.async {
-      guard let image = image else {
-        DispatchQueue.main.async { completion(image) }
-        return
-      }
-      let newSize = CGSize(width: 1024, height: 1024)
-      var imageSize = image.size
-      guard imageSize.width > newSize.width || imageSize.height > newSize.height else {
-        DispatchQueue.main.async { completion(image) }
-        return
-      }
-      
-      let ratio = max(imageSize.width / newSize.width, imageSize.height / newSize.height)
-      imageSize.width = imageSize.width / ratio
-      imageSize.height = imageSize.height / ratio
-      let renderer = UIGraphicsImageRenderer(size: imageSize)
-      let newImage = renderer.image { _ in
-        image.draw(in: .init(origin: .zero, size: imageSize))
-      }
-      DispatchQueue.main.async { completion(newImage) }
+      let imageCompressor = ImageCompressor()
+      let resizedImage = imageCompressor.resized(image: image)
+      let compressedImage = imageCompressor.compressed(image: image, withMaxSize: C.maxImageSize)
+      DispatchQueue.main.async { completion(resizedImage, compressedImage) }
     }
   }
   
-  func submitModel(completion: @escaping (SubmitKycModel) -> Void) {
+  func processFiles(with urls: [URL], initialDocumentsSize: Int, completion: @escaping ([String], [UserDocumentsModel.DocumentImage]) -> Void) {
     processQueue.async {
-      let model = SubmitKycModel(userInfoModel: self.userInfoModel,
-                                 userDocumentsModel: self.userDocumentsModel)
-      DispatchQueue.main.async { completion(model) }
+      var errors: [String] = []
+      var documents: [UserDocumentsModel.DocumentImage] = []
+      for url in urls {
+        guard
+          let document = PDFDocument(url: url),
+          document.pageCount != 0 else { continue }
+        if document.isLocked {
+          errors.append(L.failedToSelectHasPassword)
+        } else if initialDocumentsSize + self.getDocumentsSize(documents) + self.getFileSize(at: url) > C.maxAdditionalDocumentsSize {
+          errors.append(L.failedToSelectReachedMaxSize)
+          break
+        } else if let data = document.dataRepresentation(), let image = self.image(from: document) {
+          let resizedImage = ImageCompressor().resized(image: image)
+          documents.append(.init(image: resizedImage,
+                                 data: data,
+                                 type: .pdf))
+        }
+      }
+      DispatchQueue.main.async { completion(errors, documents) }
+    }
+  }
+  
+  func submit(completion: @escaping CompletionResultHandler<SubmittedKycModel>) {
+    processQueue.async {
+      let submitModel = SubmitKycModel(userInfoModel: self.userInfoModel,
+                                       userDocumentsModel: self.userDocumentsModel)
+      self.manager.submitKyc(with: submitModel) { result in
+        DispatchQueue.main.async { completion(result) }
+      }
     }
   }
   
@@ -296,6 +303,64 @@ private extension UserDocumentsViewModel {
         self.resumeTimer(kycId: kycId)
       }
     }
+  }
+  
+  func getDocumentsSize(_ documents: [UserDocumentsModel.DocumentImage]) -> Int {
+    return documents.reduce(0) { result, document in
+      return result + document.data.count
+    }
+  }
+  
+  func getFileSize(at url: URL) -> Int {
+    return (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+  }
+  
+}
+
+private extension UserDocumentsViewModel {
+  
+  struct C {
+    static let maxImageSize = 1024 * 1024 * 3
+    static let maxAdditionalDocumentsSize = 1024 * 1024 * 20
+  }
+  
+  struct ImageCompressor {
+    
+    private static let minimumCompressionQuality: CGFloat = 0.1
+    private static let compressionQualityStep: CGFloat = 0.1
+    private static let maxSizeToDisplay = CGSize(width: 512, height: 512)
+    
+    func compressed(image: UIImage, withMaxSize maxSize: Int) -> Data? {
+      
+      func compressed(image: UIImage, compressionQuality: CGFloat) -> Data? {
+        guard
+          compressionQuality >= Self.minimumCompressionQuality,
+          let data = image.jpegData(compressionQuality: compressionQuality) else { return nil }
+        if data.count <= maxSize {
+          return data
+        } else {
+          let newCompressionQuality = compressionQuality - ImageCompressor.compressionQualityStep
+          return compressed(image: image, compressionQuality: newCompressionQuality)
+        }
+      }
+      
+      return compressed(image: image, compressionQuality: 1)
+    }
+    
+    func resized(image: UIImage) -> UIImage {
+      let maxSizeToDisplay = Self.maxSizeToDisplay
+      var imageSize = image.size
+      
+      guard imageSize.width > maxSizeToDisplay.width || imageSize.height > maxSizeToDisplay.height else { return image }
+      let ratio = max(imageSize.width / maxSizeToDisplay.width, imageSize.height / maxSizeToDisplay.height)
+      imageSize.width = imageSize.width / ratio
+      imageSize.height = imageSize.height / ratio
+      let renderer = UIGraphicsImageRenderer(size: imageSize)
+      return renderer.image { _ in
+        image.draw(in: .init(origin: .zero, size: imageSize))
+      }
+    }
+    
   }
   
 }

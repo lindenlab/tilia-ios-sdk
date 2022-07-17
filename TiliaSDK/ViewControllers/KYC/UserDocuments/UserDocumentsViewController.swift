@@ -292,8 +292,8 @@ private extension UserDocumentsViewController {
                               didAddAdditionalDocumentsWith: $0.documentImages)
     }.store(in: &subscriptions)
     
-    viewModel.addAdditionalDocumentsDidFail.sink { [weak self] in
-      self?.router.showAddDocumentsDidFailAlert()
+    viewModel.chooseFileDidFail.sink { [weak self] in
+      self?.router.showFailureAlert(with: $0)
     }.store(in: &subscriptions)
     
     viewModel.deleteAdditionalDocument.sink { [weak self] in

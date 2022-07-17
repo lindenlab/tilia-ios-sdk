@@ -91,8 +91,8 @@ private extension SubmitKycModel {
       self.documentCountry = userDocumentsModel.documentCountry?.code ?? ""
     }
     
-    private static func documentBase64EncodedString(for image: UIImage?) -> String? {
-      guard let base64EncodedString = image?.base64EncodedString else { return nil }
+    private static func documentBase64EncodedString(for document: UserDocumentsModel.DocumentImage?) -> String? {
+      guard let base64EncodedString = document?.data.base64EncodedString() else { return nil }
       return "data:image/png;base64,\(base64EncodedString)"
     }
     
@@ -118,11 +118,11 @@ private extension SubmitKycModel {
     let mimeType: String
     let content: String
     
-    init(additionalDocument: UserDocumentsModel.AdditionalDocument, index: Int) {
+    init(additionalDocument: UserDocumentsModel.DocumentImage, index: Int) {
       self.name = "my_file_\(String(index))"
       self.ext = additionalDocument.ext
       self.mimeType = additionalDocument.mimeType
-      self.content = additionalDocument.base64EncodedString ?? ""
+      self.content = additionalDocument.data.base64EncodedString()
     }
   }
   
@@ -142,42 +142,19 @@ private extension UserDocumentsModel.Document {
   
 }
 
-private extension UIImage {
-  
-  var ext: String { return ".png" }
-  var mimeType: String { return "img/png" }
-  var base64EncodedString: String? { return self.pngData()?.base64EncodedString(options: .init(rawValue: 0)) }
-  
-}
-
-private extension PDFDocument {
-  
-  var ext: String { return ".pdf" }
-  var mimeType: String { return "application/pdf" }
-  var base64EncodedString: String? { return self.dataRepresentation()?.base64EncodedString(options: .init(rawValue: 0)) }
-  
-}
-
-private extension UserDocumentsModel.AdditionalDocument {
+private extension UserDocumentsModel.DocumentImage {
   
   var ext: String {
-    switch self {
-    case let .pdfFile(model): return model.ext
-    case let .image(model): return model.ext
+    switch type {
+    case .pdf: return ".pdf"
+    case .image: return ".jpg"
     }
   }
   
   var mimeType: String {
-    switch self {
-    case let .pdfFile(model): return model.mimeType
-    case let .image(model): return model.mimeType
-    }
-  }
-  
-  var base64EncodedString: String? {
-    switch self {
-    case let .pdfFile(model): return model.base64EncodedString
-    case let .image(model): return model.base64EncodedString
+    switch type {
+    case .pdf: return "application/pdf"
+    case .image: return "img/jpg"
     }
   }
   
