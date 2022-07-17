@@ -8,12 +8,12 @@
 import Combine
 import Foundation
 
-typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, mode: UserInfoHeaderView.Mode, expandNext: Bool)
+typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, mode: UserInfoHeaderView.Mode, nextIndex: Int?)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
 typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, wasUsResidence: Bool)
 
 protocol UserInfoViewModelInputProtocol {
-  func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSection: UserInfoSectionBuilder.Section?)
+  func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSectionIndex: Int?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
   func complete()
 }
@@ -72,11 +72,10 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   func updateSection(_ section: UserInfoSectionBuilder.Section,
                      at index: Int,
                      isExpanded: Bool,
-                     nextSection: UserInfoSectionBuilder.Section?) {
+                     nextSectionIndex: Int?) {
     let isSectionFilled = validator(for: section.type).isFilled(for: userInfoModel)
     let mode: UserInfoHeaderView.Mode = isSectionFilled ? .passed : .normal
-    let expandNext = nextSection?.mode == .normal
-    expandSection.send((index, userInfoModel, isExpanded, mode, expandNext))
+    expandSection.send((index, userInfoModel, isExpanded, mode, nextSectionIndex))
   }
   
   func setText(_ text: String?,

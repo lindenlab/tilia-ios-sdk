@@ -149,10 +149,11 @@ extension UserInfoViewController: UserInfoNextButtonCellDelegate {
   func userInfoNextButtonCellButtonDidTap(_ cell: UserInfoNextButtonCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
     let index = indexPath.section
+    let nextSectionIndex = sections[index..<sections.count].firstIndex { $0.mode == .normal }
     viewModel.updateSection(sections[index],
                             at: index,
                             isExpanded: false,
-                            nextSection: sections[index + 1])
+                            nextSectionIndex: nextSectionIndex)
   }
   
 }
@@ -167,7 +168,7 @@ extension UserInfoViewController: UserInfoHeaderViewDelegate {
     viewModel.updateSection(sections[index],
                             at: index,
                             isExpanded: isExpanded,
-                            nextSection: nil)
+                            nextSectionIndex: nil)
   }
   
 }
@@ -181,7 +182,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
       viewModel.updateSection(section,
                               at: index,
                               isExpanded: false,
-                              nextSection: nil)
+                              nextSectionIndex: nil)
     }
     router.routeToUserDocumentsView()
   }
@@ -223,12 +224,11 @@ private extension UserInfoViewController {
         tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .fade) }
         tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
       } completion: { _ in
-        if item.expandNext {
-          let nextIndex = item.index + 1
+        if let nextIndex = item.nextIndex {
           self.viewModel.updateSection(self.sections[nextIndex],
                                        at: nextIndex,
                                        isExpanded: true,
-                                       nextSection: nil)
+                                       nextSectionIndex: nil)
         }
       }
     }.store(in: &subscriptions)
