@@ -249,7 +249,7 @@ private extension UserDocumentsViewModel {
         } else if initialDocumentsSize + self.getDocumentsSize(documents) + self.getFileSize(at: url) > C.maxAdditionalDocumentsSize {
           errors.append(L.failedToSelectReachedMaxSize)
           break
-        } else if let data = document.dataRepresentation(), let image = self.image(from: document) {
+        } else if let data = try? Data(contentsOf: url), let image = self.image(from: document) {
           let resizedImage = ImageCompressor().resized(image: image)
           documents.append(.init(image: resizedImage,
                                  data: data,
