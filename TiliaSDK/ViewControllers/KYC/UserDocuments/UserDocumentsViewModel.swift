@@ -160,15 +160,13 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
   func setFiles(with urls: [URL], at index: Int) {
     let initialDocumentsSize = getDocumentsSize(userDocumentsModel.additionalDocuments)
-    processFiles(with: urls, initialDocumentsSize: initialDocumentsSize) { errors, documents in
+    processFiles(with: urls, initialDocumentsSize: initialDocumentsSize) { documents, error in
       if !documents.isEmpty {
         self.userDocumentsModel.additionalDocuments.append(contentsOf: documents)
         self.addAdditionalDocuments.send((index, documents.map { $0.image }))
         self.updateFillingSectionObserver()
       }
-      if !errors.isEmpty {
-        self.chooseFileDidFail.send(errors.joined(separator: "\n"))
-      }
+      error.map { self.chooseFileDidFail.send($0) }
       urls.forEach { url in self.deleteTempFile(at: url) }
     }
   }
@@ -236,18 +234,18 @@ private extension UserDocumentsViewModel {
     }
   }
   
-  func processFiles(with urls: [URL], initialDocumentsSize: Int, completion: @escaping ([String], [UserDocumentsModel.DocumentImage]) -> Void) {
+  func processFiles(with urls: [URL], initialDocumentsSize: Int, completion: @escaping ([UserDocumentsModel.DocumentImage], String?) -> Void) {
     processQueue.async {
-      var errors: [String] = []
+      var errors: Set<String> = []
       var documents: [UserDocumentsModel.DocumentImage] = []
       for url in urls {
         guard
           let document = PDFDocument(url: url),
           document.pageCount != 0 else { continue }
         if document.isLocked {
-          errors.append(L.failedToSelectHasPassword)
+          errors.insert(L.failedToSelectHasPassword)
         } else if initialDocumentsSize + self.getDocumentsSize(documents) + self.getFileSize(at: url) > C.maxAdditionalDocumentsSize {
-          errors.append(L.failedToSelectReachedMaxSize)
+          errors.insert(L.failedToSelectReachedMaxSize)
         } else if let data = try? Data(contentsOf: url), let image = self.image(from: document) {
           let resizedImage = ImageCompressor().resized(image: image)
           documents.append(.init(image: resizedImage,
@@ -255,7 +253,8 @@ private extension UserDocumentsViewModel {
                                  type: .pdf))
         }
       }
-      DispatchQueue.main.async { completion(errors, documents) }
+      let error = errors.isEmpty ? nil : errors.joined(separator: "\n")
+      DispatchQueue.main.async { completion(documents, error) }
     }
   }
   
