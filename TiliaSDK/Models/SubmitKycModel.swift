@@ -93,7 +93,7 @@ private extension SubmitKycModel {
     
     private static func documentBase64EncodedString(for document: UserDocumentsModel.DocumentImage?) -> String? {
       guard let base64EncodedString = document?.data.base64EncodedString() else { return nil }
-      return "data:image/png;base64,\(base64EncodedString)"
+      return "data:image/jpg;base64,\(base64EncodedString)"
     }
     
     private static func dateOfBirth(for date: Date?) -> String? {
