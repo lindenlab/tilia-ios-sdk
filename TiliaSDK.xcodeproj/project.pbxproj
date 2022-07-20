@@ -162,6 +162,8 @@
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
+		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
+		D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -350,6 +352,8 @@
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
+		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
+		D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidatorTests.swift; sourceTree = "<group>"; };
 		D9D7D5DA3151F22D09C9CB57 /* Pods_TiliaSDK_TiliaSDKUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK_TiliaSDKUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -530,6 +534,8 @@
 				D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */,
 				D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */,
 				D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */,
+				D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */,
+				D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";
@@ -1201,8 +1207,10 @@
 			files = (
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
+				D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
 				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
+				D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */,
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
