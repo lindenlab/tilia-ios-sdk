@@ -221,9 +221,9 @@ struct UserInfoSectionBuilder {
                      in tableView: UITableView,
                      at sectionIndex: Int,
                      isExpanded: Bool,
-                     headerMode: UserInfoHeaderView.Mode) -> TableUpdate {
+                     isFilled: Bool) -> TableUpdate {
     let items: [Section.Item]
-    var mode = headerMode
+    let mode: UserInfoHeaderView.Mode
     if isExpanded {
       mode = .expanded
       switch section.type {
@@ -238,6 +238,7 @@ struct UserInfoSectionBuilder {
       }
       items = section.items
     } else {
+      mode = isFilled ? .passed : .normal
       items = section.items
       section.items = []
     }
@@ -319,7 +320,7 @@ struct UserInfoSectionBuilder {
                                            in: tableView,
                                            at: contactSectionIndex,
                                            isExpanded: false,
-                                           headerMode: .normal).deleteRows
+                                           isFilled: false).deleteRows
     
     if model.isUsResident, sections.firstIndex(where: { $0.type == .tax }) == nil {
       sections.insert(taxSection(), at: contactSectionIndex)

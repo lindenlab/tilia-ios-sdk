@@ -22,11 +22,7 @@ struct UserInfoLocationValidator: UserInfoValidator {
 struct UserInfoPersonalValidator: UserInfoValidator {
   
   func isFilled(for model: UserInfoModel) -> Bool {
-    let isFilled = !model.fullName.first.isEmpty
-    && !model.fullName.middle.isEmpty
-    && !model.fullName.last.isEmpty
-    && model.dateOfBirth != nil
-    return isFilled
+    return !model.fullName.isEmpty && model.dateOfBirth != nil
   }
   
 }
@@ -42,13 +38,7 @@ struct UserInfoTaxValidator: UserInfoValidator {
 struct UserInfoContactValidator: UserInfoValidator {
   
   func isFilled(for model: UserInfoModel) -> Bool {
-    let isFilled = !model.address.street.isEmpty
-    && !model.address.apartment.isEmpty
-    && !model.address.street.isEmpty
-    && !model.address.city.isEmpty
-    && !model.address.region.isEmpty
-    && !model.address.postalCode.isEmpty
-    return model.isUsResident ? isFilled && model.canUseAddressFor1099 != nil : isFilled
+    return model.isUsResident ? !model.address.isEmpty && model.canUseAddressFor1099 != nil : !model.address.isEmpty
   }
   
 }

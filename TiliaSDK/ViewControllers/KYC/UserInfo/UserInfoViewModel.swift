@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, mode: UserInfoHeaderView.Mode, nextIndex: Int?)
+typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool, nextIndex: Int?)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
 typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, wasUsResidence: Bool)
 
@@ -74,8 +74,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
                      isExpanded: Bool,
                      nextSectionIndex: Int?) {
     let isSectionFilled = validator(for: section.type).isFilled(for: userInfoModel)
-    let mode: UserInfoHeaderView.Mode = isSectionFilled ? .passed : .normal
-    expandSection.send((index, userInfoModel, isExpanded, mode, nextSectionIndex))
+    expandSection.send((index, userInfoModel, isExpanded, isSectionFilled, nextSectionIndex))
   }
   
   func setText(_ text: String?,

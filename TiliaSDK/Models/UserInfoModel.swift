@@ -9,18 +9,26 @@ import Foundation
 
 struct UserInfoModel {
   
-  struct FullName {
+  struct FullName: PossiblyEmpty {
     var first: String?
     var middle: String?
     var last: String?
+    
+    var isEmpty: Bool {
+      return first.isEmpty || middle.isEmpty || last.isEmpty
+    }
   }
   
-  struct Address {
+  struct Address: PossiblyEmpty {
     var street: String?
     var apartment: String?
     var city: String?
     var region: CountryStateModel
     var postalCode: String?
+    
+    var isEmpty: Bool {
+      return street.isEmpty || apartment.isEmpty || city.isEmpty || region.isEmpty || postalCode.isEmpty
+    }
   }
   
   struct Tax: PossiblyEmpty {

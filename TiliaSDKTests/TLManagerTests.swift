@@ -8,7 +8,7 @@
 import XCTest
 @testable import TiliaSDK
 
-class TLManagerTests: XCTestCase {
+final class TLManagerTests: XCTestCase {
   
   func testSetToken() {
     let token = UUID().uuidString
