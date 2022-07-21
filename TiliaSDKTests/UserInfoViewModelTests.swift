@@ -88,10 +88,12 @@ final class UserInfoViewModelTests: XCTestCase {
                                                  mode: .normal,
                                                  isFilled: false,
                                                  items: [item])
-    viewModel.setText(Locale.current.localizedString(forRegionCode: "US"),
+    let usaName = CountryModel.usa.name
+    viewModel.setText(usaName,
                       for: section,
                       indexPath: .init(row: 0, section: 0), fieldIndex: 0)
-    viewModel.setText(Locale.current.localizedString(forRegionCode: "CA"),
+    let canadaName = CountryModel.canada.name
+    viewModel.setText(canadaName,
                       for: section,
                       indexPath: .init(row: 0, section: 0), fieldIndex: 0)
     
@@ -102,7 +104,7 @@ final class UserInfoViewModelTests: XCTestCase {
     ]
     
     wait(for: expectations, timeout: 2)
-    XCTAssertEqual(text, Locale.current.localizedString(forRegionCode: "CA"))
+    XCTAssertEqual(text, canadaName)
     XCTAssertEqual(isUsSelected, true)
     XCTAssertEqual(isCountryChanged, true)
     XCTAssertEqual(wasUsResidence, true)

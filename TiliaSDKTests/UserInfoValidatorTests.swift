@@ -12,7 +12,7 @@ final class UserInfoValidatorTests: XCTestCase {
   
   func testSuccessUserInfoLocationValidator() {
     var model = UserInfoModel()
-    model.countryOfResidence = .init(name: "USA", code: "US")
+    model.countryOfResidence = CountryModel.usa
     let isFilled = UserInfoLocationValidator().isFilled(for: model)
     XCTAssertTrue(isFilled)
   }

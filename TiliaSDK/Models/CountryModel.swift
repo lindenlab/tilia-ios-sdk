@@ -22,6 +22,16 @@ struct CountryModel: PossiblyEmpty {
     }
   }
   
+  static let usa: CountryModel = {
+    return .init(name: Locale.current.localizedString(forRegionCode: Self.usaCode) ?? "",
+                 code: Self.usaCode)
+  }()
+  
+  static let canada: CountryModel = {
+    return .init(name: Locale.current.localizedString(forRegionCode: Self.canadaCode) ?? "",
+                 code: Self.canadaCode)
+  }()
+  
   static let countries: [CountryModel] = {
     var items: [CountryModel] = [.usa, .canada]
     for code in Locale.isoRegionCodes where !Self.disabledCodes.contains(code) {
@@ -41,16 +51,6 @@ struct CountryModel: PossiblyEmpty {
   
   private static let usaCode = "US"
   private static let canadaCode = "CA"
-  
-  private static let usa: CountryModel = {
-    return .init(name: Locale.current.localizedString(forRegionCode: Self.usaCode) ?? "",
-                 code: Self.usaCode)
-  }()
-  
-  private static let canada: CountryModel = {
-    return .init(name: Locale.current.localizedString(forRegionCode: Self.canadaCode) ?? "",
-                 code: Self.canadaCode)
-  }()
   
   private static let disabledCodes: Set<String> = [Self.usaCode, Self.canadaCode]
   
