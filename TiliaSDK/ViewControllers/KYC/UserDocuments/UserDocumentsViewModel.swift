@@ -148,8 +148,13 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         }
         self.setDocumentImage.send((index, resizedImage))
       case .additionalDocuments:
-        self.userDocumentsModel.additionalDocuments.append(documentImage)
-        self.addAdditionalDocuments.send((index, [resizedImage]))
+        let initialDocumentsSize = self.getDocumentsSize(self.userDocumentsModel.additionalDocuments)
+        if initialDocumentsSize + compressedImage.count > C.maxAdditionalDocumentsSize {
+          self.chooseFileDidFail.send(L.failedToSelectReachedMaxSize)
+        } else {
+          self.userDocumentsModel.additionalDocuments.append(documentImage)
+          self.addAdditionalDocuments.send((index, [resizedImage]))
+        }
       default:
         break
       }
