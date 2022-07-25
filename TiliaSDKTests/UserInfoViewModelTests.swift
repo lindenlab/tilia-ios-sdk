@@ -52,9 +52,6 @@ final class UserInfoViewModelTests: XCTestCase {
   
   func testSuccessSetText() {
     var text: String?
-    var isUsSelected: Bool?
-    var isCountryChanged: Bool?
-    var wasUsResidence: Bool?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
@@ -67,12 +64,30 @@ final class UserInfoViewModelTests: XCTestCase {
       setSectionTextExpectation.fulfill()
     }.store(in: &subscriptions)
     
-    let coutryOfResidenceDidChangeExpectation = XCTestExpectation(description: "testSuccessSetText_CoutryOfResidenceDidChange")
-    viewModel.coutryOfResidenceDidChange.sink {
-      isCountryChanged = !$0.model.isUsResident
-      wasUsResidence = $0.wasUsResidence
-      coutryOfResidenceDidChangeExpectation.fulfill()
-    }.store(in: &subscriptions)
+    let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
+                                                                       fields: [.init(placeholder: nil, text: nil)])),
+                                                   title: nil,
+                                                   description: nil)
+    let section = UserInfoSectionBuilder.Section(type: .location,
+                                                 mode: .normal,
+                                                 isFilled: false,
+                                                 items: [item])
+    let usaName = CountryModel.usa.name
+    viewModel.setText(usaName,
+                      for: section,
+                      indexPath: .init(row: 0, section: 0), fieldIndex: 0)
+    
+    wait(for: [setSectionTextExpectation], timeout: 2)
+    XCTAssertEqual(text, usaName)
+  }
+  
+  func testSuccessSelectCountryOfResidence() {
+    var isUsSelected: Bool?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = UserInfoViewModel(manager: networkManager,
+                                      onComplete: nil,
+                                      onError: nil)
     
     let coutryOfResidenceDidSelectExpectation = XCTestExpectation(description: "testSuccessSetText_CoutryOfResidenceDidSelect")
     viewModel.coutryOfResidenceDidSelect.sink {
@@ -92,20 +107,45 @@ final class UserInfoViewModelTests: XCTestCase {
     viewModel.setText(usaName,
                       for: section,
                       indexPath: .init(row: 0, section: 0), fieldIndex: 0)
+    
+    wait(for: [coutryOfResidenceDidSelectExpectation], timeout: 2)
+    XCTAssertEqual(isUsSelected, true)
+  }
+  
+  func testSuccessChangeCountryOfResidence() {
+    var isCountryChanged: Bool?
+    var wasUsResidence: Bool?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = UserInfoViewModel(manager: networkManager,
+                                      onComplete: nil,
+                                      onError: nil)
+    
+    let coutryOfResidenceDidChangeExpectation = XCTestExpectation(description: "testSuccessSetText_CoutryOfResidenceDidChange")
+    viewModel.coutryOfResidenceDidChange.sink {
+      isCountryChanged = !$0.model.isUsResident
+      wasUsResidence = $0.wasUsResidence
+      coutryOfResidenceDidChangeExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
+                                                                       fields: [.init(placeholder: nil, text: nil)])),
+                                                   title: nil,
+                                                   description: nil)
+    let section = UserInfoSectionBuilder.Section(type: .location,
+                                                 mode: .normal,
+                                                 isFilled: false,
+                                                 items: [item])
+    let usaName = CountryModel.usa.name
+    viewModel.setText(usaName,
+                      for: section,
+                      indexPath: .init(row: 0, section: 0), fieldIndex: 0)
     let canadaName = CountryModel.canada.name
     viewModel.setText(canadaName,
                       for: section,
                       indexPath: .init(row: 0, section: 0), fieldIndex: 0)
     
-    let expectations = [
-      setSectionTextExpectation,
-      coutryOfResidenceDidChangeExpectation,
-      coutryOfResidenceDidSelectExpectation
-    ]
-    
-    wait(for: expectations, timeout: 2)
-    XCTAssertEqual(text, canadaName)
-    XCTAssertEqual(isUsSelected, true)
+    wait(for: [coutryOfResidenceDidChangeExpectation], timeout: 2)
     XCTAssertEqual(isCountryChanged, true)
     XCTAssertEqual(wasUsResidence, true)
   }
