@@ -41,6 +41,13 @@ struct UserInfoSectionBuilder {
         default: return .disabled
         }
       }
+      
+      var accessibilityIdentifier: String? {
+        switch self {
+        case .location: return "locationHeader"
+        default: return nil
+        }
+      }
     }
     
     struct Item {
@@ -63,14 +70,18 @@ struct UserInfoSectionBuilder {
         struct Field {
           let placeholder: String?
           var text: String?
+          let accessibilityIdentifier: String?
           
           var fieldContent: TextFieldsCell.FieldContent {
-            return (placeholder, text)
+            return (placeholder, text, accessibilityIdentifier)
           }
           
-          init(placeholder: String? = nil, text: String? = nil) {
+          init(placeholder: String? = nil,
+               text: String? = nil,
+               accessibilityIdentifier: String?) {
             self.placeholder = placeholder
             self.text = text
+            self.accessibilityIdentifier = accessibilityIdentifier
           }
         }
         
@@ -178,6 +189,7 @@ struct UserInfoSectionBuilder {
     view.configure(title: section.type.title,
                    delegate: delegate)
     view.configure(mode: section.mode, animated: false)
+    view.accessibilityIdentifier = section.type.accessibilityIdentifier
     return view
   }
   
@@ -359,7 +371,8 @@ private extension UserInfoSectionBuilder {
     let selectedIndex = countries.firstIndex { $0 == model.countryOfResidence?.name }
     let countryOfResidenceField = Section.Item.Mode.Fields(type: .countryOfResidance,
                                                            fields: [.init(placeholder: L.selectCountry,
-                                                                          text: model.countryOfResidence?.name)],
+                                                                          text: model.countryOfResidence?.name,
+                                                                          accessibilityIdentifier: "countryOfResidenceTextField")],
                                                            inputMode: .picker(items: countries,
                                                                               selectedIndex: selectedIndex))
     return [
@@ -372,15 +385,19 @@ private extension UserInfoSectionBuilder {
   func itemsForPersonalSection(with model: UserInfoModel) -> [Section.Item] {
     let fullNameField = Section.Item.Mode.Fields(type: .fullName,
                                                  fields: [.init(placeholder: L.firstName,
-                                                                text: model.fullName.first),
+                                                                text: model.fullName.first,
+                                                                accessibilityIdentifier: "firstNameTextField"),
                                                           .init(placeholder: L.middleName,
-                                                                text: model.fullName.middle),
+                                                                text: model.fullName.middle,
+                                                                accessibilityIdentifier: "middleNameTextField"),
                                                           .init(placeholder: L.lastName,
-                                                                text: model.fullName.last)])
+                                                                text: model.fullName.last,
+                                                                accessibilityIdentifier: "lastNameTextField")])
     
     let dateOfBirthField = Section.Item.Mode.Fields(type: .dateOfBirth,
                                                     fields: [.init(placeholder: L.selectDateOfBirth,
-                                                                   text: model.dateOfBirthString)],
+                                                                   text: model.dateOfBirthString,
+                                                                   accessibilityIdentifier: "dateOfBirthTextField")],
                                                     inputMode: .datePicker(selectedDate: model.dateOfBirth))
     
     return [
@@ -396,12 +413,14 @@ private extension UserInfoSectionBuilder {
     let ssnFieldMask = "xxx-xx-xxxx"
     let ssnField = Section.Item.Mode.Fields(type: .ssn,
                                             fields: [.init(placeholder: ssnFieldMask,
-                                                           text: model.tax?.ssn)],
+                                                           text: model.tax?.ssn,
+                                                           accessibilityIdentifier: "ssnTextField")],
                                             mask: ssnFieldMask)
     
     let signatureField = Section.Item.Mode.Fields(type: .signature,
                                                   fields: [.init(placeholder: L.yourFullName,
-                                                                 text: model.tax?.signature)])
+                                                                 text: model.tax?.signature,
+                                                                 accessibilityIdentifier: "signatureTextField")])
     
     return [
       Section.Item(mode: .fields(ssnField),
@@ -419,14 +438,18 @@ private extension UserInfoSectionBuilder {
   func itemsForContactSection(with model: UserInfoModel) -> [Section.Item] {
     let addressField = Section.Item.Mode.Fields(type: .address,
                                                 fields: [.init(placeholder:L.streetAddress,
-                                                               text: model.address.street),
+                                                               text: model.address.street,
+                                                               accessibilityIdentifier: "streetTextField"),
                                                          .init(placeholder:L.apartment,
-                                                               text: model.address.apartment)])
+                                                               text: model.address.apartment,
+                                                               accessibilityIdentifier: "apartmentTextField")])
     
     let cityField = Section.Item.Mode.Fields(type: .city,
-                                             fields: [.init(text: model.address.city)])
+                                             fields: [.init(text: model.address.city,
+                                                            accessibilityIdentifier: "cityTextField")])
     
     let regionField: Section.Item.Mode.Fields
+    let regionFieldAccessibilityIdentifier = "stateTextField"
     let hasStates: Bool
     if let states = model.countryOfResidence?.states {
       let regions = states.compactMap { $0.name }
@@ -434,18 +457,21 @@ private extension UserInfoSectionBuilder {
       hasStates = true
       regionField = Section.Item.Mode.Fields(type: .state,
                                              fields: [.init(placeholder: L.selectState,
-                                                            text: model.address.region.name)],
+                                                            text: model.address.region.name,
+                                                            accessibilityIdentifier: regionFieldAccessibilityIdentifier)],
                                              inputMode: .picker(items: regions,
                                                                 selectedIndex: selectedRegionIndex))
       
     } else {
       hasStates = false
       regionField = Section.Item.Mode.Fields(type: .state,
-                                             fields: [.init(text: model.address.region.name)])
+                                             fields: [.init(text: model.address.region.name,
+                                                            accessibilityIdentifier: regionFieldAccessibilityIdentifier)])
     }
     
     let postalCodeField = Section.Item.Mode.Fields(type: .postalCode,
-                                                   fields: [.init(text: model.address.postalCode)])
+                                                   fields: [.init(text: model.address.postalCode,
+                                                                  accessibilityIdentifier: "postalCodeTextField")])
     
     var items: [Section.Item] = [
       Section.Item(mode: .fields(addressField),
@@ -467,7 +493,8 @@ private extension UserInfoSectionBuilder {
       
       let canUseAddressFor1099Field = Section.Item.Mode.Fields(type: .useAddressFor1099,
                                                                fields: [.init(placeholder: L.selectAnswer,
-                                                                              text: model.canUseAddressFor1099?.description)],
+                                                                              text: model.canUseAddressFor1099?.description,
+                                                                              accessibilityIdentifier: "useAddressFor1099TextField")],
                                                                inputMode: .picker(items: canUseAddressFor1099Items.map { $0.description },
                                                                                   selectedIndex: canUseAddressFor1099SelectedIndex))
       items.append(Section.Item(mode: .fields(canUseAddressFor1099Field),

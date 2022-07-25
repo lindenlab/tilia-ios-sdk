@@ -30,6 +30,14 @@ struct UserDocumentsSectionBuilder {
           case document
           case documentCountry
           case isAddressOnDocument
+          
+          var accessibilityIdentifier: String {
+            switch self {
+            case .document: return "documentTextField"
+            case .documentCountry: return "documentCountryTextField"
+            case .isAddressOnDocument: return "isAddressOnDocumentTextField"
+            }
+          }
         }
         
         struct Field {
@@ -40,7 +48,7 @@ struct UserDocumentsSectionBuilder {
           var seletedItemIndex: Int?
           
           var fieldContent: TextFieldsCell.FieldContent {
-            return (placeholder, text)
+            return (placeholder, text, type.accessibilityIdentifier)
           }
         }
         

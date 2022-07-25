@@ -65,7 +65,7 @@ final class UserInfoViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
-                                                                       fields: [.init(placeholder: nil, text: nil)])),
+                                                                       fields: [.init(accessibilityIdentifier: nil)])),
                                                    title: nil,
                                                    description: nil)
     let section = UserInfoSectionBuilder.Section(type: .location,
@@ -96,7 +96,7 @@ final class UserInfoViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
-                                                                       fields: [.init(placeholder: nil, text: nil)])),
+                                                                       fields: [.init(accessibilityIdentifier: nil)])),
                                                    title: nil,
                                                    description: nil)
     let section = UserInfoSectionBuilder.Section(type: .location,
@@ -129,7 +129,7 @@ final class UserInfoViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
-                                                                       fields: [.init(placeholder: nil, text: nil)])),
+                                                                       fields: [.init(accessibilityIdentifier: nil)])),
                                                    title: nil,
                                                    description: nil)
     let section = UserInfoSectionBuilder.Section(type: .location,

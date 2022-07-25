@@ -21,6 +21,7 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
                            for: .normal)
     primaryButton.setImage(.arrowRightIcon?.withRenderingMode(.alwaysTemplate),
                            for: .normal)
+    primaryButton.accessibilityIdentifier = "continueButton"
     
     let nonPrimaryButton = NonPrimaryButton()
     nonPrimaryButton.setTitle(L.cancel,

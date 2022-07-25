@@ -13,7 +13,7 @@ protocol TextFieldsCellDelegate: AnyObject {
 
 class TextFieldsCell: TitleBaseCell {
   
-  typealias FieldContent = (placeholder: String?, text: String?)
+  typealias FieldContent = (placeholder: String?, text: String?, accessibilityIdentifier: String?)
   
   var textFields: [RoundedTextField] { return [] } // Need to override in child class, default is empty
   
@@ -43,6 +43,7 @@ class TextFieldsCell: TitleBaseCell {
     zip(fieldsContent, textFields).forEach { content, textField in
       textField.placeholder = content.placeholder
       textField.text = content.text
+      textField.accessibilityIdentifier = content.accessibilityIdentifier
     }
     descriptionLabel.text = description
     descriptionLabel.isHidden = description == nil

@@ -24,6 +24,7 @@ final class UserInfoNextButtonCell: UITableViewCell {
     button.setBackgroundColor(.backgroundColor, for: .disabled)
     button.setTitleColor(.borderColor, for: .disabled)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.accessibilityIdentifier = "nextButton"
     return button
   }()
   
