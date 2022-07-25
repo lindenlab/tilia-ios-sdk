@@ -45,6 +45,7 @@
 		D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */; };
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
 		D1408F58288E994400CABA3E /* TestExample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D1408F57288E994400CABA3E /* TestExample.pdf */; };
+		D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1408F59288EB26600CABA3E /* KycFlowUITests.swift */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
 		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
@@ -235,6 +236,7 @@
 		D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionBuilder.swift; sourceTree = "<group>"; };
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
 		D1408F57288E994400CABA3E /* TestExample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TestExample.pdf; sourceTree = "<group>"; };
+		D1408F59288EB26600CABA3E /* KycFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowUITests.swift; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
 		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
@@ -819,6 +821,7 @@
 			children = (
 				D190A3EC2806052200A25DBD /* TosFlowUITests.swift */,
 				D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */,
+				D1408F59288EB26600CABA3E /* KycFlowUITests.swift */,
 			);
 			path = TiliaSDKUITests;
 			sourceTree = "<group>";
@@ -1235,6 +1238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */,
+				D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */,
 				D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

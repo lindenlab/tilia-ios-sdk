@@ -8,7 +8,7 @@
 import XCTest
 @testable import TiliaSDK
 
-class TosFlowUITests: XCTestCase {
+final class TosFlowUITests: XCTestCase {
   
   override func setUpWithError() throws {
     continueAfterFailure = false
