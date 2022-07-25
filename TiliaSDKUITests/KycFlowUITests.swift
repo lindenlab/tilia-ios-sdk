@@ -13,4 +13,17 @@ final class KycFlowUITests: XCTestCase {
     continueAfterFailure = false
   }
 
+  func testKyc() {
+    let app = XCUIApplication()
+    app.launch()
+        
+    let useMocksSwitch = app.switches["useMocksSwitch"]
+    XCTAssert(useMocksSwitch.exists)
+    useMocksSwitch.tap()
+    
+    let cell = app.tables.staticTexts["Checkout flow"]
+    XCTAssert(cell.exists)
+    cell.tap()
+  }
+  
 }

@@ -175,6 +175,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
       errorExpectation.fulfill()
     }.store(in: &subscriptions)
     
+    TLManager.shared.setToken("")
     viewModel.upload()
     
     let expectations = [
