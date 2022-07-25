@@ -28,7 +28,7 @@ final class UserInfoViewModelTests: XCTestCase {
                                       onComplete: nil,
                                       onError: nil)
     
-    let expandExpectation = XCTestExpectation(description: "testSuccessUpdateSection_Expand")
+    let expandExpectation = XCTestExpectation(description: "testSuccessUpdateSection")
     viewModel.expandSection.sink {
       sectionIndex = $0.index
       isSectionExpanded = $0.isExpanded
@@ -58,7 +58,7 @@ final class UserInfoViewModelTests: XCTestCase {
                                       onComplete: nil,
                                       onError: nil)
     
-    let setSectionTextExpectation = XCTestExpectation(description: "testSuccessSetText_SetSectionText")
+    let setSectionTextExpectation = XCTestExpectation(description: "testSuccessSetText")
     viewModel.setSectionText.sink {
       text = $0.text
       setSectionTextExpectation.fulfill()
@@ -89,7 +89,7 @@ final class UserInfoViewModelTests: XCTestCase {
                                       onComplete: nil,
                                       onError: nil)
     
-    let coutryOfResidenceDidSelectExpectation = XCTestExpectation(description: "testSuccessSetText_CoutryOfResidenceDidSelect")
+    let coutryOfResidenceDidSelectExpectation = XCTestExpectation(description: "testSuccessSelectCountryOfResidence")
     viewModel.coutryOfResidenceDidSelect.sink {
       isUsSelected = $0.isUsResident
       coutryOfResidenceDidSelectExpectation.fulfill()
@@ -121,7 +121,7 @@ final class UserInfoViewModelTests: XCTestCase {
                                       onComplete: nil,
                                       onError: nil)
     
-    let coutryOfResidenceDidChangeExpectation = XCTestExpectation(description: "testSuccessSetText_CoutryOfResidenceDidChange")
+    let coutryOfResidenceDidChangeExpectation = XCTestExpectation(description: "testSuccessChangeCountryOfResidence")
     viewModel.coutryOfResidenceDidChange.sink {
       isCountryChanged = !$0.model.isUsResident
       wasUsResidence = $0.wasUsResidence
@@ -153,7 +153,7 @@ final class UserInfoViewModelTests: XCTestCase {
   func testSuccessComplete() {
     var isUploaded: Bool?
     
-    let completeExpectation = XCTestExpectation(description: "testSuccessComplete_Complete")
+    let completeExpectation = XCTestExpectation(description: "testSuccessComplete")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
                                       onComplete: { isUploaded = $0; completeExpectation.fulfill() },

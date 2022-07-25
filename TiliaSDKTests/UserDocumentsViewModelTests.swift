@@ -18,6 +18,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
   }
   
   func testSuccessSetText() {
+    var text: String?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
@@ -25,28 +26,167 @@ final class UserDocumentsViewModelTests: XCTestCase {
                                            userInfoModel: userInfoModel,
                                            onComplete: { _ in },
                                            onError: nil)
-    /*
-    let setSectionTextExpectation = XCTestExpectation(description: "testSuccessSetText_SetSectionText")
-    viewModel.setSectionText.sink {
+    
+    let setTextExpectation = XCTestExpectation(description: "testSuccessSetText")
+    viewModel.setText.sink {
       text = $0.text
-      setSectionTextExpectation.fulfill()
+      setTextExpectation.fulfill()
     }.store(in: &subscriptions)
     
-    let coutryOfResidenceDidChangeExpectation = XCTestExpectation(description: "testSuccessSetText_CoutryOfResidenceDidChange")
-    viewModel.coutryOfResidenceDidChange.sink {
-      isCountryChanged = !$0.model.isUsResident
-      wasUsResidence = $0.wasUsResidence
-      coutryOfResidenceDidChangeExpectation.fulfill()
+    let document = UserDocumentsModel.Document.passport
+    viewModel.setText(document.description,
+                      for: .init(title: nil,
+                                 mode: .field(.init(type: .document,
+                                                    placeholder: nil,
+                                                    items: []))),
+                      at: 0)
+    
+    wait(for: [setTextExpectation], timeout: 2)
+    XCTAssertEqual(text, document.description)
+  }
+  
+  func testSuccessSetImage() {
+    var image: UIImage?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let viewModel = UserDocumentsViewModel(manager: networkManager,
+                                           userInfoModel: userInfoModel,
+                                           onComplete: { _ in },
+                                           onError: nil)
+    
+    let setImageExpectation = XCTestExpectation(description: "testSuccessSetImage")
+    viewModel.setDocumentImage.sink {
+      image = $0.image
+      setImageExpectation.fulfill()
     }.store(in: &subscriptions)
     
-    let coutryOfResidenceDidSelectExpectation = XCTestExpectation(description: "testSuccessSetText_CoutryOfResidenceDidSelect")
-    viewModel.coutryOfResidenceDidSelect.sink {
-      isUsSelected = $0.isUsResident
-      coutryOfResidenceDidSelectExpectation.fulfill()
+    viewModel.setImage(UIImage.logoIcon,
+                       for: .init(title: nil,
+                                  mode: .photo(.init(type: .frontSide,
+                                                     placeholderImage: nil))),
+                       at: 0,
+                       with: nil)
+    
+    wait(for: [setImageExpectation], timeout: 2)
+    XCTAssertNotNil(image)
+  }
+  
+  func testSuccessSetFiles() {
+    var image: UIImage?
+    var error: String?
+    var deleteIndex: Int?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let viewModel = UserDocumentsViewModel(manager: networkManager,
+                                           userInfoModel: userInfoModel,
+                                           onComplete: { _ in },
+                                           onError: nil)
+    
+    let setFilesExpectation = XCTestExpectation(description: "testSuccessSetFiles_SetFiles")
+    viewModel.addAdditionalDocuments.sink { [weak viewModel] in
+      image = $0.documentImages.first
+      viewModel?.deleteDocument(forItemIndex: $0.index, atDocumentIndex: 0)
+      setFilesExpectation.fulfill()
     }.store(in: &subscriptions)
-    */
     
+    let chooseFileFailedExpectation = XCTestExpectation(description: "testSuccessSetFiles_ChooseFileFailed")
+    viewModel.chooseFileDidFail.sink {
+      error = $0
+      chooseFileFailedExpectation.fulfill()
+    }.store(in: &subscriptions)
     
+    let deleteDocumentExpectation = XCTestExpectation(description: "testSuccessSetFiles_DeleteDocument")
+    viewModel.deleteAdditionalDocument.sink {
+      deleteIndex = $0.documentIndex
+      deleteDocumentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let url = Bundle(for: type(of: self)).url(forResource: "TestExample", withExtension: "pdf")!
+    let urls = Array(repeating: url, count: 40)
+    viewModel.setFiles(with: urls, at: 0)
+    
+    let expectations = [
+      setFilesExpectation,
+      chooseFileFailedExpectation,
+      deleteDocumentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(image)
+    XCTAssertEqual(error, L.failedToSelectReachedMaxSize)
+    XCTAssertEqual(deleteIndex, 0)
+  }
+  
+  func testSuccessUpload() {
+    var uploading: Bool?
+    var isUploadedCallback: Bool?
+    
+    let isUploadedCallbackExpectation = XCTestExpectation(description: "testSuccessUpload_IsUploadedCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let viewModel = UserDocumentsViewModel(manager: networkManager,
+                                           userInfoModel: userInfoModel,
+                                           onComplete: { isUploadedCallback = $0; isUploadedCallbackExpectation.fulfill() },
+                                           onError: nil)
+    
+    let uploadingExpectation = XCTestExpectation(description: "testSuccessUpload_Uploading")
+    viewModel.uploading.sink {
+      uploading = $0
+      uploadingExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    viewModel.successfulUploading.sink { [weak viewModel] in
+      viewModel?.complete()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    viewModel.upload()
+    
+    let expectations = [
+      isUploadedCallbackExpectation,
+      uploadingExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(uploading)
+    XCTAssertEqual(isUploadedCallback, true)
+  }
+  
+  func testErrorUpload() {
+    var error: Error?
+    var errorCallback: Error?
+    var isUploadedCallback: Bool?
+    
+    let errorCallbackExpectation = XCTestExpectation(description: "testErrorUpload_ErrorCallback")
+    let isUploadedCallbackExpectation = XCTestExpectation(description: "testErrorUpload_IsUploadedCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let viewModel = UserDocumentsViewModel(manager: networkManager,
+                                           userInfoModel: userInfoModel,
+                                           onComplete: { isUploadedCallback = $0; isUploadedCallbackExpectation.fulfill() },
+                                           onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
+    
+    let errorExpectation = XCTestExpectation(description: "testErrorUpload_Error")
+    viewModel.error.sink { [weak viewModel] in
+      error = $0
+      viewModel?.complete()
+      errorExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    viewModel.upload()
+    
+    let expectations = [
+      errorCallbackExpectation,
+      isUploadedCallbackExpectation,
+      errorExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(error)
+    XCTAssertNotNil(errorCallback)
+    XCTAssertEqual(isUploadedCallback, false)
   }
   
 }

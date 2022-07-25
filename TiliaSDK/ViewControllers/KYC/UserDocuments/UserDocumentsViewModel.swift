@@ -193,7 +193,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         self.successfulUploading.send()
         self.resumeTimer(kycId: model.kycId)
       case .failure(let error):
-        self.error.send(error)
+        self.didFail(with: error)
       }
     }
   }
@@ -216,12 +216,6 @@ private extension UserDocumentsViewModel {
     guard field != value else { return false }
     field = value
     return true
-  }
-  
-  func deleteTempFile(at url: URL) {
-    processQueue.async {
-      try? FileManager.default.removeItem(at: url)
-    }
   }
   
   func image(from document: PDFDocument) -> UIImage? {
@@ -303,7 +297,7 @@ private extension UserDocumentsViewModel {
           self.waiting.send()
         }
       case .failure(let error):
-        self.error.send(error)
+        self.didFail(with: error)
       }
     }
   }
@@ -316,6 +310,17 @@ private extension UserDocumentsViewModel {
   
   func getFileSize(at url: URL) -> Int {
     return (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+  }
+  
+  func deleteTempFile(at url: URL) {
+    processQueue.async {
+      try? FileManager.default.removeItem(at: url)
+    }
+  }
+  
+  func didFail(with error: Error) {
+    self.error.send(error)
+    onError?(error)
   }
   
 }
