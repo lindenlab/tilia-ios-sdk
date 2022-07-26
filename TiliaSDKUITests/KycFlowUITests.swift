@@ -117,6 +117,8 @@ final class KycFlowUITests: XCTestCase {
     useAddressFor1099TextField.tap()
     useAddressFor1099TextField.typeText("\n")
     
+    scrollUp(app: app, dy: -100)
+    
     let continueButton = app.tables.buttons["continueButton"]
     XCTAssert(continueButton.exists)
     continueButton.tap()
@@ -126,18 +128,20 @@ final class KycFlowUITests: XCTestCase {
     documentTextField.tap()
     documentTextField.typeText("\n")
     
-    let chooseButton = app.tables.cells.buttons["chooseButton"]
-    XCTAssert(chooseButton.exists)
-    chooseButton.tap()
+    let frontSideChooseButton = app.tables.cells.buttons["frontSideChooseButton"]
+    XCTAssert(frontSideChooseButton.exists)
+    frontSideChooseButton.tap()
     
-    let photoImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
-    XCTAssert(photoImage.waitForExistence(timeout: 5))
-    photoImage.tap()
+    let frontSideDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 5))
+    frontSideDocumentImage.tap()
     
     let isAddressOnDocumentTextField = app.tables.cells.textFields["isAddressOnDocumentTextField"]
     XCTAssert(isAddressOnDocumentTextField.exists)
     isAddressOnDocumentTextField.tap()
     isAddressOnDocumentTextField.typeText("\n")
+    
+    scrollUp(app: app, dy: -100)
     
     let uploadButton = app.tables.buttons["uploadButton"]
     XCTAssert(uploadButton.exists)
@@ -150,9 +154,6 @@ final class KycFlowUITests: XCTestCase {
     let backButton = app.navigationBars["KYC flow"].buttons["Demo App"]
     XCTAssert(backButton.exists)
     backButton.tap()
-//    app/*@START_MENU_TOKEN@*/.scrollViews.otherElements.images["Photo, August 09, 2012, 12:55 AM"]/*[[".otherElements[\"Photos\"].scrollViews.otherElements",".otherElements[\"Photo, March 30, 2018, 10:14 PM, Photo, August 09, 2012, 12:55 AM, Photo, August 09, 2012, 12:29 AM, Photo, August 08, 2012, 9:52 PM, Photo, October 10, 2009, 12:09 AM, Photo, March 13, 2011, 2:17 AM\"].images[\"Photo, August 09, 2012, 12:55 AM\"]",".images[\"Photo, August 09, 2012, 12:55 AM\"]",".scrollViews.otherElements"],[[[-1,3,1],[-1,0,1]],[[-1,2],[-1,1]]],[0,0]]@END_MENU_TOKEN@*/.tap()
-//    app/*@START_MENU_TOKEN@*/.scrollViews.otherElements.images["Photo, August 08, 2012, 9:52 PM"]/*[[".otherElements[\"Photos\"].scrollViews.otherElements",".otherElements[\"Photo, March 30, 2018, 10:14 PM, Photo, August 09, 2012, 12:55 AM, Photo, August 09, 2012, 12:29 AM, Photo, August 08, 2012, 9:52 PM, Photo, October 10, 2009, 12:09 AM, Photo, March 13, 2011, 2:17 AM\"].images[\"Photo, August 08, 2012, 9:52 PM\"]",".images[\"Photo, August 08, 2012, 9:52 PM\"]",".scrollViews.otherElements"],[[[-1,3,1],[-1,0,1]],[[-1,2],[-1,1]]],[0,0]]@END_MENU_TOKEN@*/.tap()
-    
   }
   
   func testKycForNonUsResident() {
@@ -186,9 +187,9 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(countryOfResidenceTextField.exists)
     countryOfResidenceTextField.tap()
     
-    let countryOfResidancePicker = app.pickerWheels.firstMatch
-    XCTAssert(countryOfResidancePicker.exists)
-    countryOfResidancePicker.adjust(toPickerWheelValue: "Canada")
+    let countryOfResidencePicker = app.pickerWheels.firstMatch
+    XCTAssert(countryOfResidencePicker.exists)
+    countryOfResidencePicker.adjust(toPickerWheelValue: "Canada")
     countryOfResidenceTextField.typeText("\n")
     
     let locationNextButton = app.tables.cells.buttons["nextButton"]
@@ -244,14 +245,75 @@ final class KycFlowUITests: XCTestCase {
     postalCodeTextField.tap()
     postalCodeTextField.typeText("12324\n")
     
-//    let startCoordinate = app.tables.element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-//    let endCoordinate = startCoordinate.withOffset(CGVector(dx: 0.0, dy: -200))
-//    startCoordinate.press(forDuration: 0.1, thenDragTo: endCoordinate)
+    scrollUp(app: app, dy: -100)
     
     let continueButton = app.tables.buttons["continueButton"]
-    XCTAssert(continueButton.waitForExistence(timeout: 3))
+    XCTAssert(continueButton.exists)
     continueButton.tap()
     
+    let documentTextField = app.tables.cells.textFields["documentTextField"]
+    XCTAssert(documentTextField.exists)
+    documentTextField.tap()
+    
+    let documentPicker = app.pickerWheels.firstMatch
+    XCTAssert(documentPicker.exists)
+    documentPicker.adjust(toPickerWheelValue: "Driver's license")
+    documentTextField.typeText("\n")
+    
+    let frontSideChooseButton = app.tables.cells.buttons["frontSideChooseButton"]
+    XCTAssert(frontSideChooseButton.exists)
+    frontSideChooseButton.tap()
+    
+    let frontSideDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 5))
+    frontSideDocumentImage.tap()
+    
+    let backSideChooseButton = app.tables.cells.buttons["backSideChooseButton"]
+    XCTAssert(backSideChooseButton.exists)
+    backSideChooseButton.tap()
+    
+    let backSideDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    XCTAssert(backSideDocumentImage.waitForExistence(timeout: 5))
+    backSideDocumentImage.tap()
+    
+    scrollUp(app: app, dy: -200)
+    
+    let addDocumentButton = app.tables.cells.buttons["addDocumentButton"]
+    XCTAssert(addDocumentButton.exists)
+    addDocumentButton.tap()
+    
+    let selectDocumentFromGallery = app.sheets.buttons["Select from Gallery"]
+    XCTAssert(selectDocumentFromGallery.exists)
+    selectDocumentFromGallery.tap()
+    
+    let additionalDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    XCTAssert(additionalDocumentImage.waitForExistence(timeout: 5))
+    additionalDocumentImage.tap()
+    
+    scrollUp(app: app, dy: -100)
+    
+    let uploadButton = app.tables.buttons["uploadButton"]
+    XCTAssert(uploadButton.exists)
+    uploadButton.tap()
+    
+    let doneButton = app.tables.buttons["doneButton"]
+    XCTAssert(doneButton.waitForExistence(timeout: 8))
+    doneButton.tap()
+    
+    let backButton = app.navigationBars["KYC flow"].buttons["Demo App"]
+    XCTAssert(backButton.exists)
+    backButton.tap()
+  }
+  
+}
+
+private extension KycFlowUITests {
+  
+  func scrollUp(app: XCUIApplication, dy: CGFloat) {
+    let visibleCells = app.tables.cells
+    let startCoordinate = visibleCells.element(boundBy: visibleCells.count - 1).coordinate(withNormalizedOffset: .zero)
+    let endCoordinate = startCoordinate.withOffset(CGVector(dx: 0.0, dy: dy))
+    startCoordinate.press(forDuration: 0.1, thenDragTo: endCoordinate)
   }
   
 }

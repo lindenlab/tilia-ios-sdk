@@ -36,7 +36,6 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     button.setImage(.documentIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.setTitle(L.choose, for: .normal)
-    button.accessibilityIdentifier = "chooseButton"
     return button
   }()
   
@@ -49,8 +48,10 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(delegate: UserDocumentsPhotoCellDelegate?) {
+  func configure(delegate: UserDocumentsPhotoCellDelegate?,
+                 nonPrimaryButtonAccessibilityIdentifier: String?) {
     self.delegate = delegate
+    nonPrimaryButton.accessibilityIdentifier = nonPrimaryButtonAccessibilityIdentifier
   }
   
   func configure(image: UIImage?, placeholderView: SVGImage?) {

@@ -55,6 +55,13 @@ struct UserDocumentsSectionBuilder {
         enum PhotoType {
           case frontSide
           case backSide
+          
+          var accessibilityIdentifier: String {
+            switch self {
+            case .frontSide: return "frontSideChooseButton"
+            case .backSide: return "backSideChooseButton"
+            }
+          }
         }
         
         struct Photo {
@@ -140,7 +147,8 @@ struct UserDocumentsSectionBuilder {
     case let .photo(model):
       let cell = tableView.dequeue(UserDocumentsPhotoCell.self, for: indexPath)
       cell.configure(title: item.title, font: .systemFont(ofSize: 14))
-      cell.configure(delegate: delegate)
+      cell.configure(delegate: delegate,
+                     nonPrimaryButtonAccessibilityIdentifier: model.type.accessibilityIdentifier)
       cell.configure(image: model.image, placeholderView: model.placeholderImage)
       cell.isUserInteractionEnabled = !isUploading
       return cell

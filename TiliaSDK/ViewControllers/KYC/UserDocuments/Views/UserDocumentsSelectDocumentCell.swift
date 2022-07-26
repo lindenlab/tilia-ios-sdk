@@ -40,6 +40,7 @@ final class UserDocumentsSelectDocumentCell: UITableViewCell {
     button.setTitle(L.addDocument, for: .normal)
     button.setImage(.addIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
+    button.accessibilityIdentifier = "addDocumentButton"
     return button
   }()
   
