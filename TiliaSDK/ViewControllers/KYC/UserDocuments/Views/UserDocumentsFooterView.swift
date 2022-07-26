@@ -16,6 +16,7 @@ final class UserDocumentsFooterView: UITableViewHeaderFooterView {
                            for: .normal)
     primaryButton.setImage(.uploadIcon?.withRenderingMode(.alwaysTemplate),
                            for: .normal)
+    primaryButton.accessibilityIdentifier = "uploadButton"
     
     let nonPrimaryButton = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
     
@@ -28,12 +29,14 @@ final class UserDocumentsFooterView: UITableViewHeaderFooterView {
   func configure(isPrimaryButtonHidden: Bool,
                  nonPrimaryButtonTitle: String,
                  nonPrimaryButtonImage: UIImage?,
+                 nonPrimaryButtonAccessibilityIdentifier: String?,
                  delegate: ButtonsViewDelegate?) {
     buttonsView.primaryButton.isHidden = isPrimaryButtonHidden
     buttonsView.nonPrimaryButton.setTitle(nonPrimaryButtonTitle,
                                           for: .normal)
     buttonsView.nonPrimaryButton.setImage(nonPrimaryButtonImage,
                                           for: .normal)
+    buttonsView.nonPrimaryButton.accessibilityIdentifier = nonPrimaryButtonAccessibilityIdentifier
     buttonsView.delegate = delegate
   }
   

@@ -185,6 +185,7 @@ struct UserDocumentsSectionBuilder {
       view.configure(isPrimaryButtonHidden: false,
                      nonPrimaryButtonTitle: L.goBack,
                      nonPrimaryButtonImage: .arrowLeftIcon?.withRenderingMode(.alwaysTemplate),
+                     nonPrimaryButtonAccessibilityIdentifier: nil,
                      delegate: delegate)
       view.configure(isPrimaryButtonEnabled: section.isFilled == true)
       view.configure(isLoading: isUploading)
@@ -192,11 +193,13 @@ struct UserDocumentsSectionBuilder {
       view.configure(isPrimaryButtonHidden: true,
                      nonPrimaryButtonTitle: L.cancel,
                      nonPrimaryButtonImage: nil,
+                     nonPrimaryButtonAccessibilityIdentifier: nil,
                      delegate: delegate)
     case .success:
       view.configure(isPrimaryButtonHidden: true,
                      nonPrimaryButtonTitle: L.done,
                      nonPrimaryButtonImage: nil,
+                     nonPrimaryButtonAccessibilityIdentifier: "doneButton",
                      delegate: delegate)
     }
     return view

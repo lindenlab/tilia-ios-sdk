@@ -36,6 +36,7 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     button.setImage(.documentIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.setTitle(L.choose, for: .normal)
+    button.accessibilityIdentifier = "chooseButton"
     return button
   }()
   
