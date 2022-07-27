@@ -261,9 +261,7 @@ private extension UserDocumentsViewModel {
     processQueue.async {
       let submitModel = SubmitKycModel(userInfoModel: self.userInfoModel,
                                        userDocumentsModel: self.userDocumentsModel)
-      self.manager.submitKyc(with: submitModel) { result in
-        DispatchQueue.main.async { completion(result) }
-      }
+      self.manager.submitKyc(with: submitModel, completion: completion)
     }
   }
   
