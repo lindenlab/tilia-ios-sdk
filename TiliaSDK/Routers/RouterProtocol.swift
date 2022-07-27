@@ -70,8 +70,8 @@ extension RouterProtocol {
   
   func readJSONFromFile(_ fileName: String) -> Data? {
     guard
-      let path = Bundle.main.path(forResource: fileName, ofType: "json"),
-      let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) else { return nil }
+      let url = Bundle.main.url(forResource: fileName, withExtension: "json"),
+      let data = try? Data(contentsOf: url, options: .mappedIfSafe) else { return nil }
     return data
   }
   
