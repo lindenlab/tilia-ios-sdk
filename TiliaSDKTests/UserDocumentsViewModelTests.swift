@@ -206,6 +206,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     let expectations = [
       errorCallbackExpectation,
       isUploadedCallbackExpectation,
+      isCompletedCallbackExpectation,
       errorExpectation
     ]
     
