@@ -70,13 +70,6 @@ final class UserDocumentsRouter: UserDocumentsRoutingProtocol {
 
 private extension UserDocumentsRouter {
   
-  var availableDocumentTypes: [String] {
-    let items: [CFString] = [
-      kUTTypePDF
-    ]
-    return items.map { String($0) }
-  }
-  
   func showCameraAccessDeniedAlert() {
     let alertController = UIAlertController(title: L.accessToCameraTitle,
                                             message: L.accessToCameraMessage,
@@ -94,8 +87,15 @@ private extension UserDocumentsRouter {
   }
   
   func routeToDocumentPickerView(delegate: UIDocumentPickerDelegate) {
-    let picker = UIDocumentPickerViewController(documentTypes: availableDocumentTypes,
-                                                in: .import)
+    // Supports only pdf files
+    let picker: UIDocumentPickerViewController
+    if #available(iOS 14, *) {
+      picker = UIDocumentPickerViewController(forOpeningContentTypes: [.pdf],
+                                              asCopy: true)
+    } else {
+      picker = UIDocumentPickerViewController(documentTypes: [String(kUTTypePDF)],
+                                              in: .import)
+    }
     picker.delegate = delegate
     picker.allowsMultipleSelection = true
     viewController?.present(picker, animated: true)
