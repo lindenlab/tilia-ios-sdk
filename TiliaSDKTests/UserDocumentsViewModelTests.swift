@@ -24,7 +24,8 @@ final class UserDocumentsViewModelTests: XCTestCase {
     let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
-                                           onComplete: { _ in },
+                                           onUpdate: nil,
+                                           onComplete: { _, _ in },
                                            onError: nil)
     
     let setTextExpectation = XCTestExpectation(description: "testSuccessSetText")
@@ -52,7 +53,8 @@ final class UserDocumentsViewModelTests: XCTestCase {
     let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
-                                           onComplete: { _ in },
+                                           onUpdate: nil,
+                                           onComplete: { _, _ in },
                                            onError: nil)
     
     let setImageExpectation = XCTestExpectation(description: "testSuccessSetImage")
@@ -81,7 +83,8 @@ final class UserDocumentsViewModelTests: XCTestCase {
     let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
-                                           onComplete: { _ in },
+                                           onUpdate: nil,
+                                           onComplete: { _, _ in },
                                            onError: nil)
     
     let setFilesExpectation = XCTestExpectation(description: "testSuccessSetFiles_SetFiles")
@@ -119,25 +122,35 @@ final class UserDocumentsViewModelTests: XCTestCase {
     XCTAssertEqual(deleteIndex, 0)
   }
   
-  func testSuccessUpload() {
+  func testSuccessSubmit() {
     var uploading: Bool?
+    var updateCallback: TLUpdateCallback?
     var isUploadedCallback: Bool?
+    var isCompletedCallback: Bool?
     
-    let isUploadedCallbackExpectation = XCTestExpectation(description: "testSuccessUpload_IsUploadedCallback")
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessSubmit_UpdateCallback")
+    let isUploadedCallbackExpectation = XCTestExpectation(description: "testSuccessSubmit_IsUploadedCallback")
+    let isCompletedCallbackExpectation = XCTestExpectation(description: "testSuccessSubmit_IsCompletedCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
-                                           onComplete: { isUploadedCallback = $0; isUploadedCallbackExpectation.fulfill() },
+                                           onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                           onComplete: {
+      isUploadedCallback = $0
+      isUploadedCallbackExpectation.fulfill()
+      isCompletedCallback = $1
+      isCompletedCallbackExpectation.fulfill()
+    },
                                            onError: nil)
     
-    let uploadingExpectation = XCTestExpectation(description: "testSuccessUpload_Uploading")
+    let uploadingExpectation = XCTestExpectation(description: "testSuccessSubmit_Uploading")
     viewModel.uploading.sink {
       uploading = $0
       uploadingExpectation.fulfill()
     }.store(in: &subscriptions)
     
-    viewModel.successfulUploading.sink { [weak viewModel] in
+    viewModel.successfulWaiting.sink { [weak viewModel] in
       viewModel?.complete()
     }.store(in: &subscriptions)
     
@@ -145,30 +158,42 @@ final class UserDocumentsViewModelTests: XCTestCase {
     viewModel.upload()
     
     let expectations = [
+      updateCallbackExpectation,
       isUploadedCallbackExpectation,
+      isCompletedCallbackExpectation,
       uploadingExpectation
     ]
     
-    wait(for: expectations, timeout: 2)
+    wait(for: expectations, timeout: 7)
     XCTAssertNotNil(uploading)
     XCTAssertEqual(isUploadedCallback, true)
+    XCTAssertEqual(isCompletedCallback, true)
+    XCTAssertEqual(updateCallback?.event.action, .kycInfoSubmitted)
   }
   
-  func testErrorUpload() {
+  func testErrorSubmit() {
     var error: Error?
-    var errorCallback: Error?
+    var errorCallback: TLErrorCallback?
     var isUploadedCallback: Bool?
+    var isCompletedCallback: Bool?
     
-    let errorCallbackExpectation = XCTestExpectation(description: "testErrorUpload_ErrorCallback")
-    let isUploadedCallbackExpectation = XCTestExpectation(description: "testErrorUpload_IsUploadedCallback")
+    let errorCallbackExpectation = XCTestExpectation(description: "testErrorSubmit_ErrorCallback")
+    let isUploadedCallbackExpectation = XCTestExpectation(description: "testErrorSubmit_IsUploadedCallback")
+    let isCompletedCallbackExpectation = XCTestExpectation(description: "testErrorSubmit_IsCompletedCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
-                                           onComplete: { isUploadedCallback = $0; isUploadedCallbackExpectation.fulfill() },
+                                           onUpdate: nil,
+                                           onComplete: {
+      isUploadedCallback = $0
+      isUploadedCallbackExpectation.fulfill()
+      isCompletedCallback = $1
+      isCompletedCallbackExpectation.fulfill()
+    },
                                            onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     
-    let errorExpectation = XCTestExpectation(description: "testErrorUpload_Error")
+    let errorExpectation = XCTestExpectation(description: "testErrorSubmit_Error")
     viewModel.error.sink { [weak viewModel] in
       error = $0
       viewModel?.complete()
@@ -188,6 +213,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     XCTAssertNotNil(error)
     XCTAssertNotNil(errorCallback)
     XCTAssertEqual(isUploadedCallback, false)
+    XCTAssertEqual(isCompletedCallback, false)
   }
   
 }

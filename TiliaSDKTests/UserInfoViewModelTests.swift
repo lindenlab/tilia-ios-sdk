@@ -25,6 +25,7 @@ final class UserInfoViewModelTests: XCTestCase {
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
+                                      onUpdate: nil,
                                       onComplete: nil,
                                       onError: nil)
     
@@ -55,6 +56,7 @@ final class UserInfoViewModelTests: XCTestCase {
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
+                                      onUpdate: nil,
                                       onComplete: nil,
                                       onError: nil)
     
@@ -86,6 +88,7 @@ final class UserInfoViewModelTests: XCTestCase {
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
+                                      onUpdate: nil,
                                       onComplete: nil,
                                       onError: nil)
     
@@ -118,6 +121,7 @@ final class UserInfoViewModelTests: XCTestCase {
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
+                                      onUpdate: nil,
                                       onComplete: nil,
                                       onError: nil)
     
@@ -151,19 +155,37 @@ final class UserInfoViewModelTests: XCTestCase {
   }
   
   func testSuccessComplete() {
-    var isUploaded: Bool?
+    var completeCallback: TLCompleteCallback?
     
     let completeExpectation = XCTestExpectation(description: "testSuccessComplete")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
-                                      onComplete: { isUploaded = $0; completeExpectation.fulfill() },
+                                      onUpdate: nil,
+                                      onComplete: { completeCallback = $0; completeExpectation.fulfill() },
                                       onError: nil)
     
-    viewModel.onUserDocumentsComplete(true)
+    viewModel.onUserDocumentsComplete(true, true)
     viewModel.complete()
     
     wait(for: [completeExpectation], timeout: 2)
-    XCTAssertEqual(isUploaded, true)
+    XCTAssertEqual(completeCallback?.event.action, .completed)
+  }
+  
+  func testFailureComplete() {
+    var completeCallback: TLCompleteCallback?
+    
+    let completeExpectation = XCTestExpectation(description: "testSuccessComplete")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = UserInfoViewModel(manager: networkManager,
+                                      onUpdate: nil,
+                                      onComplete: { completeCallback = $0; completeExpectation.fulfill() },
+                                      onError: nil)
+    
+    viewModel.onUserDocumentsComplete(true, false)
+    viewModel.complete()
+    
+    wait(for: [completeExpectation], timeout: 2)
+    XCTAssertEqual(completeCallback?.event.action, .cancelledByUser)
   }
   
 }
