@@ -121,5 +121,6 @@ enum L {
   static let checkingInformation = "checkingInformation".localized
   static let almostThereWithDots = "almostThereWithDots".localized
   static let takingWhile = "takingWhile".localized
+  static let kycInfoSubmitted = "kycInfoSubmitted".localized
   
 }

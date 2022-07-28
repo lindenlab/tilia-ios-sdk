@@ -44,9 +44,11 @@ final class UserInfoViewController: BaseViewController {
   }()
   
   init(manager: NetworkManager,
-       onComplete: ((Bool) -> Void)?,
-       onError: ((Error) -> Void)?) {
+       onUpdate: ((TLUpdateCallback) -> Void)?,
+       onComplete: ((TLCompleteCallback) -> Void)?,
+       onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = UserInfoViewModel(manager: manager,
+                                      onUpdate: onUpdate,
                                       onComplete: onComplete,
                                       onError: onError)
     let router = UserInfoRouter(dataStore: viewModel)

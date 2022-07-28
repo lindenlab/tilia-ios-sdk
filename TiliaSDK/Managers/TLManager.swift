@@ -181,11 +181,25 @@ public extension TLManager {
   /// - Parameters:
   ///   - viewController: view controller that is used for presenting KYC flow
   ///   - animated: animated flag
+  ///   - onUpdate: completion that returns KYC info is processed
+  ///   - onComplete: completion that returns KYC flow state
+  ///   - onError: completion that returns KYC flow error
   func presentKycViewController(on viewController: UIViewController,
-                                animated: Bool) {
+                                animated: Bool,
+                                onUpdate: ((TLUpdateCallback) -> Void)? = nil,
+                                onComplete: ((TLCompleteCallback) -> Void)? = nil,
+                                onError: ((TLErrorCallback) -> Void)? = nil) {
+    guard let token = networkManager.serverConfiguration.token, !token.isEmpty else {
+      let errorCallback = TLErrorCallback(event: TLEvent(flow: .kyc, action: .missingRequiredData),
+                                          error: L.errorKycTitle,
+                                          message: L.missedRequiredData)
+      onError?(errorCallback)
+      return
+    }
     let userInfoViewController = UserInfoViewController(manager: networkManager,
-                                                        onComplete: nil,
-                                                        onError: nil)
+                                                        onUpdate: onUpdate,
+                                                        onComplete: onComplete,
+                                                        onError: onError)
     viewController.present(userInfoViewController, animated: animated)
   }
   

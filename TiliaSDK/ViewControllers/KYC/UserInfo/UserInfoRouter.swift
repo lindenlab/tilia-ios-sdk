@@ -23,6 +23,7 @@ final class UserInfoRouter: UserInfoRoutingProtocol {
   func routeToUserDocumentsView() {
     let userDocumentsViewController = UserDocumentsViewController(manager: dataStore.manager,
                                                                   userInfoModel: dataStore.userInfoModel,
+                                                                  onUpdate: dataStore.onUserDocumentsUpdate,
                                                                   onComplete: dataStore.onUserDocumentsComplete,
                                                                   onError: dataStore.onUserDocumentsError)
     viewController?.present(userDocumentsViewController, animated: true)

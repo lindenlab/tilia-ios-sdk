@@ -29,8 +29,9 @@ protocol UserInfoViewModelOutputProtocol {
 protocol UserInfoDataStore {
   var manager: NetworkManager { get }
   var userInfoModel: UserInfoModel { get }
-  var onUserDocumentsComplete: (Bool) -> Void { get }
-  var onUserDocumentsError: ((Error) -> Void)? { get }
+  var onUserDocumentsUpdate: ((TLUpdateCallback) -> Void)? { get }
+  var onUserDocumentsComplete: (Bool, Bool) -> Void { get }
+  var onUserDocumentsError: ((TLErrorCallback) -> Void)? { get }
 }
 
 protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol { }
@@ -45,26 +46,31 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
-  private(set) lazy var onUserDocumentsComplete: (Bool) -> Void = { [weak self] in
+  var onUserDocumentsUpdate: ((TLUpdateCallback) -> Void)? {
+    return onUpdate
+  }
+  private(set) lazy var onUserDocumentsComplete: (Bool, Bool) -> Void = { [weak self] isUploaded, isCompleted in
     guard let self = self else { return }
-    if $0 {
-      self.isUserDocumentsUploaded = true
+    self.isFlowCompleted = isCompleted
+    if isUploaded {
       self.dismiss.send()
     }
-    self.onComplete?($0) // TODO: - Check here if we need to pass UserDocuments uploading state here
   }
-  var onUserDocumentsError: ((Error) -> Void)? {
+  var onUserDocumentsError: ((TLErrorCallback) -> Void)? {
     return onError
   }
   
-  private let onComplete: ((Bool) -> Void)?
-  private let onError: ((Error) -> Void)?
-  private var isUserDocumentsUploaded = false
+  private let onComplete: ((TLCompleteCallback) -> Void)?
+  private let onError: ((TLErrorCallback) -> Void)?
+  private let onUpdate: ((TLUpdateCallback) -> Void)?
+  private var isFlowCompleted = false
   
   init(manager: NetworkManager,
-       onComplete: ((Bool) -> Void)?,
-       onError: ((Error) -> Void)?) {
+       onUpdate: ((TLUpdateCallback) -> Void)?,
+       onComplete: ((TLCompleteCallback) -> Void)?,
+       onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
+    self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
   }
@@ -163,7 +169,11 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   }
   
   func complete() {
-    onComplete?(isUserDocumentsUploaded)
+    let event = TLEvent(flow: .kyc,
+                        action: isFlowCompleted ? .completed : .cancelledByUser)
+    let model = TLCompleteCallback(event: event,
+                                   state: isFlowCompleted ? .completed : .cancelled)
+    onComplete?(model)
   }
   
 }

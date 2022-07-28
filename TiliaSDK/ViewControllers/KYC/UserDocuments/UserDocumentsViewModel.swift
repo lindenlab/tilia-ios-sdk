@@ -65,19 +65,30 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   private let manager: NetworkManager
   private let userInfoModel: UserInfoModel
   private var userDocumentsModel: UserDocumentsModel
-  private let onComplete: ((Bool) -> Void)
-  private let onError: ((Error) -> Void)?
+  private let onUpdate: ((TLUpdateCallback) -> Void)?
+  private let onComplete: ((Bool, Bool) -> Void)
+  private let onError: ((TLErrorCallback) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
-  private var isUploaded = false
+  private var isUploaded = false {
+    didSet {
+      guard isUploaded else { return }
+      let event = TLEvent(flow: .kyc, action: .kycInfoSubmitted)
+      let model = TLUpdateCallback(event: event, message: L.kycInfoSubmitted)
+      onUpdate?(model)
+    }
+  }
+  private var isCompleted = false
   private var timer: Timer?
   
   init(manager: NetworkManager,
        userInfoModel: UserInfoModel,
-       onComplete: @escaping (Bool) -> Void,
-       onError: ((Error) -> Void)?) {
+       onUpdate: ((TLUpdateCallback) -> Void)?,
+       onComplete: @escaping (Bool, Bool) -> Void,
+       onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
     self.userInfoModel = userInfoModel
     self.userDocumentsModel = UserDocumentsModel(model: userInfoModel)
+    self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
   }
@@ -199,7 +210,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func complete() {
-    onComplete(isUploaded)
+    onComplete(isUploaded, isCompleted)
   }
   
   deinit {
@@ -289,6 +300,7 @@ private extension UserDocumentsViewModel {
       switch result {
       case .success(let model):
         if model.state == .accepted {
+          self.isCompleted = true
           self.successfulWaiting.send()
         } else {
           self.resumeTimer(kycId: kycId)
@@ -318,7 +330,11 @@ private extension UserDocumentsViewModel {
   
   func didFail(with error: Error) {
     self.error.send(error)
-    onError?(error)
+    let event = TLEvent(flow: .kyc, action: .error)
+    let model = TLErrorCallback(event: event,
+                                error: L.errorKycTitle,
+                                message: error.localizedDescription)
+    onError?(model)
   }
   
 }

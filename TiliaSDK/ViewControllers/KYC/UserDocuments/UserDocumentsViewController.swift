@@ -51,10 +51,12 @@ final class UserDocumentsViewController: BaseViewController {
   
   init(manager: NetworkManager,
        userInfoModel: UserInfoModel,
-       onComplete: @escaping (Bool) -> Void,
-       onError: ((Error) -> Void)?) {
+       onUpdate: ((TLUpdateCallback) -> Void)?,
+       onComplete: @escaping (Bool, Bool) -> Void,
+       onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = UserDocumentsViewModel(manager: manager,
                                            userInfoModel: userInfoModel,
+                                           onUpdate: onUpdate,
                                            onComplete: onComplete,
                                            onError: onError)
     let router = UserDocumentsRouter()
