@@ -34,6 +34,10 @@ class TitleBaseCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  final func configure(alingment: UIStackView.Alignment) {
+    stackView.alignment = alingment
+  }
+  
   final func configure(titleFont: UIFont) {
     titleLabel.font = titleFont
   }
