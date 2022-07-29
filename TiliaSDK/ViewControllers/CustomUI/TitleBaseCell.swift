@@ -12,6 +12,8 @@ class TitleBaseCell: UITableViewCell {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
+    label.font = .systemFont(ofSize: 16)
+    label.textColor = .primaryTextColor
     return label
   }()
   
@@ -32,13 +34,17 @@ class TitleBaseCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  final func configure(title: String?,
-                       font: UIFont = .systemFont(ofSize: 16),
-                       textColor: UIColor = .primaryTextColor) {
+  final func configure(titleFont: UIFont) {
+    titleLabel.font = titleFont
+  }
+  
+  final func configure(textColor: UIColor) {
+    titleLabel.textColor = textColor
+  }
+  
+  final func configure(title: String?) {
     titleLabel.text = title
     titleLabel.isHidden = title == nil
-    titleLabel.font = font
-    titleLabel.textColor = textColor
   }
   
   final func addChildView(_ view: UIView, spacing: CGFloat = 8) {

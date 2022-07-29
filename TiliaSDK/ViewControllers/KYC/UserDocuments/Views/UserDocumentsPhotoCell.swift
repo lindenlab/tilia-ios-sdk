@@ -68,6 +68,7 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
 private extension UserDocumentsPhotoCell {
   
   func setup() {
+    configure(titleFont: .systemFont(ofSize: 14))
     primaryButton.addTarget(self, action: #selector(primaryButtonDidTap), for: .touchUpInside)
     nonPrimaryButton.addTarget(self, action: #selector(nonPrimaryButtonDidTap), for: .touchUpInside)
     
