@@ -150,7 +150,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
       uploadingExpectation.fulfill()
     }.store(in: &subscriptions)
     
-    viewModel.successfulWaiting.sink { [weak viewModel] in
+    viewModel.successfulCompleting.sink { [weak viewModel] in
       viewModel?.complete()
     }.store(in: &subscriptions)
     

@@ -18,7 +18,7 @@ struct UserDocumentsSectionBuilder {
     
     enum SectionType {
       case documents
-      case waiting
+      case processing
       case success
     }
     
@@ -70,7 +70,7 @@ struct UserDocumentsSectionBuilder {
           var image: UIImage?
         }
         
-        enum Waiting {
+        enum Processing {
           case gettingStarted
           case gatheringInformation
           case verifyingInformation
@@ -93,7 +93,7 @@ struct UserDocumentsSectionBuilder {
             }
           }
           
-          var onNext: Waiting? {
+          var onNext: Processing? {
             switch self {
             case .gettingStarted: return .gatheringInformation
             case .gatheringInformation: return .verifyingInformation
@@ -110,7 +110,7 @@ struct UserDocumentsSectionBuilder {
         case field(Field)
         case photo(Photo)
         case additionalDocuments([UIImage])
-        case waiting(Waiting)
+        case processing(Processing)
         case success
       }
       
@@ -159,8 +159,8 @@ struct UserDocumentsSectionBuilder {
                      delegate: delegate)
       cell.isUserInteractionEnabled = !isUploading
       return cell
-    case let .waiting(model):
-      let cell = tableView.dequeue(UserDocumentsWaitingCell.self, for: indexPath)
+    case let .processing(model):
+      let cell = tableView.dequeue(UserDocumentsProcessingCell.self, for: indexPath)
       cell.configure(title: model.title)
       return cell
     case .success:
@@ -175,7 +175,7 @@ struct UserDocumentsSectionBuilder {
     switch section.type {
     case .documents:
       view.configure(title: L.almostThere, subTitle: L.userDocumentsMessage)
-    case .waiting:
+    case .processing:
       view.configure(title: L.waitingForResults, subTitle: L.waitingForResultsMessage)
     case .success:
       view.configure(title: L.allSet, subTitle: L.userDocumentsSuccessMessage)
@@ -197,7 +197,7 @@ struct UserDocumentsSectionBuilder {
                      delegate: delegate)
       view.configure(isPrimaryButtonEnabled: section.isFilled == true)
       view.configure(isLoading: isUploading)
-    case .waiting:
+    case .processing:
       view.configure(isPrimaryButtonHidden: true,
                      nonPrimaryButtonTitle: L.cancel,
                      nonPrimaryButtonImage: nil,
@@ -228,8 +228,8 @@ struct UserDocumentsSectionBuilder {
                    isFilled: false)
   }
   
-  func waitingSection() -> Section {
-    return Section(type: .waiting, items: [.init(title: nil, mode: .waiting(.gettingStarted))])
+  func processingSection() -> Section {
+    return Section(type: .processing, items: [.init(title: nil, mode: .processing(.gettingStarted))])
   }
   
   func successSection() -> Section {
@@ -421,14 +421,14 @@ struct UserDocumentsSectionBuilder {
     footer.configure(isLoading: isUploading)
   }
   
-  func updateWaitingSection(_ section: inout Section,
-                            in tableView: UITableView) -> Bool {
+  func updateProcessingSection(_ section: inout Section,
+                               in tableView: UITableView) -> Bool {
     guard
-      case let .waiting(model) = section.items.first?.mode,
+      case let .processing(model) = section.items.first?.mode,
       let nextItem = model.onNext else { return false }
-    section.items[0].mode = .waiting(nextItem)
+    section.items[0].mode = .processing(nextItem)
     let indexPath = IndexPath(row: 0, section: 0)
-    if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsWaitingCell {
+    if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsProcessingCell {
       cell.configure(title: nextItem.title)
     }
     return true

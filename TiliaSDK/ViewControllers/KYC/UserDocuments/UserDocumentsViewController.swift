@@ -44,7 +44,7 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.register(TextFieldCell.self)
     tableView.register(UserDocumentsSelectDocumentCell.self)
     tableView.register(UserDocumentsSuccessCell.self)
-    tableView.register(UserDocumentsWaitingCell.self)
+    tableView.register(UserDocumentsProcessingCell.self)
     tableView.estimatedRowHeight = 100
     return tableView
   }()
@@ -325,20 +325,20 @@ private extension UserDocumentsViewController {
     
     viewModel.successfulUploading.sink { [weak self] in
       guard let self = self else { return }
-      self.section = self.builder.waitingSection()
+      self.section = self.builder.processingSection()
       self.tableView.reloadData()
     }.store(in: &subscriptions)
     
-    viewModel.waiting.sink { [weak self] in
+    viewModel.processing.sink { [weak self] in
       guard
         let self = self,
-        self.builder.updateWaitingSection(&self.section, in: self.tableView) else { return }
+        self.builder.updateProcessingSection(&self.section, in: self.tableView) else { return }
       UIView.performWithoutAnimation {
         self.tableView.performBatchUpdates(nil)
       }
     }.store(in: &subscriptions)
     
-    viewModel.successfulWaiting.sink { [weak self] in
+    viewModel.successfulCompleting.sink { [weak self] in
       guard let self = self else { return }
       self.section = self.builder.successSection()
       self.tableView.reloadData()

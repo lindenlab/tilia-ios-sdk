@@ -1,5 +1,5 @@
 //
-//  UserDocumentsWaitingCell.swift
+//  UserDocumentsProcessingCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 08.07.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class UserDocumentsWaitingCell: UITableViewCell {
+final class UserDocumentsProcessingCell: UITableViewCell {
   
   private let spinner: UIActivityIndicatorView = {
     let view = UIActivityIndicatorView(style: .large)
@@ -34,13 +34,14 @@ final class UserDocumentsWaitingCell: UITableViewCell {
   
   func configure(title: String) {
     titleLabel.text = title
+    spinner.startAnimating()
   }
   
 }
 
 // MARK: - Private Methods
 
-private extension UserDocumentsWaitingCell {
+private extension UserDocumentsProcessingCell {
   
   func setup() {
     selectionStyle = .none

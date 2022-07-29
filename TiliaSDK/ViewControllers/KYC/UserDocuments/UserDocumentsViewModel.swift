@@ -38,8 +38,8 @@ protocol UserDocumentsViewModelOutputProtocol {
   var fillingContent: PassthroughSubject<Bool, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
   var successfulUploading: PassthroughSubject<Void, Never> { get }
-  var waiting: PassthroughSubject<Void, Never> { get }
-  var successfulWaiting: PassthroughSubject<Void, Never> { get }
+  var processing: PassthroughSubject<Void, Never> { get }
+  var successfulCompleting: PassthroughSubject<Void, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -59,8 +59,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let fillingContent = PassthroughSubject<Bool, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
   let successfulUploading = PassthroughSubject<Void, Never>()
-  let waiting = PassthroughSubject<Void, Never>()
-  let successfulWaiting = PassthroughSubject<Void, Never>()
+  let processing = PassthroughSubject<Void, Never>()
+  let successfulCompleting = PassthroughSubject<Void, Never>()
   
   private let manager: NetworkManager
   private let userInfoModel: UserInfoModel
@@ -299,12 +299,17 @@ private extension UserDocumentsViewModel {
       guard let self = self else { return }
       switch result {
       case .success(let model):
-        if model.state == .accepted {
+        switch model.state {
+        case .accepted:
           self.isCompleted = true
-          self.successfulWaiting.send()
-        } else {
+          self.successfulCompleting.send()
+        case .processing:
           self.resumeTimer(kycId: kycId)
-          self.waiting.send()
+          self.processing.send()
+        case .needManualReview:
+          () // TODO: - Added here case
+        case .denied, .needReverify, .noData:
+          () // TODO: - Added here case
         }
       case .failure(let error):
         self.didFail(with: error)

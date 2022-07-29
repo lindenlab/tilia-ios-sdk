@@ -28,7 +28,7 @@
 		D126AF1A2875872F00CAC5F2 /* PassportImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF132875872F00CAC5F2 /* PassportImage.svg */; };
 		D126AF1B2875872F00CAC5F2 /* ResedencePermitFrontImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */; };
 		D126AF1F2875F99C00CAC5F2 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126AF1E2875F99C00CAC5F2 /* SVGImage.swift */; };
-		D126AF212878365300CAC5F2 /* UserDocumentsWaitingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126AF202878365300CAC5F2 /* UserDocumentsWaitingCell.swift */; };
+		D126AF212878365300CAC5F2 /* UserDocumentsProcessingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126AF202878365300CAC5F2 /* UserDocumentsProcessingCell.swift */; };
 		D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7827E74A4A0009D888 /* AppDelegate.swift */; };
 		D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */; };
 		D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7C27E74A4A0009D888 /* DemoViewController.swift */; };
@@ -216,7 +216,7 @@
 		D126AF132875872F00CAC5F2 /* PassportImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PassportImage.svg; sourceTree = "<group>"; };
 		D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ResedencePermitFrontImage.svg; sourceTree = "<group>"; };
 		D126AF1E2875F99C00CAC5F2 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
-		D126AF202878365300CAC5F2 /* UserDocumentsWaitingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsWaitingCell.swift; sourceTree = "<group>"; };
+		D126AF202878365300CAC5F2 /* UserDocumentsProcessingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsProcessingCell.swift; sourceTree = "<group>"; };
 		D135DC7527E74A4A0009D888 /* TiliaSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiliaSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D135DC7827E74A4A0009D888 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -722,7 +722,7 @@
 				D18CDB73283F810C00AAC732 /* UserDocumentsSelectDocumentCell.swift */,
 				D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */,
 				D17EFFA2284645A700F4B6DD /* UserDocumentsDocumentCell.swift */,
-				D126AF202878365300CAC5F2 /* UserDocumentsWaitingCell.swift */,
+				D126AF202878365300CAC5F2 /* UserDocumentsProcessingCell.swift */,
 				D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */,
 			);
 			path = Views;
@@ -1137,7 +1137,7 @@
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
-				D126AF212878365300CAC5F2 /* UserDocumentsWaitingCell.swift in Sources */,
+				D126AF212878365300CAC5F2 /* UserDocumentsProcessingCell.swift in Sources */,
 				D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */,
 				D1BB6349287F3012007616DE /* SubmittedKycStatusModel.swift in Sources */,
 				D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */,
