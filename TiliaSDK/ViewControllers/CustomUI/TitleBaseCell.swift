@@ -38,8 +38,12 @@ class TitleBaseCell: UITableViewCell {
     titleLabel.font = titleFont
   }
   
-  final func configure(textColor: UIColor) {
-    titleLabel.textColor = textColor
+  final func configure(titleTextColor: UIColor) {
+    titleLabel.textColor = titleTextColor
+  }
+  
+  final func configure(titleSpacing: CGFloat) {
+    stackView.setCustomSpacing(titleSpacing, after: titleLabel)
   }
   
   final func configure(title: String?) {
