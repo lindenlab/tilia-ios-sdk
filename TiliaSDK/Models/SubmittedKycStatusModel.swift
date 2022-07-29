@@ -19,7 +19,7 @@ enum SubmittedKycStateModel: String, Decodable {
   case processing = "PROCESSING"
   case accepted = "ACCEPT"
   case denied = "DENY"
-  case needManualReview = "MANUAL_REVIEW"
-  case needReverify = "REVERIFY"
+  case manualReview = "MANUAL_REVIEW"
+  case reverify = "REVERIFY"
   
 }

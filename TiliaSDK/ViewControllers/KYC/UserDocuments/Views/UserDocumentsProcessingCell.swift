@@ -59,7 +59,7 @@ private extension UserDocumentsProcessingCell {
       stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
     ])
   }
   

@@ -39,6 +39,8 @@ protocol UserDocumentsViewModelOutputProtocol {
   var uploading: CurrentValueSubject<Bool, Never> { get }
   var successfulUploading: PassthroughSubject<Void, Never> { get }
   var processing: PassthroughSubject<Void, Never> { get }
+  var manualReview: PassthroughSubject<Void, Never> { get }
+  var failedCompleting: PassthroughSubject<Void, Never> { get }
   var successfulCompleting: PassthroughSubject<Void, Never> { get }
 }
 
@@ -60,6 +62,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let uploading = CurrentValueSubject<Bool, Never>(false)
   let successfulUploading = PassthroughSubject<Void, Never>()
   let processing = PassthroughSubject<Void, Never>()
+  let manualReview = PassthroughSubject<Void, Never>()
+  let failedCompleting = PassthroughSubject<Void, Never>()
   let successfulCompleting = PassthroughSubject<Void, Never>()
   
   private let manager: NetworkManager
@@ -306,10 +310,10 @@ private extension UserDocumentsViewModel {
         case .processing:
           self.resumeTimer(kycId: kycId)
           self.processing.send()
-        case .needManualReview:
-          () // TODO: - Added here case
-        case .denied, .needReverify, .noData:
-          () // TODO: - Added here case
+        case .manualReview:
+          self.manualReview.send()
+        case .denied, .reverify, .noData:
+          self.failedCompleting.send()
         }
       case .failure(let error):
         self.didFail(with: error)

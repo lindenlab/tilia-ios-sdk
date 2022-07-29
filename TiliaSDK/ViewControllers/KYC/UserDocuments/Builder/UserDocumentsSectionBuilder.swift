@@ -19,6 +19,8 @@ struct UserDocumentsSectionBuilder {
     enum SectionType {
       case documents
       case processing
+      case manualReview
+      case failed
       case success
     }
     
@@ -111,6 +113,7 @@ struct UserDocumentsSectionBuilder {
         case photo(Photo)
         case additionalDocuments([UIImage])
         case processing(Processing)
+        case image(UIImage?)
         case success
       }
       
@@ -163,6 +166,10 @@ struct UserDocumentsSectionBuilder {
       let cell = tableView.dequeue(UserDocumentsProcessingCell.self, for: indexPath)
       cell.configure(title: model.title)
       return cell
+    case let .image(image):
+      let cell = tableView.dequeue(UserDocumentsImageCell.self, for: indexPath)
+      cell.configure(image: image)
+      return cell
     case .success:
       let cell = tableView.dequeue(UserDocumentsSuccessCell.self, for: indexPath)
       return cell
@@ -177,6 +184,10 @@ struct UserDocumentsSectionBuilder {
       view.configure(title: L.almostThere, subTitle: L.userDocumentsMessage)
     case .processing:
       view.configure(title: L.waitingForResults, subTitle: L.waitingForResultsMessage)
+    case .manualReview:
+      view.configure(title: L.underReview, subTitle: L.underReviewDescription)
+    case .failed:
+      view.configure(title: L.willBeInTouch, subTitle: L.unableToVerifyDescription)
     case .success:
       view.configure(title: L.allSet, subTitle: L.userDocumentsSuccessMessage)
     }
@@ -197,9 +208,9 @@ struct UserDocumentsSectionBuilder {
                      delegate: delegate)
       view.configure(isPrimaryButtonEnabled: section.isFilled == true)
       view.configure(isLoading: isUploading)
-    case .processing:
+    case .processing, .manualReview, .failed:
       view.configure(isPrimaryButtonHidden: true,
-                     nonPrimaryButtonTitle: L.cancel,
+                     nonPrimaryButtonTitle: L.close,
                      nonPrimaryButtonImage: nil,
                      nonPrimaryButtonAccessibilityIdentifier: nil,
                      delegate: delegate)
@@ -229,11 +240,27 @@ struct UserDocumentsSectionBuilder {
   }
   
   func processingSection() -> Section {
-    return Section(type: .processing, items: [.init(title: nil, mode: .processing(.gettingStarted))])
+    return Section(type: .processing,
+                   items: [.init(title: nil,
+                                 mode: .processing(.gettingStarted))])
+  }
+  
+  func manualReviewSection() -> Section {
+    return Section(type: .manualReview,
+                   items: [.init(title: nil,
+                                 mode: .image(.reviewIcon))])
+  }
+  
+  func failedSection() -> Section {
+    return Section(type: .failed,
+                   items: [.init(title: nil,
+                                 mode: .image(.emailIcon))])
   }
   
   func successSection() -> Section {
-    return Section(type: .success, items: [.init(title: nil, mode: .success)])
+    return Section(type: .success,
+                   items: [.init(title: nil,
+                                 mode: .success)])
   }
   
   func updateSection(_ section: inout Section,

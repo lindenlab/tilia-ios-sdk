@@ -45,6 +45,7 @@ final class UserDocumentsViewController: BaseViewController {
     tableView.register(UserDocumentsSelectDocumentCell.self)
     tableView.register(UserDocumentsSuccessCell.self)
     tableView.register(UserDocumentsProcessingCell.self)
+    tableView.register(UserDocumentsImageCell.self)
     tableView.estimatedRowHeight = 100
     return tableView
   }()
@@ -336,6 +337,18 @@ private extension UserDocumentsViewController {
       UIView.performWithoutAnimation {
         self.tableView.performBatchUpdates(nil)
       }
+    }.store(in: &subscriptions)
+    
+    viewModel.manualReview.sink { [weak self] in
+      guard let self = self else { return }
+      self.section = self.builder.manualReviewSection()
+      self.tableView.reloadData()
+    }.store(in: &subscriptions)
+    
+    viewModel.failedCompleting.sink { [weak self] in
+      guard let self = self else { return }
+      self.section = self.builder.failedSection()
+      self.tableView.reloadData()
     }.store(in: &subscriptions)
     
     viewModel.successfulCompleting.sink { [weak self] in

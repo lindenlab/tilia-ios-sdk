@@ -46,6 +46,7 @@
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
 		D1408F58288E994400CABA3E /* TestExample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D1408F57288E994400CABA3E /* TestExample.pdf */; };
 		D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1408F59288EB26600CABA3E /* KycFlowUITests.swift */; };
+		D151A8D028947E050055FF98 /* UserDocumentsImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
 		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
@@ -237,6 +238,7 @@
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
 		D1408F57288E994400CABA3E /* TestExample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TestExample.pdf; sourceTree = "<group>"; };
 		D1408F59288EB26600CABA3E /* KycFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowUITests.swift; sourceTree = "<group>"; };
+		D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsImageCell.swift; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
 		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
@@ -723,6 +725,7 @@
 				D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */,
 				D17EFFA2284645A700F4B6DD /* UserDocumentsDocumentCell.swift */,
 				D126AF202878365300CAC5F2 /* UserDocumentsProcessingCell.swift */,
+				D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */,
 				D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */,
 			);
 			path = Views;
@@ -1153,6 +1156,7 @@
 				D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */,
 				D1BA29E027FCA96B00F046E8 /* ColorsConfiguration.swift in Sources */,
 				D1A165B0287F5C0C00EFD999 /* UserDocumentsModel.swift in Sources */,
+				D151A8D028947E050055FF98 /* UserDocumentsImageCell.swift in Sources */,
 				D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */,
 				D18855E9282912B400BAC86F /* RoundedTextField.swift in Sources */,
 				D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */,
