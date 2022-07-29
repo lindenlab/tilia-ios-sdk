@@ -68,10 +68,6 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
 private extension UserDocumentsPhotoCell {
   
   func setup() {
-    selectionStyle = .none
-    backgroundColor = .backgroundColor
-    contentView.backgroundColor = .backgroundColor
-    
     primaryButton.addTarget(self, action: #selector(primaryButtonDidTap), for: .touchUpInside)
     nonPrimaryButton.addTarget(self, action: #selector(nonPrimaryButtonDidTap), for: .touchUpInside)
     
