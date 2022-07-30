@@ -11,8 +11,10 @@ struct SubmittedKycModel: Decodable {
   
   private enum CodingKeys: String, CodingKey {
     case kycId = "kyc_id"
+    case state
   }
   
   let kycId: String
+  let state: SubmittedKycStateModel
   
 }

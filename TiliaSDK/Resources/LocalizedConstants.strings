@@ -109,7 +109,7 @@
 "checkingInformation" = "Checking for one more thing...";
 "almostThereWithDots" = "Almost there...";
 "takingWhile" = "Hmm, this is taking a while. Feel free to close this page and we'll send you an email with any updates.";
-"kycInfoSubmitted" = "KYC info has been submitted.";
+"kycInfoSubmitted" = "KYC info has been submitted with status %@";
 "underReview" = "Under review";
 "underReviewDescription" = "Your identity verification will require human review. You will receive an email once we have an update. This usually takes 3 business days.";
 "willBeInTouch" = "We'll be in touch";

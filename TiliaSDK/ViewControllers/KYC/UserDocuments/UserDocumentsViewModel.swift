@@ -73,14 +73,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   private let onComplete: ((Bool, Bool) -> Void)
   private let onError: ((TLErrorCallback) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
-  private var isUploaded = false {
-    didSet {
-      guard isUploaded else { return }
-      let event = TLEvent(flow: .kyc, action: .kycInfoSubmitted)
-      let model = TLUpdateCallback(event: event, message: L.kycInfoSubmitted)
-      onUpdate?(model)
-    }
-  }
+  private var isUploaded = false
   private var isCompleted = false
   private var timer: Timer?
   
@@ -205,6 +198,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       switch result {
       case .success(let model):
         self.isUploaded = true
+        self.sendUpdateCallbackIfNeeded(with: model.state)
         self.successfulUploading.send()
         self.resumeTimer(kycId: model.kycId)
       case .failure(let error):
@@ -303,6 +297,7 @@ private extension UserDocumentsViewModel {
       guard let self = self else { return }
       switch result {
       case .success(let model):
+        self.sendUpdateCallbackIfNeeded(with: model.state)
         switch model.state {
         case .accepted:
           self.isCompleted = true
@@ -344,6 +339,14 @@ private extension UserDocumentsViewModel {
                                 error: L.errorKycTitle,
                                 message: error.localizedDescription)
     onError?(model)
+  }
+  
+  func sendUpdateCallbackIfNeeded(with state: SubmittedKycStateModel) {
+    guard isUploaded else { return }
+    let event = TLEvent(flow: .kyc, action: .kycInfoSubmitted)
+    let model = TLUpdateCallback(event: event,
+                                 message: L.kycInfoSubmitted.localized(with: state.rawValue))
+    onUpdate?(model)
   }
   
 }
