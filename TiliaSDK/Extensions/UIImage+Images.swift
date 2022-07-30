@@ -32,8 +32,8 @@ extension UIImage {
   static let uploadIcon = UIImage(systemName: "icloud.and.arrow.up.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
   static let addIcon = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
   static let closeIcon = UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
-  static let reviewIcon = UIImage(systemName: "hourglass", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
-  static let emailIcon = UIImage(systemName: "envelope.open.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+  static let reviewIcon = UIImage(systemName: "hourglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .heavy))
+  static let emailIcon = UIImage(systemName: "envelope.open.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .heavy))
   
   static let driversLicenseBackIcon = SVGImage(name: "DriversLicenseBackImage")
   static let driversLicenseFrontIcon = SVGImage(name: "DriversLicenseFrontImage")

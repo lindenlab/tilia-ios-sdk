@@ -12,11 +12,22 @@ final class UserDocumentsImageCell: UITableViewCell {
   private let contentImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.tintColor = .primaryColor
+    imageView.contentMode = .center
     return imageView
   }()
   
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    setup()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   func configure(image: UIImage?) {
-    contentImageView.image = image
+    contentImageView.image = image?.withRenderingMode(.alwaysTemplate)
   }
   
 }
