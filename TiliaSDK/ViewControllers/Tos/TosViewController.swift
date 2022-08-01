@@ -17,7 +17,6 @@ final class TosViewController: BaseViewController {
   private let viewModel: TosViewModelProtocol
   private let router: TosRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
-  private var links: [TosAcceptModel] { return TosAcceptModel.allCases }
   
   private let titleLabel: UILabel = {
     let label = UILabel()
@@ -48,7 +47,7 @@ final class TosViewController: BaseViewController {
     textView.textColor = .primaryTextColor
     textView.linkColor = .primaryColor
     let text = TosAcceptModel.title
-    let links = self.links.map { $0.description }
+    let links = TosAcceptModel.allCases.map { $0.description }
     textView.textData = (text, links)
     return textView
   }()
