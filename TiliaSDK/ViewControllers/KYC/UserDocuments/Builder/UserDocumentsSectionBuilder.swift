@@ -441,8 +441,9 @@ struct UserDocumentsSectionBuilder {
   
   func updateTable(_ tableView: UITableView,
                    isUploading: Bool) {
-    tableView.visibleCells.forEach {
-      $0.isUserInteractionEnabled = !isUploading
+    (0..<tableView.numberOfRows(inSection: 0)).forEach {
+      guard let cell = tableView.cellForRow(at: .init(row: $0, section: 0)) else { return }
+      cell.isUserInteractionEnabled = !isUploading
     }
     guard let footer = tableView.footerView(forSection: 0) as? UserDocumentsFooterView else { return }
     footer.configure(isLoading: isUploading)
