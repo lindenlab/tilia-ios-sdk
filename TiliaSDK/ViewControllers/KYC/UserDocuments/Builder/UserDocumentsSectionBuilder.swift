@@ -212,7 +212,7 @@ struct UserDocumentsSectionBuilder {
       view.configure(isPrimaryButtonHidden: true,
                      nonPrimaryButtonTitle: L.close,
                      nonPrimaryButtonImage: nil,
-                     nonPrimaryButtonAccessibilityIdentifier: nil,
+                     nonPrimaryButtonAccessibilityIdentifier: "closeButton",
                      delegate: delegate)
     case .success:
       view.configure(isPrimaryButtonHidden: true,
