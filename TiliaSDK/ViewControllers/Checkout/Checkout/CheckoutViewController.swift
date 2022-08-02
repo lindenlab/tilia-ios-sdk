@@ -24,7 +24,7 @@ final class CheckoutViewController: BaseViewController {
     let tableView = UITableView(frame: .zero, style: .grouped)
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.showsVerticalScrollIndicator = false
-    tableView.backgroundColor = .clear
+    tableView.backgroundColor = .backgroundColor
     tableView.separatorStyle = .none
     tableView.delaysContentTouches = false
     tableView.delegate = self
@@ -102,8 +102,7 @@ extension CheckoutViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections[section],
                           in: tableView,
-                          delegate: self,
-                          textViewDelegate: self)
+                          delegate: self)
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -145,7 +144,8 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
 extension CheckoutViewController: TextViewWithLinkDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
-    router.showWebView(with: link)
+    guard let url = TosAcceptModel(str: link)?.url else { return }
+    router.showWebView(with: url)
   }
   
 }

@@ -78,9 +78,9 @@ final class TitleInfoView: UIView {
     }
   }
   
-  override init(frame: CGRect) {
+  init(frame: CGRect = .zero, insets: UIEdgeInsets = .zero) {
     super.init(frame: frame)
-    setup()
+    setup(insets: insets)
   }
   
   required init?(coder: NSCoder) {
@@ -93,15 +93,21 @@ final class TitleInfoView: UIView {
 
 private extension TitleInfoView {
   
-  func setup() {
-    backgroundColor = .clear
+  func setup(insets: UIEdgeInsets) {
+    backgroundColor = .backgroundColor
     addSubview(stackView)
     
+    let topConstraint = stackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)
+    topConstraint.priority = UILayoutPriority(999)
+    
+    let leftConstraint = stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: insets.left)
+    leftConstraint.priority = UILayoutPriority(999)
+    
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: topAnchor),
-      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      stackView.leftAnchor.constraint(equalTo: leftAnchor),
-      stackView.rightAnchor.constraint(equalTo: rightAnchor)
+      topConstraint,
+      leftConstraint,
+      stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
+      stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -insets.right)
     ])
   }
   

@@ -19,6 +19,9 @@ public struct TLEvent {
     /// Checkout flow
     case checkout
     
+    /// KYC flow
+    case kyc
+    
   }
   
   /// Tilia action
@@ -44,6 +47,9 @@ public struct TLEvent {
     
     /// Flow is completed
     case completed
+    
+    /// KYC info is submitted successfully
+    case kycInfoSubmitted = "kyc-info-submitted"
     
   }
   

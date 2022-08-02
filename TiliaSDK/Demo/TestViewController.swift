@@ -76,7 +76,7 @@ class TestViewController: UIViewController {
     let date = Date()
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "YY, MMM d, HH:mm:ss"
-    let dateStr = dateFormatter.string(from: date)
+    let dateStr = date.string(dateFormatter: dateFormatter)
     let str = "\(text):\n\(dateStr)\n\(message)"
     let attributedString = NSMutableAttributedString(string: str)
     

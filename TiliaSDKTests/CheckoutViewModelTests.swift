@@ -9,7 +9,7 @@ import XCTest
 import Combine
 @testable import TiliaSDK
 
-class CheckoutViewModelTests: XCTestCase {
+final class CheckoutViewModelTests: XCTestCase {
   
   var subscriptions: Set<AnyCancellable>!
   

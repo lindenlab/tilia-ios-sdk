@@ -60,7 +60,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     if $0.state == .completed {
       self.getInvoiceDetails()
     } else {
-      self.dismiss.send(())
+      self.dismiss.send()
     }
     self.onComplete?($0)
   }
@@ -103,7 +103,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
       switch result {
       case .success(let model):
         if !model.isTosSigned {
-          self.needToAcceptTos.send(())
+          self.needToAcceptTos.send()
         } else {
           self.getInvoiceDetails()
         }

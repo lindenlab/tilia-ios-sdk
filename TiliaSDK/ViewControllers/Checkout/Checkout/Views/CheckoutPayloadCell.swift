@@ -74,8 +74,8 @@ private extension CheckoutPayloadCell {
     stackView.distribution = .equalSpacing
     stackView.alignment = .top
     
-    backgroundColor = .clear
-    contentView.backgroundColor = .clear
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
     

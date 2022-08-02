@@ -7,7 +7,7 @@
 
 import XCTest
 
-class CheckoutFlowUITests: XCTestCase {
+final class CheckoutFlowUITests: XCTestCase {
   
   override func setUpWithError() throws {
     continueAfterFailure = false

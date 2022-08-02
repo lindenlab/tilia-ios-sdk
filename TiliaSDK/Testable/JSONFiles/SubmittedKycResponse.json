@@ -1,0 +1,58 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "kyc_id": "kyc_2BthX8IwaoevH9Phan8Cc0Z59Rr",
+        "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "state": "PROCESSING",
+        "initiator": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "data_source": "idmind",
+        "vendor_reference_id": "",
+        "form_id": "",
+        "note": "",
+        "integrator": "tilia-sdks",
+        "created": "",
+        "updated": "",
+        "kyc_pii": {
+            "first": "Daniel",
+            "middle": "Joseph",
+            "last": "Perez",
+            "street": "Street",
+            "street2": "APT 88",
+            "city": "Some City",
+            "state": "WA",
+            "country": "US",
+            "zip": "55555",
+            "date_of_birth": "2003-03-02",
+            "phone_code": "+1",
+            "phone_number": "555555555",
+            "ssn": "123456789",
+            "ssn_last4": "",
+            "signature": "Daniel Joseph Perez",
+            "use_1099": true,
+            "document_type": "DL",
+            "document_country": "US",
+            "document_front_id": "",
+            "document_back_id": "",
+            "document_front": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAABCAYAAACc0f2yAAAAEElEQVR42mP8z8AAREMfAACNFAIAcYQyygAAAABJRU5ErkJggg==",
+            "document_back": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+            "extra_files": null
+        },
+        "extra_files": [
+            {
+                "file_contents": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+                "file_name": "my-file_1",
+                "file_ext": ".png",
+                "file_mime_type": "img/png"
+            },
+            {
+                "file_contents": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+                "file_name": "my-file_2",
+                "file_ext": ".png",
+                "file_mime_type": "img/png"
+            }
+        ],
+        "rules": []
+    }
+}

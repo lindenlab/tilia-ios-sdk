@@ -32,8 +32,8 @@ final class CheckoutSuccessfulPaymentCell: UITableViewCell {
 private extension CheckoutSuccessfulPaymentCell {
   
   func setup() {
-    backgroundColor = .clear
-    contentView.backgroundColor = .clear
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(toastView)
     
     NSLayoutConstraint.activate([
