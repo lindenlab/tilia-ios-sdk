@@ -157,7 +157,6 @@ final class KycFlowUITests: XCTestCase {
   }
   
   func testKycForNonUsResident() {
-    /*
     let app = XCUIApplication()
     app.launch()
         
@@ -306,11 +305,9 @@ final class KycFlowUITests: XCTestCase {
     let backButton = app.navigationBars["KYC flow"].buttons["Demo App"]
     XCTAssert(backButton.exists)
     backButton.tap()
-    */
   }
   
   func testCancelWaitingKycResult() {
-    /*
     let app = XCUIApplication()
     app.launch()
         
@@ -451,7 +448,6 @@ final class KycFlowUITests: XCTestCase {
     let backButton = app.navigationBars["KYC flow"].buttons["Demo App"]
     XCTAssert(backButton.exists)
     backButton.tap()
-    */
   }
   
 }
