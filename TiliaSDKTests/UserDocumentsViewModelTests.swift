@@ -116,7 +116,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
       deleteDocumentExpectation
     ]
     
-    wait(for: expectations, timeout: 2)
+    wait(for: expectations, timeout: 5)
     XCTAssertNotNil(image)
     XCTAssertEqual(error, L.failedToSelectReachedMaxSize)
     XCTAssertEqual(deleteIndex, 0)
