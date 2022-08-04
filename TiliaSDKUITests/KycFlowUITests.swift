@@ -132,7 +132,7 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(frontSideChooseButton.exists)
     frontSideChooseButton.tap()
     
-    let frontSideDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    let frontSideDocumentImage = app.scrollViews.otherElements.images.firstMatch
     XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 5))
     frontSideDocumentImage.tap()
     
@@ -265,7 +265,7 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(frontSideChooseButton.exists)
     frontSideChooseButton.tap()
     
-    let frontSideDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    let frontSideDocumentImage = app.scrollViews.otherElements.images.firstMatch
     XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 5))
     frontSideDocumentImage.tap()
     
@@ -273,7 +273,7 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(backSideChooseButton.exists)
     backSideChooseButton.tap()
     
-    let backSideDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    let backSideDocumentImage = app.scrollViews.otherElements.images.firstMatch
     XCTAssert(backSideDocumentImage.waitForExistence(timeout: 5))
     backSideDocumentImage.tap()
     
@@ -288,7 +288,7 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(selectDocumentFromGallery.exists)
     selectDocumentFromGallery.tap()
     
-    let additionalDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    let additionalDocumentImage = app.scrollViews.otherElements.images.firstMatch
     XCTAssert(additionalDocumentImage.waitForExistence(timeout: 5))
     additionalDocumentImage.tap()
     
@@ -429,7 +429,7 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(frontSideChooseButton.exists)
     frontSideChooseButton.tap()
     
-    let frontSideDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
+    let frontSideDocumentImage = app.scrollViews.otherElements.images.firstMatch
     XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 5))
     frontSideDocumentImage.tap()
     
