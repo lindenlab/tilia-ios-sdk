@@ -133,7 +133,7 @@ final class KycFlowUITests: XCTestCase {
     frontSideChooseButton.tap()
     
     let frontSideDocumentImage = app.scrollViews.otherElements.images["Photo, March 30, 2018, 10:14 PM"]
-    XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 5))
+    XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 10))
     frontSideDocumentImage.tap()
     
     let isAddressOnDocumentTextField = app.tables.cells.textFields["isAddressOnDocumentTextField"]
