@@ -21,7 +21,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     var text: String?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
                                            onUpdate: nil,
@@ -50,7 +50,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     var image: UIImage?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
                                            onUpdate: nil,
@@ -80,7 +80,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     var deleteIndex: Int?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
                                            onUpdate: nil,
@@ -107,7 +107,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let url = Bundle(for: type(of: self)).url(forResource: "TestExample", withExtension: "pdf")!
-    let urls = Array(repeating: url, count: 35)
+    let urls = Array(repeating: url, count: 4)
     viewModel.setFiles(with: urls, at: 0)
     
     let expectations = [
@@ -132,7 +132,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     let isUploadedCallbackExpectation = XCTestExpectation(description: "testSuccessSubmit_IsUploadedCallback")
     let isCompletedCallbackExpectation = XCTestExpectation(description: "testSuccessSubmit_IsCompletedCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
                                            onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
@@ -181,7 +181,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     let isUploadedCallbackExpectation = XCTestExpectation(description: "testErrorSubmit_IsUploadedCallback")
     let isCompletedCallbackExpectation = XCTestExpectation(description: "testErrorSubmit_IsCompletedCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let userInfoModel = UserInfoModel(countryOfResidence: CountryModel.usa)
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
     let viewModel = UserDocumentsViewModel(manager: networkManager,
                                            userInfoModel: userInfoModel,
                                            onUpdate: nil,
