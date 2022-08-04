@@ -276,7 +276,8 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(backSideDocumentImage.waitForExistence(timeout: 5))
     backSideDocumentImage.tap()
     
-    scrollUp(app: app, dy: -400)
+    let _ = XCTWaiter.wait(for: [XCTestExpectation()], timeout: 1)
+    scrollUp(app: app, dy: -300)
     
     let addDocumentButton = app.tables.cells.buttons["addDocumentButton"]
     XCTAssert(addDocumentButton.exists)
@@ -290,8 +291,8 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(additionalDocumentImage.waitForExistence(timeout: 5))
     additionalDocumentImage.tap()
     
-    sleep(1)
-    scrollUp(app: app, dy: -400)
+    let _ = XCTWaiter.wait(for: [XCTestExpectation()], timeout: 1)
+    scrollUp(app: app, dy: -300)
     
     let uploadButton = app.tables.buttons["uploadButton"]
     XCTAssert(uploadButton.waitForExistence(timeout: 2))
@@ -457,7 +458,7 @@ private extension KycFlowUITests {
     let visibleCells = app.tables.cells
     let startCoordinate = visibleCells.element(boundBy: visibleCells.count - 1).coordinate(withNormalizedOffset: .zero)
     let endCoordinate = startCoordinate.withOffset(CGVector(dx: 0.0, dy: dy))
-    startCoordinate.press(forDuration: 1, thenDragTo: endCoordinate)
+    startCoordinate.press(forDuration: 0.1, thenDragTo: endCoordinate)
   }
   
 }
