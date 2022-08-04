@@ -14,7 +14,7 @@ final class UserDocumentsValidatorTests: XCTestCase {
     var model = UserDocumentsModel()
     model.document = .passport
     model.frontImage = .init(image: .init(), data: .init(), type: .image)
-    model.documentCountry = CountryModel.usa
+    model.documentCountry = .usa
     model.additionalDocuments = [.init(image: .init(), data: .init(), type: .pdf)]
     let isFilled = UserDocumentsValidator.isFilled(for: model)
     XCTAssertTrue(isFilled)
@@ -25,7 +25,7 @@ final class UserDocumentsValidatorTests: XCTestCase {
     model.document = .driversLicense
     model.frontImage = .init(image: .init(), data: .init(), type: .image)
     model.backImage = .init(image: .init(), data: .init(), type: .image)
-    model.documentCountry = CountryModel.usa
+    model.documentCountry = .usa
     model.additionalDocuments = [.init(image: .init(), data: .init(), type: .pdf)]
     let isFilled = UserDocumentsValidator.isFilled(for: model)
     XCTAssertTrue(isFilled)
@@ -36,7 +36,7 @@ final class UserDocumentsValidatorTests: XCTestCase {
     model.document = .driversLicense
     model.frontImage = .init(image: .init(), data: .init(), type: .image)
     model.backImage = .init(image: .init(), data: .init(), type: .image)
-    model.documentCountry = CountryModel.usa
+    model.documentCountry = .usa
     model.isAddressOnDocument = .yes
     let isFilled = UserDocumentsValidator.isFilled(for: model)
     XCTAssertTrue(isFilled)
