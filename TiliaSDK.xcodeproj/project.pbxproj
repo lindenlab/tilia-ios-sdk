@@ -44,7 +44,7 @@
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
 		D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1408F59288EB26600CABA3E /* KycFlowUITests.swift */; };
 		D151A8D028947E050055FF98 /* UserDocumentsImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */; };
-		D151A8D2289C52F20055FF98 /* TestExample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D151A8D1289C52F20055FF98 /* TestExample.pdf */; };
+		D151A8D4289C54B00055FF98 /* TestExample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D151A8D3289C54B00055FF98 /* TestExample.pdf */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
 		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
@@ -227,7 +227,7 @@
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
 		D1408F59288EB26600CABA3E /* KycFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowUITests.swift; sourceTree = "<group>"; };
 		D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsImageCell.swift; sourceTree = "<group>"; };
-		D151A8D1289C52F20055FF98 /* TestExample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TestExample.pdf; sourceTree = "<group>"; };
+		D151A8D3289C54B00055FF98 /* TestExample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TestExample.pdf; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
 		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
@@ -600,7 +600,7 @@
 		D1408F56288E991500CABA3E /* PDFFiles */ = {
 			isa = PBXGroup;
 			children = (
-				D151A8D1289C52F20055FF98 /* TestExample.pdf */,
+				D151A8D3289C54B00055FF98 /* TestExample.pdf */,
 			);
 			path = PDFFiles;
 			sourceTree = "<group>";
@@ -949,7 +949,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D151A8D2289C52F20055FF98 /* TestExample.pdf in Resources */,
+				D151A8D4289C54B00055FF98 /* TestExample.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

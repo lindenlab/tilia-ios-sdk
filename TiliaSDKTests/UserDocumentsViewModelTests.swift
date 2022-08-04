@@ -107,7 +107,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let url = Bundle(for: type(of: self)).url(forResource: "TestExample", withExtension: "pdf")!
-    let urls = Array(repeating: url, count: 4)
+    let urls = Array(repeating: url, count: 34)
     viewModel.setFiles(with: urls, at: 0)
     
     let expectations = [
