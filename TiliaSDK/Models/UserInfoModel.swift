@@ -15,7 +15,7 @@ struct UserInfoModel {
     var last: String?
     
     var isEmpty: Bool {
-      return first.isEmpty || middle.isEmpty || last.isEmpty
+      return first.isEmpty || last.isEmpty
     }
   }
   
@@ -27,7 +27,7 @@ struct UserInfoModel {
     var postalCode: String?
     
     var isEmpty: Bool {
-      return street.isEmpty || apartment.isEmpty || city.isEmpty || region.isEmpty || postalCode.isEmpty
+      return street.isEmpty || city.isEmpty || region.isEmpty || postalCode.isEmpty
     }
   }
   

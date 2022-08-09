@@ -492,11 +492,10 @@ private extension UserDocumentsSectionBuilder {
   }
   
   func isAddressOnDocumentItem() -> Section.Item {
-    let items = BoolModel.allCases
     let field = Section.Item.Mode.Field(type: .isAddressOnDocument,
                                         placeholder: L.selectAnswer,
                                         text: nil,
-                                        items: items.map { $0.description },
+                                        items: BoolModel.allCases.map { $0.description },
                                         seletedItemIndex: nil)
     return .init(title: L.isAddressUpToDateDescription, mode: .field(field))
   }
