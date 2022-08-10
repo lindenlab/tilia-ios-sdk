@@ -77,7 +77,6 @@ final class UserDocumentsViewModelTests: XCTestCase {
   func testSuccessSetFiles() {
     var image: UIImage?
     var error: String?
-    var deleteIndex: Int?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let userInfoModel = UserInfoModel(countryOfResidence: .usa)
@@ -88,9 +87,8 @@ final class UserDocumentsViewModelTests: XCTestCase {
                                            onError: nil)
     
     let setFilesExpectation = XCTestExpectation(description: "testSuccessSetFiles_SetFiles")
-    viewModel.addAdditionalDocuments.sink { [weak viewModel] in
+    viewModel.addAdditionalDocuments.sink {
       image = $0.documentImages.first
-      viewModel?.deleteDocument(forItemIndex: $0.index, atDocumentIndex: 0)
       setFilesExpectation.fulfill()
     }.store(in: &subscriptions)
     
@@ -100,25 +98,55 @@ final class UserDocumentsViewModelTests: XCTestCase {
       chooseFileFailedExpectation.fulfill()
     }.store(in: &subscriptions)
     
-    let deleteDocumentExpectation = XCTestExpectation(description: "testSuccessSetFiles_DeleteDocument")
-    viewModel.deleteAdditionalDocument.sink {
-      deleteIndex = $0.documentIndex
-      deleteDocumentExpectation.fulfill()
-    }.store(in: &subscriptions)
-    
-    let url = Bundle(for: type(of: self)).url(forResource: "TestExample", withExtension: "pdf")!
+    let url = Bundle(for: type(of: self)).url(forResource: "TestExampleAdd", withExtension: "pdf")!
     let urls = Array(repeating: url, count: 34)
     viewModel.setFiles(with: urls, at: 0)
     
     let expectations = [
       setFilesExpectation,
-      chooseFileFailedExpectation,
-      deleteDocumentExpectation
+      chooseFileFailedExpectation
     ]
     
     wait(for: expectations, timeout: 5)
     XCTAssertNotNil(image)
     XCTAssertEqual(error, L.failedToSelectReachedMaxSize)
+  }
+  
+  func testSuccessDeleteFiles() {
+    var image: UIImage?
+    var deleteIndex: Int?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
+    let viewModel = UserDocumentsViewModel(manager: networkManager,
+                                           userInfoModel: userInfoModel,
+                                           onUpdate: nil,
+                                           onComplete: { _, _ in },
+                                           onError: nil)
+    
+    let setFilesExpectation = XCTestExpectation(description: "testSuccessDeleteFiles_SetFiles")
+    viewModel.addAdditionalDocuments.sink { [weak viewModel] in
+      image = $0.documentImages.first
+      viewModel?.deleteDocument(forItemIndex: $0.index, atDocumentIndex: 0)
+      setFilesExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let deleteDocumentExpectation = XCTestExpectation(description: "testSuccessDeleteFiles_DeleteDocument")
+    viewModel.deleteAdditionalDocument.sink {
+      deleteIndex = $0.documentIndex
+      deleteDocumentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let url = Bundle(for: type(of: self)).url(forResource: "TestExampleDelete", withExtension: "pdf")!
+    viewModel.setFiles(with: [url], at: 0)
+    
+    let expectations = [
+      setFilesExpectation,
+      deleteDocumentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 5)
+    XCTAssertNotNil(image)
     XCTAssertEqual(deleteIndex, 0)
   }
   
