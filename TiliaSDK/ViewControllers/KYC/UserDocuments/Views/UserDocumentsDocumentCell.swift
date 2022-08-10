@@ -18,6 +18,7 @@ final class UserDocumentsDocumentCell: UICollectionViewCell {
   private let imageView: UIImageView = {
     let view = UIImageView()
     view.translatesAutoresizingMaskIntoConstraints = false
+    view.contentMode = .scaleAspectFit
     return view
   }()
   
