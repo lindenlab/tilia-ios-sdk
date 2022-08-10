@@ -20,6 +20,7 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
   
   private let photoImageView: UIImageView = {
     let imageView = UIImageView()
+    imageView.contentMode = .scaleAspectFit
     return imageView
   }()
   
