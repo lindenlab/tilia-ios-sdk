@@ -107,20 +107,23 @@ struct UserInfoSectionBuilder {
         }
         
         case fields(Fields)
-        case label(UIFont)
+        case label
         case button
       }
       
       let title: String?
       var mode: Mode
       let description: String?
+      let attributedDescription: NSAttributedString?
       
       init(mode: Mode,
            title: String? = nil,
-           description: String? = nil) {
+           description: String? = nil,
+           attributedDescription: NSAttributedString? = nil) {
         self.title = title
         self.mode = mode
         self.description = description
+        self.attributedDescription = attributedDescription
       }
     }
     
@@ -169,10 +172,11 @@ struct UserInfoSectionBuilder {
                      description: item.description,
                      delegate: delegate)
       return cell
-    case let .label(font):
+    case .label:
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
       cell.configure(title: item.title)
-      cell.configure(description: item.description, font: font)
+      cell.configure(description: item.description)
+      cell.configure(attributedDescription: item.attributedDescription)
       return cell
     case .button:
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
@@ -425,9 +429,9 @@ private extension UserInfoSectionBuilder {
     return [
       Section.Item(mode: .fields(ssnField),
                    title: L.ssn),
-      Section.Item(mode: .label(.systemFont(ofSize: 14)),
+      Section.Item(mode: .label,
                    title: L.ssnAcceptionTitle,
-                   description: L.ssnAcceptionMessage),
+                   attributedDescription: attributedNumberList(for: L.ssnAcceptionMessage)),
       Section.Item(mode: .fields(signatureField),
                    title: L.signatureTitle,
                    description: L.signatureDescription),
@@ -482,7 +486,7 @@ private extension UserInfoSectionBuilder {
                    title: hasStates ? L.state : L.stateOrRegion),
       Section.Item(mode: .fields(postalCodeField),
                    title: L.postalCode),
-      Section.Item(mode: .label(.systemFont(ofSize: 16)),
+      Section.Item(mode: .label,
                    title: L.countryOfResidence,
                    description: model.countryOfResidence?.name)
     ]
@@ -517,6 +521,17 @@ private extension UserInfoSectionBuilder {
     if let header = tableView.headerView(forSection: sectionIndex) as? UserInfoHeaderView {
       header.configure(mode: mode, animated: true)
     }
+  }
+  
+  func attributedNumberList(for str: String) -> NSAttributedString {
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.headIndent = 16
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: UIFont.systemFont(ofSize: 14),
+      .foregroundColor: UIColor.secondaryTextColor,
+      .paragraphStyle: paragraphStyle
+    ]
+    return NSAttributedString(string: str, attributes: attributes)
   }
   
 }

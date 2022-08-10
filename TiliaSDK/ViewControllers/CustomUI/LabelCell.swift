@@ -13,6 +13,7 @@ final class LabelCell: TitleBaseCell {
     let label = UILabel()
     label.textColor = .secondaryTextColor
     label.numberOfLines = 0
+    label.font = .systemFont(ofSize: 16)
     return label
   }()
   
@@ -25,9 +26,12 @@ final class LabelCell: TitleBaseCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(description: String?, font: UIFont = .systemFont(ofSize: 16)) {
+  func configure(description: String?) {
     label.text = description
-    label.font = font
+  }
+  
+  func configure(attributedDescription: NSAttributedString?) {
+    label.attributedText = attributedDescription
   }
   
 }
