@@ -73,37 +73,28 @@ struct UserDocumentsSectionBuilder {
         }
         
         enum Processing {
-          case gettingStarted
-          case gatheringInformation
-          case verifyingInformation
+          case processing
+          case uploadingInfo
           case dottingInformation
-          case checkingInformation
-          case hangTight
-          case almostThereWithDots
+          case verifyingInformation
           case takingWhile
           
           var title: String {
             switch self {
-            case .gettingStarted: return L.gettingStarted
-            case .gatheringInformation: return L.gatheringInformation
-            case .verifyingInformation: return L.verifyingInformation
+            case .processing: return L.processing
+            case .uploadingInfo: return L.uploadingInfo
             case .dottingInformation: return L.dottingInformation
-            case .checkingInformation: return L.checkingInformation
-            case .hangTight: return L.hangTight
-            case .almostThereWithDots: return L.almostThereWithDots
+            case .verifyingInformation: return L.verifyingInformation
             case .takingWhile: return L.takingWhile
             }
           }
           
           var onNext: Processing? {
             switch self {
-            case .gettingStarted: return .gatheringInformation
-            case .gatheringInformation: return .verifyingInformation
-            case .verifyingInformation: return .dottingInformation
-            case .dottingInformation: return .checkingInformation
-            case .checkingInformation: return .hangTight
-            case .hangTight: return .almostThereWithDots
-            case .almostThereWithDots: return .takingWhile
+            case .processing: return .uploadingInfo
+            case .uploadingInfo: return .dottingInformation
+            case .dottingInformation: return .verifyingInformation
+            case .verifyingInformation: return .takingWhile
             case .takingWhile: return nil
             }
           }
@@ -181,9 +172,9 @@ struct UserDocumentsSectionBuilder {
     let view = tableView.dequeue(TitleInfoHeaderFooterView.self)
     switch section.type {
     case .documents:
-      view.configure(title: L.almostThere, subTitle: L.userDocumentsMessage)
+      view.configure(title: L.fewMoreThings, subTitle: L.userDocumentsMessage)
     case .processing:
-      view.configure(title: L.waitingForResults, subTitle: L.waitingForResultsMessage)
+      view.configure(title: L.verifyingIdentity, subTitle: L.verifyingIdentityMessage)
     case .manualReview:
       view.configure(title: L.underReview, subTitle: L.underReviewDescription)
     case .failed:
@@ -242,7 +233,7 @@ struct UserDocumentsSectionBuilder {
   func processingSection() -> Section {
     return Section(type: .processing,
                    items: [.init(title: nil,
-                                 mode: .processing(.gettingStarted))])
+                                 mode: .processing(.processing))])
   }
   
   func manualReviewSection() -> Section {

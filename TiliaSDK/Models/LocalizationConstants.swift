@@ -40,7 +40,7 @@ enum L {
   static let goBack = "goBack".localized
   static let errorAddCreditTitle = "errorAddCreditTitle".localized
   static let errorAddCreditMessage = "errorAddCreditMessage".localized
-  static let userInfoTitle = "userInfoTitle".localized
+  static let verifyYourIdentity = "verifyYourIdentity".localized
   static let userInfoMessage = "userInfoMessage".localized
   static let location = "location".localized
   static let countryOfResidence = "countryOfResidence".localized
@@ -67,7 +67,7 @@ enum L {
   static let useAddressFor1099 = "useAddressFor1099".localized
   static let useAddressFor1099Description = "useAddressFor1099Description".localized
   static let selectAnswer = "selectAnswer".localized
-  static let almostThere = "almostThere".localized
+  static let fewMoreThings = "fewMoreThings".localized
   static let userDocumentsMessage = "userDocumentsMessage".localized
   static let document = "document".localized
   static let selectDocument = "selectDocument".localized
@@ -112,14 +112,12 @@ enum L {
   static let failedToSelectBigImage = "failedToSelectBigImage".localized
   static let failedToSelectReachedMaxSize = "failedToSelectReachedMaxSize".localized
   static let addDocumentsFailedMessage = "addDocumentsFailedMessage".localized
-  static let waitingForResults = "waitingForResults".localized
-  static let waitingForResultsMessage = "waitingForResultsMessage".localized
-  static let gettingStarted = "gettingStarted".localized
-  static let gatheringInformation = "gatheringInformation".localized
+  static let verifyingIdentity = "verifyingIdentity".localized
+  static let verifyingIdentityMessage = "verifyingIdentityMessage".localized
+  static let processing = "processing".localized
+  static let uploadingInfo = "uploadingInfo".localized
   static let verifyingInformation = "verifyingInformation".localized
   static let dottingInformation = "dottingInformation".localized
-  static let checkingInformation = "checkingInformation".localized
-  static let almostThereWithDots = "almostThereWithDots".localized
   static let takingWhile = "takingWhile".localized
   static let kycInfoSubmitted = "kycInfoSubmitted".localized
   static let underReview = "underReview".localized

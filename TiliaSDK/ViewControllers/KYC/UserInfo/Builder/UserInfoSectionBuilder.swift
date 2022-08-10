@@ -216,7 +216,7 @@ struct UserInfoSectionBuilder {
   func tableHeader() -> UIView {
     let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     let view = TitleInfoView(insets: insets)
-    view.title = L.userInfoTitle
+    view.title = L.verifyYourIdentity
     view.subTitle = L.userInfoMessage
     view.subTitleTextFont = .systemFont(ofSize: 14)
     view.subTitleTextColor = .secondaryTextColor
