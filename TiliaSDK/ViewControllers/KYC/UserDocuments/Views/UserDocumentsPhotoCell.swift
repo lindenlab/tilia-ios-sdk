@@ -57,9 +57,7 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
   
   func configure(image: UIImage?, placeholderView: SVGImage?) {
     photoImageView.image = image
-    self.placeholderView?.removeFromSuperview()
-    self.placeholderView = placeholderView
-    setupPlaceholderView()
+    setupPlaceholderView(placeholderView)
   }
   
 }
@@ -87,8 +85,10 @@ private extension UserDocumentsPhotoCell {
     ])
   }
   
-  func setupPlaceholderView() {
+  func setupPlaceholderView(_ placeholderView: SVGImage?) {
+    self.placeholderView?.removeFromSuperview()
     guard let placeholderView = placeholderView, photoImageView.image == nil else { return }
+    self.placeholderView = placeholderView
     placeholderView.translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(placeholderView)
     NSLayoutConstraint.activate([
