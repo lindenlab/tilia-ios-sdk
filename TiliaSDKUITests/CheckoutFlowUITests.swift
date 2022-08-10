@@ -193,7 +193,7 @@ final class CheckoutFlowUITests: XCTestCase {
     openBrowserButton.tap()
     
     let closeSafariViewButton = app.buttons["Done"]
-    XCTAssert(closeSafariViewButton.waitForExistence(timeout: 2))
+    XCTAssert(closeSafariViewButton.waitForExistence(timeout: 4))
     closeSafariViewButton.tap()
     
     let closeAddCreditCardFlowButton = app.buttons["doneButton"]
