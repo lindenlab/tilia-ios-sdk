@@ -44,7 +44,6 @@
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
 		D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1408F59288EB26600CABA3E /* KycFlowUITests.swift */; };
 		D151A8D028947E050055FF98 /* UserDocumentsImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */; };
-		D151A8D4289C54B00055FF98 /* TestExample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D151A8D3289C54B00055FF98 /* TestExample.pdf */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
 		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
@@ -60,6 +59,7 @@
 		D163D9E3284F52D400F478DA /* UserDocumentsSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */; };
 		D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* Animation+Animations.swift */; };
 		D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = D163D9E8284F556000F478DA /* SuccessAnimation.json */; };
+		D16ADFA028A43C6A0096006C /* SwiftProgrammingLanguage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */; };
 		D16D569F28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift */; };
 		D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A2282538F00088FB3D /* TitleBaseCell.swift */; };
 		D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A4282560DC0088FB3D /* ButtonsView.swift */; };
@@ -227,7 +227,6 @@
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
 		D1408F59288EB26600CABA3E /* KycFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowUITests.swift; sourceTree = "<group>"; };
 		D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsImageCell.swift; sourceTree = "<group>"; };
-		D151A8D3289C54B00055FF98 /* TestExample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = TestExample.pdf; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
 		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
@@ -243,6 +242,7 @@
 		D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsSuccessCell.swift; sourceTree = "<group>"; };
 		D163D9E4284F53CC00F478DA /* Animation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+Animations.swift"; sourceTree = "<group>"; };
 		D163D9E8284F556000F478DA /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
+		D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SwiftProgrammingLanguage.pdf; sourceTree = "<group>"; };
 		D16D569E28251CDD0088FB3D /* NonPrimaryButtonWithStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPrimaryButtonWithStyle.swift; sourceTree = "<group>"; };
 		D16D56A2282538F00088FB3D /* TitleBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBaseCell.swift; sourceTree = "<group>"; };
 		D16D56A4282560DC0088FB3D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
@@ -600,7 +600,7 @@
 		D1408F56288E991500CABA3E /* PDFFiles */ = {
 			isa = PBXGroup;
 			children = (
-				D151A8D3289C54B00055FF98 /* TestExample.pdf */,
+				D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */,
 			);
 			path = PDFFiles;
 			sourceTree = "<group>";
@@ -949,7 +949,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D151A8D4289C54B00055FF98 /* TestExample.pdf in Resources */,
+				D16ADFA028A43C6A0096006C /* SwiftProgrammingLanguage.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

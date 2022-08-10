@@ -76,6 +76,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
   
   func testSuccessSetFiles() {
     var image: UIImage?
+    var error: String?
     var deleteIndex: Int?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
@@ -93,22 +94,31 @@ final class UserDocumentsViewModelTests: XCTestCase {
       setFilesExpectation.fulfill()
     }.store(in: &subscriptions)
     
+    let chooseFileFailedExpectation = XCTestExpectation(description: "testSuccessSetFiles_ChooseFileFailed")
+    viewModel.chooseFileDidFail.sink {
+      error = $0
+      chooseFileFailedExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
     let deleteDocumentExpectation = XCTestExpectation(description: "testSuccessSetFiles_DeleteDocument")
     viewModel.deleteAdditionalDocument.sink {
       deleteIndex = $0.documentIndex
       deleteDocumentExpectation.fulfill()
     }.store(in: &subscriptions)
     
-    let url = Bundle(for: type(of: self)).url(forResource: "TestExample", withExtension: "pdf")!
-    viewModel.setFiles(with: [url], at: 0)
+    let url = Bundle(for: type(of: self)).url(forResource: "SwiftProgrammingLanguage", withExtension: "pdf")!
+    let urls = Array(repeating: url, count: 3)
+    viewModel.setFiles(with: urls, at: 0)
     
     let expectations = [
       setFilesExpectation,
+      chooseFileFailedExpectation,
       deleteDocumentExpectation
     ]
     
-    wait(for: expectations, timeout: 2)
+    wait(for: expectations, timeout: 5)
     XCTAssertNotNil(image)
+    XCTAssertEqual(error, L.failedToSelectReachedMaxSize)
     XCTAssertEqual(deleteIndex, 0)
   }
   
