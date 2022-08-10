@@ -356,7 +356,7 @@ struct UserDocumentsSectionBuilder {
   }
   
   func updateSection(_ section: inout Section,
-                     isAddressOnDocumentDidChangeWith model: BoolModel) -> TableUpdate {
+                     isAddressOnDocumentDidChangeWith model: BoolModel?) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
     
     if model == .no, additionalDocumentsIndex(in: section) == nil {
@@ -483,10 +483,11 @@ private extension UserDocumentsSectionBuilder {
   }
   
   func isAddressOnDocumentItem() -> Section.Item {
+    let items = [""] + BoolModel.allCases.map { $0.description }
     let field = Section.Item.Mode.Field(type: .isAddressOnDocument,
                                         placeholder: L.selectAnswer,
                                         text: nil,
-                                        items: BoolModel.allCases.map { $0.description },
+                                        items: items,
                                         seletedItemIndex: nil)
     return .init(title: L.isAddressUpToDateDescription, mode: .field(field))
   }

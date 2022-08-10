@@ -31,7 +31,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
   var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
   var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
-  var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel, Never> { get }
+  var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel?, Never> { get }
   var addAdditionalDocuments: PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never> { get }
   var deleteAdditionalDocument: PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never> { get }
   var chooseFileDidFail: PassthroughSubject<String, Never> { get }
@@ -54,7 +54,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
   let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
-  let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel, Never>()
+  let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel?, Never>()
   let addAdditionalDocuments = PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never>()
   let deleteAdditionalDocument = PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never>()
   let chooseFileDidFail = PassthroughSubject<String, Never>()
@@ -121,8 +121,8 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     case .isAddressOnDocument:
       let value = BoolModel(str: text ?? "")
       isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)
-      if isFieldChanged, let value = value {
-        if value == .yes {
+      if isFieldChanged {
+        if value == .yes || value == nil {
           userDocumentsModel.additionalDocuments.removeAll()
         }
         isAddressOnDocumentDidChange.send(value)
