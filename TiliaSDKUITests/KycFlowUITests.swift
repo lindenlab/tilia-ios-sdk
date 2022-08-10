@@ -115,6 +115,10 @@ final class KycFlowUITests: XCTestCase {
     let useAddressFor1099TextField = app.tables.cells.textFields["useAddressFor1099TextField"]
     XCTAssert(useAddressFor1099TextField.exists)
     useAddressFor1099TextField.tap()
+    
+    let useAddressFor1099Picker = app.pickerWheels.firstMatch
+    XCTAssert(useAddressFor1099Picker.exists)
+    useAddressFor1099Picker.adjust(toPickerWheelValue: "Yes")
     useAddressFor1099TextField.typeText("\n")
     
     scrollUp(app: app, dy: -200)
@@ -139,6 +143,10 @@ final class KycFlowUITests: XCTestCase {
     let isAddressOnDocumentTextField = app.tables.cells.textFields["isAddressOnDocumentTextField"]
     XCTAssert(isAddressOnDocumentTextField.exists)
     isAddressOnDocumentTextField.tap()
+    
+    let isAddressOnDocumentPicker = app.pickerWheels.firstMatch
+    XCTAssert(isAddressOnDocumentPicker.exists)
+    isAddressOnDocumentPicker.adjust(toPickerWheelValue: "Yes")
     isAddressOnDocumentTextField.typeText("\n")
     
     scrollUp(app: app, dy: -200)
@@ -409,6 +417,10 @@ final class KycFlowUITests: XCTestCase {
     let useAddressFor1099TextField = app.tables.cells.textFields["useAddressFor1099TextField"]
     XCTAssert(useAddressFor1099TextField.exists)
     useAddressFor1099TextField.tap()
+    
+    let useAddressFor1099Picker = app.pickerWheels.firstMatch
+    XCTAssert(useAddressFor1099Picker.exists)
+    useAddressFor1099Picker.adjust(toPickerWheelValue: "Yes")
     useAddressFor1099TextField.typeText("\n")
     
     scrollUp(app: app, dy: -200)
@@ -433,6 +445,10 @@ final class KycFlowUITests: XCTestCase {
     let isAddressOnDocumentTextField = app.tables.cells.textFields["isAddressOnDocumentTextField"]
     XCTAssert(isAddressOnDocumentTextField.exists)
     isAddressOnDocumentTextField.tap()
+    
+    let isAddressOnDocumentPicker = app.pickerWheels.firstMatch
+    XCTAssert(isAddressOnDocumentPicker.exists)
+    isAddressOnDocumentPicker.adjust(toPickerWheelValue: "Yes")
     isAddressOnDocumentTextField.typeText("\n")
     
     scrollUp(app: app, dy: -200)
