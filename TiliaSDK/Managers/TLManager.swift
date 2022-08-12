@@ -108,7 +108,7 @@ public extension TLManager {
     networkManager.getTosRequiredForUser { completion($0.map { $0.isTosSigned }) }
   }
   
-  /// Get Terms Of Service content, user access token is required
+  /// Get Terms Of Service content, user access token is not required
   /// - Parameters:
   ///   - completion: completion that returns TOS content or error
   func getTosContent(completion: @escaping (Result<String, Error>) -> Void) {
