@@ -24,7 +24,7 @@ final class TosViewController: BaseViewController {
     label.textAlignment = .center
     label.text = L.tiliaTos
     label.numberOfLines = 0
-    label.font = UIFont.boldSystemFont(ofSize: 18)
+    label.font = UIFont.boldSystemFont(ofSize: 20)
     label.textColor = .primaryTextColor
     return label
   }()
