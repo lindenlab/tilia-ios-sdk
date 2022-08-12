@@ -124,13 +124,24 @@ final class TLManagerTests: XCTestCase {
     XCTAssertNotNil(errorCallback)
   }
   
-  func testMissedRequiredDataForTosCheckout() {
+  func testMissedRequiredDataForCheckoutFlow() {
     var errorCallback: TLErrorCallback?
-    let expectation = XCTestExpectation(description: "testMissedRequiredDataForTosCheckout")
+    let expectation = XCTestExpectation(description: "testMissedRequiredDataForCheckoutFlow")
     TLManager.shared.presentCheckoutViewController(on: UIViewController(),
                                                    withInvoiceId: "",
                                                    animated: true,
                                                    onError: { errorCallback = $0; expectation.fulfill() })
+    wait(for: [expectation], timeout: 1)
+    XCTAssertNotNil(errorCallback)
+  }
+  
+  func testMissedRequiredDataForKycFlow() {
+    TLManager.shared.setToken("")
+    var errorCallback: TLErrorCallback?
+    let expectation = XCTestExpectation(description: "testMissedRequiredDataForKycFlow")
+    TLManager.shared.presentKycViewController(on: UIViewController(),
+                                              animated: true,
+                                              onError: { errorCallback = $0; expectation.fulfill() })
     wait(for: [expectation], timeout: 1)
     XCTAssertNotNil(errorCallback)
   }
