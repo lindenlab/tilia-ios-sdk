@@ -65,10 +65,6 @@ extension RouterProtocol {
 
 extension RouterProtocol {
   
-  var testData: Data? {
-    return nil
-  }
-  
   func readJSONFromFile(_ fileName: String) -> Data? {
     guard
       let path = Bundle.main.path(forResource: fileName, ofType: "json"),
