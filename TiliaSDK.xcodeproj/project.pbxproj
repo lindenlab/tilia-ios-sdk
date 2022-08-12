@@ -17,6 +17,9 @@
 		D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D727F22A2A009B30DD /* TestViewController.swift */; };
 		D123208628A6693A0039990A /* GetTosContentResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D123208528A6693A0039990A /* GetTosContentResponse.json */; };
 		D123208828A669800039990A /* TosContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123208728A669800039990A /* TosContentModel.swift */; };
+		D123208B28A6D5890039990A /* TosContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123208A28A6D5890039990A /* TosContentViewModel.swift */; };
+		D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123208C28A6D5A10039990A /* TosContentRouter.swift */; };
+		D123208F28A6D5B30039990A /* TosContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123208E28A6D5B30039990A /* TosContentViewController.swift */; };
 		D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443DE27EB9C7100C68811 /* TosViewModel.swift */; };
 		D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E027EB9C8100C68811 /* TosViewController.swift */; };
 		D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E427EB9F0300C68811 /* TextViewWithLink.swift */; };
@@ -144,6 +147,9 @@
 		D120F2D727F22A2A009B30DD /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		D123208528A6693A0039990A /* GetTosContentResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTosContentResponse.json; sourceTree = "<group>"; };
 		D123208728A669800039990A /* TosContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentModel.swift; sourceTree = "<group>"; };
+		D123208A28A6D5890039990A /* TosContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentViewModel.swift; sourceTree = "<group>"; };
+		D123208C28A6D5A10039990A /* TosContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentRouter.swift; sourceTree = "<group>"; };
+		D123208E28A6D5B30039990A /* TosContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentViewController.swift; sourceTree = "<group>"; };
 		D12443DE27EB9C7100C68811 /* TosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewModel.swift; sourceTree = "<group>"; };
 		D12443E027EB9C8100C68811 /* TosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewController.swift; sourceTree = "<group>"; };
 		D12443E427EB9F0300C68811 /* TextViewWithLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewWithLink.swift; sourceTree = "<group>"; };
@@ -305,6 +311,16 @@
 			path = BaseProtocols;
 			sourceTree = "<group>";
 		};
+		D123208928A6D56C0039990A /* TosContent */ = {
+			isa = PBXGroup;
+			children = (
+				D123208A28A6D5890039990A /* TosContentViewModel.swift */,
+				D123208C28A6D5A10039990A /* TosContentRouter.swift */,
+				D123208E28A6D5B30039990A /* TosContentViewController.swift */,
+			);
+			path = TosContent;
+			sourceTree = "<group>";
+		};
 		D12443DD27EB9B0700C68811 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +335,7 @@
 		D12443E227EB9C8800C68811 /* Tos */ = {
 			isa = PBXGroup;
 			children = (
+				D123208928A6D56C0039990A /* TosContent */,
 				D12443DE27EB9C7100C68811 /* TosViewModel.swift */,
 				D120F2CA27F1DDD5009B30DD /* TosRouter.swift */,
 				D12443E027EB9C8100C68811 /* TosViewController.swift */,
@@ -844,12 +861,14 @@
 				D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */,
 				D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */,
 				D1C8A84C27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift in Sources */,
+				D123208B28A6D5890039990A /* TosContentViewModel.swift in Sources */,
 				D1B872D12804A22F00DD1F7B /* NetworkManager.swift in Sources */,
 				D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */,
 				D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */,
 				D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */,
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
+				D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */,
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
 				D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */,
 				D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */,
@@ -864,6 +883,7 @@
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
 				D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */,
 				D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */,
+				D123208F28A6D5B30039990A /* TosContentViewController.swift in Sources */,
 				D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */,
 				D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */,
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,

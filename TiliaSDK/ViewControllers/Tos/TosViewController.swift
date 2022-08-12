@@ -24,7 +24,7 @@ final class TosViewController: BaseViewController {
     label.textAlignment = .center
     label.text = L.tiliaTos
     label.numberOfLines = 0
-    label.font = UIFont.boldSystemFont(ofSize: 20)
+    label.font = .boldSystemFont(ofSize: 20)
     label.textColor = .primaryTextColor
     return label
   }()
@@ -89,10 +89,11 @@ final class TosViewController: BaseViewController {
   init(manager: NetworkManager,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    let router = TosRouter()
-    self.viewModel = TosViewModel(manager: manager,
-                                  onComplete: onComplete,
-                                  onError: onError)
+    let viewModel = TosViewModel(manager: manager,
+                                 onComplete: onComplete,
+                                 onError: onError)
+    let router = TosRouter(dataStore: viewModel)
+    self.viewModel = viewModel
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
@@ -126,7 +127,13 @@ extension TosViewController: UIAdaptivePresentationControllerDelegate {
 extension TosViewController: TextViewWithLinkDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
-    router.showWebView(with: link)
+    guard let model = TosAcceptModel(str: link) else { return }
+    switch model {
+    case .termsOfService:
+      router.routeToTosContentView()
+    case .privacyPolicy:
+      router.showWebView(with: model.url)
+    }
   }
   
 }
