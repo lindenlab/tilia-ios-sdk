@@ -29,6 +29,13 @@ enum AccountRouter: RouterProtocol {
     }
   }
   
+  func requestHeaders() throws -> [String : String] {
+    switch self {
+    case .getTosContent: return [:]
+    default: return try defaultRequestHeaders()
+    }
+  }
+  
 }
 
 // MARK: - For Unit Tests
