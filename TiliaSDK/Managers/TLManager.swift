@@ -108,6 +108,13 @@ public extension TLManager {
     networkManager.getTosRequiredForUser { completion($0.map { $0.isTosSigned }) }
   }
   
+  /// Get Terms Of Service content, user access token is required
+  /// - Parameters:
+  ///   - completion: completion that returns TOS content or error
+  func getTosContent(completion: @escaping (Result<String, Error>) -> Void) {
+    networkManager.getTosContent { completion($0.map { $0.content }) }
+  }
+  
   /// Checks user balance by currency code, user access token is required
   /// - Parameters:
   ///   - currencyCode: currency code, for example USD

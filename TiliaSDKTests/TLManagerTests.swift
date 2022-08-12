@@ -96,6 +96,23 @@ class TLManagerTests: XCTestCase {
     XCTAssertNotNil(tokenError)
   }
   
+  func testGetTosContentTokenIsEmpty() {
+    TLManager.shared.setToken("")
+    var tokenError: Error?
+    let expectation = XCTestExpectation(description: "testGetTosContentTokenIsEmpty")
+    TLManager.shared.getTosContent { result in
+      expectation.fulfill()
+      switch result {
+      case .failure(let error):
+        tokenError = error
+      case .success:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(tokenError)
+  }
+  
   func testGetUserBalanceByCurrencyCodeIsEmpty() {
     TLManager.shared.setToken(UUID().uuidString)
     var currencyCodeError: Error?
