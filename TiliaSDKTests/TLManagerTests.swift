@@ -141,9 +141,9 @@ class TLManagerTests: XCTestCase {
     XCTAssertNotNil(errorCallback)
   }
   
-  func testMissedRequiredDataForTosCheckout() {
+  func testMissedRequiredDataForCheckoutFlow() {
     var errorCallback: TLErrorCallback?
-    let expectation = XCTestExpectation(description: "testMissedRequiredDataForTosCheckout")
+    let expectation = XCTestExpectation(description: "testMissedRequiredDataForCheckoutFlow")
     TLManager.shared.presentCheckoutViewController(on: UIViewController(),
                                                    withInvoiceId: "",
                                                    animated: true,
