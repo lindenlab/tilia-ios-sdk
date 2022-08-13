@@ -38,6 +38,7 @@ final class TosViewController: BaseViewController {
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
     uiSwitch.accessibilityIdentifier = "acceptSwitch"
     uiSwitch.setContentHuggingPriority(.required, for: .horizontal)
+    uiSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
     return uiSwitch
   }()
   
