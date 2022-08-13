@@ -32,7 +32,7 @@ final class TosContentViewController: BaseViewController {
     let button = UIButton()
     button.setImage(.closeMediumIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
-    button.imageView?.tintColor = .primaryButtonTextColor
+    button.imageView?.tintColor = .primaryTextColor
     button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
     return button
   }()
