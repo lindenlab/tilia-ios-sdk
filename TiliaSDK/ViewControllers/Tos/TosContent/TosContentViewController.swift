@@ -30,7 +30,7 @@ final class TosContentViewController: BaseViewController {
   
   private lazy var dismissButton: UIButton = {
     let button = UIButton(type: .system)
-    button.setTitle("Close", for: .normal)
+    button.setImage(.closeMediumIcon, for: .normal)
     button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
     return button
   }()
