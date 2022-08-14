@@ -15,8 +15,13 @@ final class DemoViewController: UITableViewController {
   }
   
   let sections: [Section] = [
-    Section(name: "Configurable section", items: ["Is staging", "Use Mocks (only for UI Tests)", "Set colors"]),
-    Section(name: "Testable section", items: ["getTosRequiredForUser", "getUserBalanceByCurrency", "TOS flow","Checkout flow"])
+    Section(name: "Configurable section", items: ["Is staging",
+                                                  "Use Mocks (only for UI Tests)",
+                                                  "Set colors"]),
+    Section(name: "Testable section", items: ["getTosRequiredForUser",
+                                              "getUserBalanceByCurrency",
+                                              "TOS flow",
+                                              "Checkout flow"])
   ]
   
   override func numberOfSections(in tableView: UITableView) -> Int {
