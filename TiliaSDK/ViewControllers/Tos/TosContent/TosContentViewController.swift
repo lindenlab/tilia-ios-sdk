@@ -34,6 +34,7 @@ final class TosContentViewController: BaseViewController {
                     for: .normal)
     button.imageView?.tintColor = .primaryTextColor
     button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "closeButton"
     return button
   }()
   
