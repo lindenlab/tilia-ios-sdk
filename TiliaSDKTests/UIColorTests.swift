@@ -8,7 +8,7 @@
 import XCTest
 @testable import TiliaSDK
 
-class UIColorTests: XCTestCase {
+final class UIColorTests: XCTestCase {
   
   func testIsColorDark() {
     let whiteColor = UIColor.white

@@ -46,6 +46,7 @@
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
 		D16EDD4C2808481D00A1E413 /* TLUpdateCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */; };
+		D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */; };
 		D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165827E7C0AF0082A85B /* AccountRouter.swift */; };
 		D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165A27E7C0C50082A85B /* PaymentRouter.swift */; };
 		D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */; };
@@ -179,6 +180,7 @@
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
 		D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLUpdateCallback.swift; sourceTree = "<group>"; };
+		D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentViewModelsTests.swift; sourceTree = "<group>"; };
 		D188165827E7C0AF0082A85B /* AccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouter.swift; sourceTree = "<group>"; };
 		D188165A27E7C0C50082A85B /* PaymentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRouter.swift; sourceTree = "<group>"; };
 		D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouter.swift; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 				D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */,
 				D1B872D22804C27300DD1F7B /* UIColorTests.swift */,
 				D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */,
+				D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */,
 				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
 				D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */,
 			);
@@ -924,6 +927,7 @@
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
+				D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */,
 				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
 				D1B872D32804C27300DD1F7B /* UIColorTests.swift in Sources */,

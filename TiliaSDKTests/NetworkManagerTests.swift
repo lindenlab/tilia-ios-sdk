@@ -8,7 +8,7 @@
 import XCTest
 @testable import TiliaSDK
 
-class NetworkManagerTests: XCTestCase {
+final class NetworkManagerTests: XCTestCase {
   
   var networkManager: NetworkManager!
   
