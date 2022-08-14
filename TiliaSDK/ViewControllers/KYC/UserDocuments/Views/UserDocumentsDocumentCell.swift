@@ -25,7 +25,6 @@ final class UserDocumentsDocumentCell: UICollectionViewCell {
   private let deleteButton: PrimaryButton = {
     let button = PrimaryButton()
     button.adjustsImageWhenHighlighted = false
-    button.contentEdgeInsets = .zero
     button.setImage(.closeIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.imageView?.tintColor = .primaryButtonTextColor

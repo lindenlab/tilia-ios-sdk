@@ -25,6 +25,7 @@ final class UserInfoNextButtonCell: UITableViewCell {
     button.setTitleColor(.borderColor, for: .disabled)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.accessibilityIdentifier = "nextButton"
+    button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     return button
   }()
   
