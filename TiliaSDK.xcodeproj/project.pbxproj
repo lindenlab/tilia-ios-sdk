@@ -14,6 +14,11 @@
 		D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */; };
 		D120F2D627F21082009B30DD /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D527F21082009B30DD /* PrimaryButton.swift */; };
 		D120F2D827F22A2A009B30DD /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D727F22A2A009B30DD /* TestViewController.swift */; };
+		D123208628A6693A0039990A /* GetTosContentResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D123208528A6693A0039990A /* GetTosContentResponse.json */; };
+		D123208828A669800039990A /* TosContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123208728A669800039990A /* TosContentModel.swift */; };
+		D123208B28A6D5890039990A /* TosContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123208A28A6D5890039990A /* TosContentViewModel.swift */; };
+		D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123208C28A6D5A10039990A /* TosContentRouter.swift */; };
+		D123208F28A6D5B30039990A /* TosContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D123208E28A6D5B30039990A /* TosContentViewController.swift */; };
 		D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443DE27EB9C7100C68811 /* TosViewModel.swift */; };
 		D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E027EB9C8100C68811 /* TosViewController.swift */; };
 		D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12443E427EB9F0300C68811 /* TextViewWithLink.swift */; };
@@ -74,6 +79,7 @@
 		D17EFFA3284645A700F4B6DD /* UserDocumentsDocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17EFFA2284645A700F4B6DD /* UserDocumentsDocumentCell.swift */; };
 		D17EFFA52846462500F4B6DD /* UICollectionView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17EFFA42846462500F4B6DD /* UICollectionView+Helpers.swift */; };
 		D17EFFA72846466900F4B6DD /* UICollectionViewCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17EFFA62846466900F4B6DD /* UICollectionViewCell+Helpers.swift */; };
+		D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */; };
 		D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165827E7C0AF0082A85B /* AccountRouter.swift */; };
 		D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165A27E7C0C50082A85B /* PaymentRouter.swift */; };
 		D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */; };
@@ -89,7 +95,7 @@
 		D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */; };
 		D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */; };
 		D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8327E8DF3D00E3DC2A /* Data+Serialization.swift */; };
-		D192AD8827E8F53900E3DC2A /* TosModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8727E8F53900E3DC2A /* TosModel.swift */; };
+		D192AD8827E8F53900E3DC2A /* IsTosSignedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8727E8F53900E3DC2A /* IsTosSignedModel.swift */; };
 		D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */; };
 		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
 		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
@@ -194,6 +200,11 @@
 		D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosAcceptModel.swift; sourceTree = "<group>"; };
 		D120F2D527F21082009B30DD /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 		D120F2D727F22A2A009B30DD /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		D123208528A6693A0039990A /* GetTosContentResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTosContentResponse.json; sourceTree = "<group>"; };
+		D123208728A669800039990A /* TosContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentModel.swift; sourceTree = "<group>"; };
+		D123208A28A6D5890039990A /* TosContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentViewModel.swift; sourceTree = "<group>"; };
+		D123208C28A6D5A10039990A /* TosContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentRouter.swift; sourceTree = "<group>"; };
+		D123208E28A6D5B30039990A /* TosContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentViewController.swift; sourceTree = "<group>"; };
 		D12443DE27EB9C7100C68811 /* TosViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewModel.swift; sourceTree = "<group>"; };
 		D12443E027EB9C8100C68811 /* TosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewController.swift; sourceTree = "<group>"; };
 		D12443E427EB9F0300C68811 /* TextViewWithLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewWithLink.swift; sourceTree = "<group>"; };
@@ -257,6 +268,7 @@
 		D17EFFA2284645A700F4B6DD /* UserDocumentsDocumentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsDocumentCell.swift; sourceTree = "<group>"; };
 		D17EFFA42846462500F4B6DD /* UICollectionView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Helpers.swift"; sourceTree = "<group>"; };
 		D17EFFA62846466900F4B6DD /* UICollectionViewCell+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Helpers.swift"; sourceTree = "<group>"; };
+		D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentViewModelsTests.swift; sourceTree = "<group>"; };
 		D188165827E7C0AF0082A85B /* AccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouter.swift; sourceTree = "<group>"; };
 		D188165A27E7C0C50082A85B /* PaymentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRouter.swift; sourceTree = "<group>"; };
 		D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouter.swift; sourceTree = "<group>"; };
@@ -272,7 +284,7 @@
 		D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+DecodeObject.swift"; sourceTree = "<group>"; };
 		D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+EncodeData.swift"; sourceTree = "<group>"; };
 		D192AD8327E8DF3D00E3DC2A /* Data+Serialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Serialization.swift"; sourceTree = "<group>"; };
-		D192AD8727E8F53900E3DC2A /* TosModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosModel.swift; sourceTree = "<group>"; };
+		D192AD8727E8F53900E3DC2A /* IsTosSignedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsTosSignedModel.swift; sourceTree = "<group>"; };
 		D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceInfoModel.swift; sourceTree = "<group>"; };
 		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
 		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
@@ -413,6 +425,16 @@
 			path = BaseProtocols;
 			sourceTree = "<group>";
 		};
+		D123208928A6D56C0039990A /* TosContent */ = {
+			isa = PBXGroup;
+			children = (
+				D123208A28A6D5890039990A /* TosContentViewModel.swift */,
+				D123208C28A6D5A10039990A /* TosContentRouter.swift */,
+				D123208E28A6D5B30039990A /* TosContentViewController.swift */,
+			);
+			path = TosContent;
+			sourceTree = "<group>";
+		};
 		D12443DD27EB9B0700C68811 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -428,6 +450,7 @@
 		D12443E227EB9C8800C68811 /* Tos */ = {
 			isa = PBXGroup;
 			children = (
+				D123208928A6D56C0039990A /* TosContent */,
 				D12443DE27EB9C7100C68811 /* TosViewModel.swift */,
 				D120F2CA27F1DDD5009B30DD /* TosRouter.swift */,
 				D12443E027EB9C8100C68811 /* TosViewController.swift */,
@@ -512,6 +535,7 @@
 				D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */,
 				D1B872D22804C27300DD1F7B /* UIColorTests.swift */,
 				D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */,
+				D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */,
 				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
 				D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */,
 				D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */,
@@ -531,7 +555,8 @@
 				D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */,
 				D16EDD492808470900A1E413 /* TLCompleteCallback.swift */,
 				D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */,
-				D192AD8727E8F53900E3DC2A /* TosModel.swift */,
+				D192AD8727E8F53900E3DC2A /* IsTosSignedModel.swift */,
+				D123208728A669800039990A /* TosContentModel.swift */,
 				D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */,
 				D135DCB727E771100009D888 /* ServerConfiguration.swift */,
 				D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */,
@@ -729,6 +754,7 @@
 			isa = PBXGroup;
 			children = (
 				D1B872C228044CC900DD1F7B /* GetTosRequiredForUserResponse.json */,
+				D123208528A6693A0039990A /* GetTosContentResponse.json */,
 				D1B872C028044CC900DD1F7B /* SignTosForUserResponse.json */,
 				D1B872C328044CC900DD1F7B /* GetUserBalanceByCurrencyCodeResponse.json */,
 				D1B872C128044CC900DD1F7B /* GetInvoiceDetailsResponse.json */,
@@ -928,6 +954,7 @@
 				D135DC8227E74A510009D888 /* Assets.xcassets in Resources */,
 				D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */,
 				D1B872C928044CC900DD1F7B /* GetUserBalanceByCurrencyCodeResponse.json in Resources */,
+				D123208628A6693A0039990A /* GetTosContentResponse.json in Resources */,
 				D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */,
 				D126AF182875872F00CAC5F2 /* ResedencePermitBackImage.svg in Resources */,
 				D1BB634B287F3121007616DE /* SubmittedKycStatusResponse.json in Resources */,
@@ -1024,6 +1051,7 @@
 				D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */,
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
 				D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */,
+				D123208828A669800039990A /* TosContentModel.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */,
 				D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */,
@@ -1044,6 +1072,7 @@
 				D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */,
 				D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */,
 				D1C8A84C27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift in Sources */,
+				D123208B28A6D5890039990A /* TosContentViewModel.swift in Sources */,
 				D1B872D12804A22F00DD1F7B /* NetworkManager.swift in Sources */,
 				D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */,
 				D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */,
@@ -1051,6 +1080,7 @@
 				D1BB6343287F0A40007616DE /* KycRouter.swift in Sources */,
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
+				D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */,
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
 				D126AF212878365300CAC5F2 /* UserDocumentsProcessingCell.swift in Sources */,
 				D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */,
@@ -1079,6 +1109,7 @@
 				D17EFFA3284645A700F4B6DD /* UserDocumentsDocumentCell.swift in Sources */,
 				D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */,
 				D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */,
+				D123208F28A6D5B30039990A /* TosContentViewController.swift in Sources */,
 				D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */,
 				D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */,
 				D15BA9ED282A9B2C00511785 /* TextFieldCell.swift in Sources */,
@@ -1117,7 +1148,7 @@
 				D15BA9F1282A9B9500511785 /* ThreeTextFieldsCell.swift in Sources */,
 				D1BA29E227FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift in Sources */,
 				D135DCB327E76E090009D888 /* TLError.swift in Sources */,
-				D192AD8827E8F53900E3DC2A /* TosModel.swift in Sources */,
+				D192AD8827E8F53900E3DC2A /* IsTosSignedModel.swift in Sources */,
 				D120F2D627F21082009B30DD /* PrimaryButton.swift in Sources */,
 				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */,
@@ -1140,6 +1171,7 @@
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
 				D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
+				D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */,
 				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
 				D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */,
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,

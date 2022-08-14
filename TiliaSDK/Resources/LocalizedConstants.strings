@@ -20,6 +20,8 @@
 "errorPaymentMessage" = "Sorry, we were unable to process your payment. Please try again later.";
 "errorTosTitle" = "Error accepting TOS";
 "errorTosMessage" = "Sorry, we were unable to accept Terms Of Service. Please try again later.";
+"errorTosContentTitle" = "Error getting TOS";
+"errorTosContentMessage" = "Sorry, we were unable to get Terms Of Service. Please try again later.";
 "close" = "Close";
 "missedRequiredData" = "Missed required data.";
 "addPaymentMethodTitle" = "Add a payment method to your account";

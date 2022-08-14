@@ -33,6 +33,23 @@ final class NetworkManagerTests: XCTestCase {
     XCTAssertFalse(isTosSigned)
   }
   
+  func testGetTosContentSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var content: String?
+    let expectation = XCTestExpectation(description: "testGetTosContentSuccess")
+    networkManager.getTosContent { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let model):
+        content = model.content
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(content)
+  }
+  
   func testSignTosForUserSuccess() {
     TLManager.shared.setToken(UUID().uuidString)
     var isSuccess = false

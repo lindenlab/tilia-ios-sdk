@@ -22,8 +22,13 @@ final class NetworkManager {
                                               environment: environment)
   }
   
-  func getTosRequiredForUser(completion: @escaping CompletionResultHandler<TosModel>) {
+  func getTosRequiredForUser(completion: @escaping CompletionResultHandler<IsTosSignedModel>) {
     let router = AccountRouter.getTosRequiredForUser
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  func getTosContent(completion: @escaping CompletionResultHandler<TosContentModel>) {
+    let router = AccountRouter.getTosContent
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   

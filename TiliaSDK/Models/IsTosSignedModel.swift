@@ -1,5 +1,5 @@
 //
-//  TosModel.swift
+//  IsTosSignedModel.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 21.03.2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TosModel: Decodable {
+struct IsTosSignedModel: Decodable {
   
   let isTosSigned: Bool
   

@@ -51,17 +51,27 @@ final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
         self.openUrl.send(model.url)
       case .failure(let error):
         self.error.send(error)
-        let event = TLEvent(flow: .checkout, action: .error)
-        let model = TLErrorCallback(event: event,
-                                    error: L.addCreditCardTitle,
-                                    message: error.localizedDescription)
-        self.onError?(model)
+        self.didFail(with: error)
       }
     }
   }
   
   func complete() {
     onReload(needToReload)
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension AddCreditCardViewModel {
+  
+  func didFail(with error: Error) {
+    let event = TLEvent(flow: .checkout, action: .error)
+    let model = TLErrorCallback(event: event,
+                                error: L.addCreditCardTitle,
+                                message: error.localizedDescription)
+    onError?(model)
   }
   
 }
