@@ -29,7 +29,7 @@ final class UserDocumentsDocumentCell: UICollectionViewCell {
                     for: .normal)
     button.imageView?.tintColor = .primaryButtonTextColor
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.layer.cornerRadius = 20
+    button.layer.cornerRadius = 15
     return button
   }()
   
@@ -82,8 +82,8 @@ private extension UserDocumentsDocumentCell {
       imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1),
       deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
       deleteButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
-      deleteButton.widthAnchor.constraint(equalToConstant: 40),
-      deleteButton.heightAnchor.constraint(equalToConstant: 40)
+      deleteButton.widthAnchor.constraint(equalToConstant: 30),
+      deleteButton.heightAnchor.constraint(equalToConstant: 30)
     ])
   }
   
