@@ -70,6 +70,7 @@
 		D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A4282560DC0088FB3D /* ButtonsView.swift */; };
 		D16D56A7282593D20088FB3D /* PrimaryButtonWithStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A6282593D20088FB3D /* PrimaryButtonWithStyle.swift */; };
 		D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */; };
+		D16E2A8D28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A8C28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift */; };
 		D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */; };
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
@@ -259,6 +260,7 @@
 		D16D56A4282560DC0088FB3D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		D16D56A6282593D20088FB3D /* PrimaryButtonWithStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonWithStyle.swift; sourceTree = "<group>"; };
 		D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoFooterView.swift; sourceTree = "<group>"; };
+		D16E2A8C28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsFlowTestViewController.swift; sourceTree = "<group>"; };
 		D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLErrorCallback.swift; sourceTree = "<group>"; };
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
@@ -817,6 +819,7 @@
 				D1CCE8DB27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift */,
 				D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */,
 				D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */,
+				D16E2A8C28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -1083,6 +1086,7 @@
 				D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */,
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
 				D126AF212878365300CAC5F2 /* UserDocumentsProcessingCell.swift in Sources */,
+				D16E2A8D28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift in Sources */,
 				D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */,
 				D1BB6349287F3012007616DE /* SubmittedKycStatusModel.swift in Sources */,
 				D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */,
