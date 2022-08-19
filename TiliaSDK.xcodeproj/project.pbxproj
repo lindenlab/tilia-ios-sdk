@@ -71,6 +71,12 @@
 		D16D56A7282593D20088FB3D /* PrimaryButtonWithStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A6282593D20088FB3D /* PrimaryButtonWithStyle.swift */; };
 		D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */; };
 		D16E2A8D28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A8C28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift */; };
+		D16E2A9328AFA14B00287C55 /* SendReceiptViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9228AFA14B00287C55 /* SendReceiptViewModel.swift */; };
+		D16E2A9528AFA15D00287C55 /* SendReceiptRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9428AFA15D00287C55 /* SendReceiptRouter.swift */; };
+		D16E2A9728AFA16700287C55 /* SendReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9628AFA16700287C55 /* SendReceiptViewController.swift */; };
+		D16E2A9928AFA18700287C55 /* TransactionDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9828AFA18700287C55 /* TransactionDetailsViewModel.swift */; };
+		D16E2A9B28AFA19D00287C55 /* TransactionDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9A28AFA19D00287C55 /* TransactionDetailsRouter.swift */; };
+		D16E2A9D28AFA1A600287C55 /* TransactionDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9C28AFA1A600287C55 /* TransactionDetailsViewController.swift */; };
 		D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */; };
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
@@ -261,6 +267,12 @@
 		D16D56A6282593D20088FB3D /* PrimaryButtonWithStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonWithStyle.swift; sourceTree = "<group>"; };
 		D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoFooterView.swift; sourceTree = "<group>"; };
 		D16E2A8C28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsFlowTestViewController.swift; sourceTree = "<group>"; };
+		D16E2A9228AFA14B00287C55 /* SendReceiptViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptViewModel.swift; sourceTree = "<group>"; };
+		D16E2A9428AFA15D00287C55 /* SendReceiptRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptRouter.swift; sourceTree = "<group>"; };
+		D16E2A9628AFA16700287C55 /* SendReceiptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptViewController.swift; sourceTree = "<group>"; };
+		D16E2A9828AFA18700287C55 /* TransactionDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewModel.swift; sourceTree = "<group>"; };
+		D16E2A9A28AFA19D00287C55 /* TransactionDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsRouter.swift; sourceTree = "<group>"; };
+		D16E2A9C28AFA1A600287C55 /* TransactionDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewController.swift; sourceTree = "<group>"; };
 		D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLErrorCallback.swift; sourceTree = "<group>"; };
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
@@ -644,18 +656,12 @@
 		D16E2A8E28AF919600287C55 /* TransactionDetails */ = {
 			isa = PBXGroup;
 			children = (
+				D16E2A9028AFA0DA00287C55 /* TransactionDetails */,
+				D16E2A9128AFA11000287C55 /* SendReceipt */,
 			);
 			path = TransactionDetails;
 			sourceTree = "<group>";
 		};
-		D1791239282C39E80053DB10 /* Validator */ = {
-			isa = PBXGroup;
-			children = (
-				D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */,
-			);
-			path = Validator;
-      sourceTree = "<group>";
-    };
 		D16E2A8F28AF924100287C55 /* Tos */ = {
 			isa = PBXGroup;
 			children = (
@@ -664,6 +670,34 @@
 				D12443E027EB9C8100C68811 /* TosViewController.swift */,
 			);
 			path = Tos;
+			sourceTree = "<group>";
+		};
+		D16E2A9028AFA0DA00287C55 /* TransactionDetails */ = {
+			isa = PBXGroup;
+			children = (
+				D16E2A9828AFA18700287C55 /* TransactionDetailsViewModel.swift */,
+				D16E2A9A28AFA19D00287C55 /* TransactionDetailsRouter.swift */,
+				D16E2A9C28AFA1A600287C55 /* TransactionDetailsViewController.swift */,
+			);
+			path = TransactionDetails;
+			sourceTree = "<group>";
+		};
+		D16E2A9128AFA11000287C55 /* SendReceipt */ = {
+			isa = PBXGroup;
+			children = (
+				D16E2A9228AFA14B00287C55 /* SendReceiptViewModel.swift */,
+				D16E2A9428AFA15D00287C55 /* SendReceiptRouter.swift */,
+				D16E2A9628AFA16700287C55 /* SendReceiptViewController.swift */,
+			);
+			path = SendReceipt;
+			sourceTree = "<group>";
+		};
+		D1791239282C39E80053DB10 /* Validator */ = {
+			isa = PBXGroup;
+			children = (
+				D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */,
+			);
+			path = Validator;
 			sourceTree = "<group>";
 		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
@@ -1055,6 +1089,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D16E2A9D28AFA1A600287C55 /* TransactionDetailsViewController.swift in Sources */,
 				D1B871FC28339BE600C44441 /* UserDocumentsViewModel.swift in Sources */,
 				D1C8A83E27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift in Sources */,
 				D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */,
@@ -1063,12 +1098,14 @@
 				D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */,
 				D1C8A84227F5E42500BF2910 /* LocalizationConstants.swift in Sources */,
 				D18855E3282910A200BAC86F /* TextFieldsCell.swift in Sources */,
+				D16E2A9528AFA15D00287C55 /* SendReceiptRouter.swift in Sources */,
 				D179123D282C3BD00053DB10 /* PossiblyEmpty.swift in Sources */,
 				D18855E1282700D400BAC86F /* UserInfoModel.swift in Sources */,
 				D1CCE8D627F4C5CF00FD0E25 /* TosRequiredForUserTestViewController.swift in Sources */,
 				D1C8A84427F5E49600BF2910 /* String+Helpers.swift in Sources */,
 				D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */,
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
+				D16E2A9728AFA16700287C55 /* SendReceiptViewController.swift in Sources */,
 				D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */,
 				D123208828A669800039990A /* TosContentModel.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
@@ -1080,6 +1117,7 @@
 				D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */,
 				D1C8A83A27F4FDA800BF2910 /* UITableView+Helpers.swift in Sources */,
 				D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */,
+				D16E2A9328AFA14B00287C55 /* SendReceiptViewModel.swift in Sources */,
 				D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */,
 				D1BB6345287F2B8B007616DE /* SubmittedKycModel.swift in Sources */,
 				D1D5B53C27F759E000E04EE1 /* CheckoutSectionBuilder.swift in Sources */,
@@ -1112,9 +1150,11 @@
 				D18CDB74283F810C00AAC732 /* UserDocumentsSelectDocumentCell.swift in Sources */,
 				D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */,
 				D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */,
+				D16E2A9B28AFA19D00287C55 /* TransactionDetailsRouter.swift in Sources */,
 				D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */,
 				D1A165B2287F5C3100EFD999 /* BoolModel.swift in Sources */,
 				D135DCAC27E762460009D888 /* RouterProtocol.swift in Sources */,
+				D16E2A9928AFA18700287C55 /* TransactionDetailsViewModel.swift in Sources */,
 				D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */,
 				D1BA29E027FCA96B00F046E8 /* ColorsConfiguration.swift in Sources */,
 				D1A165B0287F5C0C00EFD999 /* UserDocumentsModel.swift in Sources */,
