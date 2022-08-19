@@ -445,6 +445,7 @@
 				D12443E227EB9C8800C68811 /* Tos */,
 				D1CCE8C527F4872F00FD0E25 /* Checkout */,
 				D19A0DA2281FED3E00483DDC /* KYC */,
+				D16E2A8E28AF919600287C55 /* TransactionDetails */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -640,6 +641,13 @@
 				D154AD482811E320003976CB /* AddCreditCardViewController.swift */,
 			);
 			path = AddCreditCard;
+			sourceTree = "<group>";
+		};
+		D16E2A8E28AF919600287C55 /* TransactionDetails */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TransactionDetails;
 			sourceTree = "<group>";
 		};
 		D1791239282C39E80053DB10 /* Validator */ = {
