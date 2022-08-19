@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TransactionDetailsViewController: BaseViewController {
+final class TransactionDetailsViewController: BaseTableViewController {
   
   private let viewModel: TransactionDetailsViewModelProtocol
   private let router: TransactionDetailsRoutingProtocol
@@ -23,7 +23,7 @@ final class TransactionDetailsViewController: BaseViewController {
     let router = TransactionDetailsRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
   }
   
