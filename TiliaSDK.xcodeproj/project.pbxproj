@@ -450,10 +450,8 @@
 		D12443E227EB9C8800C68811 /* Tos */ = {
 			isa = PBXGroup;
 			children = (
+				D16E2A8F28AF924100287C55 /* Tos */,
 				D123208928A6D56C0039990A /* TosContent */,
-				D12443DE27EB9C7100C68811 /* TosViewModel.swift */,
-				D120F2CA27F1DDD5009B30DD /* TosRouter.swift */,
-				D12443E027EB9C8100C68811 /* TosViewController.swift */,
 			);
 			path = Tos;
 			sourceTree = "<group>";
@@ -646,6 +644,16 @@
 				D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */,
 			);
 			path = Validator;
+      sourceTree = "<group>";
+    };
+		D16E2A8F28AF924100287C55 /* Tos */ = {
+			isa = PBXGroup;
+			children = (
+				D12443DE27EB9C7100C68811 /* TosViewModel.swift */,
+				D120F2CA27F1DDD5009B30DD /* TosRouter.swift */,
+				D12443E027EB9C8100C68811 /* TosViewController.swift */,
+			);
+			path = Tos;
 			sourceTree = "<group>";
 		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
