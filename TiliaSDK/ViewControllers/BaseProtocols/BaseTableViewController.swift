@@ -12,13 +12,7 @@ class BaseTableViewController: BaseViewController {
   let tableView: UITableView
   
   init(style: UITableView.Style = .grouped) {
-    let tableView = UITableView(frame: .zero, style: style)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.showsVerticalScrollIndicator = false
-    tableView.backgroundColor = .backgroundColor
-    tableView.separatorStyle = .none
-    tableView.delaysContentTouches = false
-    self.tableView = tableView
+    tableView = UITableView(frame: .zero, style: style)
     super.init(nibName: nil, bundle: nil)
     self.setup()
   }
@@ -76,6 +70,11 @@ extension BaseTableViewController: UITableViewDelegate {
 private extension BaseTableViewController {
   
   func setup() {
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.showsVerticalScrollIndicator = false
+    tableView.backgroundColor = .backgroundColor
+    tableView.separatorStyle = .none
+    tableView.delaysContentTouches = false
     tableView.dataSource = self
     tableView.delegate = self
     view.addSubview(tableView)
