@@ -14,20 +14,12 @@ enum TosAcceptModel: CaseIterable {
   
   static var title: String { return L.tosAcceptDescription }
   static var payTitle: String { return L.payAcceptDescription }
+  static var privacyPolicyUrl: URL { return URL(string: "https://www.tilia.io/legal/privacy")! }
   
   var description: String {
     switch self {
     case .termsOfService: return L.tos
     case .privacyPolicy: return L.privacyPolicy
-    }
-  }
-  
-  var url: URL {
-    switch self {
-    case .termsOfService:
-      return URL(string: "https://www.tilia.io/legal/tos")!
-    case .privacyPolicy:
-      return URL(string: "https://www.tilia.io/legal/privacy")!
     }
   }
   

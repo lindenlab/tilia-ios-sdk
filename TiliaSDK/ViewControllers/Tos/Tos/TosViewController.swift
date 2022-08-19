@@ -125,7 +125,7 @@ extension TosViewController: TextViewWithLinkDelegate {
     case .termsOfService:
       router.routeToTosContentView()
     case .privacyPolicy:
-      router.showWebView(with: model.url)
+      router.showWebView(with: TosAcceptModel.privacyPolicyUrl)
     }
   }
   
