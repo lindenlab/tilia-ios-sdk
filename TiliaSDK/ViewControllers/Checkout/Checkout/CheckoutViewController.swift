@@ -107,8 +107,7 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
 extension CheckoutViewController: TextViewWithLinkDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
-    guard let url = TosAcceptModel(str: link)?.url else { return }
-    router.showWebView(with: url)
+    router.routeToTosContentView()
   }
   
 }
