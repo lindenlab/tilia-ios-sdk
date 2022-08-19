@@ -77,6 +77,7 @@
 		D16E2A9928AFA18700287C55 /* TransactionDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9828AFA18700287C55 /* TransactionDetailsViewModel.swift */; };
 		D16E2A9B28AFA19D00287C55 /* TransactionDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9A28AFA19D00287C55 /* TransactionDetailsRouter.swift */; };
 		D16E2A9D28AFA1A600287C55 /* TransactionDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9C28AFA1A600287C55 /* TransactionDetailsViewController.swift */; };
+		D16E2A9F28AFBBB400287C55 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9E28AFBBB400287C55 /* BaseTableViewController.swift */; };
 		D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */; };
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
@@ -273,6 +274,7 @@
 		D16E2A9828AFA18700287C55 /* TransactionDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewModel.swift; sourceTree = "<group>"; };
 		D16E2A9A28AFA19D00287C55 /* TransactionDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsRouter.swift; sourceTree = "<group>"; };
 		D16E2A9C28AFA1A600287C55 /* TransactionDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewController.swift; sourceTree = "<group>"; };
+		D16E2A9E28AFBBB400287C55 /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLErrorCallback.swift; sourceTree = "<group>"; };
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 			children = (
 				D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */,
 				D154AD4A2811E785003976CB /* BaseViewController.swift */,
+				D16E2A9E28AFBBB400287C55 /* BaseTableViewController.swift */,
 			);
 			path = BaseProtocols;
 			sourceTree = "<group>";
@@ -1109,6 +1112,7 @@
 				D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */,
 				D123208828A669800039990A /* TosContentModel.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
+				D16E2A9F28AFBBB400287C55 /* BaseTableViewController.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */,
 				D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */,
 				D124DA1727F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift in Sources */,
