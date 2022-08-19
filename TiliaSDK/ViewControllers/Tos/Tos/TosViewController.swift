@@ -98,7 +98,6 @@ final class TosViewController: BaseViewController {
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
@@ -111,13 +110,7 @@ final class TosViewController: BaseViewController {
     bind()
   }
   
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension TosViewController: UIAdaptivePresentationControllerDelegate {
-  
-  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+  override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     viewModel.complete()
   }
   

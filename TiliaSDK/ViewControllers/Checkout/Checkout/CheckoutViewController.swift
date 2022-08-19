@@ -53,7 +53,6 @@ final class CheckoutViewController: BaseViewController {
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
@@ -65,6 +64,10 @@ final class CheckoutViewController: BaseViewController {
     setup()
     bind()
     viewModel.checkIsTosRequired()
+  }
+  
+  override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    viewModel.complete(isFromCloseAction: false)
   }
   
 }
@@ -108,16 +111,6 @@ extension CheckoutViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return builder.heightForHeader(in: sections[section])
-  }
-  
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
-  
-  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    viewModel.complete(isFromCloseAction: false)
   }
   
 }

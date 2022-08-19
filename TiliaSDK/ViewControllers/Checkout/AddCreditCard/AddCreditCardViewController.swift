@@ -68,20 +68,13 @@ final class AddCreditCardViewController: BaseViewController {
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension AddCreditCardViewController: UIAdaptivePresentationControllerDelegate {
-  
-  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+  override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     viewModel.complete()
   }
   
