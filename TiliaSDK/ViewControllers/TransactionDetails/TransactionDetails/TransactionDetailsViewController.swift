@@ -25,7 +25,6 @@ final class TransactionDetailsViewController: BaseViewController {
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
