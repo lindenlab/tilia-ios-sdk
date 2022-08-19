@@ -114,3 +114,5 @@
 "underReviewDescription" = "Your identity verification will require human review. You will receive an email once we have an update. This usually takes 3 business days.";
 "willBeInTouch" = "We'll be in touch";
 "unableToVerifyDescription" = "We are unable to verify the state of your identity verification right now. Please keep an eye out for an email from us with more information.";
+"errorTransactionDetailsTitle" = "Error processing transaction details";
+"errorTransactionDetailsMessage" = "Sorry, we were unable to process transaction details. Please try again later.";

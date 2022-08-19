@@ -203,6 +203,36 @@ public extension TLManager {
     viewController.present(userInfoViewController, animated: animated)
   }
   
+  /// Show Transaction Details flow, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting Transaction Details flow
+  ///   - invoiceId: invoice id
+  ///   - animated: animated flag
+  ///   - onUpdate: completion that returns Transaction Details receipt is sent
+  ///   - onComplete: completion that returns Transaction Details flow state
+  ///   - onError: completion that returns Transaction Details flow error
+  func presentTransactionDetailsViewController(on viewController: UIViewController,
+                                               withInvoiceId invoiceId: String,
+                                               animated: Bool,
+                                               onUpdate: ((TLUpdateCallback) -> Void)? = nil,
+                                               onComplete: ((TLCompleteCallback) -> Void)? = nil,
+                                               onError: ((TLErrorCallback) -> Void)? = nil) {
+    guard let token = networkManager.serverConfiguration.token, !token.isEmpty, !invoiceId.isEmpty else {
+      let errorCallback = TLErrorCallback(event: TLEvent(flow: .transactionDetails, action: .missingRequiredData),
+                                          error: L.errorTransactionDetailsTitle,
+                                          message: L.missedRequiredData)
+      onError?(errorCallback)
+      return
+    }
+    
+    let checkoutViewController = TransactionDetailsViewController(invoiceId: invoiceId,
+                                                                  manager: networkManager,
+                                                                  onUpdate: onUpdate,
+                                                                  onComplete: onComplete,
+                                                                  onError: onError)
+    viewController.present(checkoutViewController, animated: animated)
+  }
+  
 }
 
 // MARK: - Private Methods

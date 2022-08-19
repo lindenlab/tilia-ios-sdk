@@ -22,6 +22,9 @@ public struct TLEvent {
     /// KYC flow
     case kyc
     
+    /// Transaction Details flow
+    case transactionDetails
+    
   }
   
   /// Tilia action
@@ -30,7 +33,7 @@ public struct TLEvent {
     /// Appeared error in flow
     case error
     
-    /// Error is appeared and flow is closed by user
+    /// Error is appeared and flow is closed by user or flow is closed by user
     case closedByUser = "closed-by-user"
     
     /// Missing required data

@@ -12,11 +12,13 @@ final class TransactionDetailsViewController: BaseTableViewController {
   private let viewModel: TransactionDetailsViewModelProtocol
   private let router: TransactionDetailsRoutingProtocol
   
-  init(manager: NetworkManager,
+  init(invoiceId: String,
+       manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    let viewModel = TransactionDetailsViewModel(manager: manager,
+    let viewModel = TransactionDetailsViewModel(invoiceId: invoiceId,
+                                                manager: manager,
                                                 onUpdate: onUpdate,
                                                 onComplete: onComplete,
                                                 onError: onError)

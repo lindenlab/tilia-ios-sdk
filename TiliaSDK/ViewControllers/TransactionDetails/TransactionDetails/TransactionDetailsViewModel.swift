@@ -35,14 +35,17 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
     return onError
   }
   
+  private let invoiceId: String
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private let onError: ((TLErrorCallback) -> Void)?
   private let onUpdate: ((TLUpdateCallback) -> Void)?
   
-  init(manager: NetworkManager,
+  init(invoiceId: String,
+       manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
+    self.invoiceId = invoiceId
     self.manager = manager
     self.onUpdate = onUpdate
     self.onComplete = onComplete

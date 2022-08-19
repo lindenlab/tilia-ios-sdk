@@ -146,4 +146,15 @@ final class TLManagerTests: XCTestCase {
     XCTAssertNotNil(errorCallback)
   }
   
+  func testMissedRequiredDataForTransactionDetailsFlow() {
+    var errorCallback: TLErrorCallback?
+    let expectation = XCTestExpectation(description: "testMissedRequiredDataForTransactionDetailsFlow")
+    TLManager.shared.presentTransactionDetailsViewController(on: UIViewController(),
+                                                             withInvoiceId: "",
+                                                             animated: true,
+                                                             onError: { errorCallback = $0; expectation.fulfill() })
+    wait(for: [expectation], timeout: 1)
+    XCTAssertNotNil(errorCallback)
+  }
+  
 }

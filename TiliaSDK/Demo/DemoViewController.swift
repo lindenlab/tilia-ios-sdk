@@ -23,7 +23,7 @@ final class DemoViewController: UITableViewController {
                                               "TOS flow",
                                               "Checkout flow",
                                               "KYC flow",
-                                              "Transaction details flow"])
+                                              "Transaction Details flow"])
   ]
   
   override func numberOfSections(in tableView: UITableView) -> Int {
