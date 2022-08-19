@@ -51,9 +51,7 @@ extension BaseTableViewController: UITableViewDataSource {
 
 extension BaseTableViewController: UITableViewDelegate {
   
-  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    
-  }
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) { }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return tableView.sectionHeaderHeight

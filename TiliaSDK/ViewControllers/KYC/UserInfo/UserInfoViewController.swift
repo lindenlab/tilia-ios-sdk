@@ -33,7 +33,6 @@ final class UserInfoViewController: BaseTableViewController {
     self.router = router
     super.init()
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
@@ -49,6 +48,10 @@ final class UserInfoViewController: BaseTableViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     tableView.updateTableHeaderHeightIfNeeded()
+  }
+  
+  override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    viewModel.complete()
   }
   
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -81,16 +84,6 @@ final class UserInfoViewController: BaseTableViewController {
   
   override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return builder.heightForFooter(in: sections[section])
-  }
-  
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension UserInfoViewController: UIAdaptivePresentationControllerDelegate {
-  
-  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    viewModel.complete()
   }
   
 }

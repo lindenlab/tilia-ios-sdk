@@ -70,11 +70,21 @@ class BaseViewController: UIViewController {
   
 }
 
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension BaseViewController: UIAdaptivePresentationControllerDelegate {
+  
+  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) { }
+  
+}
+
 // MARK: - Private Methods
 
 private extension BaseViewController {
   
   func setup() {
+    presentationController?.delegate = self
+    
     view.backgroundColor = .backgroundColor
     view.addSubview(logoImageView)
     view.addSubview(divider)

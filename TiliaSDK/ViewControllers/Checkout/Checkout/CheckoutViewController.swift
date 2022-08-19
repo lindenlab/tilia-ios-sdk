@@ -35,7 +35,6 @@ final class CheckoutViewController: BaseTableViewController {
     self.router = router
     super.init()
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
@@ -47,6 +46,10 @@ final class CheckoutViewController: BaseTableViewController {
     setup()
     bind()
     viewModel.checkIsTosRequired()
+  }
+  
+  override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    viewModel.complete(isFromCloseAction: false)
   }
   
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -77,16 +80,6 @@ final class CheckoutViewController: BaseTableViewController {
   
   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return builder.heightForHeader(in: sections[section])
-  }
-  
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
-  
-  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    viewModel.complete(isFromCloseAction: false)
   }
   
 }
