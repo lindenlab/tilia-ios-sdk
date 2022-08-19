@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class UserInfoViewController: BaseViewController {
+final class UserInfoViewController: BaseTableViewController {
   
   override var hideableView: UIView {
     return tableView
@@ -19,29 +19,6 @@ final class UserInfoViewController: BaseViewController {
   private let builder = UserInfoSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
   private lazy var sections: [UserInfoSectionBuilder.Section] = builder.sections()
-  
-  private lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.showsVerticalScrollIndicator = false
-    tableView.backgroundColor = .backgroundColor
-    tableView.separatorStyle = .none
-    tableView.delaysContentTouches = false
-    tableView.delegate = self
-    tableView.dataSource = self
-    tableView.addClosingKeyboardOnTap()
-    tableView.register(UserInfoHeaderView.self)
-    tableView.register(UserInfoFooterView.self)
-    tableView.register(UserInfoNextButtonCell.self)
-    tableView.register(TextFieldCell.self)
-    tableView.register(TwoTextFieldsCell.self)
-    tableView.register(ThreeTextFieldsCell.self)
-    tableView.register(LabelCell.self)
-    tableView.tableHeaderView = builder.tableHeader()
-    tableView.estimatedRowHeight = 150
-    tableView.estimatedSectionHeaderHeight = 50
-    return tableView
-  }()
   
   init(manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -54,7 +31,7 @@ final class UserInfoViewController: BaseViewController {
     let router = UserInfoRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
     self.presentationController?.delegate = self
   }
@@ -74,6 +51,38 @@ final class UserInfoViewController: BaseViewController {
     tableView.updateTableHeaderHeightIfNeeded()
   }
   
+  override func numberOfSections(in tableView: UITableView) -> Int {
+    return sections.count
+  }
+  
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return builder.numberOfRows(in: sections[section])
+  }
+  
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    return builder.cell(for: sections[indexPath.section],
+                        in: tableView,
+                        at: indexPath,
+                        delegate: self)
+  }
+  
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return builder.header(for: sections[section],
+                          in: tableView,
+                          delegate: self)
+  }
+  
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return builder.footer(for: sections,
+                          in: tableView,
+                          at: section,
+                          delegate: self)
+  }
+  
+  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return builder.heightForFooter(in: sections[section])
+  }
+  
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
@@ -82,50 +91,6 @@ extension UserInfoViewController: UIAdaptivePresentationControllerDelegate {
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     viewModel.complete()
-  }
-  
-}
-
-// MARK: - UITableViewDataSource
-
-extension UserInfoViewController: UITableViewDataSource {
-  
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return sections.count
-  }
-  
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return builder.numberOfRows(in: sections[section])
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return builder.cell(for: sections[indexPath.section],
-                        in: tableView,
-                        at: indexPath,
-                        delegate: self)
-  }
-  
-}
-
-// MARK: - UITableViewDelegate {
-
-extension UserInfoViewController: UITableViewDelegate {
-  
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return builder.header(for: sections[section],
-                          in: tableView,
-                          delegate: self)
-  }
-  
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return builder.footer(for: sections,
-                          in: tableView,
-                          at: section,
-                          delegate: self)
-  }
-  
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return builder.heightForFooter(in: sections[section])
   }
   
 }
@@ -208,14 +173,17 @@ extension UserInfoViewController: ButtonsViewDelegate {
 private extension UserInfoViewController {
   
   func setup() {
-    view.addSubview(tableView)
-    
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-      tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-      tableView.bottomAnchor.constraint(equalTo: divider.topAnchor)
-    ])
+    tableView.addClosingKeyboardOnTap()
+    tableView.register(UserInfoHeaderView.self)
+    tableView.register(UserInfoFooterView.self)
+    tableView.register(UserInfoNextButtonCell.self)
+    tableView.register(TextFieldCell.self)
+    tableView.register(TwoTextFieldsCell.self)
+    tableView.register(ThreeTextFieldsCell.self)
+    tableView.register(LabelCell.self)
+    tableView.tableHeaderView = builder.tableHeader()
+    tableView.estimatedRowHeight = 150
+    tableView.estimatedSectionHeaderHeight = 50
     
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)

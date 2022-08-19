@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class UserDocumentsViewController: BaseViewController {
+final class UserDocumentsViewController: BaseTableViewController {
   
   private let viewModel: UserDocumentsViewModelProtocol
   private let router: UserDocumentsRoutingProtocol
@@ -28,28 +28,6 @@ final class UserDocumentsViewController: BaseViewController {
     return delegate
   }()
   
-  private lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.showsVerticalScrollIndicator = false
-    tableView.backgroundColor = .backgroundColor
-    tableView.separatorStyle = .none
-    tableView.delaysContentTouches = false
-    tableView.delegate = self
-    tableView.dataSource = self
-    tableView.addClosingKeyboardOnTap()
-    tableView.register(UserDocumentsPhotoCell.self)
-    tableView.register(TitleInfoHeaderFooterView.self)
-    tableView.register(UserDocumentsFooterView.self)
-    tableView.register(TextFieldCell.self)
-    tableView.register(UserDocumentsSelectDocumentCell.self)
-    tableView.register(UserDocumentsSuccessCell.self)
-    tableView.register(UserDocumentsProcessingCell.self)
-    tableView.register(UserDocumentsImageCell.self)
-    tableView.estimatedRowHeight = 100
-    return tableView
-  }()
-  
   init(manager: NetworkManager,
        userInfoModel: UserInfoModel,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -63,7 +41,7 @@ final class UserDocumentsViewController: BaseViewController {
     let router = UserDocumentsRouter()
     self.viewModel = viewModel
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
     self.presentationController?.delegate = self
   }
@@ -78,6 +56,36 @@ final class UserDocumentsViewController: BaseViewController {
     bind()
   }
   
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return builder.numberOfRows(in: self.section)
+  }
+  
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    return builder.cell(for: section,
+                        in: tableView,
+                        at: indexPath,
+                        delegate: self,
+                        isUploading: viewModel.uploading.value)
+  }
+  
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return builder.header(for: self.section,
+                          in: tableView)
+  }
+  
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return builder.footer(for: self.section,
+                          in: tableView,
+                          delegate: self,
+                          isUploading: viewModel.uploading.value)
+  }
+  
+  override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    builder.updateSuccessCell(cell,
+                              for: section,
+                              in: tableView)
+  }
+  
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
@@ -86,48 +94,6 @@ extension UserDocumentsViewController: UIAdaptivePresentationControllerDelegate 
   
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     viewModel.complete()
-  }
-  
-}
-
-// MARK: - UITableViewDataSource
-
-extension UserDocumentsViewController: UITableViewDataSource {
-  
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return builder.numberOfRows(in: self.section)
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return builder.cell(for: section,
-                        in: tableView,
-                        at: indexPath,
-                        delegate: self,
-                        isUploading: viewModel.uploading.value)
-  }
-  
-}
-
-// MARK: - UITableViewDelegate {
-
-extension UserDocumentsViewController: UITableViewDelegate {
-  
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return builder.header(for: self.section,
-                          in: tableView)
-  }
-  
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return builder.footer(for: self.section,
-                          in: tableView,
-                          delegate: self,
-                          isUploading: viewModel.uploading.value)
-  }
-  
-  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    builder.updateSuccessCell(cell,
-                              for: section,
-                              in: tableView)
   }
   
 }
@@ -209,14 +175,16 @@ extension UserDocumentsViewController: ButtonsViewDelegate {
 private extension UserDocumentsViewController {
   
   func setup() {
-    view.addSubview(tableView)
-    
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-      tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-      tableView.bottomAnchor.constraint(equalTo: divider.topAnchor)
-    ])
+    tableView.addClosingKeyboardOnTap()
+    tableView.register(UserDocumentsPhotoCell.self)
+    tableView.register(TitleInfoHeaderFooterView.self)
+    tableView.register(UserDocumentsFooterView.self)
+    tableView.register(TextFieldCell.self)
+    tableView.register(UserDocumentsSelectDocumentCell.self)
+    tableView.register(UserDocumentsSuccessCell.self)
+    tableView.register(UserDocumentsProcessingCell.self)
+    tableView.register(UserDocumentsImageCell.self)
+    tableView.estimatedRowHeight = 100
     
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)

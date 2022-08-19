@@ -70,6 +70,7 @@
 		D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A4282560DC0088FB3D /* ButtonsView.swift */; };
 		D16D56A7282593D20088FB3D /* PrimaryButtonWithStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A6282593D20088FB3D /* PrimaryButtonWithStyle.swift */; };
 		D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */; };
+		D16E2A9F28AFBBB400287C55 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E2A9E28AFBBB400287C55 /* BaseTableViewController.swift */; };
 		D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */; };
 		D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD432808399B00A1E413 /* TLEvent.swift */; };
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
@@ -259,6 +260,7 @@
 		D16D56A4282560DC0088FB3D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		D16D56A6282593D20088FB3D /* PrimaryButtonWithStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonWithStyle.swift; sourceTree = "<group>"; };
 		D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoFooterView.swift; sourceTree = "<group>"; };
+		D16E2A9E28AFBBB400287C55 /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLErrorCallback.swift; sourceTree = "<group>"; };
 		D16EDD432808399B00A1E413 /* TLEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLEvent.swift; sourceTree = "<group>"; };
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 			children = (
 				D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */,
 				D154AD4A2811E785003976CB /* BaseViewController.swift */,
+				D16E2A9E28AFBBB400287C55 /* BaseTableViewController.swift */,
 			);
 			path = BaseProtocols;
 			sourceTree = "<group>";
@@ -638,14 +641,6 @@
 			path = AddCreditCard;
 			sourceTree = "<group>";
 		};
-		D1791239282C39E80053DB10 /* Validator */ = {
-			isa = PBXGroup;
-			children = (
-				D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */,
-			);
-			path = Validator;
-      sourceTree = "<group>";
-    };
 		D16E2A8F28AF924100287C55 /* Tos */ = {
 			isa = PBXGroup;
 			children = (
@@ -654,6 +649,14 @@
 				D12443E027EB9C8100C68811 /* TosViewController.swift */,
 			);
 			path = Tos;
+			sourceTree = "<group>";
+		};
+		D1791239282C39E80053DB10 /* Validator */ = {
+			isa = PBXGroup;
+			children = (
+				D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */,
+			);
+			path = Validator;
 			sourceTree = "<group>";
 		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
@@ -1061,6 +1064,7 @@
 				D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */,
 				D123208828A669800039990A /* TosContentModel.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
+				D16E2A9F28AFBBB400287C55 /* BaseTableViewController.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */,
 				D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */,
 				D124DA1727F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift in Sources */,
