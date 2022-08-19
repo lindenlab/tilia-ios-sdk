@@ -43,7 +43,6 @@ final class UserDocumentsViewController: BaseTableViewController {
     self.router = router
     super.init()
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
@@ -54,6 +53,10 @@ final class UserDocumentsViewController: BaseTableViewController {
     super.viewDidLoad()
     setup()
     bind()
+  }
+  
+  override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    viewModel.complete()
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -84,16 +87,6 @@ final class UserDocumentsViewController: BaseTableViewController {
     builder.updateSuccessCell(cell,
                               for: section,
                               in: tableView)
-  }
-  
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension UserDocumentsViewController: UIAdaptivePresentationControllerDelegate {
-  
-  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    viewModel.complete()
   }
   
 }
