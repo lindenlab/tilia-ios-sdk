@@ -59,15 +59,9 @@ private extension ButtonsView {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(stackView)
     
-    let topConstraint = stackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)
-    topConstraint.priority = UILayoutPriority(999)
-    
-    let leftConstraint = stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: insets.left)
-    leftConstraint.priority = UILayoutPriority(999)
-    
     NSLayoutConstraint.activate([
-      topConstraint,
-      leftConstraint,
+      stackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
+      stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: insets.left),
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
       stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -insets.right)
     ])
