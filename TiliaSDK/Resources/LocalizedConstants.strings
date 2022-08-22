@@ -116,3 +116,4 @@
 "unableToVerifyDescription" = "We are unable to verify the state of your identity verification right now. Please keep an eye out for an email from us with more information.";
 "errorTransactionDetailsTitle" = "Error processing transaction details";
 "errorTransactionDetailsMessage" = "Sorry, we were unable to process transaction details. Please try again later.";
+"emailReceipt" = "E-mail me a receipt";

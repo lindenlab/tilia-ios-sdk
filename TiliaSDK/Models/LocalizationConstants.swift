@@ -128,5 +128,6 @@ enum L {
   static let unableToVerifyDescription = "unableToVerifyDescription".localized
   static let errorTransactionDetailsTitle = "errorTransactionDetailsTitle".localized
   static let errorTransactionDetailsMessage = "errorTransactionDetailsMessage".localized
+  static let emailReceipt = "emailReceipt".localized
   
 }
