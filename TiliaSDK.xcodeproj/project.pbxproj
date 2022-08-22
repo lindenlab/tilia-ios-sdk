@@ -109,6 +109,7 @@
 		D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8327E8DF3D00E3DC2A /* Data+Serialization.swift */; };
 		D192AD8827E8F53900E3DC2A /* IsTosSignedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8727E8F53900E3DC2A /* IsTosSignedModel.swift */; };
 		D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */; };
+		D192E86628B4052100E34FCE /* TransactionDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192E86528B4052100E34FCE /* TransactionDetailsFooterView.swift */; };
 		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
 		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
 		D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */; };
@@ -310,6 +311,7 @@
 		D192AD8327E8DF3D00E3DC2A /* Data+Serialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Serialization.swift"; sourceTree = "<group>"; };
 		D192AD8727E8F53900E3DC2A /* IsTosSignedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsTosSignedModel.swift; sourceTree = "<group>"; };
 		D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceInfoModel.swift; sourceTree = "<group>"; };
+		D192E86528B4052100E34FCE /* TransactionDetailsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsFooterView.swift; sourceTree = "<group>"; };
 		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
 		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
 		D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
@@ -727,6 +729,7 @@
 				D17A451228B3867D00B0C9AB /* TransactionDetailsHeaderView.swift */,
 				D17A451428B3873A00B0C9AB /* TransactionDetailsTitleHeaderView.swift */,
 				D17A451628B39B2300B0C9AB /* TransactionDetailsCell.swift */,
+				D192E86528B4052100E34FCE /* TransactionDetailsFooterView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1199,6 +1202,7 @@
 				D12443E127EB9C8100C68811 /* TosViewController.swift in Sources */,
 				D1C8A84027F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift in Sources */,
 				D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */,
+				D192E86628B4052100E34FCE /* TransactionDetailsFooterView.swift in Sources */,
 				D1BB633D287EE055007616DE /* SubmitKycModel.swift in Sources */,
 				D17EFFA3284645A700F4B6DD /* UserDocumentsDocumentCell.swift in Sources */,
 				D1BA29F728009D5700F046E8 /* ToastView.swift in Sources */,

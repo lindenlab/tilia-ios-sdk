@@ -245,7 +245,7 @@ struct UserDocumentsSectionBuilder {
   func failedSection() -> Section {
     return Section(type: .failed,
                    items: [.init(title: nil,
-                                 mode: .image(.emailIcon))])
+                                 mode: .image(.openEnvelopeIcon))])
   }
   
   func successSection() -> Section {
