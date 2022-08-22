@@ -28,7 +28,8 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
                               for: .normal)
     
     let view = ButtonsView(primaryButton: primaryButton,
-                           nonPrimaryButton: nonPrimaryButton)
+                           nonPrimaryButton: nonPrimaryButton,
+                           insets: .init(top: 24, left: 16, bottom: 16, right: 16))
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -61,17 +62,17 @@ private extension UserInfoFooterView {
     contentView.addSubview(buttonsView)
     contentView.addSubview(divider)
     
-    let topConstraint = buttonsView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24)
+    let topConstraint = buttonsView.topAnchor.constraint(equalTo: contentView.topAnchor)
     topConstraint.priority = UILayoutPriority(999)
     
-    let rightConstraint = buttonsView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
+    let rightConstraint = buttonsView.rightAnchor.constraint(equalTo: contentView.rightAnchor)
     rightConstraint.priority = UILayoutPriority(999)
     
     NSLayoutConstraint.activate([
       topConstraint,
       rightConstraint,
-      buttonsView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-      buttonsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+      buttonsView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+      buttonsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
       divider.topAnchor.constraint(equalTo: topAnchor),
       divider.leftAnchor.constraint(equalTo: leftAnchor),
       divider.rightAnchor.constraint(equalTo: rightAnchor)
