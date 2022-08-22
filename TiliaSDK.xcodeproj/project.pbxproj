@@ -85,6 +85,10 @@
 		D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */; };
 		D179123B282C3A2B0053DB10 /* UserInfoValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */; };
 		D179123D282C3BD00053DB10 /* PossiblyEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */; };
+		D17A451028B384F000B0C9AB /* TransactionDetailsSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A450F28B384F000B0C9AB /* TransactionDetailsSectionBuilder.swift */; };
+		D17A451328B3867D00B0C9AB /* TransactionDetailsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A451228B3867D00B0C9AB /* TransactionDetailsHeaderView.swift */; };
+		D17A451528B3873A00B0C9AB /* TransactionDetailsTitleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A451428B3873A00B0C9AB /* TransactionDetailsTitleHeaderView.swift */; };
+		D17A451728B39B2300B0C9AB /* TransactionDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A451628B39B2300B0C9AB /* TransactionDetailsCell.swift */; };
 		D17EFFA3284645A700F4B6DD /* UserDocumentsDocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17EFFA2284645A700F4B6DD /* UserDocumentsDocumentCell.swift */; };
 		D17EFFA52846462500F4B6DD /* UICollectionView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17EFFA42846462500F4B6DD /* UICollectionView+Helpers.swift */; };
 		D17EFFA72846466900F4B6DD /* UICollectionViewCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17EFFA62846466900F4B6DD /* UICollectionViewCell+Helpers.swift */; };
@@ -282,6 +286,10 @@
 		D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentViewModelsTests.swift; sourceTree = "<group>"; };
 		D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidator.swift; sourceTree = "<group>"; };
 		D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossiblyEmpty.swift; sourceTree = "<group>"; };
+		D17A450F28B384F000B0C9AB /* TransactionDetailsSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsSectionBuilder.swift; sourceTree = "<group>"; };
+		D17A451228B3867D00B0C9AB /* TransactionDetailsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsHeaderView.swift; sourceTree = "<group>"; };
+		D17A451428B3873A00B0C9AB /* TransactionDetailsTitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsTitleHeaderView.swift; sourceTree = "<group>"; };
+		D17A451628B39B2300B0C9AB /* TransactionDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsCell.swift; sourceTree = "<group>"; };
 		D17EFFA2284645A700F4B6DD /* UserDocumentsDocumentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsDocumentCell.swift; sourceTree = "<group>"; };
 		D17EFFA42846462500F4B6DD /* UICollectionView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Helpers.swift"; sourceTree = "<group>"; };
 		D17EFFA62846466900F4B6DD /* UICollectionViewCell+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Helpers.swift"; sourceTree = "<group>"; };
@@ -678,6 +686,8 @@
 		D16E2A9028AFA0DA00287C55 /* TransactionDetails */ = {
 			isa = PBXGroup;
 			children = (
+				D17A450E28B384D100B0C9AB /* Builder */,
+				D17A451128B384FD00B0C9AB /* Views */,
 				D16E2A9828AFA18700287C55 /* TransactionDetailsViewModel.swift */,
 				D16E2A9A28AFA19D00287C55 /* TransactionDetailsRouter.swift */,
 				D16E2A9C28AFA1A600287C55 /* TransactionDetailsViewController.swift */,
@@ -701,6 +711,24 @@
 				D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */,
 			);
 			path = Validator;
+			sourceTree = "<group>";
+		};
+		D17A450E28B384D100B0C9AB /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				D17A450F28B384F000B0C9AB /* TransactionDetailsSectionBuilder.swift */,
+			);
+			path = Builder;
+			sourceTree = "<group>";
+		};
+		D17A451128B384FD00B0C9AB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D17A451228B3867D00B0C9AB /* TransactionDetailsHeaderView.swift */,
+				D17A451428B3873A00B0C9AB /* TransactionDetailsTitleHeaderView.swift */,
+				D17A451628B39B2300B0C9AB /* TransactionDetailsCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		D192AD7E27E8DE8B00E3DC2A /* Extensions */ = {
@@ -1127,6 +1155,7 @@
 				D1D5B53C27F759E000E04EE1 /* CheckoutSectionBuilder.swift in Sources */,
 				D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */,
 				D15BA9F5282AACE200511785 /* DateFormatter+Helpers.swift in Sources */,
+				D17A451728B39B2300B0C9AB /* TransactionDetailsCell.swift in Sources */,
 				D17EFFA52846462500F4B6DD /* UICollectionView+Helpers.swift in Sources */,
 				D18D730228415E8200660715 /* BundleToken.swift in Sources */,
 				D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */,
@@ -1139,6 +1168,7 @@
 				D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */,
 				D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */,
 				D1BB6343287F0A40007616DE /* KycRouter.swift in Sources */,
+				D17A451528B3873A00B0C9AB /* TransactionDetailsTitleHeaderView.swift in Sources */,
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
 				D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */,
@@ -1177,6 +1207,7 @@
 				D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */,
 				D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */,
 				D15BA9ED282A9B2C00511785 /* TextFieldCell.swift in Sources */,
+				D17A451328B3867D00B0C9AB /* TransactionDetailsHeaderView.swift in Sources */,
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,
 				D1B871F828339B2A00C44441 /* UserDocumentsViewController.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
@@ -1192,6 +1223,7 @@
 				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,
 				D1CCE8C927F4A42800FD0E25 /* CheckoutViewModel.swift in Sources */,
 				D1CCE8DC27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift in Sources */,
+				D17A451028B384F000B0C9AB /* TransactionDetailsSectionBuilder.swift in Sources */,
 				D19C79902837958C0024BB6F /* UserDocumentsPhotoCell.swift in Sources */,
 				D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */,
 				D16D56A7282593D20088FB3D /* PrimaryButtonWithStyle.swift in Sources */,

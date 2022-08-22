@@ -42,7 +42,7 @@ private extension NonPrimaryButton {
     layer.cornerRadius = 6
     layer.borderWidth = 1
     setupBorderColor()
-    titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    titleLabel?.font = .boldSystemFont(ofSize: 16)
   }
   
   func setupBorderColor() {

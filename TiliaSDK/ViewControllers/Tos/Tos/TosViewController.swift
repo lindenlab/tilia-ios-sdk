@@ -44,7 +44,7 @@ final class TosViewController: BaseViewController {
   private lazy var messageTextView: TextViewWithLink = {
     let textView = TextViewWithLink()
     textView.linkDelegate = self
-    textView.font = UIFont.systemFont(ofSize: 16)
+    textView.font = .systemFont(ofSize: 16)
     textView.textColor = .primaryTextColor
     textView.linkColor = .primaryColor
     let text = TosAcceptModel.title

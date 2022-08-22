@@ -17,13 +17,13 @@ final class ToastView: UIView {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.boldSystemFont(ofSize: 16)
+    label.font = .boldSystemFont(ofSize: 16)
     return label
   }()
   
   private let messageLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 16)
+    label.font = .systemFont(ofSize: 16)
     label.numberOfLines = 0
     return label
   }()

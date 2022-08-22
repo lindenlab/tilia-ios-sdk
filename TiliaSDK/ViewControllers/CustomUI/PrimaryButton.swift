@@ -34,7 +34,7 @@ private extension PrimaryButton {
     setBackgroundColor(.primaryColor.withAlphaComponent(0.5), for: .disabled)
     setBackgroundColor(.primaryColor.withAlphaComponent(0.5), for: .highlighted)
     layer.cornerRadius = 6
-    titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+    titleLabel?.font = .boldSystemFont(ofSize: 16)
   }
   
 }
