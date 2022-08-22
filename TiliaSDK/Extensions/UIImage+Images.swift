@@ -20,6 +20,11 @@ extension UIImage {
   static let maestroIcon = UIImage(str: "maestroIcon")
   static let masterCardIcon = UIImage(str: "masterCardIcon")
   static let visaIcon = UIImage(str: "visaIcon")
+  static let purchaseBuyerIcon = UIImage(str: "purchaseBuyerIcon")
+  static let purchaseSellerIcon = UIImage(str: "purchaseSellerIcon")
+  static let refundIcon = UIImage(str: "refundIcon")
+  static let tokenPurchaseIcon = UIImage(str: "tokenPurchaseIcon")
+  static let tokenToWalletIcon = UIImage(str: "tokenToWalletIcon")
   
   static let successIcon = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
   static let failureIcon = UIImage(systemName: "exclamationmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
