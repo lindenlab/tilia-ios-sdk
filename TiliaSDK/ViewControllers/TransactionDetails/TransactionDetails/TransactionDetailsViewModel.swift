@@ -17,8 +17,8 @@ protocol TransactionDetailsViewModelOutputProtocol {
 
 protocol TransactionDetailsDataStore {
   var manager: NetworkManager { get }
-  var onSendReceiptUpdate: ((TLUpdateCallback) -> Void)? { get }
-  var onSendReceiptError: ((TLErrorCallback) -> Void)? { get }
+  var onUpdate: ((TLUpdateCallback) -> Void)? { get }
+  var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
 protocol TransactionDetailsViewModelProtocol: TransactionDetailsViewModelInputProtocol, TransactionDetailsViewModelOutputProtocol {
@@ -28,17 +28,11 @@ protocol TransactionDetailsViewModelProtocol: TransactionDetailsViewModelInputPr
 final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, TransactionDetailsDataStore {
   
   let manager: NetworkManager
-  var onSendReceiptUpdate: ((TLUpdateCallback) -> Void)? {
-    return onUpdate
-  }
-  var onSendReceiptError: ((TLErrorCallback) -> Void)? {
-    return onError
-  }
+  let onUpdate: ((TLUpdateCallback) -> Void)?
+  let onError: ((TLErrorCallback) -> Void)?
   
   private let invoiceId: String
   private let onComplete: ((TLCompleteCallback) -> Void)?
-  private let onError: ((TLErrorCallback) -> Void)?
-  private let onUpdate: ((TLUpdateCallback) -> Void)?
   
   init(invoiceId: String,
        manager: NetworkManager,
