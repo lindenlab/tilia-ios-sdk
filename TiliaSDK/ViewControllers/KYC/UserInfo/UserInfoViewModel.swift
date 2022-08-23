@@ -29,9 +29,9 @@ protocol UserInfoViewModelOutputProtocol {
 protocol UserInfoDataStore {
   var manager: NetworkManager { get }
   var userInfoModel: UserInfoModel { get }
-  var onUserDocumentsUpdate: ((TLUpdateCallback) -> Void)? { get }
+  var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onUserDocumentsComplete: (Bool, Bool) -> Void { get }
-  var onUserDocumentsError: ((TLErrorCallback) -> Void)? { get }
+  var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
 protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoViewModelOutputProtocol { }
@@ -46,9 +46,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
-  var onUserDocumentsUpdate: ((TLUpdateCallback) -> Void)? {
-    return onUpdate
-  }
+  let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onUserDocumentsComplete: (Bool, Bool) -> Void = { [weak self] isUploaded, isCompleted in
     guard let self = self else { return }
     self.isFlowCompleted = isCompleted
@@ -56,13 +54,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       self.dismiss.send()
     }
   }
-  var onUserDocumentsError: ((TLErrorCallback) -> Void)? {
-    return onError
-  }
+  let onError: ((TLErrorCallback) -> Void)?
   
   private let onComplete: ((TLCompleteCallback) -> Void)?
-  private let onError: ((TLErrorCallback) -> Void)?
-  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private var isFlowCompleted = false
   
   init(manager: NetworkManager,
