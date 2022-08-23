@@ -345,7 +345,7 @@ private extension UserDocumentsViewModel {
     guard isUploaded else { return }
     let event = TLEvent(flow: .kyc, action: .kycInfoSubmitted)
     let model = TLUpdateCallback(event: event,
-                                 message: L.kycInfoSubmitted.localized(with: state.rawValue))
+                                 message: L.kycInfoSubmitted(with: state.rawValue))
     onUpdate?(model)
   }
   

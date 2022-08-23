@@ -121,7 +121,6 @@ enum L {
   static let verifyingInformation = "verifyingInformation".localized
   static let dottingInformation = "dottingInformation".localized
   static let takingWhile = "takingWhile".localized
-  static let kycInfoSubmitted = "kycInfoSubmitted".localized
   static let underReview = "underReview".localized
   static let underReviewDescription = "underReviewDescription".localized
   static let willBeInTouch = "willBeInTouch".localized
@@ -140,5 +139,20 @@ enum L {
   static let transactionDate = "transactionDate".localized
   static let transactionTime = "transactionTime".localized
   static let depositedInto = "depositedInto".localized
+  static let youPaid = "youPaid".localized
+  static let youReceived = "youReceived".localized
+  
+  static func kycInfoSubmitted(with argument: CVarArg) -> String {
+    return "kycInfoSubmitted".localized(with: argument)
+  }
+  static func todayAt(with argument: CVarArg) -> String {
+    return "todayAt".localized(with: argument)
+  }
+  static func yesterdayAt(with argument: CVarArg) -> String {
+    return "yesterdayAt".localized(with: argument)
+  }
+  static func requested(with argument: CVarArg) -> String {
+    return "requestedWithArguments".localized(with: argument)
+  }
   
 }

@@ -205,7 +205,7 @@ extension TransactionDetailsSectionBuilder {
               leftInset: 32,
               isDividerHidden: false)
       ]
-      sections.append(.content(.init(title: L.paidWith,
+      sections.append(.content(.init(title: L.depositedInto,
                                      footer: nil,
                                      items: payInfoItems)))
     }

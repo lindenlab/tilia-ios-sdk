@@ -128,3 +128,8 @@
 "transactionDate" = "Transaction date";
 "transactionTime" = "Transaction time";
 "depositedInto" = "Deposited into";
+"todayAt" = "today at %@";
+"yesterdayAt" = "yesterday at %@";
+"requestedWithArguments" = "requested on %@ at %@";
+"youPaid" = "You paid";
+"youReceived" = "You received";
