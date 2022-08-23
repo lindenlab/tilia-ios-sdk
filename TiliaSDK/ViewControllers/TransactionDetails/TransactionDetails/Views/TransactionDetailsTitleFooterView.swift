@@ -39,7 +39,7 @@ final class TransactionDetailsTitleFooterView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String, value: String) {
+  func configure(title: String?, value: String?) {
     titleLabel.text = title
     valueLabel.text = value
   }

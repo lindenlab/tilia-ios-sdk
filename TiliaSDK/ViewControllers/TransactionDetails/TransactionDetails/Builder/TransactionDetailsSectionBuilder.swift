@@ -121,8 +121,8 @@ struct TransactionDetailsSectionBuilder {
     switch section {
     case let .header(model):
       let view = tableView.dequeue(TransactionDetailsTitleFooterView.self)
-      view.configure(title: model.footer?.title ?? "",
-                     value: model.footer?.value ?? "")
+      view.configure(title: model.footer?.title,
+                     value: model.footer?.value)
       return view
     case let .content(model):
       if let footer = model.footer {
