@@ -77,6 +77,10 @@ final class TransactionDetailsViewController: BaseTableViewController {
                           delegate: self)
   }
   
+  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return builder.heightForFooter(in: sections[section])
+  }
+  
 }
 
 // MARK: - ButtonsViewDelegate

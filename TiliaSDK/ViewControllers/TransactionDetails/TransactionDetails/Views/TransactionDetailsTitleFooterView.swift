@@ -19,6 +19,7 @@ final class TransactionDetailsTitleFooterView: UITableViewHeaderFooterView {
     let label = UILabel()
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 16, weight: .semibold)
+    label.setContentCompressionResistancePriority(UILayoutPriority(751), for: .horizontal)
     return label
   }()
   
@@ -38,7 +39,7 @@ final class TransactionDetailsTitleFooterView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String?, value: String?) {
+  func configure(title: String, value: String) {
     titleLabel.text = title
     valueLabel.text = value
   }

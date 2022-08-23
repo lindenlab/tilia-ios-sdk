@@ -117,3 +117,14 @@
 "errorTransactionDetailsTitle" = "Error processing transaction details";
 "errorTransactionDetailsMessage" = "Sorry, we were unable to process transaction details. Please try again later.";
 "emailReceipt" = "E-mail me a receipt";
+"subtotal" = "Subtotal";
+"transactionFees" = "Transaction fees";
+"paidWith" = "Paid with";
+"invoiceDetails" = "Invoice details";
+"status" = "Status";
+"transactionId" = "Transaction ID";
+"referenceType" = "Reference type";
+"referenceId" = "Reference ID";
+"transactionDate" = "Transaction date";
+"transactionTime" = "Transaction time";
+"depositedInto" = "Deposited into";

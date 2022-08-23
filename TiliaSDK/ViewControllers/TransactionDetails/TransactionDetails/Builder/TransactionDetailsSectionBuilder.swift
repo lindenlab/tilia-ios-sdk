@@ -72,6 +72,15 @@ struct TransactionDetailsSectionBuilder {
     return section.items.count
   }
   
+  func heightForFooter(in section: Section) -> CGFloat {
+    switch section {
+    case .header:
+      return UITableView.automaticDimension
+    case let .content(model):
+      return model.footer == nil ? .leastNormalMagnitude : UITableView.automaticDimension
+    }
+  }
+  
   func cell(for section: Section,
             in tableView: UITableView,
             at indexPath: IndexPath) -> UITableViewCell {
@@ -81,7 +90,7 @@ struct TransactionDetailsSectionBuilder {
                    subTitle: item.subTitle,
                    value: item.value,
                    image: item.image?.image,
-                   color: item.image?.color ?? .clear,
+                   color: item.image?.color,
                    leftInset: item.leftInset,
                    isDividerHidden: item.isDividerHidden)
     return cell
@@ -112,8 +121,8 @@ struct TransactionDetailsSectionBuilder {
     switch section {
     case let .header(model):
       let view = tableView.dequeue(TransactionDetailsTitleFooterView.self)
-      view.configure(title: model.footer?.title,
-                     value: model.footer?.value)
+      view.configure(title: model.footer?.title ?? "",
+                     value: model.footer?.value ?? "")
       return view
     case let .content(model):
       if let footer = model.footer {
@@ -128,8 +137,121 @@ struct TransactionDetailsSectionBuilder {
   }
   
   func sections() -> [Section] {
+    return purchaseSections()
+  }
+  
+}
+
+// MARK: - Private Methods
+
+extension TransactionDetailsSectionBuilder {
+  
+  func purchaseSections() -> [Section] {
+    var sections: [Section] = []
     
-    return []
+    let headerItems: [Item] = [
+      .init(title: "2919 BRIDGE AVE, OH",
+            subTitle: nil,
+            value: "$10.24 USD",
+            image: nil,
+            leftInset: 16,
+            isDividerHidden: false),
+      .init(title: L.subtotal,
+            subTitle: nil,
+            value: "$41.86 USD",
+            image: nil,
+            leftInset: 16,
+            isDividerHidden: true),
+      .init(title: L.transactionFees,
+            subTitle: nil,
+            value: "$4.22 USD",
+            image: nil,
+            leftInset: 16,
+            isDividerHidden: false)
+    ]
+    sections.append(.header(.init(image: .purchaseBuyerIcon, // Fix for buyer/seller
+                                  title: NSAttributedString(string: "You paid $46.08 USD"), // Fix for buyer/seller
+                                  subTitle: "today at 4:32pm (PST)",
+                                  status: nil,
+                                  footer: .init(title: L.total, value: "$46.08 USD"),
+                                  items: headerItems)))
+    
+    
+    // Fix for buyer/seller
+    if true {
+      let payInfoItems: [Item] = [
+        .init(title: "Tilia Wallet",
+              subTitle: nil,
+              value: "$10.24 USD",
+              image: nil,
+              leftInset: 32,
+              isDividerHidden: false),
+        .init(title: "Visa ending in 8946",
+              subTitle: "This transaction will appear on your statement as “Tilia / Upland”",
+              value: "$10.24 USD",
+              image: nil,
+              leftInset: 32,
+              isDividerHidden: true)
+      ]
+      sections.append(.content(.init(title: L.paidWith,
+                                     footer: nil,
+                                     items: payInfoItems)))
+    } else {
+      let payInfoItems: [Item] = [
+        .init(title: "Tilia Wallet",
+              subTitle: nil,
+              value: "$10.24 USD",
+              image: nil,
+              leftInset: 32,
+              isDividerHidden: false)
+      ]
+      sections.append(.content(.init(title: L.paidWith,
+                                     footer: nil,
+                                     items: payInfoItems)))
+    }
+    
+    let invoiceDetailsItems: [Item] = [
+      .init(title: L.status,
+            subTitle: nil,
+            value: "Processed",
+            image: .init(image: .successIcon, color: .primaryColor),
+            leftInset: 32,
+            isDividerHidden: false),
+      .init(title: L.transactionId,
+            subTitle: nil,
+            value: "FK0013EA92144M9",
+            image: nil,
+            leftInset: 32,
+            isDividerHidden: false),
+      .init(title: L.referenceType,
+            subTitle: nil,
+            value: "Upland order",
+            image: nil,
+            leftInset: 32,
+            isDividerHidden: false),
+      .init(title: L.referenceId,
+            subTitle: nil,
+            value: "#3112KM95",
+            image: nil,
+            leftInset: 32,
+            isDividerHidden: false),
+      .init(title: L.transactionDate,
+            subTitle: nil,
+            value: "August 4th, 2022",
+            image: nil,
+            leftInset: 32,
+            isDividerHidden: false),
+      .init(title: L.transactionTime,
+            subTitle: nil,
+            value: "4:32pm (PST)",
+            image: nil,
+            leftInset: 32,
+            isDividerHidden: true)
+    ]
+    sections.append(.content(.init(title: L.invoiceDetails,
+                                   footer: .init(isPrimaryButtonHidden: false),
+                                   items: invoiceDetailsItems)))
+    return sections
   }
   
 }

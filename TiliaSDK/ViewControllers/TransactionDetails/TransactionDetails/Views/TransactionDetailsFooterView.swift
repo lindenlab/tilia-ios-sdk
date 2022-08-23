@@ -16,7 +16,7 @@ final class TransactionDetailsFooterView: UITableViewHeaderFooterView {
   }()
   
   private let buttonsView: ButtonsView<PrimaryButtonWithStyle, NonPrimaryButton> = {
-    let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
+    let primaryButton = PrimaryButtonWithStyle(style: .imageAndTitleCenter)
     primaryButton.setTitle(L.emailReceipt,
                            for: .normal)
     primaryButton.setImage(.envelopeIcon?.withRenderingMode(.alwaysTemplate),
@@ -24,18 +24,18 @@ final class TransactionDetailsFooterView: UITableViewHeaderFooterView {
     primaryButton.accessibilityIdentifier = "emailReceiptButton"
     
     let nonPrimaryButton = NonPrimaryButton()
-    nonPrimaryButton.setTitle(L.cancel,
+    nonPrimaryButton.setTitle(L.close,
                               for: .normal)
     
     let view = ButtonsView(primaryButton: primaryButton,
                            nonPrimaryButton: nonPrimaryButton,
-                           insets: .init(top: 24, left: 16, bottom: 16, right: 16))
+                           insets: .init(top: 44, left: 16, bottom: 16, right: 16))
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
   
   func configure(isPrimaryButtonHidden: Bool, delegate: ButtonsViewDelegate?) {
-    buttonsView.primaryButton.isEnabled = isPrimaryButtonHidden
+    buttonsView.primaryButton.isHidden = isPrimaryButtonHidden
     buttonsView.delegate = delegate
   }
   
@@ -67,7 +67,7 @@ private extension TransactionDetailsFooterView {
       buttonsView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
       buttonsView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
       buttonsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      divider.topAnchor.constraint(equalTo: contentView.topAnchor),
+      divider.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
       divider.leftAnchor.constraint(equalTo: contentView.leftAnchor),
       divider.rightAnchor.constraint(equalTo: contentView.rightAnchor)
     ])

@@ -13,6 +13,7 @@ final class TransactionDetailsCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 14, weight: .medium)
+    label.setContentCompressionResistancePriority(UILayoutPriority(751), for: .horizontal)
     return label
   }()
   
@@ -53,8 +54,9 @@ final class TransactionDetailsCell: UITableViewCell {
     mainStackView.distribution = .equalCentering
     
     let rootStackView = UIStackView(arrangedSubviews: [mainStackView, subTitleLabel])
-    rootStackView.spacing = 8
+    rootStackView.spacing = 4
     rootStackView.axis = .vertical
+    rootStackView.translatesAutoresizingMaskIntoConstraints = false
     return rootStackView
   }()
   
@@ -74,7 +76,7 @@ final class TransactionDetailsCell: UITableViewCell {
                  subTitle: String?,
                  value: String,
                  image: UIImage?,
-                 color: UIColor,
+                 color: UIColor?,
                  leftInset: CGFloat,
                  isDividerHidden: Bool) {
     titleLabel.text = title
@@ -103,13 +105,13 @@ private extension TransactionDetailsCell {
     contentView.addSubview(divider)
     
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+      stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
       leftStackConstraint,
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12),
       leftDividerConstraint,
       divider.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+      divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
     ])
   }
   

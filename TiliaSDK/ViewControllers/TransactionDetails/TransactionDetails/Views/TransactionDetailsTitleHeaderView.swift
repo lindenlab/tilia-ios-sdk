@@ -44,7 +44,7 @@ private extension TransactionDetailsTitleHeaderView {
     topConstraint.priority = UILayoutPriority(999)
     NSLayoutConstraint.activate([
       topConstraint,
-      label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+      label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
       label.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 32),
       label.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
     ])

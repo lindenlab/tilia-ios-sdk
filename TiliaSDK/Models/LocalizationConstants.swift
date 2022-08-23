@@ -129,5 +129,16 @@ enum L {
   static let errorTransactionDetailsTitle = "errorTransactionDetailsTitle".localized
   static let errorTransactionDetailsMessage = "errorTransactionDetailsMessage".localized
   static let emailReceipt = "emailReceipt".localized
+  static let subtotal = "subtotal".localized
+  static let transactionFees = "transactionFees".localized
+  static let paidWith = "paidWith".localized
+  static let invoiceDetails = "invoiceDetails".localized
+  static let status = "status".localized
+  static let transactionId = "transactionId".localized
+  static let referenceType = "referenceType".localized
+  static let referenceId = "referenceId".localized
+  static let transactionDate = "transactionDate".localized
+  static let transactionTime = "transactionTime".localized
+  static let depositedInto = "depositedInto".localized
   
 }
