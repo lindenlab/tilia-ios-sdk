@@ -31,8 +31,13 @@ struct TransactionDetailsSectionBuilder {
   }
   
   struct Content {
+    
+    struct Footer {
+      let isPrimaryButtonHidden: Bool
+    }
+    
     let title: String
-    let isPrimaryButtonHidden: Bool
+    let footer: Footer?
     let items: [Item]
   }
   
@@ -103,7 +108,6 @@ struct TransactionDetailsSectionBuilder {
   
   func footer(for section: Section,
               in tableView: UITableView,
-              at index: Int,
               delegate: ButtonsViewDelegate) -> UIView? {
     switch section {
     case let .header(model):
@@ -111,13 +115,15 @@ struct TransactionDetailsSectionBuilder {
       view.configure(title: model.footer?.title,
                      value: model.footer?.value)
       return view
-    case let .content(model) where index != tableView.numberOfSections - 1:
-      let view = tableView.dequeue(TransactionDetailsFooterView.self)
-      view.configure(isPrimaryButtonHidden: model.isPrimaryButtonHidden,
-                     delegate: delegate)
-      return view
-    default:
-      return nil
+    case let .content(model):
+      if let footer = model.footer {
+        let view = tableView.dequeue(TransactionDetailsFooterView.self)
+        view.configure(isPrimaryButtonHidden: footer.isPrimaryButtonHidden,
+                       delegate: delegate)
+        return view
+      } else {
+        return nil
+      }
     }
   }
   

@@ -74,7 +74,6 @@ final class TransactionDetailsViewController: BaseTableViewController {
   override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections[section],
                           in: tableView,
-                          at: section,
                           delegate: self)
   }
   
