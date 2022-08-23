@@ -25,7 +25,7 @@ final class CheckoutRouter: CheckoutRoutingProtocol {
   func routeToTosView() {
     let tosViewController = TosViewController(manager: dataStore.manager,
                                               onComplete: dataStore.onTosComplete,
-                                              onError: dataStore.onTosError)
+                                              onError: dataStore.onError)
     if let transitionCoordinator = viewController?.transitionCoordinator {
       transitionCoordinator.animate(alongsideTransition: nil) { _ in
         self.viewController?.present(tosViewController, animated: true)
@@ -37,14 +37,14 @@ final class CheckoutRouter: CheckoutRoutingProtocol {
   
   func routeToTosContentView() {
     let tosContentViewController = TosContentViewController(manager: dataStore.manager,
-                                                            onError: dataStore.onTosError)
+                                                            onError: dataStore.onError)
     viewController?.present(tosContentViewController, animated: true)
   }
   
   func routeToAddCreditCardView() {
     let addCreditCardViewController = AddCreditCardViewController(manager: dataStore.manager,
                                                                   onReload: dataStore.onReload,
-                                                                  onError: dataStore.onAddCreditCardError)
+                                                                  onError: dataStore.onError)
     viewController?.present(addCreditCardViewController, animated: true)
   }
   
