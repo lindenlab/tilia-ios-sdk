@@ -144,7 +144,7 @@ private extension CheckoutViewController {
     
     viewModel.error.sink { [weak self] in
       guard let self = self else { return }
-      if $0.needToShowCancelButton {
+      if $0.value {
         self.showCancelButton()
       }
       self.router.showToast(title: L.errorPaymentTitle,

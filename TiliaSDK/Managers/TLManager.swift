@@ -225,12 +225,12 @@ public extension TLManager {
       return
     }
     
-    let checkoutViewController = TransactionDetailsViewController(invoiceId: invoiceId,
-                                                                  manager: networkManager,
-                                                                  onUpdate: onUpdate,
-                                                                  onComplete: onComplete,
-                                                                  onError: onError)
-    viewController.present(checkoutViewController, animated: animated)
+    let transactionDetailsViewController = TransactionDetailsViewController(invoiceId: invoiceId,
+                                                                            manager: networkManager,
+                                                                            onUpdate: onUpdate,
+                                                                            onComplete: onComplete,
+                                                                            onError: onError)
+    viewController.present(transactionDetailsViewController, animated: animated)
   }
   
 }

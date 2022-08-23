@@ -8,6 +8,7 @@
 import UIKit
 
 protocol TransactionDetailsRoutingProtocol: RoutingProtocol {
+  func routeToTosView()
   func routeToSendReceiptView()
 }
 
@@ -18,6 +19,19 @@ final class TransactionDetailsRouter: TransactionDetailsRoutingProtocol {
   
   init(dataStore: TransactionDetailsDataStore) {
     self.dataStore = dataStore
+  }
+  
+  func routeToTosView() {
+    let tosViewController = TosViewController(manager: dataStore.manager,
+                                              onComplete: dataStore.onTosComplete,
+                                              onError: dataStore.onError)
+    if let transitionCoordinator = viewController?.transitionCoordinator {
+      transitionCoordinator.animate(alongsideTransition: nil) { _ in
+        self.viewController?.present(tosViewController, animated: true)
+      }
+    } else {
+      viewController?.present(tosViewController, animated: true)
+    }
   }
   
   func routeToSendReceiptView() {

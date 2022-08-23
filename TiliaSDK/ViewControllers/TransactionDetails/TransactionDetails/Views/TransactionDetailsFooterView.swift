@@ -34,12 +34,9 @@ final class TransactionDetailsFooterView: UITableViewHeaderFooterView {
     return view
   }()
   
-  func configure(delegate: ButtonsViewDelegate?) {
-    buttonsView.delegate = delegate
-  }
-  
-  func configure(isPrimaryButtonHidden: Bool) {
+  func configure(isPrimaryButtonHidden: Bool, delegate: ButtonsViewDelegate?) {
     buttonsView.primaryButton.isEnabled = isPrimaryButtonHidden
+    buttonsView.delegate = delegate
   }
   
   override init(reuseIdentifier: String?) {

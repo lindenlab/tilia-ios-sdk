@@ -70,29 +70,20 @@ final class TransactionDetailsCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String, subTitle: String?) {
+  func configure(title: String,
+                 subTitle: String?,
+                 value: String,
+                 image: UIImage?,
+                 color: UIColor,
+                 leftInset: CGFloat,
+                 isDividerHidden: Bool) {
     titleLabel.text = title
     subTitleLabel.text = subTitle
     subTitleLabel.isHidden = subTitle == nil
-  }
-  
-  func configure(value: String) {
     valueLabel.text = value
-    valueLabel.attributedText = nil
-  }
-  
-  func configure(value: NSAttributedString) {
-    valueLabel.attributedText = value
-    valueLabel.text = nil
-  }
-  
-  func configure(image: UIImage?, color: UIColor) {
     valueImageView.image = image?.withRenderingMode(.alwaysTemplate)
     valueImageView.isHidden = image == nil
     valueImageView.tintColor = color
-  }
-  
-  func configure(leftInset: CGFloat, isDividerHidden: Bool) {
     leftStackConstraint.constant = leftInset
     leftDividerConstraint.constant = leftInset
     divider.isHidden = isDividerHidden

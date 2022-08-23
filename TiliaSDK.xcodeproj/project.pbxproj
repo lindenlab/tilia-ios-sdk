@@ -111,6 +111,7 @@
 		D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */; };
 		D192E86628B4052100E34FCE /* TransactionDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192E86528B4052100E34FCE /* TransactionDetailsFooterView.swift */; };
 		D192E86828B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192E86728B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift */; };
+		D192E86A28B4EE8700E34FCE /* ErrorWithBoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192E86928B4EE8700E34FCE /* ErrorWithBoolModel.swift */; };
 		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
 		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
 		D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */; };
@@ -314,6 +315,7 @@
 		D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceInfoModel.swift; sourceTree = "<group>"; };
 		D192E86528B4052100E34FCE /* TransactionDetailsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsFooterView.swift; sourceTree = "<group>"; };
 		D192E86728B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsTitleFooterView.swift; sourceTree = "<group>"; };
+		D192E86928B4EE8700E34FCE /* ErrorWithBoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorWithBoolModel.swift; sourceTree = "<group>"; };
 		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
 		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
 		D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
@@ -605,6 +607,7 @@
 				D1BB633C287EE055007616DE /* SubmitKycModel.swift */,
 				D1BB6344287F2B8B007616DE /* SubmittedKycModel.swift */,
 				D1BB6348287F3012007616DE /* SubmittedKycStatusModel.swift */,
+				D192E86928B4EE8700E34FCE /* ErrorWithBoolModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1189,6 +1192,7 @@
 				D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */,
 				D18CDB74283F810C00AAC732 /* UserDocumentsSelectDocumentCell.swift in Sources */,
 				D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */,
+				D192E86A28B4EE8700E34FCE /* ErrorWithBoolModel.swift in Sources */,
 				D12443E527EB9F0300C68811 /* TextViewWithLink.swift in Sources */,
 				D16E2A9B28AFA19D00287C55 /* TransactionDetailsRouter.swift in Sources */,
 				D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */,

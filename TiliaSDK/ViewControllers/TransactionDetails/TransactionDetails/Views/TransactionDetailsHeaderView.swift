@@ -67,15 +67,13 @@ final class TransactionDetailsHeaderView: UITableViewHeaderFooterView {
   
   func configure(image: UIImage?,
                  title: NSAttributedString,
-                 subTitle: String) {
+                 subTitle: String,
+                 statusImage: UIImage?,
+                 statusTitle: String?,
+                 statusSubTitle: String?) {
     imageView.image = image
     titleLabel.attributedText = title
     subTitleLabel.text = subTitle
-  }
-  
-  func configure(statusImage: UIImage?,
-                 statusTitle: String?,
-                 statusSubTitle: String?) {
     statusInfoStackView.isHidden = statusImage == nil && statusTitle == nil
     statusImageView.image = statusImage
     statusTitleLabel.text = statusTitle
