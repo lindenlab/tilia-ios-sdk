@@ -110,6 +110,7 @@
 		D192AD8827E8F53900E3DC2A /* IsTosSignedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8727E8F53900E3DC2A /* IsTosSignedModel.swift */; };
 		D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */; };
 		D192E86628B4052100E34FCE /* TransactionDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192E86528B4052100E34FCE /* TransactionDetailsFooterView.swift */; };
+		D192E86828B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192E86728B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift */; };
 		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
 		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
 		D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */; };
@@ -312,6 +313,7 @@
 		D192AD8727E8F53900E3DC2A /* IsTosSignedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsTosSignedModel.swift; sourceTree = "<group>"; };
 		D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceInfoModel.swift; sourceTree = "<group>"; };
 		D192E86528B4052100E34FCE /* TransactionDetailsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsFooterView.swift; sourceTree = "<group>"; };
+		D192E86728B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsTitleFooterView.swift; sourceTree = "<group>"; };
 		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
 		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
 		D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
@@ -728,6 +730,7 @@
 			children = (
 				D17A451228B3867D00B0C9AB /* TransactionDetailsHeaderView.swift */,
 				D17A451428B3873A00B0C9AB /* TransactionDetailsTitleHeaderView.swift */,
+				D192E86728B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift */,
 				D17A451628B39B2300B0C9AB /* TransactionDetailsCell.swift */,
 				D192E86528B4052100E34FCE /* TransactionDetailsFooterView.swift */,
 			);
@@ -1249,6 +1252,7 @@
 				D1BA29E227FCDFFE00F046E8 /* ButtonWithBackgroundColor.swift in Sources */,
 				D135DCB327E76E090009D888 /* TLError.swift in Sources */,
 				D192AD8827E8F53900E3DC2A /* IsTosSignedModel.swift in Sources */,
+				D192E86828B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift in Sources */,
 				D120F2D627F21082009B30DD /* PrimaryButton.swift in Sources */,
 				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */,

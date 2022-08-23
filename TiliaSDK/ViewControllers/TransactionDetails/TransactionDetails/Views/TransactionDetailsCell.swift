@@ -12,6 +12,7 @@ final class TransactionDetailsCell: UITableViewCell {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textColor = .primaryTextColor
+    label.font = .systemFont(ofSize: 14, weight: .medium)
     return label
   }()
   
@@ -69,11 +70,8 @@ final class TransactionDetailsCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String,
-                 titleFont: UIFont,
-                 subTitle: String?) {
+  func configure(title: String, subTitle: String?) {
     titleLabel.text = title
-    titleLabel.font = titleFont
     subTitleLabel.text = subTitle
     subTitleLabel.isHidden = subTitle == nil
   }

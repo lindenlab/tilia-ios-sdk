@@ -65,17 +65,14 @@ private extension TransactionDetailsFooterView {
     let topConstraint = buttonsView.topAnchor.constraint(equalTo: contentView.topAnchor)
     topConstraint.priority = UILayoutPriority(999)
     
-    let rightConstraint = buttonsView.rightAnchor.constraint(equalTo: contentView.rightAnchor)
-    rightConstraint.priority = UILayoutPriority(999)
-    
     NSLayoutConstraint.activate([
       topConstraint,
-      rightConstraint,
+      buttonsView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
       buttonsView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
       buttonsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      divider.topAnchor.constraint(equalTo: topAnchor),
-      divider.leftAnchor.constraint(equalTo: leftAnchor),
-      divider.rightAnchor.constraint(equalTo: rightAnchor)
+      divider.topAnchor.constraint(equalTo: contentView.topAnchor),
+      divider.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+      divider.rightAnchor.constraint(equalTo: contentView.rightAnchor)
     ])
   }
   
