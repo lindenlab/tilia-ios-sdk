@@ -170,8 +170,8 @@ extension TransactionDetailsSectionBuilder {
             isDividerHidden: false)
     ]
     sections.append(.header(.init(image: .purchaseBuyerIcon, // Fix for buyer/seller
-                                  title: NSAttributedString(string: "You paid $46.08 USD"), // Fix for buyer/seller
-                                  subTitle: "today at 4:32pm (PST)",
+                                  title: attributedString(str: L.youPaid(with: "$46.08 USD"), subStr: "$46.08 USD"), // Fix for buyer/seller
+                                  subTitle: L.todayAt(with: "4:32pm (PST)"),
                                   status: nil,
                                   footer: .init(title: L.total, value: "$46.08 USD"),
                                   items: headerItems)))
@@ -252,6 +252,12 @@ extension TransactionDetailsSectionBuilder {
                                    footer: .init(isPrimaryButtonHidden: false),
                                    items: invoiceDetailsItems)))
     return sections
+  }
+  
+  func attributedString(str: String, subStr: String) -> NSAttributedString {
+    return str.attributedString(font: .systemFont(ofSize: 20),
+                                color: .primaryTextColor,
+                                subStrings: (subStr, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor))
   }
   
 }

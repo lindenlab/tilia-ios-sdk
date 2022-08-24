@@ -78,18 +78,9 @@ class TestViewController: UIViewController {
     dateFormatter.dateFormat = "YY, MMM d, HH:mm:ss"
     let dateStr = date.string(dateFormatter: dateFormatter)
     let str = "\(text):\n\(dateStr)\n\(message)"
-    let attributedString = NSMutableAttributedString(string: str)
-    
-    attributedString.addAttribute(.foregroundColor,
-                                  value: UIColor.black,
-                                  range: (str as NSString).range(of: text))
-    attributedString.addAttribute(.foregroundColor,
-                                  value: UIColor.lightGray,
-                                  range: (str as NSString).range(of: dateStr))
-    attributedString.addAttribute(.foregroundColor,
-                                  value: UIColor.lightGray,
-                                  range: (str as NSString).range(of: message))
-    return attributedString
+    return str.attributedString(font: .systemFont(ofSize: 16),
+                                color: .black,
+                                subStrings: (text, .systemFont(ofSize: 16), .black), (dateStr, .systemFont(ofSize: 16), .lightGray), (message, .systemFont(ofSize: 16), .lightGray))
   }
   
 }
