@@ -98,9 +98,7 @@ private extension SubmitKycModel {
     
     private static func dateOfBirth(for date: Date?) -> String? {
       guard let date = date else { return nil }
-      let formatter = DateFormatter()
-      formatter.dateFormat = "yyyy-MM-dd"
-      return date.string(dateFormatter: formatter)
+      return date.string(formatter: .customDateFormatter)
     }
   }
   

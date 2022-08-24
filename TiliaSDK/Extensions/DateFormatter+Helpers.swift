@@ -9,9 +9,27 @@ import Foundation
 
 extension DateFormatter {
   
-  static var defaultFormatter: DateFormatter {
+  static var longDateFormatter: DateFormatter {
     let formatter = DateFormatter()
     formatter.dateStyle = .long
+    return formatter
+  }
+  
+  static var shortTimeFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.timeStyle = .short
+    return formatter
+  }
+  
+  static var customFullDateFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "YY, MMM d, HH:mm:ss"
+    return formatter
+  }
+  
+  static var customDateFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
     return formatter
   }
   

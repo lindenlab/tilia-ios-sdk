@@ -118,7 +118,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       default: break
       }
     case .dateOfBirth:
-      let date = DateFormatter.defaultFormatter.date(from: text ?? "")
+      let date = DateFormatter.longDateFormatter.date(from: text ?? "")
       isFieldChanged = isFieldUpdated(&userInfoModel.dateOfBirth, with: date)
     case .ssn:
       if userInfoModel.tax?.ssn != text {
