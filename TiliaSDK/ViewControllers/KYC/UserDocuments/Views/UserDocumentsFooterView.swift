@@ -9,7 +9,7 @@ import UIKit
 
 final class UserDocumentsFooterView: UITableViewHeaderFooterView {
   
-  private let buttonsView: ButtonsView<PrimaryButton, NonPrimaryButton> = {
+  private let buttonsView: ButtonsView = {
     let primaryButton = PrimaryButton(style: .titleAndImageCenter)
     primaryButton.setTitleForLoadingState(L.uploading)
     primaryButton.setTitle(L.upload,

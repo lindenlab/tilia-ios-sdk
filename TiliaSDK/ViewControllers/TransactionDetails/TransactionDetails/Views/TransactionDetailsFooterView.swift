@@ -15,7 +15,7 @@ final class TransactionDetailsFooterView: UITableViewHeaderFooterView {
     return view
   }()
   
-  private let buttonsView: ButtonsView<PrimaryButton, NonPrimaryButton> = {
+  private let buttonsView: ButtonsView = {
     let primaryButton = PrimaryButton(style: .imageAndTitleCenter)
     primaryButton.setTitle(L.emailReceipt,
                            for: .normal)
