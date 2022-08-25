@@ -127,7 +127,7 @@ extension UIColor {
   convenience init(hexString: String, alpha: CGFloat = 1.0) {
     var hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     let scanner = Scanner(string: hexString)
-    if (hexString.hasPrefix("#")) {
+    if hexString.hasPrefix("#") {
       hexString.remove(at: hexString.startIndex)
     }
     var color: UInt64 = 0
