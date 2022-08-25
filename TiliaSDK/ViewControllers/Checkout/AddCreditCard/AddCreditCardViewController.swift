@@ -10,10 +10,6 @@ import Combine
 
 final class AddCreditCardViewController: BaseViewController {
   
-  override var hideableView: UIView {
-    return stackView
-  }
-  
   private let viewModel: AddCreditCardViewModelProtocol
   private let router: AddCreditCardRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
@@ -97,7 +93,7 @@ private extension AddCreditCardViewController {
   func bind() {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
-      $0 ? self.startLoading() : self.stopLoading()
+      self.openBrowserButton.isLoading = $0
     }.store(in: &subscriptions)
     
     viewModel.error.sink { [weak self] _ in
