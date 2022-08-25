@@ -10,10 +10,6 @@ import Combine
 
 final class TosViewController: BaseViewController {
   
-  override var hideableView: UIView {
-    return stackView
-  }
-  
   private let viewModel: TosViewModelProtocol
   private let router: TosRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
@@ -148,7 +144,9 @@ private extension TosViewController {
   func bind() {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
-      $0 ? self.startLoading() : self.stopLoading()
+      self.acceptButton.isLoading = $0
+      self.acceptSwitch.isUserInteractionEnabled = !$0
+      self.messageTextView.isUserInteractionEnabled = !$0
     }.store(in: &subscriptions)
     
     viewModel.accept.sink { [weak self] in

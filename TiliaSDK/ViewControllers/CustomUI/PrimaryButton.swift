@@ -51,9 +51,9 @@ final class PrimaryButton: Button {
     let spinnerCenterX: CGFloat
     switch style {
     case .titleAndImageCenter, .none:
-      spinnerCenterX = titleLabel.frame.maxX + 12
+      spinnerCenterX = titleLabel.frame.maxX + 15
     case .imageAndTitleCenter:
-      spinnerCenterX = titleLabel.frame.minX - 12
+      spinnerCenterX = titleLabel.frame.minX - 15
     }
     spinner.center = CGPoint(x: spinnerCenterX, y: titleLabel.frame.midY)
   }
