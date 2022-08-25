@@ -140,7 +140,6 @@
 		D1B872CD280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872CB280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json */; };
 		D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */; };
 		D1B872D12804A22F00DD1F7B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872D02804A22F00DD1F7B /* NetworkManager.swift */; };
-		D1B872D32804C27300DD1F7B /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872D22804C27300DD1F7B /* UIColorTests.swift */; };
 		D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */; };
 		D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */; };
 		D1BA29E027FCA96B00F046E8 /* ColorsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BA29DF27FCA96B00F046E8 /* ColorsConfiguration.swift */; };
@@ -344,7 +343,6 @@
 		D1B872CB280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CreateEscrowInvoiceResponse.json; sourceTree = "<group>"; };
 		D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLManagerTests.swift; sourceTree = "<group>"; };
 		D1B872D02804A22F00DD1F7B /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		D1B872D22804C27300DD1F7B /* UIColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewModelTests.swift; sourceTree = "<group>"; };
 		D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosViewModelTests.swift; sourceTree = "<group>"; };
 		D1BA29DF27FCA96B00F046E8 /* ColorsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsConfiguration.swift; sourceTree = "<group>"; };
@@ -564,7 +562,6 @@
 			children = (
 				D135DC8F27E74A540009D888 /* NetworkManagerTests.swift */,
 				D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */,
-				D1B872D22804C27300DD1F7B /* UIColorTests.swift */,
 				D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */,
 				D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */,
 				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
@@ -1285,7 +1282,6 @@
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
-				D1B872D32804C27300DD1F7B /* UIColorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

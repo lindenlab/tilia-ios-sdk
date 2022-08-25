@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Colors
+
 extension UIColor {
   
   private static var configuration: ColorsConfiguration { return TLManager.shared.colorsConfiguration }
@@ -118,6 +120,8 @@ extension UIColor {
   
 }
 
+// MARK: - Init Helper
+
 extension UIColor {
   
   convenience init(hexString: String, alpha: CGFloat = 1.0) {
@@ -137,6 +141,12 @@ extension UIColor {
     let blue  = CGFloat(b) / 255.0
     self.init(red: red, green: green, blue: blue, alpha: alpha)
   }
+  
+}
+
+// MARK: - Private Methods
+
+private extension UIColor {
   
   func isColorDark() -> Bool {
     var r: CGFloat = 0.0
