@@ -56,6 +56,11 @@ final class TransactionDetailsHeaderView: UITableViewHeaderFooterView {
     return stackView
   }()
   
+  private let failureToastView: ToastView = {
+    let toastView = ToastView(isSuccess: false)
+    return toastView
+  }()
+  
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     setup()
@@ -69,14 +74,18 @@ final class TransactionDetailsHeaderView: UITableViewHeaderFooterView {
                  title: NSAttributedString,
                  subTitle: String,
                  statusImage: UIImage?,
+                 statusImageColor: UIColor?,
                  statusTitle: String?,
                  statusSubTitle: String?) {
     imageView.image = image
     titleLabel.attributedText = title
     subTitleLabel.text = subTitle
     statusInfoStackView.isHidden = statusImage == nil && statusTitle == nil
-    statusImageView.image = statusImage
+    statusImageView.image = statusImage?.withRenderingMode(.alwaysTemplate)
+    statusImageView.tintColor = statusImageColor
     statusTitleLabel.text = statusTitle
+    failureToastView.configure(title: nil, message: statusSubTitle)
+    failureToastView.isHidden = statusSubTitle == nil
   }
   
 }
@@ -86,26 +95,30 @@ final class TransactionDetailsHeaderView: UITableViewHeaderFooterView {
 private extension TransactionDetailsHeaderView {
   
   func setup() {
-    let stackView = UIStackView(arrangedSubviews: [imageView,
-                                                   titleLabel,
-                                                   subTitleLabel,
-                                                   statusInfoStackView])
-    stackView.axis = .vertical
-    stackView.alignment = .center
-    stackView.spacing = 4
-    stackView.setCustomSpacing(16, after: subTitleLabel)
-    stackView.translatesAutoresizingMaskIntoConstraints = false
+    let mainStackView = UIStackView(arrangedSubviews: [imageView,
+                                                       titleLabel,
+                                                       subTitleLabel,
+                                                       statusInfoStackView])
+    mainStackView.axis = .vertical
+    mainStackView.alignment = .center
+    mainStackView.spacing = 4
+    mainStackView.setCustomSpacing(16, after: subTitleLabel)
+    
+    let rootStackView = UIStackView(arrangedSubviews: [mainStackView, failureToastView])
+    rootStackView.spacing = 16
+    rootStackView.axis = .vertical
+    rootStackView.translatesAutoresizingMaskIntoConstraints = false
     
     contentView.backgroundColor = .backgroundColor
-    contentView.addSubview(stackView)
+    contentView.addSubview(rootStackView)
     
-    let topConstraint = stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32)
+    let topConstraint = rootStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32)
     topConstraint.priority = UILayoutPriority(999)
     NSLayoutConstraint.activate([
       topConstraint,
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -52),
-      stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-      stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
+      rootStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -52),
+      rootStackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+      rootStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
     ])
   }
   

@@ -13,6 +13,7 @@ struct TransactionDetailsSectionBuilder {
     
     struct Status {
       let image: UIImage?
+      let imageColor: UIColor
       let title: String
       let subTitle: String?
     }
@@ -105,6 +106,7 @@ struct TransactionDetailsSectionBuilder {
                      title: model.title,
                      subTitle: model.subTitle,
                      statusImage: model.status?.image,
+                     statusImageColor: model.status?.imageColor,
                      statusTitle: model.status?.title,
                      statusSubTitle: model.status?.subTitle)
       return view
