@@ -18,7 +18,6 @@ final class PrimaryButton: Button {
       if isLoading {
         spinner?.startAnimating()
       }
-      guard oldValue != isLoading else { return }
       isLoading ? addSpinner() : removeSpinner()
     }
   }
@@ -79,6 +78,7 @@ private extension PrimaryButton {
   }
   
   func removeSpinner() {
+    guard self.spinner != nil else { return }
     imageView?.layer.transform = CATransform3DIdentity
     super.isEnabled = true
     title.map { setTitle($0, for: .normal) }
