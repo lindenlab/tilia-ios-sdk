@@ -15,7 +15,7 @@ struct InvoiceDetailsModel: Decodable {
   let referenceType: String
   let referenceId: String
   let displayAmount: String
-  let items: [InvoiceDetailsItemModel]
+  let items: [LineItemModel]
   
   private enum CodingKeys: String, CodingKey {
     case isEscrow = "is_escrow"
@@ -25,30 +25,6 @@ struct InvoiceDetailsModel: Decodable {
     case referenceId = "reference_id"
     case displayAmount = "display_amount"
     case items = "line_items"
-  }
-  
-}
-
-struct InvoiceDetailsItemModel: Decodable {
-  
-  let description: String
-  let productSku: String
-  let amount: Double
-  let currency: String
-  
-  // TODO: - Fix this when server will send this property
-  var displayAmount: String {
-    let formatter = NumberFormatter()
-    formatter.maximumFractionDigits = 2
-    let amountString = formatter.string(from: NSNumber(value: amount)) ?? ""
-    return "\(currency) \(amountString)"
-  }
-  
-  private enum CodingKeys: String, CodingKey {
-    case description
-    case productSku = "product_sku"
-    case amount
-    case currency
   }
   
 }

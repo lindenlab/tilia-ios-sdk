@@ -181,6 +181,7 @@
 		D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B54127F7675C00E04EE1 /* RadioButton.swift */; };
 		D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */; };
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
+		D1EFAB3128B7F14800AB1C31 /* LineItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
@@ -385,6 +386,7 @@
 		D1D5B54127F7675C00E04EE1 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
+		D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItemModel.swift; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
@@ -606,6 +608,7 @@
 				D1BB6344287F2B8B007616DE /* SubmittedKycModel.swift */,
 				D1BB6348287F3012007616DE /* SubmittedKycStatusModel.swift */,
 				D192E86928B4EE8700E34FCE /* ErrorWithBoolModel.swift */,
+				D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1240,6 +1243,7 @@
 				D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */,
 				D15BA9F3282AABF900511785 /* Date+Helpers.swift in Sources */,
 				D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */,
+				D1EFAB3128B7F14800AB1C31 /* LineItemModel.swift in Sources */,
 				D179123B282C3A2B0053DB10 /* UserInfoValidator.swift in Sources */,
 				D1A165B6287F5CB900EFD999 /* CountryStateModel.swift in Sources */,
 				D188165D27E7C0DB0082A85B /* InvoiceRouter.swift in Sources */,
