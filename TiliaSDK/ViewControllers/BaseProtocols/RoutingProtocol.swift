@@ -32,11 +32,6 @@ extension RoutingProtocol {
     }
   }
   
-  func showWebView(with link: String) {
-    guard let model = TosAcceptModel(str: link) else { return }
-    showWebView(with: model.url)
-  }
-  
   func showWebView(with url: URL) {
     let safariViewController = SFSafariViewController(url: url)
     viewController?.present(safariViewController, animated: true)

@@ -8,7 +8,7 @@
 import XCTest
 @testable import TiliaSDK
 
-class TosFlowUITests: XCTestCase {
+final class TosFlowUITests: XCTestCase {
   
   override func setUpWithError() throws {
     continueAfterFailure = false
@@ -37,12 +37,20 @@ class TosFlowUITests: XCTestCase {
     XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
     
+    let tosLink = app.textViews.links["Terms of Service"]
+    XCTAssert(tosLink.waitForExistence(timeout: 2))
+    tosLink.tap()
+    
+    let tosContentCloseButton = app.buttons["closeButton"]
+    XCTAssert(tosContentCloseButton.waitForExistence(timeout: 2))
+    tosContentCloseButton.tap()
+    
     let acceptSwitch = app.switches["acceptSwitch"]
     XCTAssert(acceptSwitch.waitForExistence(timeout: 2))
     acceptSwitch.tap()
     
     let acceptButton = app.buttons["acceptButton"]
-    XCTAssert(acceptButton.waitForExistence(timeout: 2))
+    XCTAssert(acceptButton.exists)
     acceptButton.tap()
     
     let backButton = app.navigationBars["TOS flow"].buttons["Demo App"]

@@ -8,7 +8,7 @@
 import XCTest
 @testable import TiliaSDK
 
-class NetworkManagerTests: XCTestCase {
+final class NetworkManagerTests: XCTestCase {
   
   var networkManager: NetworkManager!
   
@@ -31,6 +31,23 @@ class NetworkManagerTests: XCTestCase {
     }
     wait(for: [expectation], timeout: 2)
     XCTAssertFalse(isTosSigned)
+  }
+  
+  func testGetTosContentSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var content: String?
+    let expectation = XCTestExpectation(description: "testGetTosContentSuccess")
+    networkManager.getTosContent { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let model):
+        content = model.content
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(content)
   }
   
   func testSignTosForUserSuccess() {

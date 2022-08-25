@@ -28,13 +28,17 @@ extension RouterProtocol {
   
   var bodyParameters: Parameters? { return nil }
   
-  func requestHeaders() throws -> [String: String] {
+  func defaultRequestHeaders() throws -> [String: String] {
     guard let token = serverConfiguration.token, !token.isEmpty else { throw TLError.invalidToken }
     let headers = [
       "Content-Type": "application/json",
       "Authorization": "Bearer \(token)"
     ]
     return headers
+  }
+  
+  func requestHeaders() throws -> [String: String] {
+    return try defaultRequestHeaders()
   }
   
   func asURLRequest() throws -> URLRequest {
@@ -60,10 +64,6 @@ extension RouterProtocol {
 // MARK: - Helpers for Unit Tests
 
 extension RouterProtocol {
-  
-  var testData: Data? {
-    return nil
-  }
   
   func readJSONFromFile(_ fileName: String) -> Data? {
     guard

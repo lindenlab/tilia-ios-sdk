@@ -22,6 +22,8 @@ extension UIImage {
   static let masterCardIcon = UIImage(str: "masterCardIcon")
   static let visaIcon = UIImage(str: "visaIcon")
   
+  static let closeIcon = UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
+  
   private convenience init?(str: String) {
     self.init(named: str, in: BundleToken.bundle, compatibleWith: nil)
   }

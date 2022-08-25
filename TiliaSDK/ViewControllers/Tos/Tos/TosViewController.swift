@@ -24,7 +24,7 @@ final class TosViewController: BaseViewController {
     label.textAlignment = .center
     label.text = L.tiliaTos
     label.numberOfLines = 0
-    label.font = UIFont.boldSystemFont(ofSize: 18)
+    label.font = .boldSystemFont(ofSize: 20)
     label.textColor = .primaryTextColor
     return label
   }()
@@ -38,6 +38,7 @@ final class TosViewController: BaseViewController {
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
     uiSwitch.accessibilityIdentifier = "acceptSwitch"
     uiSwitch.setContentHuggingPriority(.required, for: .horizontal)
+    uiSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
     return uiSwitch
   }()
   
@@ -89,14 +90,14 @@ final class TosViewController: BaseViewController {
   init(manager: NetworkManager,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    let router = TosRouter()
-    self.viewModel = TosViewModel(manager: manager,
-                                  onComplete: onComplete,
-                                  onError: onError)
+    let viewModel = TosViewModel(manager: manager,
+                                 onComplete: onComplete,
+                                 onError: onError)
+    let router = TosRouter(dataStore: viewModel)
+    self.viewModel = viewModel
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
@@ -109,13 +110,7 @@ final class TosViewController: BaseViewController {
     bind()
   }
   
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension TosViewController: UIAdaptivePresentationControllerDelegate {
-  
-  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+  override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     viewModel.complete()
   }
   
@@ -126,7 +121,13 @@ extension TosViewController: UIAdaptivePresentationControllerDelegate {
 extension TosViewController: TextViewWithLinkDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
-    router.showWebView(with: link)
+    guard let model = TosAcceptModel(str: link) else { return }
+    switch model {
+    case .termsOfService:
+      router.routeToTosContentView()
+    case .privacyPolicy:
+      router.showWebView(with: TosAcceptModel.privacyPolicyUrl)
+    }
   }
   
 }

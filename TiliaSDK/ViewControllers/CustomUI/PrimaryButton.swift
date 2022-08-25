@@ -10,7 +10,7 @@ import UIKit
 final class PrimaryButton: ButtonWithBackgroundColor {
   
   override var intrinsicContentSize: CGSize {
-    return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
+    return CGSize(width: super.intrinsicContentSize.width, height: 44)
   }
   
   override init(frame: CGRect) {

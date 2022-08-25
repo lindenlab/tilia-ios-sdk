@@ -10,7 +10,7 @@ import UIKit
 final class NonPrimaryButton: ButtonWithBackgroundColor {
   
   override var intrinsicContentSize: CGSize {
-    return CGSize(width: UIView.layoutFittingExpandedSize.width, height: 48)
+    return CGSize(width: super.intrinsicContentSize.width, height: 44)
   }
   
   override init(frame: CGRect) {
@@ -24,6 +24,7 @@ final class NonPrimaryButton: ButtonWithBackgroundColor {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
+    guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
     setupBorderColor()
   }
   

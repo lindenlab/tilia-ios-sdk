@@ -53,7 +53,6 @@ final class CheckoutViewController: BaseViewController {
     self.router = router
     super.init(nibName: nil, bundle: nil)
     router.viewController = self
-    self.presentationController?.delegate = self
   }
   
   required init?(coder: NSCoder) {
@@ -65,6 +64,10 @@ final class CheckoutViewController: BaseViewController {
     setup()
     bind()
     viewModel.checkIsTosRequired()
+  }
+  
+  override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    viewModel.complete(isFromCloseAction: false)
   }
   
 }
@@ -112,16 +115,6 @@ extension CheckoutViewController: UITableViewDelegate {
   
 }
 
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension CheckoutViewController: UIAdaptivePresentationControllerDelegate {
-  
-  func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    viewModel.complete(isFromCloseAction: false)
-  }
-  
-}
-
 // MARK: - CheckoutPaymentFooterViewDelegate
 
 extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
@@ -145,7 +138,7 @@ extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
 extension CheckoutViewController: TextViewWithLinkDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
-    router.showWebView(with: link)
+    router.routeToTosContentView()
   }
   
 }

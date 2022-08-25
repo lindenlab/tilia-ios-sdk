@@ -18,17 +18,26 @@ protocol TosViewModelOutputProtocol {
   var error: PassthroughSubject<Error, Never> { get }
 }
 
+protocol TosDataStore {
+  var manager: NetworkManager { get }
+  var onTosContentError: ((TLErrorCallback) -> Void)? { get }
+}
+
 protocol TosViewModelProtocol: TosViewModelInputProtocol, TosViewModelOutputProtocol { }
 
-final class TosViewModel: TosViewModelProtocol {
+final class TosViewModel: TosViewModelProtocol, TosDataStore {
   
   let loading = PassthroughSubject<Bool, Never>()
   let accept = CurrentValueSubject<Bool, Never>(false)
   let error = PassthroughSubject<Error, Never>()
+  
+  let manager: NetworkManager
+  var onTosContentError: ((TLErrorCallback) -> Void)? {
+    return onError
+  }
+  
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private let onError: ((TLErrorCallback) -> Void)?
-  
-  private let manager: NetworkManager
   
   init(manager: NetworkManager,
        onComplete: ((TLCompleteCallback) -> Void)?,
