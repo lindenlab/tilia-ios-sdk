@@ -16,7 +16,7 @@ protocol TransactionDetailsViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
-  var content: PassthroughSubject<Void, Never> { get }
+  var content: PassthroughSubject<TransactionDetailsModel, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
 }
 
@@ -36,7 +36,7 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   let loading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
-  let content = PassthroughSubject<Void, Never>()
+  let content = PassthroughSubject<TransactionDetailsModel, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
   
   let manager: NetworkManager
@@ -104,7 +104,7 @@ private extension TransactionDetailsViewModel {
     // TODO: - Add here reuqest to get info
     loading.send(false)
     isLoaded = true
-    content.send()
+    content.send(TransactionDetailsModel())
   }
   
   func didFail(with error: ErrorWithBoolModel) {

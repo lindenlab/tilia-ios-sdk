@@ -88,6 +88,7 @@ final class TransactionDetailsViewController: BaseTableViewController {
 extension TransactionDetailsViewController: ButtonsViewDelegate {
   
   func buttonsViewPrimaryButtonDidTap() {
+    router.routeToSendReceiptView()
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
@@ -129,7 +130,7 @@ private extension TransactionDetailsViewController {
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      self.sections = self.builder.sections()
+      self.sections = self.builder.sections(with: $0)
       self.tableView.reloadData()
     }.store(in: &subscriptions)
     

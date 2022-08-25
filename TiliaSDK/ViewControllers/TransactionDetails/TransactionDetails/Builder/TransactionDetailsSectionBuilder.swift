@@ -138,7 +138,7 @@ struct TransactionDetailsSectionBuilder {
     }
   }
   
-  func sections() -> [Section] {
+  func sections(with model: TransactionDetailsModel) -> [Section] {
     return purchaseSections()
   }
   
