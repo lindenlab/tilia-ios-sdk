@@ -133,7 +133,7 @@ private extension CheckoutViewController {
     tableView.register(CheckoutPayloadCell.self)
     tableView.register(CheckoutPaymentFooterView.self)
     tableView.register(CheckoutPaymentMethodCell.self)
-    tableView.register(CheckoutSuccessfulPaymentCell.self)
+    tableView.register(ToastViewCell.self)
   }
   
   func bind() {

@@ -38,9 +38,15 @@ final class ToastView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String, message: String) {
+  func configure(isSuccess: Bool) {
+    setupColors(isSuccess: isSuccess)
+  }
+  
+  func configure(title: String?, message: String?) {
     titleLabel.text = title
+    titleLabel.isHidden = title == nil
     messageLabel.text = message
+    messageLabel.isHidden = message == nil
   }
   
 }

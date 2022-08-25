@@ -93,7 +93,11 @@ struct CheckoutSectionBuilder {
       cell.configure(isSelected: item.isSelected)
       return cell
     case .successfulPayment:
-      return tableView.dequeue(CheckoutSuccessfulPaymentCell.self, for: indexPath)
+      let cell = tableView.dequeue(ToastViewCell.self, for: indexPath)
+      cell.configure(isSuccess: true,
+                     title: L.success,
+                     message: L.paymentProcessed)
+      return cell
     }
   }
   
