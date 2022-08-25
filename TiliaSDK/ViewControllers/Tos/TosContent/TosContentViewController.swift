@@ -20,7 +20,6 @@ final class TosContentViewController: BaseViewController {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.textAlignment = .center
     label.text = L.tiliaTos
     label.numberOfLines = 0
     label.font = .boldSystemFont(ofSize: 20)
