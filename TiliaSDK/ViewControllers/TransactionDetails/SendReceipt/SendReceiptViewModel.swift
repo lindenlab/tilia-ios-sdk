@@ -15,9 +15,7 @@ protocol SendReceiptViewModelOutputProtocol {
   
 }
 
-protocol SendReceiptViewModelProtocol: SendReceiptViewModelInputProtocol, SendReceiptViewModelOutputProtocol {
-  
-}
+protocol SendReceiptViewModelProtocol: SendReceiptViewModelInputProtocol, SendReceiptViewModelOutputProtocol { }
 
 final class SendReceiptViewModel: SendReceiptViewModelProtocol {
   

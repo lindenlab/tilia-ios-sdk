@@ -27,9 +27,7 @@ protocol TransactionDetailsDataStore {
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
-protocol TransactionDetailsViewModelProtocol: TransactionDetailsViewModelInputProtocol, TransactionDetailsViewModelOutputProtocol {
-  
-}
+protocol TransactionDetailsViewModelProtocol: TransactionDetailsViewModelInputProtocol, TransactionDetailsViewModelOutputProtocol { }
 
 final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, TransactionDetailsDataStore {
   
