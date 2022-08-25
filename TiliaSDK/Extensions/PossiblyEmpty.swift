@@ -11,6 +11,14 @@ protocol PossiblyEmpty {
   var isEmpty: Bool { get }
 }
 
+extension PossiblyEmpty {
+  
+  func toNilIfEmpty() -> Self? {
+    return isEmpty ? nil : self
+  }
+  
+}
+
 extension String: PossiblyEmpty { }
 
 extension Int: PossiblyEmpty {
