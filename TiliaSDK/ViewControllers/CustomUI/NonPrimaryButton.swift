@@ -7,15 +7,16 @@
 
 import UIKit
 
-class NonPrimaryButton: ButtonWithBackgroundColor {
+final class NonPrimaryButton: Button {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: super.intrinsicContentSize.width, height: 44)
   }
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  override init(style: Button.Style? = nil, frame: CGRect = .zero) {
+    super.init(style: style, frame: frame)
     setup()
+    setupBorderColor()
   }
   
   required init?(coder: NSCoder) {
@@ -41,7 +42,6 @@ private extension NonPrimaryButton {
     setBackgroundColor(.borderColor, for: .highlighted)
     layer.cornerRadius = 6
     layer.borderWidth = 1
-    setupBorderColor()
     titleLabel?.font = .boldSystemFont(ofSize: 16)
   }
   

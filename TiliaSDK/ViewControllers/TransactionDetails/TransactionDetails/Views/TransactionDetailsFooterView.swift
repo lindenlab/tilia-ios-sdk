@@ -15,8 +15,8 @@ final class TransactionDetailsFooterView: UITableViewHeaderFooterView {
     return view
   }()
   
-  private let buttonsView: ButtonsView<PrimaryButtonWithStyle, NonPrimaryButton> = {
-    let primaryButton = PrimaryButtonWithStyle(style: .imageAndTitleCenter)
+  private let buttonsView: ButtonsView<PrimaryButton, NonPrimaryButton> = {
+    let primaryButton = PrimaryButton(style: .imageAndTitleCenter)
     primaryButton.setTitle(L.emailReceipt,
                            for: .normal)
     primaryButton.setImage(.envelopeIcon?.withRenderingMode(.alwaysTemplate),

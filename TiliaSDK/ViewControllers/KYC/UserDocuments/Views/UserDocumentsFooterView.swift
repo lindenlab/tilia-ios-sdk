@@ -9,8 +9,8 @@ import UIKit
 
 final class UserDocumentsFooterView: UITableViewHeaderFooterView {
   
-  private let buttonsView: ButtonsView<PrimaryButtonWithStyle, NonPrimaryButtonWithStyle> = {
-    let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
+  private let buttonsView: ButtonsView<PrimaryButton, NonPrimaryButton> = {
+    let primaryButton = PrimaryButton(style: .titleAndImageCenter)
     primaryButton.setTitleForLoadingState(L.uploading)
     primaryButton.setTitle(L.upload,
                            for: .normal)
@@ -18,7 +18,7 @@ final class UserDocumentsFooterView: UITableViewHeaderFooterView {
                            for: .normal)
     primaryButton.accessibilityIdentifier = "uploadButton"
     
-    let nonPrimaryButton = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
+    let nonPrimaryButton = NonPrimaryButton(style: .imageAndTitleCenter)
     
     let view = ButtonsView(primaryButton: primaryButton,
                            nonPrimaryButton: nonPrimaryButton,

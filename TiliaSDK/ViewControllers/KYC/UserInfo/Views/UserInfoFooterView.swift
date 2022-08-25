@@ -15,8 +15,8 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
     return view
   }()
   
-  private let buttonsView: ButtonsView<PrimaryButtonWithStyle, NonPrimaryButton> = {
-    let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
+  private let buttonsView: ButtonsView<PrimaryButton, NonPrimaryButton> = {
+    let primaryButton = PrimaryButton(style: .titleAndImageCenter)
     primaryButton.setTitle(L.continueTitle,
                            for: .normal)
     primaryButton.setImage(.arrowRightIcon?.withRenderingMode(.alwaysTemplate),
