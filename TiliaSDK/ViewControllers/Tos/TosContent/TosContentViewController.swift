@@ -81,7 +81,7 @@ private extension TosContentViewController {
   
   func setup() {
     let stackView = UIStackView(arrangedSubviews: [titleLabel, dismissButton])
-    stackView.alignment = .top
+    stackView.alignment = .center
     stackView.distribution = .equalCentering
     stackView.spacing = 4
     stackView.translatesAutoresizingMaskIntoConstraints = false
