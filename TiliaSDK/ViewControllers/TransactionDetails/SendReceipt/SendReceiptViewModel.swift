@@ -5,19 +5,27 @@
 //  Created by Serhii.Petrishenko on 19.08.2022.
 //
 
-import Foundation
+import Combine
 
 protocol SendReceiptViewModelInputProtocol {
-  
+  func checkEmail(_ email: String)
 }
 
 protocol SendReceiptViewModelOutputProtocol {
-  
+  var loading: PassthroughSubject<Bool, Never> { get }
+  var error: PassthroughSubject<Error, Never> { get }
+  var dismiss: PassthroughSubject<Void, Never> { get }
+  var isEmailValid: PassthroughSubject<Bool, Never> { get }
 }
 
 protocol SendReceiptViewModelProtocol: SendReceiptViewModelInputProtocol, SendReceiptViewModelOutputProtocol { }
 
 final class SendReceiptViewModel: SendReceiptViewModelProtocol {
+  
+  let loading = PassthroughSubject<Bool, Never>()
+  let error = PassthroughSubject<Error, Never>()
+  let dismiss = PassthroughSubject<Void, Never>()
+  let isEmailValid = PassthroughSubject<Bool, Never>()
   
   private let manager: NetworkManager
   private let onError: ((TLErrorCallback) -> Void)?
@@ -29,6 +37,11 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol {
     self.manager = manager
     self.onUpdate = onUpdate
     self.onError = onError
+  }
+  
+  func checkEmail(_ email: String) {
+    // TODO: - Add validation here
+    isEmailValid.send(email.count > 5)
   }
   
 }

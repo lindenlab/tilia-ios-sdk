@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import Combine
 
 final class SendReceiptViewController: BaseViewController {
   
   private let viewModel: SendReceiptViewModelProtocol
   private let router: SendReceiptRoutingProtocol
+  private var subscriptions: Set<AnyCancellable> = []
   
   private let titleLabel: UILabel = {
     let label = UILabel()
@@ -82,6 +84,7 @@ final class SendReceiptViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setup()
+    bind()
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -97,13 +100,13 @@ extension SendReceiptViewController: UITextFieldDelegate {
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let newText = textField.text?.newString(forRange: range, withReplacementString: string) ?? ""
-    sendButton.isEnabled = !newText.isEmpty // Add here maybe validation
+    viewModel.checkEmail(newText)
     return true
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
-    return true // Add here maybe validation
+    return true
   }
   
 }
@@ -135,6 +138,28 @@ private extension SendReceiptViewController {
       dismissButton.heightAnchor.constraint(equalToConstant: 30),
       dismissButton.widthAnchor.constraint(equalToConstant: 30)
     ])
+  }
+  
+  func bind() {
+    viewModel.loading.sink { [weak self] in
+      guard let self = self else { return }
+      $0 ? self.startLoading() : self.stopLoading()
+    }.store(in: &subscriptions)
+    
+    viewModel.error.sink { [weak self] _ in
+      self?.router.showToast(title: L.errorSendReceiptTitle,
+                             message: L.errorSendReceiptMessage)
+    }.store(in: &subscriptions)
+    
+    viewModel.dismiss.sink { [weak self] _ in
+      self?.router.dismiss()
+    }.store(in: &subscriptions)
+    
+    viewModel.isEmailValid.sink { [weak self] in
+      guard let self = self else { return }
+      self.sendButton.isEnabled = $0
+      self.textField.isReturnKeyEnabled = $0
+    }.store(in: &subscriptions)
   }
   
   @objc func closeButtonDidTap() {

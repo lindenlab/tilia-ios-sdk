@@ -137,3 +137,5 @@
 "youReceived" = "You received %@";
 "send" = "Send";
 "emailPlaceholder" = "john@doe.com";
+"errorSendReceiptTitle" = "Error sending receipt";
+"errorSendReceiptMessage" = "Sorry, we were unable to send receipt to your email. Please try again later.";

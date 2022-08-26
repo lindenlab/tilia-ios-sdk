@@ -9,6 +9,8 @@ import UIKit
 
 final class RoundedTextField: UITextField {
   
+  var isReturnKeyEnabled: Bool?
+  
   override var intrinsicContentSize: CGSize {
     return CGSize(width: super.intrinsicContentSize.width, height: 44)
   }
@@ -17,6 +19,10 @@ final class RoundedTextField: UITextField {
     didSet {
       setupAttributedPlaceholder()
     }
+  }
+  
+  override var hasText: Bool {
+    return isReturnKeyEnabled ?? super.hasText
   }
   
   override init(frame: CGRect) {
