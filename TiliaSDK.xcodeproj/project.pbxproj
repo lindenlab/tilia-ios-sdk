@@ -183,6 +183,7 @@
 		D1EFAB3328B7FC7900AB1C31 /* PaymentMethodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3228B7FC7900AB1C31 /* PaymentMethodModel.swift */; };
 		D1EFAB3528B7FE4400AB1C31 /* TransactionDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */; };
 		D1EFAB3828B94EBC00AB1C31 /* SendReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3728B94EBC00AB1C31 /* SendReceiptValidator.swift */; };
+		D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
@@ -389,6 +390,7 @@
 		D1EFAB3228B7FC7900AB1C31 /* PaymentMethodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodModel.swift; sourceTree = "<group>"; };
 		D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsModel.swift; sourceTree = "<group>"; };
 		D1EFAB3728B94EBC00AB1C31 /* SendReceiptValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidator.swift; sourceTree = "<group>"; };
+		D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
@@ -572,6 +574,7 @@
 				D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */,
 				D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */,
 				D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */,
+				D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";
@@ -1288,6 +1291,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */,
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
 				D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */,
