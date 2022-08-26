@@ -1,6 +1,7 @@
 "ok" = "OK";
 "tiliaTos" = "Tilia Terms Of Service";
 "accept" = "Accept";
+"accepting" = "Accepting...";
 "cancel" = "Cancel";
 "tos" = "Terms of Service";
 "privacyPolicy" = "Privacy Policy";
@@ -28,6 +29,7 @@
 "addCreditCardTitle" = "Add credit card";
 "addCreditCardMessage" = "Tap the button below to securely provide your credit card information in a browser. When you're done, click the 'Done' button.";
 "openBrowser" = "Open browser";
+"opening" = "Opening...";
 "goBack" = "Go back";
 "errorAddCreditTitle" =  "Error processing adding credit card";
 "errorAddCreditMessage" =  "Sorry, we were unable to process adding your credit card. Please try again later.";
@@ -133,3 +135,5 @@
 "requestedWithArguments" = "requested on %@ at %@";
 "youPaid" = "You paid %@";
 "youReceived" = "You received %@";
+"send" = "Send";
+"emailPlaceholder" = "john@doe.com";

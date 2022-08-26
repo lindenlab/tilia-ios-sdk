@@ -25,6 +25,7 @@ extension UIImage {
   static let refundIcon = UIImage(str: "refundIcon")
   static let tokenPurchaseIcon = UIImage(str: "tokenPurchaseIcon")
   static let tokenToWalletIcon = UIImage(str: "tokenToWalletIcon")
+  static let sendIcon = UIImage(str: "sendIcon")
   
   static let successIcon = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
   static let failureIcon = UIImage(systemName: "exclamationmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .medium))

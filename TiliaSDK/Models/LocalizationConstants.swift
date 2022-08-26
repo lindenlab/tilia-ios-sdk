@@ -12,6 +12,7 @@ enum L {
   static let ok = "ok".localized
   static let tiliaTos = "tiliaTos".localized
   static let accept = "accept".localized
+  static let accepting = "accepting".localized
   static let cancel = "cancel".localized
   static let tos = "tos".localized
   static let privacyPolicy = "privacyPolicy".localized
@@ -39,6 +40,7 @@ enum L {
   static let addCreditCardTitle = "addCreditCardTitle".localized
   static let addCreditCardMessage = "addCreditCardMessage".localized
   static let openBrowser = "openBrowser".localized
+  static let opening = "opening".localized
   static let goBack = "goBack".localized
   static let errorAddCreditTitle = "errorAddCreditTitle".localized
   static let errorAddCreditMessage = "errorAddCreditMessage".localized
@@ -139,6 +141,8 @@ enum L {
   static let transactionDate = "transactionDate".localized
   static let transactionTime = "transactionTime".localized
   static let depositedInto = "depositedInto".localized
+  static let send = "send".localized
+  static let emailPlaceholder = "emailPlaceholder".localized
   
   static func kycInfoSubmitted(with argument: CVarArg) -> String {
     return "kycInfoSubmitted".localized(with: argument)

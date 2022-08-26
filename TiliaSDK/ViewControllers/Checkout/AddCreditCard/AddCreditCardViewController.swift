@@ -24,6 +24,7 @@ final class AddCreditCardViewController: BaseViewController {
   private lazy var openBrowserButton: PrimaryButton = {
     let button = PrimaryButton()
     button.setTitle(L.openBrowser, for: .normal)
+    button.setTitleForLoadingState(L.opening)
     button.addTarget(self, action: #selector(openBrowserButtonDidTap), for: .touchUpInside)
     button.accessibilityIdentifier = "openBrowserButton"
     return button

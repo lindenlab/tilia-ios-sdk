@@ -52,6 +52,7 @@ final class TosViewController: BaseViewController {
   private lazy var acceptButton: PrimaryButton = {
     let button = PrimaryButton()
     button.setTitle(L.accept, for: .normal)
+    button.setTitleForLoadingState(L.accepting)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
     button.isEnabled = acceptSwitch.isOn
     button.accessibilityIdentifier = "acceptButton"
