@@ -142,6 +142,7 @@ enum L {
   static let transactionTime = "transactionTime".localized
   static let depositedInto = "depositedInto".localized
   static let send = "send".localized
+  static let sending = "sending".localized
   static let emailPlaceholder = "emailPlaceholder".localized
   static let errorSendReceiptTitle = "errorSendReceiptTitle".localized
   static let errorSendReceiptMessage = "errorSendReceiptMessage".localized

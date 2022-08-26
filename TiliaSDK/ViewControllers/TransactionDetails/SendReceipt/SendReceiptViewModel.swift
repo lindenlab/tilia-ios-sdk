@@ -5,10 +5,12 @@
 //  Created by Serhii.Petrishenko on 19.08.2022.
 //
 
+import Foundation
 import Combine
 
 protocol SendReceiptViewModelInputProtocol {
   func checkEmail(_ email: String)
+  func sendEmail(_ email: String)
 }
 
 protocol SendReceiptViewModelOutputProtocol {
@@ -42,6 +44,14 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol {
   func checkEmail(_ email: String) {
     // TODO: - Add validation here
     isEmailValid.send(email.count > 5)
+  }
+  
+  func sendEmail(_ email: String) {
+    loading.send(true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+      self.loading.send(false)
+      self.dismiss.send()
+    }
   }
   
 }

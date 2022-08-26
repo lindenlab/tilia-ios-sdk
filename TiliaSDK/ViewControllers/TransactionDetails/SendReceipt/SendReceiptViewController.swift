@@ -60,6 +60,7 @@ final class SendReceiptViewController: BaseViewController {
     button.addTarget(self, action: #selector(sendButtonDidTap), for: .touchUpInside)
     button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     button.setTitle(L.send, for: .normal)
+    button.setTitleForLoadingState(L.sending)
     button.isEnabled = false
     return button
   }()
@@ -106,6 +107,7 @@ extension SendReceiptViewController: UITextFieldDelegate {
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
+    sendEmail()
     return true
   }
   
@@ -143,7 +145,8 @@ private extension SendReceiptViewController {
   func bind() {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
-      $0 ? self.startLoading() : self.stopLoading()
+      self.textField.isUserInteractionEnabled = !$0
+      self.sendButton.isLoading = $0
     }.store(in: &subscriptions)
     
     viewModel.error.sink { [weak self] _ in
@@ -168,6 +171,11 @@ private extension SendReceiptViewController {
   
   @objc func sendButtonDidTap() {
     textField.resignFirstResponder()
+    sendEmail()
+  }
+  
+  func sendEmail() {
+    viewModel.sendEmail(textField.text ?? "")
   }
   
 }

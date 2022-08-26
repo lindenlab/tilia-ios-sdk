@@ -136,6 +136,7 @@
 "youPaid" = "You paid %@";
 "youReceived" = "You received %@";
 "send" = "Send";
+"sending" = "Sending...";
 "emailPlaceholder" = "john@doe.com";
 "errorSendReceiptTitle" = "Error sending receipt";
 "errorSendReceiptMessage" = "Sorry, we were unable to send receipt to your email. Please try again later.";
