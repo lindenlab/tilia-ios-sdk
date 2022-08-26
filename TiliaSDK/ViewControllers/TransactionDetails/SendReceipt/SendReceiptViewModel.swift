@@ -42,8 +42,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol {
   }
   
   func checkEmail(_ email: String) {
-    // TODO: - Add validation here
-    isEmailValid.send(email.count > 5)
+    isEmailValid.send(SendReceiptValidator.isEmailValid(email))
   }
   
   func sendEmail(_ email: String) {
