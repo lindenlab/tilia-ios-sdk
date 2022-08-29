@@ -21,6 +21,13 @@ extension DateFormatter {
     return formatter
   }
   
+  static var longDateAndShortTimeFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .long
+    formatter.timeStyle = .short
+    return formatter
+  }
+  
   static var customFullDateFormatter: DateFormatter {
     let formatter = DateFormatter()
     formatter.dateFormat = "YY, MMM d, HH:mm:ss"

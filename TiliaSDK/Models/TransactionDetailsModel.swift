@@ -14,12 +14,13 @@ struct TransactionDetailsModel: Decodable {
   let role: TransactionRole
   let status: TransactionStatus
   let accountId: String
-  let referenceType: String
-  let referenceId: String
-  let createdDate: Date
+  let referenceType: String?
+  let referenceId: String?
+  let createDate: Date
   let total: String
   let subTotal: String?
   let tax: String?
+  let items: [LineItemModel]
   
   private enum CodingKeys: String, CodingKey {
     case id = "transaction_id"
@@ -29,7 +30,7 @@ struct TransactionDetailsModel: Decodable {
     case accountId = "account_id"
     case referenceType = "reference_type"
     case referenceId = "reference_id"
-    case createdDate = "created"
+    case createDate = "created"
     case summary
     case subTotal
     case tax
@@ -44,16 +45,17 @@ struct TransactionDetailsModel: Decodable {
     role = try container.decode(TransactionRole.self, forKey: .role)
     status = try container.decode(TransactionStatus.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
+    items = [] // Fix me
     
     let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
-    referenceType = try dataContainer.decode(String.self, forKey: .referenceType)
-    referenceId = try dataContainer.decode(String.self, forKey: .referenceId)
+    referenceType = (try? dataContainer.decode(String.self, forKey: .referenceType))?.toNilIfEmpty()
+    referenceId = (try? dataContainer.decode(String.self, forKey: .referenceId))?.toNilIfEmpty()
     
-    let createdDateString = try dataContainer.decode(String.self, forKey: .createdDate)
-    if let createdDate = ISO8601DateFormatter().date(from: createdDateString) {
-      self.createdDate = createdDate
+    let createDateString = try dataContainer.decode(String.self, forKey: .createDate)
+    if let createDate = ISO8601DateFormatter().date(from: createDateString) {
+      self.createDate = createDate
     } else {
-      throw TLError.invalidDateFormatForString(createdDateString)
+      throw TLError.invalidDateFormatForString(createDateString)
     }
     
     let summaryContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .summary)
@@ -82,10 +84,18 @@ enum TransactionRole: String, Decodable {
   
 }
 
-enum TransactionStatus: String, Decodable {
+enum TransactionStatus: String, Decodable, CustomStringConvertible {
   
   case pending
   case processed
   case failed
+  
+  var description: String {
+    switch self {
+    case .pending: return L.pending
+    case .processed: return L.processed
+    case .failed: return L.failed
+    }
+  }
   
 }

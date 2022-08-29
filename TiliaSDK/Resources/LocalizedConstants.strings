@@ -140,3 +140,7 @@
 "emailPlaceholder" = "john@doe.com";
 "errorSendReceiptTitle" = "Error sending receipt";
 "errorSendReceiptMessage" = "Sorry, we were unable to send receipt to your email. Please try again later.";
+"accountId" = "Account ID";
+"pending" = "Pending";
+"processed" = "Processed";
+"failed" = "Failed";

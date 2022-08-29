@@ -150,116 +150,178 @@ extension TransactionDetailsSectionBuilder {
   
   func purchaseSections() -> [Section] {
     var sections: [Section] = []
-    
-    let headerItems: [Item] = [
-      .init(title: "2919 BRIDGE AVE, OH",
-            subTitle: nil,
-            value: "$10.24 USD",
-            image: nil,
-            leftInset: 16,
-            isDividerHidden: false),
-      .init(title: L.subtotal,
-            subTitle: nil,
-            value: "$41.86 USD",
-            image: nil,
-            leftInset: 16,
-            isDividerHidden: true),
-      .init(title: L.transactionFees,
-            subTitle: nil,
-            value: "$4.22 USD",
-            image: nil,
-            leftInset: 16,
-            isDividerHidden: false)
-    ]
-    sections.append(.header(.init(image: .purchaseBuyerIcon, // Fix for buyer/seller
-                                  title: attributedString(str: L.youPaid(with: "$46.08 USD"), subStr: "$46.08 USD"), // Fix for buyer/seller
-                                  subTitle: L.todayAt(with: "4:32pm (PST)"),
-                                  status: nil,
-                                  footer: .init(title: L.total, value: "$46.08 USD"),
-                                  items: headerItems)))
-    
-    
     // Fix for buyer/seller
-    if true {
-      let payInfoItems: [Item] = [
-        .init(title: "Tilia Wallet",
-              subTitle: nil,
-              value: "$10.24 USD",
-              image: nil,
-              leftInset: 32,
-              isDividerHidden: false),
-        .init(title: "Visa ending in 8946",
-              subTitle: "This transaction will appear on your statement as “Tilia / Upland”",
-              value: "$10.24 USD",
-              image: nil,
-              leftInset: 32,
-              isDividerHidden: true)
-      ]
-      sections.append(.content(.init(title: L.paidWith,
-                                     footer: nil,
-                                     items: payInfoItems)))
-    } else {
-      let payInfoItems: [Item] = [
-        .init(title: "Tilia Wallet",
-              subTitle: nil,
-              value: "$10.24 USD",
-              image: nil,
-              leftInset: 32,
-              isDividerHidden: false)
-      ]
-      sections.append(.content(.init(title: L.depositedInto,
-                                     footer: nil,
-                                     items: payInfoItems)))
+//    if true {
+//      let payInfoItems: [Item] = [
+//        .init(title: "Tilia Wallet",
+//              subTitle: nil,
+//              value: "$10.24 USD",
+//              image: nil,
+//              leftInset: 32,
+//              isDividerHidden: false),
+//        .init(title: "Visa ending in 8946",
+//              subTitle: "This transaction will appear on your statement as “Tilia / Upland”",
+//              value: "$10.24 USD",
+//              image: nil,
+//              leftInset: 32,
+//              isDividerHidden: true)
+//      ]
+//      sections.append(.content(.init(title: L.paidWith,
+//                                     footer: nil,
+//                                     items: payInfoItems)))
+//    } else {
+//      let payInfoItems: [Item] = [
+//        .init(title: "Tilia Wallet",
+//              subTitle: nil,
+//              value: "$10.24 USD",
+//              image: nil,
+//              leftInset: 32,
+//              isDividerHidden: false)
+//      ]
+//      sections.append(.content(.init(title: L.depositedInto,
+//                                     footer: nil,
+//                                     items: payInfoItems)))
+//    }
+    return sections
+  }
+  
+  func headerSection(for model: TransactionDetailsModel) -> Section {
+    var items: [Item] = model.items.map {
+      return .init(title: $0.description,
+                   subTitle: nil,
+                   value: $0.displayAmount,
+                   image: nil,
+                   leftInset: 16,
+                   isDividerHidden: false)
     }
     
-    let invoiceDetailsItems: [Item] = [
+    model.subTotal.map {
+      items.append(.init(title: L.subtotal,
+                         subTitle: nil,
+                         value: $0,
+                         image: nil,
+                         leftInset: 16,
+                         isDividerHidden: model.tax != nil))
+    }
+    model.tax.map {
+      items.append(.init(title: L.transactionFees,
+                         subTitle: nil,
+                         value: $0,
+                         image: nil,
+                         leftInset: 16,
+                         isDividerHidden: false))
+    }
+    
+    return .header(.init(image: model.role.image,
+                         title: model.role.attributedDescription(amount: model.total),
+                         subTitle: model.createDate.formattedDescription(),
+                         status: nil,
+                         footer: .init(title: L.total, value: model.total),
+                         items: items))
+  }
+  
+  func invoiceDetailsSection(for model: TransactionDetailsModel) -> Section {
+    var items: [Item] = [
       .init(title: L.status,
             subTitle: nil,
-            value: "Processed",
-            image: .init(image: .successIcon, color: .primaryColor),
+            value: model.status.description,
+            image: .init(image: model.status.icon, color: model.status.color),
             leftInset: 32,
             isDividerHidden: false),
       .init(title: L.transactionId,
             subTitle: nil,
-            value: "FK0013EA92144M9",
+            value: model.id,
             image: nil,
             leftInset: 32,
             isDividerHidden: false),
-      .init(title: L.referenceType,
+      .init(title: L.accountId,
             subTitle: nil,
-            value: "Upland order",
+            value: model.accountId,
             image: nil,
             leftInset: 32,
-            isDividerHidden: false),
-      .init(title: L.referenceId,
-            subTitle: nil,
-            value: "#3112KM95",
-            image: nil,
-            leftInset: 32,
-            isDividerHidden: false),
+            isDividerHidden: false)
+      ]
+      
+    model.referenceType.map {
+      items.append(.init(title: L.referenceType,
+                         subTitle: nil,
+                         value: $0,
+                         image: nil,
+                         leftInset: 32,
+                         isDividerHidden: false))
+    }
+    model.referenceId.map {
+      items.append(.init(title: L.referenceId,
+                         subTitle: nil,
+                         value: $0,
+                         image: nil,
+                         leftInset: 32,
+                         isDividerHidden: false))
+    }
+    
+    items.append(contentsOf: [
       .init(title: L.transactionDate,
-            subTitle: nil,
-            value: "August 4th, 2022",
-            image: nil,
-            leftInset: 32,
-            isDividerHidden: false),
+                         subTitle: nil,
+                         value: DateFormatter.longDateFormatter.string(from: model.createDate),
+                         image: nil,
+                         leftInset: 32,
+                         isDividerHidden: false),
       .init(title: L.transactionTime,
             subTitle: nil,
-            value: "4:32pm (PST)",
+            value: DateFormatter.shortTimeFormatter.string(from: model.createDate),
             image: nil,
             leftInset: 32,
             isDividerHidden: true)
-    ]
-    sections.append(.content(.init(title: L.invoiceDetails,
-                                   footer: .init(isPrimaryButtonHidden: false),
-                                   items: invoiceDetailsItems)))
-    return sections
+
+      
+    ])
+    
+    return .content(.init(title: L.invoiceDetails,
+                          footer: .init(isPrimaryButtonHidden: false),
+                          items: items))
   }
   
-  func attributedString(str: String, subStr: String) -> NSAttributedString {
+}
+
+// MARK: - Helpers
+
+private extension TransactionStatus {
+  
+  var icon: UIImage? {
+    switch self {
+    case .pending: return .pendingIcon
+    case .processed: return .successIcon
+    case .failed: return .failureIcon
+    }
+  }
+  
+  var color: UIColor {
+    switch self {
+    case .pending, .processed: return .primaryColor
+    case .failed: return .failureBackgroundColor
+    }
+  }
+  
+}
+
+private extension TransactionRole {
+  
+  func attributedDescription(amount: String) -> NSAttributedString {
+    let str: String
+    switch self {
+    case .buyer: str = L.youPaid(with: amount)
+    case .seller: str = L.youReceived(with: amount)
+    }
     return str.attributedString(font: .systemFont(ofSize: 20),
                                 color: .primaryTextColor,
-                                subStrings: (subStr, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor))
+                                subStrings: (amount, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor))
+  }
+  
+  var image: UIImage? {
+    switch self {
+    case .buyer: return .purchaseBuyerIcon
+    case .seller: return .purchaseSellerIcon
+    }
   }
   
 }

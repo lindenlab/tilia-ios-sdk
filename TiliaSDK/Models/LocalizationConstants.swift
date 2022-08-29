@@ -146,6 +146,10 @@ enum L {
   static let emailPlaceholder = "emailPlaceholder".localized
   static let errorSendReceiptTitle = "errorSendReceiptTitle".localized
   static let errorSendReceiptMessage = "errorSendReceiptMessage".localized
+  static let accountId = "accountId".localized
+  static let pending = "pending".localized
+  static let processed = "processed".localized
+  static let failed = "failed".localized
   
   static func kycInfoSubmitted(with argument: CVarArg) -> String {
     return "kycInfoSubmitted".localized(with: argument)
@@ -156,8 +160,8 @@ enum L {
   static func yesterdayAt(with argument: CVarArg) -> String {
     return "yesterdayAt".localized(with: argument)
   }
-  static func requested(with argument: CVarArg) -> String {
-    return "requestedWithArguments".localized(with: argument)
+  static func requested(with arguments: CVarArg...) -> String {
+    return "requestedWithArguments".localized(with: arguments)
   }
   static func youPaid(with argument: CVarArg) -> String {
     return "youPaid".localized(with: argument)

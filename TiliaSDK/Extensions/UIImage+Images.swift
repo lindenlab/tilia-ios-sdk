@@ -25,6 +25,7 @@ extension UIImage {
   static let refundIcon = UIImage(str: "refundIcon")
   static let tokenPurchaseIcon = UIImage(str: "tokenPurchaseIcon")
   static let tokenToWalletIcon = UIImage(str: "tokenToWalletIcon")
+  static let payoutPaypalIcon = UIImage(str: "payoutPaypalIcon")
   static let sendIcon = UIImage(str: "sendIcon")
   
   static let successIcon = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .medium))
@@ -41,6 +42,7 @@ extension UIImage {
   static let reviewIcon = UIImage(systemName: "hourglass", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .heavy))
   static let openEnvelopeIcon = UIImage(systemName: "envelope.open.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .heavy))
   static let envelopeIcon = UIImage(systemName: "envelope.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
+  static let pendingIcon = UIImage(systemName: "hourglass", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
   
   static let driversLicenseBackIcon = SVGImage(name: "DriversLicenseBackImage")
   static let driversLicenseFrontIcon = SVGImage(name: "DriversLicenseFrontImage")
