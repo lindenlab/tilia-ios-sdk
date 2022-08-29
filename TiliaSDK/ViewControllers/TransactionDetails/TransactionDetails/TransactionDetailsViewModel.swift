@@ -102,7 +102,6 @@ private extension TransactionDetailsViewModel {
     // TODO: - Add here reuqest to get info
     loading.send(false)
     isLoaded = true
-    content.send(TransactionDetailsModel())
   }
   
   func didFail(with error: ErrorWithBoolModel) {
