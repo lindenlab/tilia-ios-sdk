@@ -39,14 +39,12 @@ struct InvoiceModel: Decodable {
   
   private static func infoModel(for container: KeyedDecodingContainer<CodingKeys>) throws -> InvoiceInfoModel {
     let summaryContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .summary)
-    let items = (try container.decode([String: LineItemModel].self, forKey: .items)).values.sorted {
-      return $0.sortOrder ?? 0 < $1.sortOrder ?? 0
-    }
+    let items = try container.decode([String: LineItemModel].self, forKey: .items)
     return .init(currency: try summaryContainer.decode(String.self, forKey: .currency),
                  referenceType: try container.decode(String.self, forKey: .referenceType),
                  referenceId: try container.decode(String.self, forKey: .referenceId),
                  displayAmount: try summaryContainer.decode(String.self, forKey: .displayAmount),
-                 items: items)
+                 items: items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 })
   }
   
 }

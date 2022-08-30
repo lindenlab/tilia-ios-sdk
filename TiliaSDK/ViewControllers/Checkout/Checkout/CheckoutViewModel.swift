@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-typealias CheckoutContent = (invoiceInfo: InvoiceInfoModel, walletBalance: BalanceModel?, paymentMethods: [PaymentMethodModel], isVirtual: Bool)
+typealias CheckoutContent = (invoiceInfo: InvoiceInfoModel, walletBalance: BalanceModel?, paymentMethods: [CheckoutPaymentMethodModel], isVirtual: Bool)
 
 protocol CheckoutViewModelInputProtocol {
   func checkIsTosRequired()
@@ -76,7 +76,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   private var invoiceId: String?
   private var balance: BalanceInfoModel?
   private var invoiceInfo: InvoiceInfoModel?
-  private var selectedPaymentMethod: PaymentMethodModel?
+  private var selectedPaymentMethod: CheckoutPaymentMethodModel?
   private var isEscrow: Bool?
   private var isVirtual: Bool?
   

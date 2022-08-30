@@ -272,7 +272,7 @@ private extension CheckoutSectionBuilder {
 
 // MARK: - Helpers
 
-private extension PaymentTypeModel {
+private extension CheckoutPaymentTypeModel {
   
   var icon: UIImage? {
     switch self {

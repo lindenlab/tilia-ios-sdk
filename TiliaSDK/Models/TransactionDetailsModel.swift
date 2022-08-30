@@ -21,6 +21,7 @@ struct TransactionDetailsModel: Decodable {
   let subTotal: String?
   let tax: String?
   let items: [LineItemModel]
+  let paymentMethods: [TransactionPaymentMethodModel]
   
   private enum CodingKeys: String, CodingKey {
     case id = "transaction_id"
@@ -36,6 +37,8 @@ struct TransactionDetailsModel: Decodable {
     case tax
     case displayAmount = "display_amount"
     case data = "transaction_data"
+    case items = "line_items"
+    case paymentMethods = "payment_methods"
   }
   
   init(from decoder: Decoder) throws {
@@ -45,7 +48,12 @@ struct TransactionDetailsModel: Decodable {
     role = try container.decode(TransactionRole.self, forKey: .role)
     status = try container.decode(TransactionStatus.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
-    items = [] // Fix me
+    
+    let items = try container.decode([String: LineItemModel].self, forKey: .items)
+    self.items = items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
+    
+    let paymentMethods = try container.decode([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
+    self.paymentMethods = paymentMethods.values.sorted { $0.type.isWallet && !$1.type.isWallet }
     
     let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
     referenceType = (try? dataContainer.decode(String.self, forKey: .referenceType))?.toNilIfEmpty()
@@ -95,6 +103,36 @@ enum TransactionStatus: String, Decodable, CustomStringConvertible {
     case .pending: return L.pending
     case .processed: return L.processed
     case .failed: return L.failed
+    }
+  }
+  
+}
+
+struct TransactionPaymentMethodModel: Decodable {
+  
+  let displayAmount: String
+  let type: TransactionPaymentTypeModel
+  
+  private enum CodingKeys: String, CodingKey {
+    case displayAmount = "display_amount"
+    case type = "provider"
+  }
+  
+}
+
+enum TransactionPaymentTypeModel: String, Decodable, CustomStringConvertible {
+  
+  case wallet
+  case rebilly
+  case paypal
+  
+  var isWallet: Bool { return self == .wallet }
+  
+  var description: String {
+    switch self {
+    case .wallet: return L.tiliaWallet
+    case .rebilly: return L.creditCard
+    case .paypal: return L.paypal
     }
   }
   

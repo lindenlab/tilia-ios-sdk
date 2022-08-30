@@ -13,7 +13,7 @@ final class TransactionDetailsCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 14, weight: .medium)
-    label.setContentCompressionResistancePriority(UILayoutPriority(751), for: .horizontal)
+    label.setContentCompressionResistancePriority(.required, for: .horizontal)
     return label
   }()
   

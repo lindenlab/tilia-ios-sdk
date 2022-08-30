@@ -180,15 +180,15 @@
 		D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */; };
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
 		D1EFAB3128B7F14800AB1C31 /* LineItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */; };
-		D1EFAB3328B7FC7900AB1C31 /* PaymentMethodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3228B7FC7900AB1C31 /* PaymentMethodModel.swift */; };
+		D1EFAB3328B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3228B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift */; };
 		D1EFAB3528B7FE4400AB1C31 /* TransactionDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */; };
 		D1EFAB3828B94EBC00AB1C31 /* SendReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3728B94EBC00AB1C31 /* SendReceiptValidator.swift */; };
 		D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */; };
+		D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
 		D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */; };
-		D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -388,15 +388,15 @@
 		D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItemModel.swift; sourceTree = "<group>"; };
-		D1EFAB3228B7FC7900AB1C31 /* PaymentMethodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodModel.swift; sourceTree = "<group>"; };
+		D1EFAB3228B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentMethodModel.swift; sourceTree = "<group>"; };
 		D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsModel.swift; sourceTree = "<group>"; };
 		D1EFAB3728B94EBC00AB1C31 /* SendReceiptValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidator.swift; sourceTree = "<group>"; };
 		D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidatorTests.swift; sourceTree = "<group>"; };
+		D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceInfoModel.swift; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidatorTests.swift; sourceTree = "<group>"; };
-		D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceInfoModel.swift; sourceTree = "<group>"; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -615,7 +615,7 @@
 				D1BB6348287F3012007616DE /* SubmittedKycStatusModel.swift */,
 				D192E86928B4EE8700E34FCE /* ErrorWithBoolModel.swift */,
 				D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */,
-				D1EFAB3228B7FC7900AB1C31 /* PaymentMethodModel.swift */,
+				D1EFAB3228B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift */,
 				D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */,
 			);
 			path = Models;
@@ -1276,7 +1276,7 @@
 				D192AD8827E8F53900E3DC2A /* IsTosSignedModel.swift in Sources */,
 				D192E86828B4CB5C00E34FCE /* TransactionDetailsTitleFooterView.swift in Sources */,
 				D120F2D627F21082009B30DD /* PrimaryButton.swift in Sources */,
-				D1EFAB3328B7FC7900AB1C31 /* PaymentMethodModel.swift in Sources */,
+				D1EFAB3328B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift in Sources */,
 				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */,
 				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,

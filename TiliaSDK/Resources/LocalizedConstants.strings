@@ -144,3 +144,6 @@
 "pending" = "Pending";
 "processed" = "Processed";
 "failed" = "Failed";
+"tiliaWallet" = "Tilia Wallet";
+"creditCard" = "Credit card";
+"paypal" = "Paypal";

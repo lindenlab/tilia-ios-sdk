@@ -150,6 +150,9 @@ enum L {
   static let pending = "pending".localized
   static let processed = "processed".localized
   static let failed = "failed".localized
+  static let tiliaWallet = "tiliaWallet".localized
+  static let creditCard = "creditCard".localized
+  static let paypal = "paypal".localized
   
   static func kycInfoSubmitted(with argument: CVarArg) -> String {
     return "kycInfoSubmitted".localized(with: argument)

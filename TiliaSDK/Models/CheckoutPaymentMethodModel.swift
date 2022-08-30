@@ -1,5 +1,5 @@
 //
-//  PaymentMethodModel.swift
+//  CheckoutPaymentMethodModel.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 25.08.2022.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct PaymentMethodModel: Codable, Equatable {
+struct CheckoutPaymentMethodModel: Codable, Equatable {
   
   let id: String
   let display: String
-  let type: PaymentTypeModel
+  let type: CheckoutPaymentTypeModel
   
   private enum DecodingKeys: String, CodingKey {
     case id
@@ -29,10 +29,10 @@ struct PaymentMethodModel: Codable, Equatable {
     self.id = try container.decode(String.self, forKey: .id)
     self.display = try container.decode(String.self, forKey: .display)
     // Check if this is a wallet
-    if let type = try? container.decode(PaymentTypeModel.self, forKey: .provider) {
+    if let type = try? container.decode(CheckoutPaymentTypeModel.self, forKey: .provider) {
       self.type = type
     } else {
-      self.type = try container.decode(PaymentTypeModel.self, forKey: .methodClass)
+      self.type = try container.decode(CheckoutPaymentTypeModel.self, forKey: .methodClass)
     }
   }
   
@@ -43,7 +43,7 @@ struct PaymentMethodModel: Codable, Equatable {
   
 }
 
-enum PaymentTypeModel: String, Decodable {
+enum CheckoutPaymentTypeModel: String, Decodable {
   
   case wallet
   case paypal

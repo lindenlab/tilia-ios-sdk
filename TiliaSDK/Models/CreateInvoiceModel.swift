@@ -10,7 +10,7 @@ import Foundation
 struct CreateInvoiceModel: Encodable {
   
   let invoiceId: String
-  let paymentMethods: [PaymentMethodModel]?
+  let paymentMethods: [CheckoutPaymentMethodModel]?
   
   private enum CodingKeys: String, CodingKey {
     case invoiceId = "authorized_invoice_id"
