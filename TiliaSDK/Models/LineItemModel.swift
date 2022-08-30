@@ -12,6 +12,7 @@ struct LineItemModel: Decodable {
   let description: String
   let productSku: String
   let displayAmount: String
+  let sortOrder: Int?
   
   private enum CodingKeys: String, CodingKey {
     case description
@@ -19,12 +20,14 @@ struct LineItemModel: Decodable {
     case amount
     case currency
     case displayAmount = "display_amount"
+    case sortOrder = "sort_order"
   }
   
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     description = try container.decode(String.self, forKey: .description)
     productSku = try container.decode(String.self, forKey: .productSku)
+    sortOrder = try container.decodeIfPresent(Int.self, forKey: .sortOrder)
     // TODO: - Fix this when server will always send this property
     if let displayAmount = try? container.decode(String.self, forKey: .displayAmount) {
       self.displayAmount = displayAmount

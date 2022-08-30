@@ -188,6 +188,7 @@
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
 		D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */; };
+		D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -395,6 +396,7 @@
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidatorTests.swift; sourceTree = "<group>"; };
+		D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceInfoModel.swift; sourceTree = "<group>"; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -598,6 +600,7 @@
 				D1C8A84127F5E42500BF2910 /* LocalizationConstants.swift */,
 				D1C8A84927F6143E00BF2910 /* InvoiceDetailsModel.swift */,
 				D1C8A84727F60FFE00BF2910 /* InvoiceModel.swift */,
+				D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */,
 				D1BA29DF27FCA96B00F046E8 /* ColorsConfiguration.swift */,
 				D154AD41280F071E003976CB /* CreateInvoiceModel.swift */,
 				D18855E0282700D400BAC86F /* UserInfoModel.swift */,
@@ -1238,6 +1241,7 @@
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D17EFFA72846466900F4B6DD /* UICollectionViewCell+Helpers.swift in Sources */,
 				D15BA9EF282A9B6500511785 /* TwoTextFieldsCell.swift in Sources */,
+				D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,
 				D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */,
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
