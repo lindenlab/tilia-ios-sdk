@@ -186,6 +186,7 @@
 		D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */; };
 		D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */; };
 		D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json */; };
+		D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
@@ -395,6 +396,7 @@
 		D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidatorTests.swift; sourceTree = "<group>"; };
 		D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceInfoModel.swift; sourceTree = "<group>"; };
 		D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsResponse.json; sourceTree = "<group>"; };
+		D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 				D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */,
 				D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */,
 				D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */,
+				D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */,
 				D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */,
 			);
 			path = TiliaSDKTests;
@@ -1307,6 +1310,7 @@
 				D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */,
 				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
 				D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */,
+				D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */,
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
