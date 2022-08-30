@@ -217,11 +217,11 @@ private extension CheckoutViewModel {
       if let balance = balance, let invoiceDetails = invoiceDetails {
         self.isEscrow = invoiceDetails.isEscrow
         self.isVirtual = invoiceDetails.isVirtual
-        self.invoiceInfo = invoiceDetails.info
         self.balance = balance
         if invoiceDetails.isVirtual {
           self.createVirtualInvoice()
         } else {
+          self.invoiceInfo = invoiceDetails.info
           self.setContent()
           self.loading.send(false)
         }
@@ -240,6 +240,7 @@ private extension CheckoutViewModel {
       switch result {
       case .success(let model):
         self.invoiceId = model.invoiceId
+        self.invoiceInfo = model.info
         self.setContent()
       case .failure(let error):
         self.didFail(with: (error, true))
