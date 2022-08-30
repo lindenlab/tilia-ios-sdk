@@ -196,6 +196,24 @@ final class NetworkManagerTests: XCTestCase {
     XCTAssertTrue(isSuccess)
   }
 
+  func testGetTransactionDetailsSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var model: TransactionDetailsModel?
+    let expectation = XCTestExpectation(description: "testGetTransactionDetailsSuccess")
+    networkManager.getTransactionDetails(with: "") { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let item):
+        model = item
+      case .failure(let error):
+        print(error)
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertEqual(model?.id, "495e1cee-097d-4f18-a8bc-74407944c45b")
+  }
+  
   func testGetAddCreditCardRedirectUrlSuccess() {
     TLManager.shared.setToken(UUID().uuidString)
     var url: URL?

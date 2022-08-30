@@ -99,9 +99,17 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
 private extension TransactionDetailsViewModel {
   
   func getTransactionDetails() {
-    // TODO: - Add here reuqest to get info
-    loading.send(false)
-    isLoaded = true
+    manager.getTransactionDetails(with: invoiceId) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let model):
+        self.content.send(model)
+        self.isLoaded = true
+      case .failure(let error):
+        self.didFail(with: .init(error: error, value: true))
+      }
+      self.loading.send(false)
+    }
   }
   
   func didFail(with error: ErrorWithBoolModel) {

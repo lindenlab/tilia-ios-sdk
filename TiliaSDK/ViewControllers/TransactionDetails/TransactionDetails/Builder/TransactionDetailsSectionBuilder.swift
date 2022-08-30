@@ -139,50 +139,21 @@ struct TransactionDetailsSectionBuilder {
   }
   
   func sections(with model: TransactionDetailsModel) -> [Section] {
-    return purchaseSections()
+    return purchaseSections(with: model)
   }
   
 }
 
 // MARK: - Private Methods
 
-extension TransactionDetailsSectionBuilder {
+private extension TransactionDetailsSectionBuilder {
   
-  func purchaseSections() -> [Section] {
-    var sections: [Section] = []
-    // Fix for buyer/seller
-//    if true {
-//      let payInfoItems: [Item] = [
-//        .init(title: "Tilia Wallet",
-//              subTitle: nil,
-//              value: "$10.24 USD",
-//              image: nil,
-//              leftInset: 32,
-//              isDividerHidden: false),
-//        .init(title: "Visa ending in 8946",
-//              subTitle: "This transaction will appear on your statement as “Tilia / Upland”",
-//              value: "$10.24 USD",
-//              image: nil,
-//              leftInset: 32,
-//              isDividerHidden: true)
-//      ]
-//      sections.append(.content(.init(title: L.paidWith,
-//                                     footer: nil,
-//                                     items: payInfoItems)))
-//    } else {
-//      let payInfoItems: [Item] = [
-//        .init(title: "Tilia Wallet",
-//              subTitle: nil,
-//              value: "$10.24 USD",
-//              image: nil,
-//              leftInset: 32,
-//              isDividerHidden: false)
-//      ]
-//      sections.append(.content(.init(title: L.depositedInto,
-//                                     footer: nil,
-//                                     items: payInfoItems)))
-//    }
-    return sections
+  func purchaseSections(with model: TransactionDetailsModel) -> [Section] {
+    return [
+      headerSection(for: model),
+      paymentSection(for: model),
+      invoiceDetailsSection(for: model)
+    ]
   }
   
   func headerSection(for model: TransactionDetailsModel) -> Section {
@@ -281,6 +252,18 @@ extension TransactionDetailsSectionBuilder {
                           items: items))
   }
   
+  func paymentSection(for model: TransactionDetailsModel) -> Section {
+    let items: [Item] = model.paymentMethods.enumerated().map { .init(title: $0.element.type.description,
+                                                                      subTitle: nil,
+                                                                      value: $0.element.displayAmount,
+                                                                      image: nil,
+                                                                      leftInset: 32,
+                                                                      isDividerHidden: $0.offset == model.paymentMethods.count - 1) }
+    return .content(.init(title: model.role.description,
+                          footer: nil,
+                          items: items))
+  }
+  
 }
 
 // MARK: - Helpers
@@ -321,6 +304,13 @@ private extension TransactionRole {
     switch self {
     case .buyer: return .purchaseBuyerIcon
     case .seller: return .purchaseSellerIcon
+    }
+  }
+  
+  var description: String {
+    switch self {
+    case .buyer: return L.paidWith
+    case .seller: return L.depositedInto
     }
   }
   

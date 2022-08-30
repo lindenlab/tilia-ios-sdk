@@ -77,6 +77,11 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
+  func getTransactionDetails(with id: String, completion: @escaping CompletionResultHandler<TransactionDetailsModel>) {
+    let router = InvoiceRouter.getTransactionDetails(id: id)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
   func getAddCreditCardRedirectUrl(completion: @escaping CompletionResultHandler<RedirectUrlModel>) {
     let router = AuthRouter.getAddCreditCardRedirectUrl
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)

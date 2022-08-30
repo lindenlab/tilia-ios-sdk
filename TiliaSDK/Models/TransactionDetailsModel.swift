@@ -33,7 +33,7 @@ struct TransactionDetailsModel: Decodable {
     case referenceId = "reference_id"
     case createDate = "created"
     case summary
-    case subTotal
+    case subTotal = "subtotal"
     case tax
     case displayAmount = "display_amount"
     case data = "transaction_data"
@@ -49,15 +49,15 @@ struct TransactionDetailsModel: Decodable {
     status = try container.decode(TransactionStatus.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
     
-    let items = try container.decode([String: LineItemModel].self, forKey: .items)
-    self.items = items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
-    
-    let paymentMethods = try container.decode([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
-    self.paymentMethods = paymentMethods.values.sorted { $0.type.isWallet && !$1.type.isWallet }
-    
     let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
     referenceType = (try? dataContainer.decode(String.self, forKey: .referenceType))?.toNilIfEmpty()
     referenceId = (try? dataContainer.decode(String.self, forKey: .referenceId))?.toNilIfEmpty()
+    
+    let items = try dataContainer.decode([String: LineItemModel].self, forKey: .items)
+    self.items = items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
+    
+    let paymentMethods = try dataContainer.decode([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
+    self.paymentMethods = paymentMethods.values.sorted { $0.type.isWallet && !$1.type.isWallet }
     
     let createDateString = try dataContainer.decode(String.self, forKey: .createDate)
     if let createDate = ISO8601DateFormatter().date(from: createDateString) {
@@ -66,13 +66,13 @@ struct TransactionDetailsModel: Decodable {
       throw TLError.invalidDateFormatForString(createDateString)
     }
     
-    let summaryContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .summary)
+    let summaryContainer = try dataContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .summary)
     total = try summaryContainer.decode(String.self, forKey: .displayAmount)
     
     let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .subTotal)
     subTotal = (try subTotalContainer.decodeIfPresent(String.self, forKey: .displayAmount))?.toNilIfEmpty()
     
-    let taxContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .tax)
+    let taxContainer = try summaryContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .tax)
     tax = (try taxContainer.decodeIfPresent(String.self, forKey: .displayAmount))?.toNilIfEmpty()
   }
   
