@@ -11,11 +11,7 @@ struct InvoiceDetailsModel: Decodable {
   
   let isEscrow: Bool
   let isVirtual: Bool
-  let currency: String
-  let referenceType: String
-  let referenceId: String
-  let displayAmount: String
-  let items: [InvoiceDetailsItemModel]
+  let info: InvoiceInfoModel
   
   private enum CodingKeys: String, CodingKey {
     case isEscrow = "is_escrow"
@@ -27,6 +23,18 @@ struct InvoiceDetailsModel: Decodable {
     case items = "line_items"
   }
   
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    
+    isEscrow = try container.decode(Bool.self, forKey: .isEscrow)
+    isVirtual = try container.decode(Bool.self, forKey: .isVirtual)
+    info = .init(currency: try container.decode(String.self, forKey: .currency),
+                 referenceType: try container.decode(String.self, forKey: .referenceType),
+                 referenceId: try container.decode(String.self, forKey: .referenceId),
+                 displayAmount: try container.decode(String.self, forKey: .displayAmount),
+                 items: try container.decode([InvoiceDetailsItemModel].self, forKey: .items))
+  }
+  
 }
 
 struct InvoiceDetailsItemModel: Decodable {
@@ -35,6 +43,7 @@ struct InvoiceDetailsItemModel: Decodable {
   let productSku: String
   let amount: Double
   let currency: String
+  let sortOrder: Int?
   
   // TODO: - Fix this when server will send this property
   var displayAmount: String {
@@ -49,6 +58,7 @@ struct InvoiceDetailsItemModel: Decodable {
     case productSku = "product_sku"
     case amount
     case currency
+    case sortOrder = "sort_order"
   }
   
 }

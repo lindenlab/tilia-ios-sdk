@@ -147,20 +147,13 @@ struct CheckoutSectionBuilder {
   }
   
   func sections(with model: CheckoutContent) -> [Section] {
-    let invoiceDetails = model.invoiceDetails
+    let invoiceInfo = model.invoiceInfo
     let walletBalance = model.walletBalance
     let paymentMethods = model.paymentMethods
-    let items: [Summary.Item] = invoiceDetails.items.map { Summary.Item(description: $0.description,
-                                                                        product: $0.productSku,
-                                                                        amount: $0.displayAmount) }
-    let summary = Summary(referenceType: invoiceDetails.referenceType,
-                          referenceId: invoiceDetails.referenceId,
-                          amount: invoiceDetails.displayAmount,
-                          items: items,
-                          isLoading: false)
+    let summary = summaryModel(for: invoiceInfo)
     
     let payment: Payment
-    if invoiceDetails.isVirtual {
+    if model.isVirtual {
       let items: [Payment.Item] = [
         Payment.Item(title: L.walletBalance,
                      subTitle: walletBalance?.display,
@@ -208,6 +201,17 @@ struct CheckoutSectionBuilder {
     }
   }
   
+  func updatedSummarySection(for section: Section,
+                             model: InvoiceInfoModel) -> Section {
+    switch section {
+    case .summary:
+      let summary = summaryModel(for: model)
+      return .summary(summary)
+    default:
+      return section
+    }
+  }
+  
   func updatedPaymentSection(for section: Section,
                              in tableView: UITableView,
                              at indexPath: IndexPath,
@@ -236,6 +240,23 @@ struct CheckoutSectionBuilder {
     default:
       return section
     }
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension CheckoutSectionBuilder {
+  
+  func summaryModel(for model: InvoiceInfoModel) -> Summary {
+    let items: [Summary.Item] = model.items.map { .init(description: $0.description,
+                                                        product: $0.productSku,
+                                                        amount: $0.displayAmount) }
+    return Summary(referenceType: model.referenceType,
+                   referenceId: model.referenceId,
+                   amount: model.displayAmount,
+                   items: items,
+                   isLoading: false)
   }
   
 }
