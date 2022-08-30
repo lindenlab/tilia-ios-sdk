@@ -137,7 +137,7 @@ final class NetworkManagerTests: XCTestCase {
     }
     wait(for: [expectation], timeout: 2)
     XCTAssertNotNil(invoice)
-    XCTAssertEqual(invoice?.currency, "TST")
+    XCTAssertEqual(invoice?.info.currency, "TST")
     XCTAssertEqual(invoice?.isEscrow, false)
   }
   
