@@ -56,7 +56,6 @@ struct TransactionDetailsSectionBuilder {
       }
       
       let title: String
-      let subTitle: String?
       let value: String
       let image: Image?
       let leftInset: CGFloat
@@ -86,7 +85,6 @@ struct TransactionDetailsSectionBuilder {
     let item = section.items[indexPath.row]
     let cell = tableView.dequeue(TransactionDetailsCell.self, for: indexPath)
     cell.configure(title: item.title,
-                   subTitle: item.subTitle,
                    value: item.value,
                    image: item.image?.image,
                    color: item.image?.color,
@@ -151,7 +149,6 @@ private extension TransactionDetailsSectionBuilder {
   
   func headerSection(for model: TransactionDetailsModel) -> Section {
     var items: [Section.Item] = model.items.map { .init(title: $0.description,
-                                                        subTitle: nil,
                                                         value: $0.displayAmount,
                                                         image: nil,
                                                         leftInset: 16,
@@ -159,7 +156,6 @@ private extension TransactionDetailsSectionBuilder {
     
     model.subTotal.map {
       items.append(.init(title: L.subtotal,
-                         subTitle: nil,
                          value: $0,
                          image: nil,
                          leftInset: 16,
@@ -167,7 +163,6 @@ private extension TransactionDetailsSectionBuilder {
     }
     model.tax.map {
       items.append(.init(title: L.transactionFees,
-                         subTitle: nil,
                          value: $0,
                          image: nil,
                          leftInset: 16,
@@ -185,19 +180,16 @@ private extension TransactionDetailsSectionBuilder {
   func invoiceDetailsSection(for model: TransactionDetailsModel) -> Section {
     var items: [Section.Item] = [
       .init(title: L.status,
-            subTitle: nil,
             value: model.status.description,
             image: .init(image: model.status.icon, color: model.status.color),
             leftInset: 32,
             isDividerHidden: false),
       .init(title: L.transactionId,
-            subTitle: nil,
             value: model.id,
             image: nil,
             leftInset: 32,
             isDividerHidden: false),
       .init(title: L.accountId,
-            subTitle: nil,
             value: model.accountId,
             image: nil,
             leftInset: 32,
@@ -206,7 +198,6 @@ private extension TransactionDetailsSectionBuilder {
       
     model.referenceType.map {
       items.append(.init(title: L.referenceType,
-                         subTitle: nil,
                          value: $0,
                          image: nil,
                          leftInset: 32,
@@ -214,7 +205,6 @@ private extension TransactionDetailsSectionBuilder {
     }
     model.referenceId.map {
       items.append(.init(title: L.referenceId,
-                         subTitle: nil,
                          value: $0,
                          image: nil,
                          leftInset: 32,
@@ -223,13 +213,11 @@ private extension TransactionDetailsSectionBuilder {
     
     items.append(contentsOf: [
       .init(title: L.transactionDate,
-                         subTitle: nil,
                          value: DateFormatter.longDateFormatter.string(from: model.createDate),
                          image: nil,
                          leftInset: 32,
                          isDividerHidden: false),
       .init(title: L.transactionTime,
-            subTitle: nil,
             value: DateFormatter.shortTimeFormatter.string(from: model.createDate),
             image: nil,
             leftInset: 32,
@@ -246,7 +234,6 @@ private extension TransactionDetailsSectionBuilder {
   func paymentSections(for model: TransactionDetailsModel) -> [Section] {
     // TODO: - Here is must be different number of sections
     let items: [Section.Item] = model.paymentMethods.enumerated().map { .init(title: $0.element.type.description,
-                                                                              subTitle: nil,
                                                                               value: $0.element.displayAmount,
                                                                               image: nil,
                                                                               leftInset: 32,

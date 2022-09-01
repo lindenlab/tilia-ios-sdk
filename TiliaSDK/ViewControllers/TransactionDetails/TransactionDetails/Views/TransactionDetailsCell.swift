@@ -17,14 +17,6 @@ final class TransactionDetailsCell: UITableViewCell {
     return label
   }()
   
-  private let subTitleLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .tertiaryTextColor
-    label.font = .systemFont(ofSize: 12)
-    label.numberOfLines = 0
-    return label
-  }()
-  
   private let valueImageView: UIImageView = {
     let imageView = UIImageView()
     return imageView
@@ -48,16 +40,12 @@ final class TransactionDetailsCell: UITableViewCell {
     valueStackView.alignment = .center
     valueStackView.spacing = 4
     
-    let mainStackView = UIStackView(arrangedSubviews: [titleLabel, valueStackView])
-    mainStackView.spacing = 4
-    mainStackView.alignment = .center
-    mainStackView.distribution = .equalCentering
-    
-    let rootStackView = UIStackView(arrangedSubviews: [mainStackView, subTitleLabel])
-    rootStackView.spacing = 4
-    rootStackView.axis = .vertical
-    rootStackView.translatesAutoresizingMaskIntoConstraints = false
-    return rootStackView
+    let stackView = UIStackView(arrangedSubviews: [titleLabel, valueStackView])
+    stackView.spacing = 4
+    stackView.alignment = .center
+    stackView.distribution = .equalCentering
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    return stackView
   }()
   
   private lazy var leftStackConstraint = stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16)
@@ -73,15 +61,12 @@ final class TransactionDetailsCell: UITableViewCell {
   }
   
   func configure(title: String,
-                 subTitle: String?,
                  value: String,
                  image: UIImage?,
                  color: UIColor?,
                  leftInset: CGFloat,
                  isDividerHidden: Bool) {
     titleLabel.text = title
-    subTitleLabel.text = subTitle
-    subTitleLabel.isHidden = subTitle == nil
     valueLabel.text = value
     valueImageView.image = image?.withRenderingMode(.alwaysTemplate)
     valueImageView.isHidden = image == nil
