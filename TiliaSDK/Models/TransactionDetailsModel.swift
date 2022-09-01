@@ -23,56 +23,60 @@ struct TransactionDetailsModel: Decodable {
   let items: [LineItemModel]
   let paymentMethods: [TransactionPaymentMethodModel]
   
-  private enum CodingKeys: String, CodingKey {
+  private enum RootCodingKeys: String, CodingKey {
     case id = "transaction_id"
     case type = "transaction_type"
     case role = "transaction_role"
     case status = "transaction_status"
     case accountId = "account_id"
+    case transaction = "transaction_data"
+  }
+  
+  private enum TransactionCodingKeys: String, CodingKey {
     case referenceType = "reference_type"
     case referenceId = "reference_id"
     case createDate = "created"
-    case summary
-    case subTotal = "subtotal"
-    case tax
-    case displayAmount = "display_amount"
-    case data = "transaction_data"
     case items = "line_items"
     case paymentMethods = "payment_methods"
+    case summary
+  }
+  
+  private enum SummaryCodingKeys: String, CodingKey {
+    case totalAmount = "total_amount"
+    case displayAmount = "display_amount"
+    case subTotal = "subtotal"
+    case tax
   }
   
   init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let container = try decoder.container(keyedBy: RootCodingKeys.self)
     id = try container.decode(String.self, forKey: .id)
     type = try container.decode(TransactionType.self, forKey: .type)
     role = try container.decode(TransactionRole.self, forKey: .role)
     status = try container.decode(TransactionStatus.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
     
-    let dataContainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .data)
-    referenceType = (try? dataContainer.decode(String.self, forKey: .referenceType))?.toNilIfEmpty()
-    referenceId = (try? dataContainer.decode(String.self, forKey: .referenceId))?.toNilIfEmpty()
-    
-    let items = try dataContainer.decode([String: LineItemModel].self, forKey: .items)
+    let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
+    referenceType = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType))?.toNilIfEmpty()
+    referenceId = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId))?.toNilIfEmpty()
+    let items = try transactionContainer.decode([String: LineItemModel].self, forKey: .items)
     self.items = items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
-    
-    let paymentMethods = try dataContainer.decode([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
+    let paymentMethods = try transactionContainer.decode([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
     self.paymentMethods = paymentMethods.values.sorted { $0.type.isWallet && !$1.type.isWallet }
-    
-    let createDateString = try dataContainer.decode(String.self, forKey: .createDate)
+    let createDateString = try transactionContainer.decode(String.self, forKey: .createDate)
     if let createDate = ISO8601DateFormatter().date(from: createDateString) {
       self.createDate = createDate
     } else {
       throw TLError.invalidDateFormatForString(createDateString)
     }
     
-    let summaryContainer = try dataContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .summary)
+    let summaryContainer = try transactionContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .summary)
     total = try summaryContainer.decode(String.self, forKey: .displayAmount)
     
-    let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .subTotal)
+    let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .subTotal)
     subTotal = (try subTotalContainer.decodeIfPresent(String.self, forKey: .displayAmount))?.toNilIfEmpty()
     
-    let taxContainer = try summaryContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .tax)
+    let taxContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .tax)
     tax = (try taxContainer.decodeIfPresent(String.self, forKey: .displayAmount))?.toNilIfEmpty()
   }
   
