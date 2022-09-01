@@ -54,6 +54,9 @@ public struct TLEvent {
     /// KYC info is submitted successfully
     case kycInfoSubmitted = "kyc-info-submitted"
     
+    /// Receipt is sent successfully
+    case receiptSent = "receipt-sent"
+    
   }
   
   public let flow: Flow

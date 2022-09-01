@@ -50,6 +50,8 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol {
     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
       self.loading.send(false)
       self.dismiss.send()
+      self.onUpdate?(TLUpdateCallback(event: TLEvent(flow: .transactionDetails, action: .receiptSent),
+                                      message: L.receiptSent))
     }
   }
   
