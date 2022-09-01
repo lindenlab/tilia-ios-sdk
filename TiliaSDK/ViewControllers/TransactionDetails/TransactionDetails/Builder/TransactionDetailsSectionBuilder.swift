@@ -155,18 +155,18 @@ private extension TransactionDetailsSectionBuilder {
                                                         isDividerHidden: false) }
     
     model.subTotal.map {
-      items.append(.init(title: L.subtotal,
-                         value: $0,
-                         image: nil,
-                         leftInset: 16,
-                         isDividerHidden: model.tax != nil))
-    }
-    model.tax.map {
-      items.append(.init(title: L.transactionFees,
-                         value: $0,
-                         image: nil,
-                         leftInset: 16,
-                         isDividerHidden: false))
+      items.append(contentsOf: [
+        .init(title: L.subtotal,
+                           value: $0.total,
+                           image: nil,
+                           leftInset: 16,
+                           isDividerHidden: true),
+        .init(title: L.transactionFees,
+                           value: $0.tax,
+                           image: nil,
+                           leftInset: 16,
+                           isDividerHidden: false)
+      ])
     }
     
     let type = Section.SectionType.header(.init(image: model.role.image,
@@ -195,20 +195,20 @@ private extension TransactionDetailsSectionBuilder {
             leftInset: 32,
             isDividerHidden: false)
       ]
-      
-    model.referenceType.map {
-      items.append(.init(title: L.referenceType,
-                         value: $0,
-                         image: nil,
-                         leftInset: 32,
-                         isDividerHidden: false))
-    }
-    model.referenceId.map {
-      items.append(.init(title: L.referenceId,
-                         value: $0,
-                         image: nil,
-                         leftInset: 32,
-                         isDividerHidden: false))
+    
+    model.reference.map {
+      items.append(contentsOf: [
+        .init(title: L.referenceType,
+              value: $0.type,
+                           image: nil,
+                           leftInset: 32,
+                           isDividerHidden: false),
+        .init(title: L.referenceId,
+              value: $0.id,
+                           image: nil,
+                           leftInset: 32,
+                           isDividerHidden: false)
+      ])
     }
     
     items.append(contentsOf: [
