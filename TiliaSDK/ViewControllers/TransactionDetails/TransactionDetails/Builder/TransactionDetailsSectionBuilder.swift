@@ -137,7 +137,10 @@ struct TransactionDetailsSectionBuilder {
   }
   
   func sections(with model: TransactionDetailsModel) -> [Section] {
-    return purchaseSections(with: model)
+    var sections = [headerSection(for: model)]
+    sections.append(contentsOf: paymentSections(for: model))
+    sections.append(invoiceDetailsSection(for: model))
+    return sections
   }
   
 }
@@ -145,14 +148,6 @@ struct TransactionDetailsSectionBuilder {
 // MARK: - Private Methods
 
 private extension TransactionDetailsSectionBuilder {
-  
-  func purchaseSections(with model: TransactionDetailsModel) -> [Section] {
-    return [
-      headerSection(for: model),
-      paymentSection(for: model),
-      invoiceDetailsSection(for: model)
-    ]
-  }
   
   func headerSection(for model: TransactionDetailsModel) -> Section {
     var items: [Section.Item] = model.items.map { .init(title: $0.description,
@@ -248,7 +243,8 @@ private extension TransactionDetailsSectionBuilder {
     return .init(type: type, items: items)
   }
   
-  func paymentSection(for model: TransactionDetailsModel) -> Section {
+  func paymentSections(for model: TransactionDetailsModel) -> [Section] {
+    // TODO: - Here is must be different number of sections
     let items: [Section.Item] = model.paymentMethods.enumerated().map { .init(title: $0.element.type.description,
                                                                               subTitle: nil,
                                                                               value: $0.element.displayAmount,
@@ -257,7 +253,7 @@ private extension TransactionDetailsSectionBuilder {
                                                                               isDividerHidden: $0.offset == model.paymentMethods.count - 1) }
     let type = Section.SectionType.content(.init(title: model.role.description,
                                                  footer: nil))
-    return .init(type: type, items: items)
+    return [.init(type: type, items: items)]
   }
   
 }
