@@ -9,64 +9,62 @@ import UIKit
 
 struct TransactionDetailsSectionBuilder {
   
-  struct Header {
+  struct Section {
     
-    struct Status {
-      let image: UIImage?
-      let imageColor: UIColor
+    enum SectionType {
+      
+      struct Header {
+        
+        struct Status {
+          let image: UIImage?
+          let imageColor: UIColor
+          let title: String
+          let subTitle: String?
+        }
+        
+        struct Footer {
+          let title: String
+          let value: String
+        }
+        
+        let image: UIImage?
+        let title: NSAttributedString
+        let subTitle: String
+        let status: Status?
+        let footer: Footer?
+      }
+      
+      struct Content {
+        
+        struct Footer {
+          let isPrimaryButtonHidden: Bool
+        }
+        
+        let title: String
+        let footer: Footer?
+      }
+      
+      case header(Header)
+      case content(Content)
+    }
+    
+    struct Item {
+      
+      struct Image {
+        let image: UIImage?
+        let color: UIColor
+      }
+      
       let title: String
       let subTitle: String?
-    }
-    
-    struct Footer {
-      let title: String
       let value: String
+      let image: Image?
+      let leftInset: CGFloat
+      let isDividerHidden: Bool
     }
     
-    let image: UIImage?
-    let title: NSAttributedString
-    let subTitle: String
-    let status: Status?
-    let footer: Footer?
+    let type: SectionType
     let items: [Item]
-  }
-  
-  struct Content {
-    
-    struct Footer {
-      let isPrimaryButtonHidden: Bool
-    }
-    
-    let title: String
-    let footer: Footer?
-    let items: [Item]
-  }
-  
-  struct Item {
-    
-    struct Image {
-      let image: UIImage?
-      let color: UIColor
-    }
-    
-    let title: String
-    let subTitle: String?
-    let value: String
-    let image: Image?
-    let leftInset: CGFloat
-    let isDividerHidden: Bool
-  }
-  
-  enum Section {
-    case header(Header)
-    case content(Content)
-    
-    var items: [Item] {
-      switch self {
-      case let .header(model): return model.items
-      case let .content(model): return model.items
-      }
-    }
   }
   
   func numberOfRows(in section: Section) -> Int {
@@ -74,7 +72,7 @@ struct TransactionDetailsSectionBuilder {
   }
   
   func heightForFooter(in section: Section) -> CGFloat {
-    switch section {
+    switch section.type {
     case .header:
       return UITableView.automaticDimension
     case let .content(model):
@@ -99,7 +97,7 @@ struct TransactionDetailsSectionBuilder {
   
   func header(for section: Section,
               in tableView: UITableView) -> UIView {
-    switch section {
+    switch section.type {
     case let .header(model):
       let view = tableView.dequeue(TransactionDetailsHeaderView.self)
       view.configure(image: model.image,
@@ -120,7 +118,7 @@ struct TransactionDetailsSectionBuilder {
   func footer(for section: Section,
               in tableView: UITableView,
               delegate: ButtonsViewDelegate) -> UIView? {
-    switch section {
+    switch section.type {
     case let .header(model):
       let view = tableView.dequeue(TransactionDetailsTitleFooterView.self)
       view.configure(title: model.footer?.title,
@@ -157,14 +155,12 @@ private extension TransactionDetailsSectionBuilder {
   }
   
   func headerSection(for model: TransactionDetailsModel) -> Section {
-    var items: [Item] = model.items.map {
-      return .init(title: $0.description,
-                   subTitle: nil,
-                   value: $0.displayAmount,
-                   image: nil,
-                   leftInset: 16,
-                   isDividerHidden: false)
-    }
+    var items: [Section.Item] = model.items.map { .init(title: $0.description,
+                                                        subTitle: nil,
+                                                        value: $0.displayAmount,
+                                                        image: nil,
+                                                        leftInset: 16,
+                                                        isDividerHidden: false) }
     
     model.subTotal.map {
       items.append(.init(title: L.subtotal,
@@ -183,16 +179,16 @@ private extension TransactionDetailsSectionBuilder {
                          isDividerHidden: false))
     }
     
-    return .header(.init(image: model.role.image,
-                         title: model.role.attributedDescription(amount: model.total),
-                         subTitle: model.createDate.formattedDescription(),
-                         status: nil,
-                         footer: .init(title: L.total, value: model.total),
-                         items: items))
+    let type = Section.SectionType.header(.init(image: model.role.image,
+                                                title: model.role.attributedDescription(amount: model.total),
+                                                subTitle: model.createDate.formattedDescription(),
+                                                status: nil,
+                                                footer: .init(title: L.total, value: model.total)))
+    return .init(type: type, items: items)
   }
   
   func invoiceDetailsSection(for model: TransactionDetailsModel) -> Section {
-    var items: [Item] = [
+    var items: [Section.Item] = [
       .init(title: L.status,
             subTitle: nil,
             value: model.status.description,
@@ -247,21 +243,21 @@ private extension TransactionDetailsSectionBuilder {
       
     ])
     
-    return .content(.init(title: L.invoiceDetails,
-                          footer: .init(isPrimaryButtonHidden: false),
-                          items: items))
+    let type = Section.SectionType.content(.init(title: L.invoiceDetails,
+                                                 footer: .init(isPrimaryButtonHidden: false)))
+    return .init(type: type, items: items)
   }
   
   func paymentSection(for model: TransactionDetailsModel) -> Section {
-    let items: [Item] = model.paymentMethods.enumerated().map { .init(title: $0.element.type.description,
-                                                                      subTitle: nil,
-                                                                      value: $0.element.displayAmount,
-                                                                      image: nil,
-                                                                      leftInset: 32,
-                                                                      isDividerHidden: $0.offset == model.paymentMethods.count - 1) }
-    return .content(.init(title: model.role.description,
-                          footer: nil,
-                          items: items))
+    let items: [Section.Item] = model.paymentMethods.enumerated().map { .init(title: $0.element.type.description,
+                                                                              subTitle: nil,
+                                                                              value: $0.element.displayAmount,
+                                                                              image: nil,
+                                                                              leftInset: 32,
+                                                                              isDividerHidden: $0.offset == model.paymentMethods.count - 1) }
+    let type = Section.SectionType.content(.init(title: model.role.description,
+                                                 footer: nil))
+    return .init(type: type, items: items)
   }
   
 }
