@@ -46,6 +46,7 @@
 		D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB727E771100009D888 /* ServerConfiguration.swift */; };
 		D135DCBA27E777030009D888 /* ServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB927E777030009D888 /* ServerClient.swift */; };
 		D13A872628C21DE000444EDB /* SendTransactionReceiptResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */; };
+		D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */; };
 		D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */; };
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
 		D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1408F59288EB26600CABA3E /* KycFlowUITests.swift */; };
@@ -256,6 +257,7 @@
 		D135DCB727E771100009D888 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 		D135DCB927E777030009D888 /* ServerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClient.swift; sourceTree = "<group>"; };
 		D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendTransactionReceiptResponse.json; sourceTree = "<group>"; };
+		D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptViewModelTests.swift; sourceTree = "<group>"; };
 		D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionBuilder.swift; sourceTree = "<group>"; };
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
 		D1408F59288EB26600CABA3E /* KycFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowUITests.swift; sourceTree = "<group>"; };
@@ -583,6 +585,7 @@
 				D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */,
 				D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */,
 				D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */,
+				D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */,
 				D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */,
 			);
 			path = TiliaSDKTests;
@@ -1318,6 +1321,7 @@
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
+				D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
