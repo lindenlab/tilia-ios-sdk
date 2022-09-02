@@ -45,6 +45,7 @@
 		D135DCB627E7703D0009D888 /* TLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB527E7703D0009D888 /* TLManager.swift */; };
 		D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB727E771100009D888 /* ServerConfiguration.swift */; };
 		D135DCBA27E777030009D888 /* ServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB927E777030009D888 /* ServerClient.swift */; };
+		D13A872628C21DE000444EDB /* SendTransactionReceiptResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */; };
 		D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */; };
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
 		D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1408F59288EB26600CABA3E /* KycFlowUITests.swift */; };
@@ -147,9 +148,9 @@
 		D1BB633D287EE055007616DE /* SubmitKycModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB633C287EE055007616DE /* SubmitKycModel.swift */; };
 		D1BB6343287F0A40007616DE /* KycRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB6342287F0A40007616DE /* KycRouter.swift */; };
 		D1BB6345287F2B8B007616DE /* SubmittedKycModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB6344287F2B8B007616DE /* SubmittedKycModel.swift */; };
-		D1BB6347287F2CC0007616DE /* SubmittedKycResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1BB6346287F2CC0007616DE /* SubmittedKycResponse.json */; };
+		D1BB6347287F2CC0007616DE /* SubmitKycResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1BB6346287F2CC0007616DE /* SubmitKycResponse.json */; };
 		D1BB6349287F3012007616DE /* SubmittedKycStatusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BB6348287F3012007616DE /* SubmittedKycStatusModel.swift */; };
-		D1BB634B287F3121007616DE /* SubmittedKycStatusResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1BB634A287F3121007616DE /* SubmittedKycStatusResponse.json */; };
+		D1BB634B287F3121007616DE /* GetKycStatusResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1BB634A287F3121007616DE /* GetKycStatusResponse.json */; };
 		D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */; };
 		D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83527F4F5D100BF2910 /* DividerView.swift */; };
 		D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */; };
@@ -254,6 +255,7 @@
 		D135DCB527E7703D0009D888 /* TLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLManager.swift; sourceTree = "<group>"; };
 		D135DCB727E771100009D888 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 		D135DCB927E777030009D888 /* ServerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClient.swift; sourceTree = "<group>"; };
+		D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendTransactionReceiptResponse.json; sourceTree = "<group>"; };
 		D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionBuilder.swift; sourceTree = "<group>"; };
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
 		D1408F59288EB26600CABA3E /* KycFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowUITests.swift; sourceTree = "<group>"; };
@@ -356,9 +358,9 @@
 		D1BB633C287EE055007616DE /* SubmitKycModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitKycModel.swift; sourceTree = "<group>"; };
 		D1BB6342287F0A40007616DE /* KycRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycRouter.swift; sourceTree = "<group>"; };
 		D1BB6344287F2B8B007616DE /* SubmittedKycModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedKycModel.swift; sourceTree = "<group>"; };
-		D1BB6346287F2CC0007616DE /* SubmittedKycResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SubmittedKycResponse.json; sourceTree = "<group>"; };
+		D1BB6346287F2CC0007616DE /* SubmitKycResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SubmitKycResponse.json; sourceTree = "<group>"; };
 		D1BB6348287F3012007616DE /* SubmittedKycStatusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittedKycStatusModel.swift; sourceTree = "<group>"; };
-		D1BB634A287F3121007616DE /* SubmittedKycStatusResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SubmittedKycStatusResponse.json; sourceTree = "<group>"; };
+		D1BB634A287F3121007616DE /* GetKycStatusResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetKycStatusResponse.json; sourceTree = "<group>"; };
 		D1C8A83327F4F36D00BF2910 /* CheckoutPayloadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadCell.swift; sourceTree = "<group>"; };
 		D1C8A83527F4F5D100BF2910 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		D1C8A83727F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPayloadSummaryFooterView.swift; sourceTree = "<group>"; };
@@ -869,9 +871,10 @@
 				D1B872CB280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json */,
 				D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */,
 				D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */,
-				D1BB6346287F2CC0007616DE /* SubmittedKycResponse.json */,
-				D1BB634A287F3121007616DE /* SubmittedKycStatusResponse.json */,
+				D1BB6346287F2CC0007616DE /* SubmitKycResponse.json */,
+				D1BB634A287F3121007616DE /* GetKycStatusResponse.json */,
 				D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json */,
+				D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */,
 			);
 			path = JSONFiles;
 			sourceTree = "<group>";
@@ -1063,7 +1066,7 @@
 			files = (
 				D126AF162875872F00CAC5F2 /* IdentityCardFrontImage.svg in Resources */,
 				D126AF192875872F00CAC5F2 /* DriversLicenseFrontImage.svg in Resources */,
-				D1BB6347287F2CC0007616DE /* SubmittedKycResponse.json in Resources */,
+				D1BB6347287F2CC0007616DE /* SubmitKycResponse.json in Resources */,
 				D126AF152875872F00CAC5F2 /* IdentityCardBackImage.svg in Resources */,
 				D126AF1B2875872F00CAC5F2 /* ResedencePermitFrontImage.svg in Resources */,
 				D135DC8527E74A520009D888 /* LaunchScreen.storyboard in Resources */,
@@ -1071,9 +1074,10 @@
 				D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */,
 				D1B872C928044CC900DD1F7B /* GetUserBalanceByCurrencyCodeResponse.json in Resources */,
 				D123208628A6693A0039990A /* GetTosContentResponse.json in Resources */,
+				D13A872628C21DE000444EDB /* SendTransactionReceiptResponse.json in Resources */,
 				D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */,
 				D126AF182875872F00CAC5F2 /* ResedencePermitBackImage.svg in Resources */,
-				D1BB634B287F3121007616DE /* SubmittedKycStatusResponse.json in Resources */,
+				D1BB634B287F3121007616DE /* GetKycStatusResponse.json in Resources */,
 				D1CCE8CE27F4A65100FD0E25 /* Icons.xcassets in Resources */,
 				D126AF172875872F00CAC5F2 /* DriversLicenseBackImage.svg in Resources */,
 				D1B872CD280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json in Resources */,

@@ -82,6 +82,11 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
+  func sendTransactionReceipt(withId id: String, email: String, completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = InvoiceRouter.sendTransactionReceipt(id: id, email: email)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
   func getAddCreditCardRedirectUrl(completion: @escaping CompletionResultHandler<RedirectUrlModel>) {
     let router = AuthRouter.getAddCreditCardRedirectUrl
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)

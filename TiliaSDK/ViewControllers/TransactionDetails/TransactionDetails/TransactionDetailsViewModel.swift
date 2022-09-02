@@ -21,6 +21,7 @@ protocol TransactionDetailsViewModelOutputProtocol {
 }
 
 protocol TransactionDetailsDataStore {
+  var invoiceId: String { get }
   var manager: NetworkManager { get }
   var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
@@ -37,6 +38,7 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   let content = PassthroughSubject<TransactionDetailsModel, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
   
+  let invoiceId: String
   let manager: NetworkManager
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
@@ -50,7 +52,6 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   }
   let onError: ((TLErrorCallback) -> Void)?
   
-  private let invoiceId: String
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private var isLoaded = false
   

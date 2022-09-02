@@ -46,9 +46,9 @@ extension KycRouter {
   var testData: Data? {
     switch self {
     case .submit:
-      return readJSONFromFile("SubmittedKycResponse")
+      return readJSONFromFile("SubmitKycResponse")
     case .getStatus:
-      return readJSONFromFile("SubmittedKycStatusResponse")
+      return readJSONFromFile("GetKycStatusResponse")
     }
   }
   

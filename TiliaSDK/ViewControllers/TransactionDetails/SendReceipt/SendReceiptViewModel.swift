@@ -29,13 +29,16 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol {
   let dismiss = PassthroughSubject<Void, Never>()
   let isEmailValid = PassthroughSubject<Bool, Never>()
   
+  private let invoiceId: String
   private let manager: NetworkManager
   private let onError: ((TLErrorCallback) -> Void)?
   private let onUpdate: ((TLUpdateCallback) -> Void)?
   
-  init(manager: NetworkManager,
+  init(invoiceId: String,
+       manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
+    self.invoiceId = invoiceId
     self.manager = manager
     self.onUpdate = onUpdate
     self.onError = onError
@@ -47,11 +50,23 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol {
   
   func sendEmail(_ email: String) {
     loading.send(true)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-      self.loading.send(false)
-      self.dismiss.send()
-      self.onUpdate?(TLUpdateCallback(event: TLEvent(flow: .transactionDetails, action: .receiptSent),
-                                      message: L.receiptSent))
+    manager.sendTransactionReceipt(withId: invoiceId, email: email) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success:
+        self.dismiss.send()
+        let event = TLEvent(flow: .transactionDetails, action: .receiptSent)
+        let model = TLUpdateCallback(event: event, message: L.receiptSent)
+        self.onUpdate?(model)
+      case .failure(let error):
+        self.loading.send(false)
+        self.error.send(error)
+        let event = TLEvent(flow: .transactionDetails, action: .error)
+        let model = TLErrorCallback(event: event,
+                                    error: L.errorSendReceiptTitle,
+                                    message: error.localizedDescription)
+        self.onError?(model)
+      }
     }
   }
   
