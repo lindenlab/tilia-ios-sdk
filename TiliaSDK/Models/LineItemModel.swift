@@ -21,7 +21,7 @@ struct LineItemModel: Decodable {
     case currency
     case displayAmount = "display_amount"
     case sortOrder = "sort_order"
-    case displayReceivedAmount = "amount_received_less_fees_display"
+    case displayReceivedAmount = "amount_received_display"
   }
   
   init(from decoder: Decoder) throws {

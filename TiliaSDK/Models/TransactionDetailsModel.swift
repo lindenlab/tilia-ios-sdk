@@ -40,6 +40,11 @@ struct TransactionDetailsModel: Decodable {
     case recipientItems = "recipient_items"
     case paymentMethods = "payment_methods"
     case summary
+    case totalDisplay = "total_received_less_fees_display"
+    case subTotalDisplay = "total_received_display"
+    case subTotalAmount = "total_received"
+    case totalFeesDisplay = "total_fees_paid_display"
+    case totalFeesAmount = "total_fees_paid"
   }
   
   private enum SummaryCodingKeys: String, CodingKey {
@@ -87,10 +92,9 @@ struct TransactionDetailsModel: Decodable {
       let taxContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .tax)
       tax = try Self.displayAmount(for: taxContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
     } else {
-      // TODO: - Fix me
-      total = ""
-      subTotal = nil
-      tax = nil
+      total = try transactionContainer.decode(String.self, forKey: .totalDisplay)
+      subTotal = try Self.displayAmount(for: transactionContainer, doubleKey: .subTotalAmount, stringKey: .subTotalDisplay)
+      tax = try Self.displayAmount(for: transactionContainer, doubleKey: .totalFeesAmount, stringKey: .totalFeesDisplay)
     }
   }
   
