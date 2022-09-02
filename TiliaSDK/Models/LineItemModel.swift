@@ -21,6 +21,7 @@ struct LineItemModel: Decodable {
     case currency
     case displayAmount = "display_amount"
     case sortOrder = "sort_order"
+    case displayReceivedAmount = "amount_received_less_fees_display"
   }
   
   init(from decoder: Decoder) throws {
@@ -28,10 +29,12 @@ struct LineItemModel: Decodable {
     description = try container.decode(String.self, forKey: .description)
     productSku = try container.decode(String.self, forKey: .productSku)
     sortOrder = try container.decodeIfPresent(Int.self, forKey: .sortOrder)
-    // TODO: - Fix this when server will always send this property
     if let displayAmount = try? container.decode(String.self, forKey: .displayAmount) {
       self.displayAmount = displayAmount
+    } else if let displayAmount = try? container.decode(String.self, forKey: .displayReceivedAmount) {
+      self.displayAmount = displayAmount
     } else {
+      // TODO: - Fix this when server will always send this property
       let amount = try container.decode(Double.self, forKey: .amount)
       let currency = try container.decode(String.self, forKey: .currency)
       let formatter = NumberFormatter()

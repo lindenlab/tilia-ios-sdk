@@ -36,7 +36,8 @@ struct TransactionDetailsModel: Decodable {
     case referenceType = "reference_type"
     case referenceId = "reference_id"
     case createDate = "created"
-    case items = "line_items"
+    case lineItems = "line_items"
+    case recipientItems = "recipient_items"
     case paymentMethods = "payment_methods"
     case summary
   }
@@ -59,10 +60,16 @@ struct TransactionDetailsModel: Decodable {
     let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
     referenceType = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType))?.toNilIfEmpty()
     referenceId = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId))?.toNilIfEmpty()
-    let items = try transactionContainer.decode([String: LineItemModel].self, forKey: .items)
-    self.items = items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
+    
+    if let items = try? transactionContainer.decode([String: LineItemModel].self, forKey: .lineItems) {
+      self.items = items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
+    } else {
+      items = try transactionContainer.decode([LineItemModel].self, forKey: .recipientItems)
+    }
+    
     let paymentMethods = try transactionContainer.decode([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
     self.paymentMethods = paymentMethods.values.sorted { $0.type.isWallet && !$1.type.isWallet }
+    
     let createDateString = try transactionContainer.decode(String.self, forKey: .createDate)
     if let createDate = ISO8601DateFormatter().date(from: createDateString) {
       self.createDate = createDate
