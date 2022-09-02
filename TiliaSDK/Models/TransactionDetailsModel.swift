@@ -14,10 +14,12 @@ struct TransactionDetailsModel: Decodable {
   let role: TransactionRole
   let status: TransactionStatus
   let accountId: String
-  let reference: TransactionReferenceModel?
+  let referenceType: String?
+  let referenceId: String?
   let createDate: Date
   let total: String
-  let subTotal: TransactionSubTotalModel?
+  let subTotal: String?
+  let tax: String?
   let items: [LineItemModel]
   let paymentMethods: [TransactionPaymentMethodModel]
   
@@ -40,6 +42,7 @@ struct TransactionDetailsModel: Decodable {
   }
   
   private enum SummaryCodingKeys: String, CodingKey {
+    case totalAmount = "total_amount"
     case displayAmount = "display_amount"
     case subTotal = "subtotal"
     case tax
@@ -54,20 +57,12 @@ struct TransactionDetailsModel: Decodable {
     accountId = try container.decode(String.self, forKey: .accountId)
     
     let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
-    
-    if let referenceId = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId),
-       let referenceType = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType) {
-      self.reference = .init(id: referenceId, type: referenceType)
-    } else {
-      self.reference = nil
-    }
-    
+    referenceType = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType))?.toNilIfEmpty()
+    referenceId = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId))?.toNilIfEmpty()
     let items = try transactionContainer.decode([String: LineItemModel].self, forKey: .items)
     self.items = items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
-    
     let paymentMethods = try transactionContainer.decode([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
     self.paymentMethods = paymentMethods.values.sorted { $0.type.isWallet && !$1.type.isWallet }
-    
     let createDateString = try transactionContainer.decode(String.self, forKey: .createDate)
     if let createDate = ISO8601DateFormatter().date(from: createDateString) {
       self.createDate = createDate
@@ -80,18 +75,21 @@ struct TransactionDetailsModel: Decodable {
       total = try summaryContainer.decode(String.self, forKey: .displayAmount)
       
       let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .subTotal)
+      subTotal = try Self.displayAmount(for: subTotalContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
+      
       let taxContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .tax)
-      if let subTotal = (try subTotalContainer.decodeIfPresent(String.self, forKey: .displayAmount))?.toNilIfEmpty(),
-         let tax = (try taxContainer.decodeIfPresent(String.self, forKey: .displayAmount))?.toNilIfEmpty() {
-        self.subTotal = .init(total: subTotal, tax: tax)
-      } else {
-        self.subTotal = nil
-      }
+      tax = try Self.displayAmount(for: taxContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
     } else {
       // TODO: - Fix me
       total = ""
       subTotal = nil
+      tax = nil
     }
+  }
+  
+  private static func displayAmount<T: CodingKey>(for container: KeyedDecodingContainer<T>, doubleKey: KeyedDecodingContainer<T>.Key, stringKey: KeyedDecodingContainer<T>.Key) throws -> String? {
+    let doubleValue = try container.decode(Double.self, forKey: doubleKey)
+    return doubleValue.isEmpty ? nil : try container.decode(String.self, forKey: stringKey)
   }
   
 }
@@ -153,19 +151,5 @@ enum TransactionPaymentTypeModel: String, Decodable, CustomStringConvertible {
     case .paypal: return L.paypal
     }
   }
-  
-}
-
-struct TransactionSubTotalModel {
-  
-  let total: String
-  let tax: String
-  
-}
-
-struct TransactionReferenceModel {
-  
-  let id: String
-  let type: String
   
 }
