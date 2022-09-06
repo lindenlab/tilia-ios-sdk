@@ -175,8 +175,8 @@ struct UserInfoSectionBuilder {
     case .label:
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
       cell.configure(title: item.title)
-      cell.configure(description: item.description)
-      cell.configure(attributedDescription: item.attributedDescription)
+      cell.configure(description: item.description,
+                     attributedDescription: item.attributedDescription)
       return cell
     case .button:
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
