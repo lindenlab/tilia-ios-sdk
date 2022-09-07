@@ -511,6 +511,7 @@ struct UserInfoSectionBuilder {
     guard let header = tableView.tableHeaderView as? TitleInfoView else { return }
     header.title = title
     header.subTitle = subTitle
+    tableView.updateTableHeaderHeightIfNeeded()
   }
   
 }
