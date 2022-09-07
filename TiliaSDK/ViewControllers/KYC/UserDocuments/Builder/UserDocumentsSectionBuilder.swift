@@ -120,18 +120,6 @@ struct UserDocumentsSectionBuilder {
               in tableView: UITableView) -> UIView {
     let view = tableView.dequeue(TitleInfoHeaderFooterView.self)
     view.configure(title: L.fewMoreThings, subTitle: L.userDocumentsMessage)
-//    switch section.type {
-//    case .documents:
-//
-//    case .processing:
-//      view.configure(title: L.verifyingIdentity, subTitle: L.verifyingIdentityMessage)
-//    case .manualReview:
-//      view.configure(title: L.underReview, subTitle: L.underReviewDescription)
-//    case .failed:
-//      view.configure(title: L.willBeInTouch, subTitle: L.unableToVerifyDescription)
-//    case .success:
-//      view.configure(title: L.allSet, subTitle: L.userDocumentsSuccessMessage)
-//    }
     return view
   }
   
