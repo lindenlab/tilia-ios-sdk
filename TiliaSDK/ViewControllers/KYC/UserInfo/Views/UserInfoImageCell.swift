@@ -1,5 +1,5 @@
 //
-//  UserDocumentsImageCell.swift
+//  UserInfoImageCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 29.07.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class UserDocumentsImageCell: UITableViewCell {
+final class UserInfoImageCell: UITableViewCell {
   
   private let contentImageView: UIImageView = {
     let imageView = UIImageView()
@@ -34,7 +34,7 @@ final class UserDocumentsImageCell: UITableViewCell {
 
 // MARK: - Private Methods
 
-private extension UserDocumentsImageCell {
+private extension UserInfoImageCell {
   
   func setup() {
     selectionStyle = .none

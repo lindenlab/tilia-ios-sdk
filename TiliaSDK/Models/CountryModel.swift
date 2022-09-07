@@ -49,9 +49,9 @@ struct CountryModel: PossiblyEmpty {
     return items
   }()
   
-  private static let usaCode = "US"
-  private static let canadaCode = "CA"
+  private static var usaCode = "US"
+  private static var canadaCode = "CA"
   
-  private static let disabledCodes: Set<String> = [Self.usaCode, Self.canadaCode]
+  private static var disabledCodes: Set<String> = [Self.usaCode, Self.canadaCode]
   
 }

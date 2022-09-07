@@ -37,11 +37,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var chooseFileDidFail: PassthroughSubject<String, Never> { get }
   var fillingContent: PassthroughSubject<Bool, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
-  var successfulUploading: PassthroughSubject<Void, Never> { get }
-  var processing: PassthroughSubject<Void, Never> { get }
-  var manualReview: PassthroughSubject<Void, Never> { get }
-  var failedCompleting: PassthroughSubject<Void, Never> { get }
-  var successfulCompleting: PassthroughSubject<Void, Never> { get }
+  var dismiss: PassthroughSubject<Void, Never> { get }
 }
 
 protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, UserDocumentsViewModelOutputProtocol { }
@@ -60,32 +56,23 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let chooseFileDidFail = PassthroughSubject<String, Never>()
   let fillingContent = PassthroughSubject<Bool, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
-  let successfulUploading = PassthroughSubject<Void, Never>()
-  let processing = PassthroughSubject<Void, Never>()
-  let manualReview = PassthroughSubject<Void, Never>()
-  let failedCompleting = PassthroughSubject<Void, Never>()
-  let successfulCompleting = PassthroughSubject<Void, Never>()
+  let dismiss = PassthroughSubject<Void, Never>()
   
   private let manager: NetworkManager
   private let userInfoModel: UserInfoModel
   private var userDocumentsModel: UserDocumentsModel
-  private let onUpdate: ((TLUpdateCallback) -> Void)?
-  private let onComplete: ((Bool, Bool) -> Void)
+  private let onComplete: ((SubmittedKycModel) -> Void)
   private let onError: ((TLErrorCallback) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
-  private var isUploaded = false
-  private var isCompleted = false
-  private var timer: Timer?
+  private var submittedKyc: SubmittedKycModel?
   
   init(manager: NetworkManager,
        userInfoModel: UserInfoModel,
-       onUpdate: ((TLUpdateCallback) -> Void)?,
-       onComplete: @escaping (Bool, Bool) -> Void,
+       onComplete: @escaping (SubmittedKycModel) -> Void,
        onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
     self.userInfoModel = userInfoModel
     self.userDocumentsModel = UserDocumentsModel(model: userInfoModel)
-    self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
   }
@@ -194,25 +181,24 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     uploading.send(true)
     submit { [weak self] result in
       guard let self = self else { return }
-      self.uploading.send(false)
       switch result {
       case .success(let model):
-        self.isUploaded = true
-        self.sendUpdateCallbackIfNeeded(with: model.state)
-        self.successfulUploading.send()
-        self.resumeTimer(kycId: model.kycId)
+        self.submittedKyc = model
+        self.dismiss.send()
       case .failure(let error):
-        self.didFail(with: error)
+        self.uploading.send(false)
+        self.error.send(error)
+        let event = TLEvent(flow: .kyc, action: .error)
+        let model = TLErrorCallback(event: event,
+                                    error: L.errorKycTitle,
+                                    message: error.localizedDescription)
+        self.onError?(model)
       }
     }
   }
   
   func complete() {
-    onComplete(isUploaded, isCompleted)
-  }
-  
-  deinit {
-    timer?.invalidate()
+    submittedKyc.map { onComplete($0) }
   }
   
 }
@@ -279,43 +265,6 @@ private extension UserDocumentsViewModel {
     fillingContent.send(isSectionFilled)
   }
   
-  func resumeTimer(kycId: String) {
-    timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
-      guard let self = self else { return }
-      self.getSubmittedStatus(for: kycId)
-    }
-  }
-  
-  func invalidateTimer() {
-    timer?.invalidate()
-    timer = nil
-  }
-  
-  func getSubmittedStatus(for kycId: String) {
-    invalidateTimer()
-    manager.getSubmittedKycStatus(with: kycId) { [weak self] result in
-      guard let self = self else { return }
-      switch result {
-      case .success(let model):
-        self.sendUpdateCallbackIfNeeded(with: model.state)
-        switch model.state {
-        case .accepted:
-          self.isCompleted = true
-          self.successfulCompleting.send()
-        case .processing:
-          self.resumeTimer(kycId: kycId)
-          self.processing.send()
-        case .manualReview:
-          self.manualReview.send()
-        case .denied, .reverify, .noData:
-          self.failedCompleting.send()
-        }
-      case .failure(let error):
-        self.didFail(with: error)
-      }
-    }
-  }
-  
   func getDocumentsSize(_ documents: [UserDocumentsModel.DocumentImage]) -> Int {
     return documents.reduce(0) { result, document in
       return result + document.data.count
@@ -330,23 +279,6 @@ private extension UserDocumentsViewModel {
     processQueue.async {
       try? FileManager.default.removeItem(at: url)
     }
-  }
-  
-  func didFail(with error: Error) {
-    self.error.send(error)
-    let event = TLEvent(flow: .kyc, action: .error)
-    let model = TLErrorCallback(event: event,
-                                error: L.errorKycTitle,
-                                message: error.localizedDescription)
-    onError?(model)
-  }
-  
-  func sendUpdateCallbackIfNeeded(with state: SubmittedKycStateModel) {
-    guard isUploaded else { return }
-    let event = TLEvent(flow: .kyc, action: .kycInfoSubmitted)
-    let model = TLUpdateCallback(event: event,
-                                 message: L.kycInfoSubmitted.localized(with: state.rawValue))
-    onUpdate?(model)
   }
   
 }

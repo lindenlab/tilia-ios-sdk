@@ -17,6 +17,7 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
   
   private let buttonsView: ButtonsView<PrimaryButtonWithStyle, NonPrimaryButton> = {
     let primaryButton = PrimaryButtonWithStyle(style: .titleAndImageCenter)
+    primaryButton.setTitleForLoadingState(L.uploading)
     primaryButton.setTitle(L.continueTitle,
                            for: .normal)
     primaryButton.setImage(.arrowRightIcon?.withRenderingMode(.alwaysTemplate),
@@ -24,8 +25,6 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
     primaryButton.accessibilityIdentifier = "continueButton"
     
     let nonPrimaryButton = NonPrimaryButton()
-    nonPrimaryButton.setTitle(L.cancel,
-                              for: .normal)
     
     let view = ButtonsView(primaryButton: primaryButton,
                            nonPrimaryButton: nonPrimaryButton,
@@ -34,12 +33,25 @@ final class UserInfoFooterView: UITableViewHeaderFooterView {
     return view
   }()
   
-  func configure(delegate: ButtonsViewDelegate?) {
+  func configure(isDividerHidden: Bool,
+                 isPrimaryButtonHidden: Bool,
+                 nonPrimaryButtonTitle: String,
+                 nonPrimaryButtonAccessibilityIdentifier: String?,
+                 delegate: ButtonsViewDelegate?) {
+    divider.isHidden = isDividerHidden
+    buttonsView.primaryButton.isHidden = isPrimaryButtonHidden
+    buttonsView.nonPrimaryButton.setTitle(nonPrimaryButtonTitle,
+                                          for: .normal)
+    buttonsView.nonPrimaryButton.accessibilityIdentifier = nonPrimaryButtonAccessibilityIdentifier
     buttonsView.delegate = delegate
   }
   
   func configure(isPrimaryButtonEnabled: Bool) {
     buttonsView.primaryButton.isEnabled = isPrimaryButtonEnabled
+  }
+  
+  func configure(isLoading: Bool) {
+    buttonsView.primaryButton.isLoading = isLoading
   }
   
   override init(reuseIdentifier: String?) {

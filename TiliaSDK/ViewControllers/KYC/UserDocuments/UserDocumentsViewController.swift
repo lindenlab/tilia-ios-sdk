@@ -30,12 +30,10 @@ final class UserDocumentsViewController: BaseTableViewController {
   
   init(manager: NetworkManager,
        userInfoModel: UserInfoModel,
-       onUpdate: ((TLUpdateCallback) -> Void)?,
-       onComplete: @escaping (Bool, Bool) -> Void,
+       onComplete: @escaping (SubmittedKycModel) -> Void,
        onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = UserDocumentsViewModel(manager: manager,
                                            userInfoModel: userInfoModel,
-                                           onUpdate: onUpdate,
                                            onComplete: onComplete,
                                            onError: onError)
     let router = UserDocumentsRouter()
@@ -81,12 +79,6 @@ final class UserDocumentsViewController: BaseTableViewController {
                           in: tableView,
                           delegate: self,
                           isUploading: viewModel.uploading.value)
-  }
-  
-  override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    builder.updateSuccessCell(cell,
-                              for: section,
-                              in: tableView)
   }
   
 }
@@ -174,9 +166,6 @@ private extension UserDocumentsViewController {
     tableView.register(UserDocumentsFooterView.self)
     tableView.register(TextFieldCell.self)
     tableView.register(UserDocumentsSelectDocumentCell.self)
-    tableView.register(UserDocumentsSuccessCell.self)
-    tableView.register(UserDocumentsProcessingCell.self)
-    tableView.register(UserDocumentsImageCell.self)
     tableView.estimatedRowHeight = 100
     
     NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
@@ -285,37 +274,9 @@ private extension UserDocumentsViewController {
                                isUploading: $0)
     }.store(in: &subscriptions)
     
-    viewModel.successfulUploading.sink { [weak self] in
+    viewModel.dismiss.sink { [weak self] _ in
       guard let self = self else { return }
-      self.section = self.builder.processingSection()
-      self.tableView.reloadData()
-    }.store(in: &subscriptions)
-    
-    viewModel.processing.sink { [weak self] in
-      guard
-        let self = self,
-        self.builder.updateProcessingSection(&self.section, in: self.tableView) else { return }
-      UIView.performWithoutAnimation {
-        self.tableView.performBatchUpdates(nil)
-      }
-    }.store(in: &subscriptions)
-    
-    viewModel.manualReview.sink { [weak self] in
-      guard let self = self else { return }
-      self.section = self.builder.manualReviewSection()
-      self.tableView.reloadData()
-    }.store(in: &subscriptions)
-    
-    viewModel.failedCompleting.sink { [weak self] in
-      guard let self = self else { return }
-      self.section = self.builder.failedSection()
-      self.tableView.reloadData()
-    }.store(in: &subscriptions)
-    
-    viewModel.successfulCompleting.sink { [weak self] in
-      guard let self = self else { return }
-      self.section = self.builder.successSection()
-      self.tableView.reloadData()
+      self.router.dismiss() { self.viewModel.complete() }
     }.store(in: &subscriptions)
   }
   

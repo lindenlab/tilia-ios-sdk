@@ -1,5 +1,5 @@
 //
-//  UserDocumentsProcessingCell.swift
+//  UserInfoProcessingCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 08.07.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class UserDocumentsProcessingCell: UITableViewCell {
+final class UserInfoProcessingCell: UITableViewCell {
   
   private let spinner: UIActivityIndicatorView = {
     let view = UIActivityIndicatorView(style: .large)
@@ -41,7 +41,7 @@ final class UserDocumentsProcessingCell: UITableViewCell {
 
 // MARK: - Private Methods
 
-private extension UserDocumentsProcessingCell {
+private extension UserInfoProcessingCell {
   
   func setup() {
     selectionStyle = .none

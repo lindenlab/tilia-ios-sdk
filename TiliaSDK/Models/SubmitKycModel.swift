@@ -16,13 +16,13 @@ struct SubmitKycModel: Encodable {
   }
   
   private let userInfo: UserInfo
-  private let files: [File]
+  private let files: [File]?
   
-  init(userInfoModel: UserInfoModel, userDocumentsModel: UserDocumentsModel) {
+  init(userInfoModel: UserInfoModel, userDocumentsModel: UserDocumentsModel?) {
     self.userInfo = UserInfo(userInfoModel: userInfoModel,
                              userDocumentsModel: userDocumentsModel)
-    self.files = userDocumentsModel.additionalDocuments.enumerated().map { File(additionalDocument: $0.element,
-                                                                                index: $0.offset + 1) }
+    self.files = userDocumentsModel?.additionalDocuments.enumerated().map { File(additionalDocument: $0.element,
+                                                                                 index: $0.offset + 1) }
   }
   
 }
@@ -66,12 +66,12 @@ private extension SubmitKycModel {
     let canUseAddressFor1099: Bool?
     let ssn: String?
     let signature: String?
-    let document: String
-    let documentFront: String
+    let document: String?
+    let documentFront: String?
     let documentBack: String?
-    let documentCountry: String
+    let documentCountry: String?
     
-    init(userInfoModel: UserInfoModel, userDocumentsModel: UserDocumentsModel) {
+    init(userInfoModel: UserInfoModel, userDocumentsModel: UserDocumentsModel?) {
       self.country = userInfoModel.countryOfResidence?.code ?? ""
       self.firstName = userInfoModel.fullName.first ?? ""
       self.middleName = userInfoModel.fullName.middle ?? ""
@@ -85,10 +85,10 @@ private extension SubmitKycModel {
       self.canUseAddressFor1099 = userInfoModel.canUseAddressFor1099?.boolValue
       self.ssn = userInfoModel.tax?.ssn
       self.signature = userInfoModel.tax?.signature
-      self.document = userDocumentsModel.document?.code ?? ""
-      self.documentFront = Self.documentBase64EncodedString(for: userDocumentsModel.frontImage) ?? ""
-      self.documentBack = Self.documentBase64EncodedString(for: userDocumentsModel.backImage)
-      self.documentCountry = userDocumentsModel.documentCountry?.code ?? ""
+      self.document = userDocumentsModel?.document?.code
+      self.documentFront = Self.documentBase64EncodedString(for: userDocumentsModel?.frontImage)
+      self.documentBack = Self.documentBase64EncodedString(for: userDocumentsModel?.backImage)
+      self.documentCountry = userDocumentsModel?.documentCountry?.code
     }
     
     private static func documentBase64EncodedString(for document: UserDocumentsModel.DocumentImage?) -> String? {

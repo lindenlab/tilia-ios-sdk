@@ -31,7 +31,7 @@
 		D126AF1A2875872F00CAC5F2 /* PassportImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF132875872F00CAC5F2 /* PassportImage.svg */; };
 		D126AF1B2875872F00CAC5F2 /* ResedencePermitFrontImage.svg in Resources */ = {isa = PBXBuildFile; fileRef = D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */; };
 		D126AF1F2875F99C00CAC5F2 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126AF1E2875F99C00CAC5F2 /* SVGImage.swift */; };
-		D126AF212878365300CAC5F2 /* UserDocumentsProcessingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126AF202878365300CAC5F2 /* UserDocumentsProcessingCell.swift */; };
+		D126AF212878365300CAC5F2 /* UserInfoProcessingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D126AF202878365300CAC5F2 /* UserInfoProcessingCell.swift */; };
 		D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7827E74A4A0009D888 /* AppDelegate.swift */; };
 		D135DC7B27E74A4A0009D888 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */; };
 		D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DC7C27E74A4A0009D888 /* DemoViewController.swift */; };
@@ -48,7 +48,7 @@
 		D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */; };
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
 		D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1408F59288EB26600CABA3E /* KycFlowUITests.swift */; };
-		D151A8D028947E050055FF98 /* UserDocumentsImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */; };
+		D151A8D028947E050055FF98 /* UserInfoImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D151A8CF28947E050055FF98 /* UserInfoImageCell.swift */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
 		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
@@ -61,7 +61,7 @@
 		D15BA9F5282AACE200511785 /* DateFormatter+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */; };
 		D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */; };
 		D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */; };
-		D163D9E3284F52D400F478DA /* UserDocumentsSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */; };
+		D163D9E3284F52D400F478DA /* UserInfoSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E2284F52D400F478DA /* UserInfoSuccessCell.swift */; };
 		D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* Animation+Animations.swift */; };
 		D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = D163D9E8284F556000F478DA /* SuccessAnimation.json */; };
 		D16ADFA028A43C6A0096006C /* SwiftProgrammingLanguage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */; };
@@ -168,11 +168,11 @@
 		D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B54127F7675C00E04EE1 /* RadioButton.swift */; };
 		D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */; };
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
+		D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
 		D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */; };
-		D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -219,7 +219,7 @@
 		D126AF132875872F00CAC5F2 /* PassportImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PassportImage.svg; sourceTree = "<group>"; };
 		D126AF142875872F00CAC5F2 /* ResedencePermitFrontImage.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ResedencePermitFrontImage.svg; sourceTree = "<group>"; };
 		D126AF1E2875F99C00CAC5F2 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
-		D126AF202878365300CAC5F2 /* UserDocumentsProcessingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsProcessingCell.swift; sourceTree = "<group>"; };
+		D126AF202878365300CAC5F2 /* UserInfoProcessingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoProcessingCell.swift; sourceTree = "<group>"; };
 		D135DC7527E74A4A0009D888 /* TiliaSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiliaSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D135DC7827E74A4A0009D888 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D135DC7A27E74A4A0009D888 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 		D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionBuilder.swift; sourceTree = "<group>"; };
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
 		D1408F59288EB26600CABA3E /* KycFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowUITests.swift; sourceTree = "<group>"; };
-		D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsImageCell.swift; sourceTree = "<group>"; };
+		D151A8CF28947E050055FF98 /* UserInfoImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoImageCell.swift; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
 		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
@@ -252,7 +252,7 @@
 		D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Helpers.swift"; sourceTree = "<group>"; };
 		D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoNextButtonCell.swift; sourceTree = "<group>"; };
 		D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsFooterView.swift; sourceTree = "<group>"; };
-		D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsSuccessCell.swift; sourceTree = "<group>"; };
+		D163D9E2284F52D400F478DA /* UserInfoSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSuccessCell.swift; sourceTree = "<group>"; };
 		D163D9E4284F53CC00F478DA /* Animation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+Animations.swift"; sourceTree = "<group>"; };
 		D163D9E8284F556000F478DA /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
 		D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SwiftProgrammingLanguage.pdf; sourceTree = "<group>"; };
@@ -360,11 +360,11 @@
 		D1D5B54127F7675C00E04EE1 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
+		D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceInfoModel.swift; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidatorTests.swift; sourceTree = "<group>"; };
-		D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceInfoModel.swift; sourceTree = "<group>"; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -622,6 +622,9 @@
 				D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */,
 				D16D56A82826F4AA0088FB3D /* UserInfoFooterView.swift */,
 				D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */,
+				D126AF202878365300CAC5F2 /* UserInfoProcessingCell.swift */,
+				D151A8CF28947E050055FF98 /* UserInfoImageCell.swift */,
+				D163D9E2284F52D400F478DA /* UserInfoSuccessCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -739,9 +742,6 @@
 				D18CDB73283F810C00AAC732 /* UserDocumentsSelectDocumentCell.swift */,
 				D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */,
 				D17EFFA2284645A700F4B6DD /* UserDocumentsDocumentCell.swift */,
-				D126AF202878365300CAC5F2 /* UserDocumentsProcessingCell.swift */,
-				D151A8CF28947E050055FF98 /* UserDocumentsImageCell.swift */,
-				D163D9E2284F52D400F478DA /* UserDocumentsSuccessCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1097,7 +1097,7 @@
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
 				D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */,
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
-				D126AF212878365300CAC5F2 /* UserDocumentsProcessingCell.swift in Sources */,
+				D126AF212878365300CAC5F2 /* UserInfoProcessingCell.swift in Sources */,
 				D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */,
 				D1BB6349287F3012007616DE /* SubmittedKycStatusModel.swift in Sources */,
 				D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */,
@@ -1113,7 +1113,7 @@
 				D1C8A83627F4F5D100BF2910 /* DividerView.swift in Sources */,
 				D1BA29E027FCA96B00F046E8 /* ColorsConfiguration.swift in Sources */,
 				D1A165B0287F5C0C00EFD999 /* UserDocumentsModel.swift in Sources */,
-				D151A8D028947E050055FF98 /* UserDocumentsImageCell.swift in Sources */,
+				D151A8D028947E050055FF98 /* UserInfoImageCell.swift in Sources */,
 				D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */,
 				D18855E9282912B400BAC86F /* RoundedTextField.swift in Sources */,
 				D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */,
@@ -1169,7 +1169,7 @@
 				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */,
 				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,
-				D163D9E3284F52D400F478DA /* UserDocumentsSuccessCell.swift in Sources */,
+				D163D9E3284F52D400F478DA /* UserInfoSuccessCell.swift in Sources */,
 				D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D126AF1F2875F99C00CAC5F2 /* SVGImage.swift in Sources */,
