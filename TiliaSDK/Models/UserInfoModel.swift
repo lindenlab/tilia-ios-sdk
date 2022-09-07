@@ -47,6 +47,7 @@ struct UserInfoModel {
   
   var isUsResident: Bool { return countryOfResidence?.isUs == true }
   var dateOfBirthString: String? { return dateOfBirth.map { $0.string(formatter: .longDateFormatter) } }
+  var needDocuments: Bool { return !isUsResident || address.region.isArizonaOrFlorida }
   
   mutating func setAddressToDefault() {
     address.street = nil

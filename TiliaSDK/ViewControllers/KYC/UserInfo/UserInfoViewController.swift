@@ -72,18 +72,24 @@ final class UserInfoViewController: BaseTableViewController {
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return builder.header(for: sections[section],
                           in: tableView,
-                          delegate: self)
+                          delegate: self,
+                          isUploading: viewModel.uploading.value)
   }
   
   override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections,
                           in: tableView,
                           at: section,
-                          delegate: self)
+                          delegate: self,
+                          isUploading: viewModel.uploading.value)
   }
   
   override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return builder.heightForFooter(in: sections[section])
+  }
+  
+  override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    builder.updateSuccessCell(cell, in: tableView)
   }
   
 }
@@ -152,7 +158,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
                               isExpanded: false,
                               nextSectionIndex: nil)
     }
-    router.routeToUserDocumentsView()
+    viewModel.upload()
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
@@ -174,6 +180,9 @@ private extension UserInfoViewController {
     tableView.register(TwoTextFieldsCell.self)
     tableView.register(ThreeTextFieldsCell.self)
     tableView.register(LabelCell.self)
+    tableView.register(UserInfoSuccessCell.self)
+    tableView.register(UserInfoProcessingCell.self)
+    tableView.register(UserInfoImageCell.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.estimatedRowHeight = 150
     tableView.estimatedSectionHeaderHeight = 50
@@ -183,6 +192,12 @@ private extension UserInfoViewController {
   }
   
   func bind() {
+    viewModel.error.sink { [weak self] _ in
+      guard let self = self else { return }
+      self.router.showToast(title: L.errorKycTitle,
+                            message: L.errorKycMessage)
+    }.store(in: &subscriptions)
+    
     viewModel.expandSection.sink { [weak self] item in
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSection(&self.sections[item.index],
@@ -239,9 +254,60 @@ private extension UserInfoViewController {
       indexSet.map { self.tableView.insertSections($0, with: .fade) }
     }.store(in: &subscriptions)
     
-    viewModel.dismiss.sink { [weak self] _ in
+    viewModel.uploading.sink { [weak self] in
       guard let self = self else { return }
-      self.router.dismiss() { self.viewModel.complete() }
+      self.builder.updateTable(self.tableView,
+                               for: self.sections,
+                               isUploading: $0)
+    }.store(in: &subscriptions)
+    
+    viewModel.uploadDocuments.sink { [weak self] in
+      self?.router.routeToUserDocumentsView()
+    }.store(in: &subscriptions)
+    
+    viewModel.successfulUploading.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateTableHeader(in: self.tableView,
+                                     title: L.verifyingIdentity,
+                                     subTitle: L.verifyingIdentityMessage)
+      self.sections = [self.builder.processingSection()]
+      self.tableView.reloadData()
+    }.store(in: &subscriptions)
+    
+    viewModel.processing.sink { [weak self] in
+      guard
+        let self = self,
+        self.builder.updateProcessingSection(for: &self.sections, in: self.tableView) else { return }
+      UIView.performWithoutAnimation {
+        self.tableView.performBatchUpdates(nil)
+      }
+    }.store(in: &subscriptions)
+    
+    viewModel.manualReview.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateTableHeader(in: self.tableView,
+                                     title: L.underReview,
+                                     subTitle: L.underReviewDescription)
+      self.sections = [self.builder.manualReviewSection()]
+      self.tableView.reloadData()
+    }.store(in: &subscriptions)
+    
+    viewModel.failedCompleting.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateTableHeader(in: self.tableView,
+                                     title: L.willBeInTouch,
+                                     subTitle: L.unableToVerifyDescription)
+      self.sections = [self.builder.failedSection()]
+      self.tableView.reloadData()
+    }.store(in: &subscriptions)
+    
+    viewModel.successfulCompleting.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateTableHeader(in: self.tableView,
+                                     title: L.allSet,
+                                     subTitle: L.userDocumentsSuccessMessage)
+      self.sections = [self.builder.successSection()]
+      self.tableView.reloadData()
     }.store(in: &subscriptions)
   }
   

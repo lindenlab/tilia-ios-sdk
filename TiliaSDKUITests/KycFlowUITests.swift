@@ -127,34 +127,6 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(continueButton.exists)
     continueButton.tap()
     
-    let documentTextField = app.tables.cells.textFields["documentTextField"]
-    XCTAssert(documentTextField.exists)
-    documentTextField.tap()
-    documentTextField.typeText("\n")
-    
-    let frontSideChooseButton = app.tables.cells.buttons["frontSideChooseButton"]
-    XCTAssert(frontSideChooseButton.exists)
-    frontSideChooseButton.tap()
-    
-    let frontSideDocumentImage = app.scrollViews.otherElements.images.firstMatch
-    XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 5))
-    frontSideDocumentImage.tap()
-    
-    let isAddressOnDocumentTextField = app.tables.cells.textFields["isAddressOnDocumentTextField"]
-    XCTAssert(isAddressOnDocumentTextField.exists)
-    isAddressOnDocumentTextField.tap()
-    
-    let isAddressOnDocumentPicker = app.pickerWheels.firstMatch
-    XCTAssert(isAddressOnDocumentPicker.exists)
-    isAddressOnDocumentPicker.adjust(toPickerWheelValue: "Yes")
-    isAddressOnDocumentTextField.typeText("\n")
-    
-    scrollUp(app: app, dy: -200)
-    
-    let uploadButton = app.tables.buttons["uploadButton"]
-    XCTAssert(uploadButton.exists)
-    uploadButton.tap()
-    
     let doneButton = app.tables.buttons["doneButton"]
     XCTAssert(doneButton.waitForExistence(timeout: 8))
     doneButton.tap()
@@ -428,34 +400,6 @@ final class KycFlowUITests: XCTestCase {
     let continueButton = app.tables.buttons["continueButton"]
     XCTAssert(continueButton.exists)
     continueButton.tap()
-    
-    let documentTextField = app.tables.cells.textFields["documentTextField"]
-    XCTAssert(documentTextField.exists)
-    documentTextField.tap()
-    documentTextField.typeText("\n")
-    
-    let frontSideChooseButton = app.tables.cells.buttons["frontSideChooseButton"]
-    XCTAssert(frontSideChooseButton.exists)
-    frontSideChooseButton.tap()
-    
-    let frontSideDocumentImage = app.scrollViews.otherElements.images.firstMatch
-    XCTAssert(frontSideDocumentImage.waitForExistence(timeout: 5))
-    frontSideDocumentImage.tap()
-    
-    let isAddressOnDocumentTextField = app.tables.cells.textFields["isAddressOnDocumentTextField"]
-    XCTAssert(isAddressOnDocumentTextField.exists)
-    isAddressOnDocumentTextField.tap()
-    
-    let isAddressOnDocumentPicker = app.pickerWheels.firstMatch
-    XCTAssert(isAddressOnDocumentPicker.exists)
-    isAddressOnDocumentPicker.adjust(toPickerWheelValue: "Yes")
-    isAddressOnDocumentTextField.typeText("\n")
-    
-    scrollUp(app: app, dy: -200)
-    
-    let uploadButton = app.tables.buttons["uploadButton"]
-    XCTAssert(uploadButton.exists)
-    uploadButton.tap()
     
     let doneButton = app.tables.buttons["closeButton"]
     XCTAssert(doneButton.waitForExistence(timeout: 2))

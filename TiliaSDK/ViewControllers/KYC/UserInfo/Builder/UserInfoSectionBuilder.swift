@@ -21,17 +21,31 @@ struct UserInfoSectionBuilder {
       case personal
       case tax
       case contact
+      case processing
+      case manualReview
+      case failed
+      case success
       
       static var defaultItems: [SectionType] {
         return [.location, .personal, .contact]
       }
       
-      var title: String {
+      var headerTitle: String? {
         switch self {
         case .location: return L.location
         case .personal: return L.personal
         case .tax: return L.taxInfo
         case .contact: return L.contact
+        default: return nil
+        }
+      }
+      
+      var footerHeight: CGFloat {
+        switch self {
+        case .contact, .processing, .manualReview, .failed, .success:
+          return UITableView.automaticDimension
+        default:
+          return .leastNormalMagnitude
         }
       }
       
@@ -106,9 +120,40 @@ struct UserInfoSectionBuilder {
           }
         }
         
+        enum Processing {
+          case processing
+          case uploadingInfo
+          case dottingInformation
+          case verifyingInformation
+          case takingWhile
+          
+          var title: String {
+            switch self {
+            case .processing: return L.processing
+            case .uploadingInfo: return L.uploadingInfo
+            case .dottingInformation: return L.dottingInformation
+            case .verifyingInformation: return L.verifyingInformation
+            case .takingWhile: return L.takingWhile
+            }
+          }
+          
+          var onNext: Processing? {
+            switch self {
+            case .processing: return .uploadingInfo
+            case .uploadingInfo: return .dottingInformation
+            case .dottingInformation: return .verifyingInformation
+            case .verifyingInformation: return .takingWhile
+            case .takingWhile: return nil
+            }
+          }
+        }
+        
         case fields(Fields)
         case label
         case button
+        case processing(Processing)
+        case image(UIImage?)
+        case success
       }
       
       let title: String?
@@ -128,11 +173,9 @@ struct UserInfoSectionBuilder {
     }
     
     let type: SectionType
-    var mode: UserInfoHeaderView.Mode
-    var isFilled: Bool
+    var mode: UserInfoHeaderView.Mode?
+    var isFilled: Bool?
     var items: [Item]
-    
-    var isExpanded: Bool { return mode == .expanded }
   }
   
   func numberOfRows(in section: Section) -> Int {
@@ -140,10 +183,7 @@ struct UserInfoSectionBuilder {
   }
   
   func heightForFooter(in section: Section) -> CGFloat {
-    switch section.type {
-    case .contact: return UITableView.automaticDimension
-    default: return .leastNormalMagnitude
-    }
+    return section.type.footerHeight
   }
   
   func cell(for section: Section,
@@ -175,38 +215,74 @@ struct UserInfoSectionBuilder {
     case .label:
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
       cell.configure(title: item.title)
-      cell.configure(description: item.description)
-      cell.configure(attributedDescription: item.attributedDescription)
+      cell.configure(description: item.description,
+                     attributedDescription: item.attributedDescription)
       return cell
     case .button:
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
       cell.configure(delegate: delegate)
-      cell.configure(isButtonEnabled: section.isFilled)
+      cell.configure(isButtonEnabled: section.isFilled ?? false)
+      return cell
+    case let .processing(model):
+      let cell = tableView.dequeue(UserInfoProcessingCell.self, for: indexPath)
+      cell.configure(title: model.title)
+      return cell
+    case let .image(image):
+      let cell = tableView.dequeue(UserInfoImageCell.self, for: indexPath)
+      cell.configure(image: image)
+      return cell
+    case .success:
+      let cell = tableView.dequeue(UserInfoSuccessCell.self, for: indexPath)
       return cell
     }
   }
   
   func header(for section: Section,
               in tableView: UITableView,
-              delegate: SectionHeaderDelegate) -> UIView {
+              delegate: SectionHeaderDelegate,
+              isUploading: Bool) -> UIView? {
+    guard let mode = section.mode else { return nil }
     let view = tableView.dequeue(UserInfoHeaderView.self)
-    view.configure(title: section.type.title,
+    view.configure(title: section.type.headerTitle,
                    delegate: delegate)
-    view.configure(mode: section.mode, animated: false)
+    view.configure(mode: mode, animated: false)
     view.accessibilityIdentifier = section.type.accessibilityIdentifier
+    view.isUserInteractionEnabled = !isUploading
     return view
   }
   
   func footer(for sections: [Section],
               in tableView: UITableView,
               at section: Int,
-              delegate: SectionFooterDelegate) -> UIView? {
+              delegate: SectionFooterDelegate,
+              isUploading: Bool) -> UIView? {
     switch sections[section].type {
     case .contact:
       let isPrimaryButtonEnabled = isAllSectionsFilled(sections)
       let view = tableView.dequeue(UserInfoFooterView.self)
-      view.configure(delegate: delegate)
+      view.configure(isDividerHidden: false,
+                     isPrimaryButtonHidden: false,
+                     nonPrimaryButtonTitle: L.cancel,
+                     nonPrimaryButtonAccessibilityIdentifier: nil,
+                     delegate: delegate)
       view.configure(isPrimaryButtonEnabled: isPrimaryButtonEnabled)
+      view.configure(isLoading: isUploading)
+      return view
+    case .processing, .manualReview, .failed:
+      let view = tableView.dequeue(UserInfoFooterView.self)
+      view.configure(isDividerHidden: true,
+                     isPrimaryButtonHidden: true,
+                     nonPrimaryButtonTitle: L.close,
+                     nonPrimaryButtonAccessibilityIdentifier: "closeButton",
+                     delegate: delegate)
+      return view
+    case .success:
+      let view = tableView.dequeue(UserInfoFooterView.self)
+      view.configure(isDividerHidden: true,
+                     isPrimaryButtonHidden: true,
+                     nonPrimaryButtonTitle: L.done,
+                     nonPrimaryButtonAccessibilityIdentifier: "doneButton",
+                     delegate: delegate)
       return view
     default:
       return nil
@@ -232,6 +308,26 @@ struct UserInfoSectionBuilder {
     }
   }
   
+  func processingSection() -> Section {
+    return .init(type: .processing,
+                 items: [.init(mode: .processing(.processing))])
+  }
+  
+  func manualReviewSection() -> Section {
+    return .init(type: .manualReview,
+                 items: [.init(mode: .image(.reviewIcon))])
+  }
+  
+  func failedSection() -> Section {
+    return .init(type: .failed,
+                 items: [.init(mode: .image(.openEnvelopeIcon))])
+  }
+  
+  func successSection() -> Section {
+    return .init(type: .success,
+                 items: [.init(mode: .success)])
+  }
+  
   func updateSection(_ section: inout Section,
                      with model: UserInfoModel,
                      in tableView: UITableView,
@@ -251,6 +347,8 @@ struct UserInfoSectionBuilder {
         section.items = itemsForTaxSection(with: model)
       case .contact:
         section.items = itemsForContactSection(with: model)
+      default:
+        break
       }
       items = section.items
     } else {
@@ -307,14 +405,19 @@ struct UserInfoSectionBuilder {
   func updateSections(_ sections: inout [Section],
                       in tableView: UITableView,
                       countryOfResidenceDidSelectWith model: UserInfoModel) -> IndexSet? {
-    sections.enumerated().filter { $1.mode == .disabled }.forEach {
-      updateSection(&sections[$0.offset],
+    var contactSectionIndex: Int?
+    sections.enumerated().forEach {
+      if $1.type == .contact {
+        contactSectionIndex = $0
+      }
+      guard $1.mode == .disabled else { return }
+      updateSection(&sections[$0],
                     in: tableView,
-                    at: $0.offset,
+                    at: $0,
                     mode: .normal)
     }
     
-    if model.isUsResident, let index = sections.firstIndex(where: { $0.type == .contact }) {
+    if model.isUsResident, let index = contactSectionIndex {
       sections.insert(taxSection(), at: index)
       return [index]
     } else {
@@ -328,7 +431,18 @@ struct UserInfoSectionBuilder {
                       wasUsResidence: Bool) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil, nil)
     
-    guard let contactSectionIndex = sections.firstIndex(where: { $0.type == .contact }) else { return tableUpdate }
+    var contactSectionIndex: Int?
+    var taxSectionIndex: Int?
+    
+    sections.enumerated().forEach {
+      switch $1.type {
+      case .contact: contactSectionIndex = $0
+      case .tax: taxSectionIndex = $0
+      default: break
+      }
+    }
+    
+    guard let contactSectionIndex = contactSectionIndex else { return tableUpdate }
     
     sections[contactSectionIndex].isFilled = false
     tableUpdate.deleteRows = updateSection(&sections[contactSectionIndex],
@@ -338,10 +452,10 @@ struct UserInfoSectionBuilder {
                                            isExpanded: false,
                                            isFilled: false).deleteRows
     
-    if model.isUsResident, sections.firstIndex(where: { $0.type == .tax }) == nil {
+    if model.isUsResident, taxSectionIndex == nil {
       sections.insert(taxSection(), at: contactSectionIndex)
       tableUpdate.insertSection = [contactSectionIndex]
-    } else if wasUsResidence, let index = sections.firstIndex(where: { $0.type == .tax })  {
+    } else if wasUsResidence, let index = taxSectionIndex {
       sections.remove(at: index)
       tableUpdate.deleteSection = [index]
     }
@@ -355,6 +469,48 @@ struct UserInfoSectionBuilder {
       let index = sections.firstIndex(where: { $0.type == .contact }),
       let footer = tableView.footerView(forSection: index) as? UserInfoFooterView else { return }
     footer.configure(isPrimaryButtonEnabled: isAllSectionsFilled(sections))
+  }
+  
+  func updateSuccessCell(_ cell: UITableViewCell,
+                         in tableView: UITableView) {
+    guard let successCell = cell as? UserInfoSuccessCell else { return }
+    successCell.startAnimatingIfNeeded()
+  }
+  
+  func updateTable(_ tableView: UITableView,
+                   for sections: [Section],
+                   isUploading: Bool) {
+    sections.enumerated().forEach {
+      if let header = tableView.headerView(forSection: $0.offset) {
+        header.isUserInteractionEnabled = !isUploading
+      }
+      if $0.element.type == .contact,
+         let footer = tableView.footerView(forSection: $0.offset) as? UserInfoFooterView {
+        footer.configure(isLoading: isUploading)
+      }
+    }
+  }
+  
+  func updateProcessingSection(for sections: inout [Section],
+                               in tableView: UITableView) -> Bool {
+    guard
+      let index = sections.firstIndex(where: { $0.type == .processing }),
+      case let .processing(model) = sections[index].items.first?.mode,
+      let nextItem = model.onNext else { return false }
+    sections[index].items[0].mode = .processing(nextItem)
+    let indexPath = IndexPath(row: 0, section: 0)
+    if let cell = tableView.cellForRow(at: indexPath) as? UserInfoProcessingCell {
+      cell.configure(title: nextItem.title)
+    }
+    return true
+  }
+  
+  func updateTableHeader(in tableView: UITableView,
+                         title: String,
+                         subTitle: String) {
+    guard let header = tableView.tableHeaderView as? TitleInfoView else { return }
+    header.title = title
+    header.subTitle = subTitle
   }
   
 }
@@ -511,7 +667,7 @@ private extension UserInfoSectionBuilder {
   }
   
   func isAllSectionsFilled(_ sections: [Section]) -> Bool {
-    return sections.filter { $0.isFilled }.count == sections.count
+    return sections.filter { $0.isFilled ?? false }.count == sections.count
   }
   
   func updateSection(_ section: inout Section,

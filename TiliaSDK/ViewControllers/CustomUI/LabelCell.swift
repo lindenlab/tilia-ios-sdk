@@ -26,12 +26,15 @@ final class LabelCell: TitleBaseCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(description: String?) {
-    label.text = description
-  }
-  
-  func configure(attributedDescription: NSAttributedString?) {
-    label.attributedText = attributedDescription
+  func configure(description: String?, attributedDescription: NSAttributedString?) {
+    if let attributedDescription = attributedDescription {
+      label.attributedText = attributedDescription
+    } else if let description = description {
+      label.text = description
+    } else {
+      label.text = nil
+      label.attributedText = nil
+    }
   }
   
 }

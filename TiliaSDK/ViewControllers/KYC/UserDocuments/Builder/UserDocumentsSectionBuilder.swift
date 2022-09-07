@@ -16,14 +16,6 @@ struct UserDocumentsSectionBuilder {
   
   struct Section {
     
-    enum SectionType {
-      case documents
-      case processing
-      case manualReview
-      case failed
-      case success
-    }
-    
     struct Item {
       
       enum Mode {
@@ -72,49 +64,17 @@ struct UserDocumentsSectionBuilder {
           var image: UIImage?
         }
         
-        enum Processing {
-          case processing
-          case uploadingInfo
-          case dottingInformation
-          case verifyingInformation
-          case takingWhile
-          
-          var title: String {
-            switch self {
-            case .processing: return L.processing
-            case .uploadingInfo: return L.uploadingInfo
-            case .dottingInformation: return L.dottingInformation
-            case .verifyingInformation: return L.verifyingInformation
-            case .takingWhile: return L.takingWhile
-            }
-          }
-          
-          var onNext: Processing? {
-            switch self {
-            case .processing: return .uploadingInfo
-            case .uploadingInfo: return .dottingInformation
-            case .dottingInformation: return .verifyingInformation
-            case .verifyingInformation: return .takingWhile
-            case .takingWhile: return nil
-            }
-          }
-        }
-        
         case field(Field)
         case photo(Photo)
         case additionalDocuments([UIImage])
-        case processing(Processing)
-        case image(UIImage?)
-        case success
       }
       
       let title: String?
       var mode: Mode
     }
     
-    let type: SectionType
     var items: [Item]
-    var isFilled: Bool?
+    var isFilled: Bool
   }
   
   func numberOfRows(in section: Section) -> Int {
@@ -153,35 +113,13 @@ struct UserDocumentsSectionBuilder {
                      delegate: delegate)
       cell.isUserInteractionEnabled = !isUploading
       return cell
-    case let .processing(model):
-      let cell = tableView.dequeue(UserDocumentsProcessingCell.self, for: indexPath)
-      cell.configure(title: model.title)
-      return cell
-    case let .image(image):
-      let cell = tableView.dequeue(UserDocumentsImageCell.self, for: indexPath)
-      cell.configure(image: image)
-      return cell
-    case .success:
-      let cell = tableView.dequeue(UserDocumentsSuccessCell.self, for: indexPath)
-      return cell
     }
   }
   
   func header(for section: Section,
               in tableView: UITableView) -> UIView {
     let view = tableView.dequeue(TitleInfoHeaderFooterView.self)
-    switch section.type {
-    case .documents:
-      view.configure(title: L.fewMoreThings, subTitle: L.userDocumentsMessage)
-    case .processing:
-      view.configure(title: L.verifyingIdentity, subTitle: L.verifyingIdentityMessage)
-    case .manualReview:
-      view.configure(title: L.underReview, subTitle: L.underReviewDescription)
-    case .failed:
-      view.configure(title: L.willBeInTouch, subTitle: L.unableToVerifyDescription)
-    case .success:
-      view.configure(title: L.allSet, subTitle: L.userDocumentsSuccessMessage)
-    }
+    view.configure(title: L.fewMoreThings, subTitle: L.userDocumentsMessage)
     return view
   }
   
@@ -190,28 +128,9 @@ struct UserDocumentsSectionBuilder {
               delegate: SectionFooterDelegate,
               isUploading: Bool) -> UIView {
     let view = tableView.dequeue(UserDocumentsFooterView.self)
-    switch section.type {
-    case .documents:
-      view.configure(isPrimaryButtonHidden: false,
-                     nonPrimaryButtonTitle: L.goBack,
-                     nonPrimaryButtonImage: .arrowLeftIcon?.withRenderingMode(.alwaysTemplate),
-                     nonPrimaryButtonAccessibilityIdentifier: nil,
-                     delegate: delegate)
-      view.configure(isPrimaryButtonEnabled: section.isFilled == true)
-      view.configure(isLoading: isUploading)
-    case .processing, .manualReview, .failed:
-      view.configure(isPrimaryButtonHidden: true,
-                     nonPrimaryButtonTitle: L.close,
-                     nonPrimaryButtonImage: nil,
-                     nonPrimaryButtonAccessibilityIdentifier: "closeButton",
-                     delegate: delegate)
-    case .success:
-      view.configure(isPrimaryButtonHidden: true,
-                     nonPrimaryButtonTitle: L.done,
-                     nonPrimaryButtonImage: nil,
-                     nonPrimaryButtonAccessibilityIdentifier: "doneButton",
-                     delegate: delegate)
-    }
+    view.configure(delegate: delegate)
+    view.configure(isPrimaryButtonEnabled: section.isFilled == true)
+    view.configure(isLoading: isUploading)
     return view
   }
   
@@ -225,33 +144,7 @@ struct UserDocumentsSectionBuilder {
     let items: [Section.Item] = [
       Section.Item(title: L.document, mode: .field(field))
     ]
-    return Section(type: .documents,
-                   items: items,
-                   isFilled: false)
-  }
-  
-  func processingSection() -> Section {
-    return Section(type: .processing,
-                   items: [.init(title: nil,
-                                 mode: .processing(.processing))])
-  }
-  
-  func manualReviewSection() -> Section {
-    return Section(type: .manualReview,
-                   items: [.init(title: nil,
-                                 mode: .image(.reviewIcon))])
-  }
-  
-  func failedSection() -> Section {
-    return Section(type: .failed,
-                   items: [.init(title: nil,
-                                 mode: .image(.openEnvelopeIcon))])
-  }
-  
-  func successSection() -> Section {
-    return Section(type: .success,
-                   items: [.init(title: nil,
-                                 mode: .success)])
+    return .init(items: items, isFilled: false)
   }
   
   func updateSection(_ section: inout Section,
@@ -421,15 +314,6 @@ struct UserDocumentsSectionBuilder {
                    deleteIndex: documentIndex)
   }
   
-  func updateSuccessCell(_ cell: UITableViewCell,
-                         for section: Section,
-                         in tableView: UITableView) {
-    guard
-      section.type == .success,
-      let successCell = cell as? UserDocumentsSuccessCell else { return }
-    successCell.startAnimatingIfNeeded()
-  }
-  
   func updateTable(_ tableView: UITableView,
                    isUploading: Bool) {
     (0..<tableView.numberOfRows(inSection: 0)).forEach {
@@ -438,19 +322,6 @@ struct UserDocumentsSectionBuilder {
     }
     guard let footer = tableView.footerView(forSection: 0) as? UserDocumentsFooterView else { return }
     footer.configure(isLoading: isUploading)
-  }
-  
-  func updateProcessingSection(_ section: inout Section,
-                               in tableView: UITableView) -> Bool {
-    guard
-      case let .processing(model) = section.items.first?.mode,
-      let nextItem = model.onNext else { return false }
-    section.items[0].mode = .processing(nextItem)
-    let indexPath = IndexPath(row: 0, section: 0)
-    if let cell = tableView.cellForRow(at: indexPath) as? UserDocumentsProcessingCell {
-      cell.configure(title: nextItem.title)
-    }
-    return true
   }
   
 }

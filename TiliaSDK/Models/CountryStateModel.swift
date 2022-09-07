@@ -7,12 +7,13 @@
 
 import Foundation
 
-struct CountryStateModel: PossiblyEmpty {
+struct CountryStateModel: PossiblyEmpty, Hashable {
   
   var name: String?
   let code: String?
   
   var isEmpty: Bool { return name.isEmpty }
+  var isArizonaOrFlorida: Bool { return Self.arizonaAndFloridaStates.contains(self) }
   
   static let usStates: [CountryStateModel] = [
     .init(name: "Alaska", code: "AK"),
@@ -94,5 +95,10 @@ struct CountryStateModel: PossiblyEmpty {
     self.name = name
     self.code = code
   }
+  
+  private static var arizonaAndFloridaStates: Set<CountryStateModel> = [
+    .init(name: "Arizona", code: "AZ"),
+    .init(name: "Florida", code: "FL")
+  ]
   
 }

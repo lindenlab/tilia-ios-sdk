@@ -154,38 +154,98 @@ final class UserInfoViewModelTests: XCTestCase {
     XCTAssertEqual(wasUsResidence, true)
   }
   
-  func testSuccessComplete() {
+  func testSuccessSubmit() {
+    var uploading: Bool?
+    var updateCallback: TLUpdateCallback?
     var completeCallback: TLCompleteCallback?
     
-    let completeExpectation = XCTestExpectation(description: "testSuccessComplete")
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessSubmit_UpdateCallback")
+    let completeCallbackExpectation = XCTestExpectation(description: "testSuccessSubmit_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
-                                      onUpdate: nil,
-                                      onComplete: { completeCallback = $0; completeExpectation.fulfill() },
+                                      onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                      onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
                                       onError: nil)
     
-    viewModel.onUserDocumentsComplete(true, true)
-    viewModel.complete()
+    let uploadingExpectation = XCTestExpectation(description: "testSuccessSubmit_Uploading")
+    viewModel.uploading.sink {
+      uploading = $0
+      uploadingExpectation.fulfill()
+    }.store(in: &subscriptions)
     
-    wait(for: [completeExpectation], timeout: 2)
+    viewModel.successfulCompleting.sink { [weak viewModel] in
+      viewModel?.complete()
+    }.store(in: &subscriptions)
+    
+    let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
+                                                                       fields: [.init(accessibilityIdentifier: nil)])),
+                                                   title: nil,
+                                                   description: nil)
+    let section = UserInfoSectionBuilder.Section(type: .location,
+                                                 mode: .normal,
+                                                 isFilled: false,
+                                                 items: [item])
+    let usaName = CountryModel.usa.name
+    viewModel.setText(usaName,
+                      for: section,
+                      indexPath: .init(row: 0, section: 0), fieldIndex: 0)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    viewModel.upload()
+    
+    let expectations = [
+      updateCallbackExpectation,
+      completeCallbackExpectation,
+      uploadingExpectation
+    ]
+    
+    wait(for: expectations, timeout: 7)
+    XCTAssertNotNil(uploading)
+    XCTAssertEqual(updateCallback?.event.action, .kycInfoSubmitted)
     XCTAssertEqual(completeCallback?.event.action, .completed)
   }
   
-  func testFailureComplete() {
-    var completeCallback: TLCompleteCallback?
+  func testFailureSubmit() {
+    var error: Error?
+    var errorCallback: TLErrorCallback?
     
-    let completeExpectation = XCTestExpectation(description: "testSuccessComplete")
+    let errorCallbackExpectation = XCTestExpectation(description: "testFailureSubmit_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
                                       onUpdate: nil,
-                                      onComplete: { completeCallback = $0; completeExpectation.fulfill() },
-                                      onError: nil)
+                                      onComplete: nil,
+                                      onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     
-    viewModel.onUserDocumentsComplete(true, false)
-    viewModel.complete()
+    let errorExpectation = XCTestExpectation(description: "testFailureSubmit_Error")
+    viewModel.error.sink {
+      error = $0
+      errorExpectation.fulfill()
+    }.store(in: &subscriptions)
     
-    wait(for: [completeExpectation], timeout: 2)
-    XCTAssertEqual(completeCallback?.event.action, .cancelledByUser)
+    let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
+                                                                       fields: [.init(accessibilityIdentifier: nil)])),
+                                                   title: nil,
+                                                   description: nil)
+    let section = UserInfoSectionBuilder.Section(type: .location,
+                                                 mode: .normal,
+                                                 isFilled: false,
+                                                 items: [item])
+    let usaName = CountryModel.usa.name
+    viewModel.setText(usaName,
+                      for: section,
+                      indexPath: .init(row: 0, section: 0), fieldIndex: 0)
+    
+    TLManager.shared.setToken("")
+    viewModel.upload()
+    
+    let expectations = [
+      errorCallbackExpectation,
+      errorExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(error)
+    XCTAssertNotNil(errorCallback)
   }
   
 }

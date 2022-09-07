@@ -1,5 +1,5 @@
 //
-//  UserDocumentsSuccessCell.swift
+//  UserInfoSuccessCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 07.06.2022.
@@ -8,7 +8,7 @@
 import UIKit
 import Lottie
 
-final class UserDocumentsSuccessCell: UITableViewCell {
+final class UserInfoSuccessCell: UITableViewCell {
   
   private let animationView: AnimationView = {
     let view = AnimationView(animation: .successAnimation)
@@ -42,7 +42,7 @@ final class UserDocumentsSuccessCell: UITableViewCell {
 
 // MARK: - Private Methods
 
-private extension UserDocumentsSuccessCell {
+private extension UserInfoSuccessCell {
   
   func setup() {
     selectionStyle = .none

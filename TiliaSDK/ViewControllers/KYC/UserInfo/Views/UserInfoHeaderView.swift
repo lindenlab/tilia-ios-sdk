@@ -44,6 +44,15 @@ final class UserInfoHeaderView: UITableViewHeaderFooterView {
     return imageView
   }()
   
+  override var isUserInteractionEnabled: Bool {
+    get {
+      return super.isUserInteractionEnabled
+    }
+    set {
+      super.isUserInteractionEnabled = !newValue ? false : mode.isEnabled
+    }
+  }
+  
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     setup()
