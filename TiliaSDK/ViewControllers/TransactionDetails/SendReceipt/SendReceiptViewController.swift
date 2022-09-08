@@ -29,7 +29,6 @@ final class SendReceiptViewController: BaseViewController {
                     for: .normal)
     button.imageView?.tintColor = .primaryTextColor
     button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
-    button.accessibilityIdentifier = "closeButton"
     return button
   }()
   
@@ -39,6 +38,7 @@ final class SendReceiptViewController: BaseViewController {
     textField.returnKeyType = .send
     textField.delegate = self
     textField.enablesReturnKeyAutomatically = true
+    textField.accessibilityIdentifier = "emailTextField"
     let attachment = NSTextAttachment(data: nil, ofType: nil)
     attachment.image = .envelopeIcon?.withRenderingMode(.alwaysTemplate).withTintColor(.borderColor)
     let attachmentAttributedString = NSAttributedString(attachment: attachment)
@@ -62,6 +62,7 @@ final class SendReceiptViewController: BaseViewController {
     button.setTitle(L.send, for: .normal)
     button.setTitleForLoadingState(L.sending)
     button.isEnabled = false
+    button.accessibilityIdentifier = "sendButton"
     return button
   }()
   

@@ -26,6 +26,7 @@ final class TransactionDetailsFooterView: UITableViewHeaderFooterView {
     let nonPrimaryButton = NonPrimaryButton()
     nonPrimaryButton.setTitle(L.close,
                               for: .normal)
+    nonPrimaryButton.accessibilityIdentifier = "closeButton"
     
     let view = ButtonsView(primaryButton: primaryButton,
                            nonPrimaryButton: nonPrimaryButton,
