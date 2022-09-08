@@ -44,15 +44,15 @@ final class CheckoutFlowTestViewController: TestViewController {
     manager.setToken(accessTokenTextField.text ?? "")
     manager.presentCheckoutViewController(on: self,
                                           withInvoiceId: invoiceIdTextField.text ?? "",
-                                          animated: true) { [weak self] in
-      self?.label.attributedText = Self.attributedString(text: "onUpdate callback",
-                                                         message: $0.description)
-    } onComplete: { [weak self] in
-      self?.onCompleteLabel.attributedText = Self.attributedString(text: "onComplete callback",
-                                                                   message: $0.description)
-    } onError: { [weak self] in
-      self?.onErrorLabel.attributedText = Self.attributedString(text: "onError callback",
-                                                                message: $0.description)
+                                          animated: true) {
+      self.label.attributedText = Self.attributedString(text: "onUpdate callback",
+                                                        message: $0.description)
+    } onComplete: {
+      self.onCompleteLabel.attributedText = Self.attributedString(text: "onComplete callback",
+                                                                  message: $0.description)
+    } onError: {
+      self.onErrorLabel.attributedText = Self.attributedString(text: "onError callback",
+                                                               message: $0.description)
     }
   }
   
