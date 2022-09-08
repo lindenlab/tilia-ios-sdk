@@ -16,12 +16,13 @@ struct TransactionDetailsModel: Decodable {
   let accountId: String
   let referenceType: String?
   let referenceId: String?
-  let createDate: Date
+  let transactionDate: Date
   let total: String
   let subTotal: String?
   let tax: String?
-  let items: [LineItemModel]
-  let paymentMethods: [TransactionPaymentMethodModel]
+  let lineItems: [LineItemModel]?
+  let recipientItems: [RecipientItemModel]?
+  let paymentMethods: [TransactionPaymentMethodModel]?
   
   private enum RootCodingKeys: String, CodingKey {
     case id = "transaction_id"
@@ -30,12 +31,12 @@ struct TransactionDetailsModel: Decodable {
     case status = "transaction_status"
     case accountId = "account_id"
     case transaction = "transaction_data"
+    case transactionDate = "transaction_date"
   }
   
   private enum TransactionCodingKeys: String, CodingKey {
     case referenceType = "reference_type"
     case referenceId = "reference_id"
-    case createDate = "created"
     case lineItems = "line_items"
     case recipientItems = "recipient_items"
     case paymentMethods = "payment_methods"
@@ -62,25 +63,25 @@ struct TransactionDetailsModel: Decodable {
     status = try container.decode(TransactionStatus.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
     
+    let transactionDateString = try container.decode(String.self, forKey: .transactionDate)
+    if let transactionDate = DateFormatter.customDateAndTimeWithTimeZoneFormatter.date(from: transactionDateString) {
+      self.transactionDate = transactionDate
+    } else {
+      throw TLError.invalidDateFormatForString(transactionDateString)
+    }
+    
     let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
-    referenceType = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType))?.toNilIfEmpty()
-    referenceId = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId))?.toNilIfEmpty()
+    referenceType = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType)
+    referenceId = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId)
     
-    if let items = try? transactionContainer.decode([String: LineItemModel].self, forKey: .lineItems) {
-      self.items = items.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
-    } else {
-      items = try transactionContainer.decode([LineItemModel].self, forKey: .recipientItems)
-    }
+    let lineItems = try transactionContainer.decodeIfPresent([String: LineItemModel].self, forKey: .lineItems)
+    self.lineItems = lineItems?.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
     
-    let paymentMethods = try transactionContainer.decode([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
-    self.paymentMethods = paymentMethods.values.sorted { $0.type.isWallet && !$1.type.isWallet }
+    let recipientItems = try transactionContainer.decodeIfPresent([RecipientItemModel].self, forKey: .recipientItems)
+    self.recipientItems = recipientItems
     
-    let createDateString = try transactionContainer.decode(String.self, forKey: .createDate)
-    if let createDate = ISO8601DateFormatter().date(from: createDateString) {
-      self.createDate = createDate
-    } else {
-      throw TLError.invalidDateFormatForString(createDateString)
-    }
+    let paymentMethods = try transactionContainer.decodeIfPresent([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
+    self.paymentMethods = paymentMethods?.values.sorted { $0.type.isWallet && !$1.type.isWallet }
     
     if transactionContainer.contains(.summary) {
       let summaryContainer = try transactionContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .summary)

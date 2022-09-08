@@ -67,6 +67,8 @@
 		D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* Animation+Animations.swift */; };
 		D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = D163D9E8284F556000F478DA /* SuccessAnimation.json */; };
 		D167248828C8E6590033899B /* TransactionDetailsFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D167248728C8E6590033899B /* TransactionDetailsFlowUITests.swift */; };
+		D167248A28C8E80C0033899B /* XCTestCase+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D167248928C8E80C0033899B /* XCTestCase+Extensions.swift */; };
+		D167248C28C92E430033899B /* RecipientItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D167248B28C92E430033899B /* RecipientItemModel.swift */; };
 		D16ADFA028A43C6A0096006C /* SwiftProgrammingLanguage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */; };
 		D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A2282538F00088FB3D /* TitleBaseCell.swift */; };
 		D16D56A5282560DC0088FB3D /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16D56A4282560DC0088FB3D /* ButtonsView.swift */; };
@@ -279,6 +281,8 @@
 		D163D9E4284F53CC00F478DA /* Animation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+Animations.swift"; sourceTree = "<group>"; };
 		D163D9E8284F556000F478DA /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
 		D167248728C8E6590033899B /* TransactionDetailsFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsFlowUITests.swift; sourceTree = "<group>"; };
+		D167248928C8E80C0033899B /* XCTestCase+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extensions.swift"; sourceTree = "<group>"; };
+		D167248B28C92E430033899B /* RecipientItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientItemModel.swift; sourceTree = "<group>"; };
 		D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SwiftProgrammingLanguage.pdf; sourceTree = "<group>"; };
 		D16D56A2282538F00088FB3D /* TitleBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBaseCell.swift; sourceTree = "<group>"; };
 		D16D56A4282560DC0088FB3D /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
@@ -629,6 +633,7 @@
 				D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */,
 				D1EFAB3228B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift */,
 				D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */,
+				D167248B28C92E430033899B /* RecipientItemModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -940,6 +945,7 @@
 		D1D358CA2805E5F10043FD86 /* TiliaSDKUITests */ = {
 			isa = PBXGroup;
 			children = (
+				D167248928C8E80C0033899B /* XCTestCase+Extensions.swift */,
 				D190A3EC2806052200A25DBD /* TosFlowUITests.swift */,
 				D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */,
 				D1408F59288EB26600CABA3E /* KycFlowUITests.swift */,
@@ -1201,6 +1207,7 @@
 				D17A451728B39B2300B0C9AB /* TransactionDetailsCell.swift in Sources */,
 				D17EFFA52846462500F4B6DD /* UICollectionView+Helpers.swift in Sources */,
 				D18D730228415E8200660715 /* BundleToken.swift in Sources */,
+				D167248C28C92E430033899B /* RecipientItemModel.swift in Sources */,
 				D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */,
 				D192AD8A27EA2D2B00E3DC2A /* BalanceInfoModel.swift in Sources */,
 				D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */,
@@ -1335,6 +1342,7 @@
 				D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */,
 				D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */,
 				D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */,
+				D167248A28C8E80C0033899B /* XCTestCase+Extensions.swift in Sources */,
 				D167248828C8E6590033899B /* TransactionDetailsFlowUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

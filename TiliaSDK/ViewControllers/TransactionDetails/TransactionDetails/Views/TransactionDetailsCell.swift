@@ -26,6 +26,7 @@ final class TransactionDetailsCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 14)
+    label.numberOfLines = 0
     return label
   }()
   
@@ -41,7 +42,7 @@ final class TransactionDetailsCell: UITableViewCell {
     valueStackView.spacing = 4
     
     let stackView = UIStackView(arrangedSubviews: [titleLabel, valueStackView])
-    stackView.spacing = 4
+    stackView.spacing = 10
     stackView.alignment = .center
     stackView.distribution = .equalCentering
     stackView.translatesAutoresizingMaskIntoConstraints = false

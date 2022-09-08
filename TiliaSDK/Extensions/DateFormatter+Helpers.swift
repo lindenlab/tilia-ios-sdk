@@ -28,7 +28,7 @@ extension DateFormatter {
     return formatter
   }
   
-  static var customFullDateFormatter: DateFormatter {
+  static var customDateAndTimeFormatter: DateFormatter {
     let formatter = DateFormatter()
     formatter.dateFormat = "YY, MMM d, HH:mm:ss"
     return formatter
@@ -37,6 +37,12 @@ extension DateFormatter {
   static var customDateFormatter: DateFormatter {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
+    return formatter
+  }
+  
+  static var customDateAndTimeWithTimeZoneFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS Z zzz"
     return formatter
   }
   

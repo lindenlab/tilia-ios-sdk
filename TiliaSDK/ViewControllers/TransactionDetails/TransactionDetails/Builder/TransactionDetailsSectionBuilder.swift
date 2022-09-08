@@ -135,10 +135,11 @@ struct TransactionDetailsSectionBuilder {
   }
   
   func sections(with model: TransactionDetailsModel) -> [Section] {
-    var sections = [headerSection(for: model)]
-    sections.append(contentsOf: paymentSections(for: model))
-    sections.append(invoiceDetailsSection(for: model))
-    return sections
+    return [
+      headerSection(for: model),
+      paymentSection(for: model),
+      invoiceDetailsSection(for: model)
+    ]
   }
   
 }
@@ -148,11 +149,20 @@ struct TransactionDetailsSectionBuilder {
 private extension TransactionDetailsSectionBuilder {
   
   func headerSection(for model: TransactionDetailsModel) -> Section {
-    var items: [Section.Item] = model.items.map { .init(title: $0.description,
-                                                        value: $0.displayAmount,
-                                                        image: nil,
-                                                        leftInset: 16,
-                                                        isDividerHidden: false) }
+    var items: [Section.Item] = []
+    if let lineItems = model.lineItems {
+      items = lineItems.map { .init(title: $0.description,
+                                    value: $0.displayAmount,
+                                    image: nil,
+                                    leftInset: 16,
+                                    isDividerHidden: false) }
+    } else if let recipientItems = model.recipientItems {
+      items = recipientItems.map { .init(title: $0.description,
+                                         value: $0.displayAmount,
+                                         image: nil,
+                                         leftInset: 16,
+                                         isDividerHidden: false) }
+    }
     
     model.subTotal.map {
       items.append(.init(title: L.subtotal,
@@ -171,7 +181,7 @@ private extension TransactionDetailsSectionBuilder {
     
     let type = Section.SectionType.header(.init(image: model.role.image,
                                                 title: model.role.attributedDescription(amount: model.total),
-                                                subTitle: model.createDate.formattedDescription(),
+                                                subTitle: model.transactionDate.formattedDescription(),
                                                 status: nil,
                                                 footer: .init(title: L.total, value: model.total)))
     return .init(type: type, items: items)
@@ -213,12 +223,12 @@ private extension TransactionDetailsSectionBuilder {
     
     items.append(contentsOf: [
       .init(title: L.transactionDate,
-                         value: DateFormatter.longDateFormatter.string(from: model.createDate),
-                         image: nil,
-                         leftInset: 32,
-                         isDividerHidden: false),
+            value: DateFormatter.longDateFormatter.string(from: model.transactionDate),
+            image: nil,
+            leftInset: 32,
+            isDividerHidden: false),
       .init(title: L.transactionTime,
-            value: DateFormatter.shortTimeFormatter.string(from: model.createDate),
+            value: DateFormatter.shortTimeFormatter.string(from: model.transactionDate),
             image: nil,
             leftInset: 32,
             isDividerHidden: true)
@@ -231,16 +241,26 @@ private extension TransactionDetailsSectionBuilder {
     return .init(type: type, items: items)
   }
   
-  func paymentSections(for model: TransactionDetailsModel) -> [Section] {
-    // TODO: - Here is must be different number of sections
-    let items: [Section.Item] = model.paymentMethods.enumerated().map { .init(title: $0.element.type.description,
-                                                                              value: $0.element.displayAmount,
-                                                                              image: nil,
-                                                                              leftInset: 32,
-                                                                              isDividerHidden: $0.offset == model.paymentMethods.count - 1) }
+  func paymentSection(for model: TransactionDetailsModel) -> Section {
+    let items: [Section.Item]
+    if let paymentMethods = model.paymentMethods {
+      items = paymentMethods.enumerated().map { .init(title: $0.element.type.description,
+                                                      value: $0.element.displayAmount,
+                                                      image: nil,
+                                                      leftInset: 32,
+                                                      isDividerHidden: $0.offset == paymentMethods.count - 1) }
+    } else if let recipientItems = model.recipientItems {
+      items = recipientItems.enumerated().map { .init(title: $0.element.paymentMethodDescription,
+                                                      value: $0.element.paymentMethodDisplayAmount,
+                                                      image: nil,
+                                                      leftInset: 32,
+                                                      isDividerHidden: $0.offset == recipientItems.count - 1) }
+    } else {
+      items = [] // TODO: - Fix me
+    }
     let type = Section.SectionType.content(.init(title: model.role.description,
                                                  footer: nil))
-    return [.init(type: type, items: items)]
+    return .init(type: type, items: items)
   }
   
 }

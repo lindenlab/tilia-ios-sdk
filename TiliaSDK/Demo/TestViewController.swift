@@ -74,7 +74,7 @@ class TestViewController: UIViewController {
   static func attributedString(text: String, message: String) -> NSAttributedString? {
     guard !text.isEmpty && !message.isEmpty else { return nil }
     let date = Date()
-    let dateStr = date.string(formatter: .customFullDateFormatter)
+    let dateStr = date.string(formatter: .customDateAndTimeFormatter)
     let str = "\(text):\n\(dateStr)\n\(message)"
     return str.attributedString(font: .systemFont(ofSize: 16),
                                 color: .black,
