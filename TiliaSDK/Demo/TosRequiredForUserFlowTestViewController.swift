@@ -33,7 +33,8 @@ final class TosRequiredForUserFlowTestViewController: TestViewController {
   
   override func buttonTapped() {
     super.buttonTapped()
-    manager.getTosRequiredForUser { result in
+    manager.getTosRequiredForUser { [weak self] result in
+      guard let self = self else { return }
       switch result {
       case .success(let isTosSigned):
         self.label.attributedText = Self.attributedString(text: "getTosRequiredForUser result",

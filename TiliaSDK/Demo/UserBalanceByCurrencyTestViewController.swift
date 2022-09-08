@@ -24,12 +24,12 @@ final class UserBalanceByCurrencyTestViewController: TestViewController {
   
   override func buttonTapped() {
     super.buttonTapped()
-    manager.getUserBalanceByCurrencyCode(currencyTextField.text ?? "") { result in
+    manager.getUserBalanceByCurrencyCode(currencyTextField.text ?? "") { [weak self] result in
       switch result {
       case .success(let balance):
-        self.label.text = "User balance is: \(balance)"
+        self?.label.text = "User balance is: \(balance)"
       case .failure(let error):
-        self.label.text = error.localizedDescription
+        self?.label.text = error.localizedDescription
       }
     }
   }
