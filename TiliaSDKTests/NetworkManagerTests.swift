@@ -210,7 +210,7 @@ final class NetworkManagerTests: XCTestCase {
       }
     }
     wait(for: [expectation], timeout: 2)
-    XCTAssertEqual(model?.id, "495e1cee-097d-4f18-a8bc-74407944c45b")
+    XCTAssertEqual(model?.id, "74349cc3-8cea-41b8-a796-3b695035dd40")
   }
   
   func testSendTransactionReceiptSuccess() {
