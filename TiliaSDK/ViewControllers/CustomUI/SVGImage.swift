@@ -33,22 +33,14 @@ private extension SVGImage {
       if let fillColor = cgColor(from: path.svgAttributes["fill"]), var components = fillColor.components {
         components.removeLast()
         if !isColorWhite(components: components) {
-          let newColor = UIColor.primaryColor.cgColor
-          attributes["fill"] = newColor
-          if let layer = layer.sublayers?[index] as? CAShapeLayer {
-            layer.fillColor = newColor
-          }
+          attributes["fill"] = UIColor.primaryColor.cgColor
         }
       }
       
       if let strokeColor = cgColor(from: path.svgAttributes["stroke"]), var components = strokeColor.components {
         components.removeLast()
         if !isColorWhite(components: components) {
-          let newColor = UIColor.primaryColor.cgColor
-          attributes["stroke"] = newColor
-          if let layer = layer.sublayers?[index] as? CAShapeLayer {
-            layer.strokeColor = newColor
-          }
+          attributes["stroke"] = UIColor.primaryColor.cgColor
         }
       }
       if !attributes.isEmpty {
