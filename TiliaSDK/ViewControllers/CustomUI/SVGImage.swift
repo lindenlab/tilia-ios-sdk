@@ -36,7 +36,6 @@ private extension SVGImage {
           attributes["fill"] = UIColor.primaryColor.cgColor
         }
       }
-      
       if let strokeColor = cgColor(from: path.svgAttributes["stroke"]), var components = strokeColor.components {
         components.removeLast()
         if !isColorWhite(components: components) {
