@@ -9,39 +9,40 @@ import UIKit
 
 struct CheckoutSectionBuilder {
   
-  struct Summary {
-    
-    struct Item {
-      let description: String
-      let product: String
-      let amount: String
-    }
-    
-    let referenceType: String
-    let referenceId: String
-    let amount: String
-    let items: [Item]
-    var isLoading: Bool
-  }
-  
-  struct Payment {
-    
-    struct Item {
-      let title: String
-      let subTitle: String?
-      var isSelected: Bool
-      let icon: UIImage?
-    }
-    
-    var items: [Item]
-    var isPayButtonEnabled: Bool
-    let payButtonTitle: String
-    let isCreditCardButtonHidden: Bool
-    let canSelect: Bool
-    var isEmpty: Bool { return items.isEmpty }
-  }
-  
   enum Section {
+    
+    struct Summary {
+      
+      struct Item {
+        let description: String
+        let product: String
+        let amount: String
+      }
+      
+      let referenceType: String
+      let referenceId: String
+      let amount: String
+      let items: [Item]
+      var isLoading: Bool
+    }
+    
+    struct Payment {
+      
+      struct Item {
+        let title: String
+        let subTitle: String?
+        var isSelected: Bool
+        let icon: UIImage?
+      }
+      
+      var items: [Item]
+      var isPayButtonEnabled: Bool
+      let payButtonTitle: String
+      let isCreditCardButtonHidden: Bool
+      let canSelect: Bool
+      var isEmpty: Bool { return items.isEmpty }
+    }
+    
     case summary(Summary)
     case payment(Payment)
     case successfulPayment
@@ -147,43 +148,36 @@ struct CheckoutSectionBuilder {
   }
   
   func sections(with model: CheckoutContent) -> [Section] {
-    let invoiceDetails = model.invoiceDetails
+    let invoiceInfo = model.invoiceInfo
     let walletBalance = model.walletBalance
     let paymentMethods = model.paymentMethods
-    let items: [Summary.Item] = invoiceDetails.items.map { Summary.Item(description: $0.description,
-                                                                        product: $0.productSku,
-                                                                        amount: $0.displayAmount) }
-    let summary = Summary(referenceType: invoiceDetails.referenceType,
-                          referenceId: invoiceDetails.referenceId,
-                          amount: invoiceDetails.displayAmount,
-                          items: items,
-                          isLoading: false)
+    let summary = summaryModel(for: invoiceInfo)
     
-    let payment: Payment
-    if invoiceDetails.isVirtual {
-      let items: [Payment.Item] = [
-        Payment.Item(title: L.walletBalance,
-                     subTitle: walletBalance?.display,
-                     isSelected: true,
-                     icon: .walletIcon)
+    let payment: Section.Payment
+    if model.isVirtual {
+      let items: [Section.Payment.Item] = [
+        .init(title: L.walletBalance,
+              subTitle: walletBalance?.display,
+              isSelected: true,
+              icon: .walletIcon)
       ]
-      payment = Payment(items: items,
-                        isPayButtonEnabled: true,
-                        payButtonTitle: L.pay,
-                        isCreditCardButtonHidden: true,
-                        canSelect: false)
+      payment = .init(items: items,
+                      isPayButtonEnabled: true,
+                      payButtonTitle: L.pay,
+                      isCreditCardButtonHidden: true,
+                      canSelect: false)
     } else {
-      let items: [Payment.Item] = paymentMethods.enumerated().map { index, value in
-        return Payment.Item(title: value.type.isWallet ? L.walletBalance : value.display,
-                            subTitle: value.type.isWallet ? walletBalance?.display : nil,
-                            isSelected: false,
-                            icon: value.type.icon)
+      let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
+        return .init(title: value.type.isWallet ? L.walletBalance : value.display,
+                     subTitle: value.type.isWallet ? walletBalance?.display : nil,
+                     isSelected: false,
+                     icon: value.type.icon)
       }
-      payment = Payment(items: items,
-                        isPayButtonEnabled: false,
-                        payButtonTitle: L.usePaymentMethods,
-                        isCreditCardButtonHidden: false,
-                        canSelect: true)
+      payment = .init(items: items,
+                      isPayButtonEnabled: false,
+                      payButtonTitle: L.usePaymentMethods,
+                      isCreditCardButtonHidden: false,
+                      canSelect: true)
     }
     
     return [.summary(summary), .payment(payment)]
@@ -203,6 +197,17 @@ struct CheckoutSectionBuilder {
       let footerView = tableView.footerView(forSection: sectionIndex) as? CheckoutPayloadSummaryFooterView
       footerView?.configure(isLoading: isLoading)
       return .summary(model)
+    default:
+      return section
+    }
+  }
+  
+  func updatedSummarySection(for section: Section,
+                             model: InvoiceInfoModel) -> Section {
+    switch section {
+    case .summary:
+      let summary = summaryModel(for: model)
+      return .summary(summary)
     default:
       return section
     }
@@ -236,6 +241,23 @@ struct CheckoutSectionBuilder {
     default:
       return section
     }
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension CheckoutSectionBuilder {
+  
+  func summaryModel(for model: InvoiceInfoModel) -> Section.Summary {
+    let items: [Section.Summary.Item] = model.items.map { .init(description: $0.description,
+                                                                product: $0.productSku,
+                                                                amount: $0.displayAmount) }
+    return .init(referenceType: model.referenceType,
+                 referenceId: model.referenceId,
+                 amount: model.displayAmount,
+                 items: items,
+                 isLoading: false)
   }
   
 }

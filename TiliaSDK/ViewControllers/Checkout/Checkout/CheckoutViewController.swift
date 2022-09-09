@@ -197,7 +197,9 @@ private extension CheckoutViewController {
     viewModel.successfulPayment.sink { [weak self] in
       guard let self = self, $0 else { return }
       self.sections[1] = self.builder.successfulPaymentSection()
-      self.tableView.reloadData()
+      UIView.performWithoutAnimation {
+        self.tableView.reloadSections([1], with: .none)
+      }
     }.store(in: &subscriptions)
     
     viewModel.dismiss.sink { [weak self] _ in
@@ -236,6 +238,15 @@ private extension CheckoutViewController {
                                                             in: self.tableView,
                                                             at: indexPath,
                                                             isSelected: true)
+    }.store(in: &subscriptions)
+    
+    viewModel.updateSummary.sink { [weak self] in
+      guard let self = self else { return }
+      self.sections[0] = self.builder.updatedSummarySection(for: self.sections[0],
+                                                            model: $0)
+      UIView.performWithoutAnimation {
+        self.tableView.reloadSections([0], with: .none)
+      }
     }.store(in: &subscriptions)
   }
   
