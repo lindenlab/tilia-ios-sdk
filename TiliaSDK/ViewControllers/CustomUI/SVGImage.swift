@@ -47,7 +47,7 @@ private extension SVGImage {
           let newColor = UIColor.primaryColor.cgColor
           attributes["stroke"] = newColor
           if let layer = layer.sublayers?[index] as? CAShapeLayer {
-            layer.fillColor = newColor
+            layer.strokeColor = newColor
           }
         }
       }
