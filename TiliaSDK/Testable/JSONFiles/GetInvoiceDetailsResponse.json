@@ -37,7 +37,7 @@
         ],
         "line_items_total": 6,
         "line_items_currency": "TST",
-        "display_amount": " 6",
+        "display_amount": "TST 6",
         "reference_type": "My test order",
         "reference_id": "123456789",
         "description": "",
