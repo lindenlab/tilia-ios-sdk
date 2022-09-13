@@ -30,7 +30,7 @@ struct TransactionDetailsModel: Decodable {
     case role = "transaction_role"
     case status = "transaction_status"
     case accountId = "account_id"
-    case transaction = "transaction_data"
+    case data = "transaction_data"
     case transactionDate = "transaction_date"
   }
   
@@ -41,11 +41,11 @@ struct TransactionDetailsModel: Decodable {
     case recipientItems = "recipient_items"
     case paymentMethods = "payment_methods"
     case summary
-    case totalDisplay = "total_received_less_fees_display"
-    case subTotalDisplay = "total_received_display"
-    case subTotalAmount = "total_received"
-    case totalFeesDisplay = "total_fees_paid_display"
-    case totalFeesAmount = "total_fees_paid"
+    case totalReceivedLessFeesDisplay = "total_received_less_fees_display"
+    case totalReceivedDisplay = "total_received_display"
+    case totalReceivedAmount = "total_received"
+    case totalFeesPaidDisplay = "total_fees_paid_display"
+    case totalFeesPaidAmount = "total_fees_paid"
   }
   
   private enum SummaryCodingKeys: String, CodingKey {
@@ -70,7 +70,7 @@ struct TransactionDetailsModel: Decodable {
       throw TLError.invalidDateFormatForString(transactionDateString)
     }
     
-    let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
+    let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .data)
     referenceType = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType)
     referenceId = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId)
     
@@ -93,9 +93,9 @@ struct TransactionDetailsModel: Decodable {
       let taxContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .tax)
       tax = try Self.displayAmount(for: taxContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
     } else {
-      total = try transactionContainer.decode(String.self, forKey: .totalDisplay)
-      subTotal = try Self.displayAmount(for: transactionContainer, doubleKey: .subTotalAmount, stringKey: .subTotalDisplay)
-      tax = try Self.displayAmount(for: transactionContainer, doubleKey: .totalFeesAmount, stringKey: .totalFeesDisplay)
+      total = try transactionContainer.decode(String.self, forKey: .totalReceivedLessFeesDisplay)
+      subTotal = try Self.displayAmount(for: transactionContainer, doubleKey: .totalReceivedAmount, stringKey: .totalReceivedDisplay)
+      tax = try Self.displayAmount(for: transactionContainer, doubleKey: .totalFeesPaidAmount, stringKey: .totalFeesPaidDisplay)
     }
   }
   
