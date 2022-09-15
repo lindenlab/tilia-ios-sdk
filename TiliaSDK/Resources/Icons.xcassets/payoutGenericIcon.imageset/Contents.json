@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "variant=payout-paypal.svg",
+      "filename" : "variant=payout-generic.svg",
       "idiom" : "universal"
     }
   ],
