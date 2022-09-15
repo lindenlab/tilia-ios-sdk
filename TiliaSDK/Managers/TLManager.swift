@@ -23,6 +23,7 @@ public final class TLManager {
   private let _networkManager = NetworkManager(serverClient: ServerClient())
   private let _colorsConfiguration = ColorsConfiguration()
   private let synchronizationQueue = DispatchQueue(label: "io.tilia.ios.sdk.TLManagerSynchronizationQueue", attributes: .concurrent)
+  private var isTokenEmpty: Bool { return networkManager.serverConfiguration.token.isEmpty }
   
   private init() { }
   
@@ -133,7 +134,7 @@ public extension TLManager {
                                           animated: Bool,
                                           onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                           onError: ((TLErrorCallback) -> Void)? = nil) {
-    guard let token = networkManager.serverConfiguration.token, !token.isEmpty else {
+    guard !isTokenEmpty else {
       let errorCallback = TLErrorCallback(event: TLEvent(flow: .tos, action: .missingRequiredData),
                                           error: L.errorTosTitle,
                                           message: L.missedRequiredData)
@@ -161,7 +162,7 @@ public extension TLManager {
                                      onUpdate: ((TLUpdateCallback) -> Void)? = nil,
                                      onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                      onError: ((TLErrorCallback) -> Void)? = nil) {
-    guard let token = networkManager.serverConfiguration.token, !token.isEmpty, !invoiceId.isEmpty else {
+    guard !isTokenEmpty, !invoiceId.isEmpty else {
       let errorCallback = TLErrorCallback(event: TLEvent(flow: .checkout, action: .missingRequiredData),
                                           error: L.errorPaymentTitle,
                                           message: L.missedRequiredData)
@@ -189,7 +190,7 @@ public extension TLManager {
                                 onUpdate: ((TLUpdateCallback) -> Void)? = nil,
                                 onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                 onError: ((TLErrorCallback) -> Void)? = nil) {
-    guard let token = networkManager.serverConfiguration.token, !token.isEmpty else {
+    guard !isTokenEmpty else {
       let errorCallback = TLErrorCallback(event: TLEvent(flow: .kyc, action: .missingRequiredData),
                                           error: L.errorKycTitle,
                                           message: L.missedRequiredData)
@@ -208,7 +209,7 @@ public extension TLManager {
   ///   - viewController: view controller that is used for presenting Transaction Details flow
   ///   - invoiceId: invoice id
   ///   - animated: animated flag
-  ///   - onUpdate: completion that returns Transaction Details receipt is sent
+  ///   - onUpdate: completion that returns receipt about transaction is sent
   ///   - onComplete: completion that returns Transaction Details flow state
   ///   - onError: completion that returns Transaction Details flow error
   func presentTransactionDetailsViewController(on viewController: UIViewController,
@@ -217,7 +218,7 @@ public extension TLManager {
                                                onUpdate: ((TLUpdateCallback) -> Void)? = nil,
                                                onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                                onError: ((TLErrorCallback) -> Void)? = nil) {
-    guard let token = networkManager.serverConfiguration.token, !token.isEmpty, !invoiceId.isEmpty else {
+    guard !isTokenEmpty, !invoiceId.isEmpty else {
       let errorCallback = TLErrorCallback(event: TLEvent(flow: .transactionDetails, action: .missingRequiredData),
                                           error: L.errorTransactionDetailsTitle,
                                           message: L.missedRequiredData)
@@ -226,7 +227,35 @@ public extension TLManager {
     }
     
     let transactionDetailsViewController = TransactionDetailsViewController(invoiceId: invoiceId,
+                                                                            needToCheckTos: true,
                                                                             manager: networkManager,
+                                                                            onUpdate: onUpdate,
+                                                                            onComplete: onComplete,
+                                                                            onError: onError)
+    viewController.present(transactionDetailsViewController, animated: animated)
+  }
+  
+  /// Show Transaction History flow, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting Transaction History flow
+  ///   - animated: animated flag
+  ///   - onUpdate: completion that returns receipt about transaction is sent
+  ///   - onComplete: completion that returns Transaction History flow state
+  ///   - onError: completion that returns Transaction History flow error
+  func presentTransactionHistoryViewController(on viewController: UIViewController,
+                                               animated: Bool,
+                                               onUpdate: ((TLUpdateCallback) -> Void)? = nil,
+                                               onComplete: ((TLCompleteCallback) -> Void)? = nil,
+                                               onError: ((TLErrorCallback) -> Void)? = nil) {
+    guard !isTokenEmpty else {
+      let errorCallback = TLErrorCallback(event: TLEvent(flow: .transactionHistory, action: .missingRequiredData),
+                                          error: L.errorTransactionHistoryTitle,
+                                          message: L.missedRequiredData)
+      onError?(errorCallback)
+      return
+    }
+    
+    let transactionDetailsViewController = TransactionHistoryViewController(manager: networkManager,
                                                                             onUpdate: onUpdate,
                                                                             onComplete: onComplete,
                                                                             onError: onError)

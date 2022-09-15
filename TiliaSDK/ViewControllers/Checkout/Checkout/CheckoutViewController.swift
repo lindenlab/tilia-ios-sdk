@@ -151,7 +151,7 @@ private extension CheckoutViewController {
                             message: L.errorPaymentMessage)
     }.store(in: &subscriptions)
     
-    viewModel.needToAcceptTos.sink { [weak self] _ in
+    viewModel.needToAcceptTos.sink { [weak self] in
       self?.router.routeToTosView()
     }.store(in: &subscriptions)
     

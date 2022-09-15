@@ -87,6 +87,13 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
+  func getTransactionHistory(completion: @escaping CompletionResultHandler<EmptyModel>) {
+    // TODO: - Fix me
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+      completion(.success(.init()))
+    }
+  }
+  
   func getAddCreditCardRedirectUrl(completion: @escaping CompletionResultHandler<RedirectUrlModel>) {
     let router = AuthRouter.getAddCreditCardRedirectUrl
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)

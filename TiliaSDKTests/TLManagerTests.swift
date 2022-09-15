@@ -157,4 +157,14 @@ final class TLManagerTests: XCTestCase {
     XCTAssertNotNil(errorCallback)
   }
   
+  func testMissedRequiredDataForTransactionHistoryFlow() {
+    var errorCallback: TLErrorCallback?
+    let expectation = XCTestExpectation(description: "testMissedRequiredDataForTransactionHistoryFlow")
+    TLManager.shared.presentTransactionHistoryViewController(on: UIViewController(),
+                                                             animated: true,
+                                                             onError: { errorCallback = $0; expectation.fulfill() })
+    wait(for: [expectation], timeout: 1)
+    XCTAssertNotNil(errorCallback)
+  }
+  
 }

@@ -25,6 +25,9 @@ public struct TLEvent {
     /// Transaction Details flow
     case transactionDetails
     
+    /// Transaction History flow
+    case transactionHistory
+    
   }
   
   /// Tilia action

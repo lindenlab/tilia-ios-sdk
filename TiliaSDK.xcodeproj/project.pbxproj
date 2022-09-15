@@ -45,6 +45,11 @@
 		D135DCB627E7703D0009D888 /* TLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB527E7703D0009D888 /* TLManager.swift */; };
 		D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB727E771100009D888 /* ServerConfiguration.swift */; };
 		D135DCBA27E777030009D888 /* ServerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D135DCB927E777030009D888 /* ServerClient.swift */; };
+		D13759C628D3556A0046234B /* TransactionHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13759C528D3556A0046234B /* TransactionHistoryViewModel.swift */; };
+		D13759C828D355730046234B /* TransactionHistoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13759C728D355730046234B /* TransactionHistoryRouter.swift */; };
+		D13759CA28D3557E0046234B /* TransactionHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13759C928D3557E0046234B /* TransactionHistoryViewController.swift */; };
+		D13759CE28D364100046234B /* TransactionHistorySectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13759CD28D364100046234B /* TransactionHistorySectionBuilder.swift */; };
+		D13759D028D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13759CF28D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift */; };
 		D13A872628C21DE000444EDB /* SendTransactionReceiptResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */; };
 		D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */; };
 		D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */; };
@@ -259,6 +264,11 @@
 		D135DCB527E7703D0009D888 /* TLManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLManager.swift; sourceTree = "<group>"; };
 		D135DCB727E771100009D888 /* ServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfiguration.swift; sourceTree = "<group>"; };
 		D135DCB927E777030009D888 /* ServerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClient.swift; sourceTree = "<group>"; };
+		D13759C528D3556A0046234B /* TransactionHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewModel.swift; sourceTree = "<group>"; };
+		D13759C728D355730046234B /* TransactionHistoryRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryRouter.swift; sourceTree = "<group>"; };
+		D13759C928D3557E0046234B /* TransactionHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewController.swift; sourceTree = "<group>"; };
+		D13759CD28D364100046234B /* TransactionHistorySectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySectionBuilder.swift; sourceTree = "<group>"; };
+		D13759CF28D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryFlowTestViewController.swift; sourceTree = "<group>"; };
 		D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendTransactionReceiptResponse.json; sourceTree = "<group>"; };
 		D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptViewModelTests.swift; sourceTree = "<group>"; };
 		D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionBuilder.swift; sourceTree = "<group>"; };
@@ -495,6 +505,7 @@
 				D1CCE8C527F4872F00FD0E25 /* Checkout */,
 				D19A0DA2281FED3E00483DDC /* KYC */,
 				D16E2A8E28AF919600287C55 /* TransactionDetails */,
+				D13759C428D355160046234B /* TransactionHistory */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -659,6 +670,33 @@
 				D1B872D02804A22F00DD1F7B /* NetworkManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		D13759C428D355160046234B /* TransactionHistory */ = {
+			isa = PBXGroup;
+			children = (
+				D13759CC28D363EF0046234B /* Builder */,
+				D13759CB28D3558F0046234B /* Views */,
+				D13759C528D3556A0046234B /* TransactionHistoryViewModel.swift */,
+				D13759C728D355730046234B /* TransactionHistoryRouter.swift */,
+				D13759C928D3557E0046234B /* TransactionHistoryViewController.swift */,
+			);
+			path = TransactionHistory;
+			sourceTree = "<group>";
+		};
+		D13759CB28D3558F0046234B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D13759CC28D363EF0046234B /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				D13759CD28D364100046234B /* TransactionHistorySectionBuilder.swift */,
+			);
+			path = Builder;
 			sourceTree = "<group>";
 		};
 		D13BDD6F2822795100A31F2D /* Builder */ = {
@@ -938,6 +976,7 @@
 				D1BA29E527FD9D5800F046E8 /* SetColorsTestViewController.swift */,
 				D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */,
 				D16E2A8C28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift */,
+				D13759CF28D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -1173,15 +1212,19 @@
 				D1B871FC28339BE600C44441 /* UserDocumentsViewModel.swift in Sources */,
 				D1C8A83E27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift in Sources */,
 				D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */,
+				D13759C828D355730046234B /* TransactionHistoryRouter.swift in Sources */,
 				D16EDD4C2808481D00A1E413 /* TLUpdateCallback.swift in Sources */,
 				D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */,
 				D135DCB827E771100009D888 /* ServerConfiguration.swift in Sources */,
 				D1C8A84227F5E42500BF2910 /* LocalizationConstants.swift in Sources */,
 				D18855E3282910A200BAC86F /* TextFieldsCell.swift in Sources */,
+				D13759CA28D3557E0046234B /* TransactionHistoryViewController.swift in Sources */,
 				D16E2A9528AFA15D00287C55 /* SendReceiptRouter.swift in Sources */,
+				D13759D028D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift in Sources */,
 				D179123D282C3BD00053DB10 /* PossiblyEmpty.swift in Sources */,
 				D18855E1282700D400BAC86F /* UserInfoModel.swift in Sources */,
 				D1CCE8D627F4C5CF00FD0E25 /* TosRequiredForUserTestViewController.swift in Sources */,
+				D13759CE28D364100046234B /* TransactionHistorySectionBuilder.swift in Sources */,
 				D1C8A84427F5E49600BF2910 /* String+Helpers.swift in Sources */,
 				D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */,
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
@@ -1265,6 +1308,7 @@
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D17EFFA72846466900F4B6DD /* UICollectionViewCell+Helpers.swift in Sources */,
 				D15BA9EF282A9B6500511785 /* TwoTextFieldsCell.swift in Sources */,
+				D13759C628D3556A0046234B /* TransactionHistoryViewModel.swift in Sources */,
 				D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,
 				D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */,

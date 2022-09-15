@@ -25,6 +25,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     let completeCallbackExpectation = XCTestExpectation(description: "testSuccessGetTransactionDetails_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = TransactionDetailsViewModel(invoiceId: "",
+                                                needToCheckTos: true,
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
@@ -61,6 +62,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = TransactionDetailsViewModel(invoiceId: "",
+                                                needToCheckTos: true,
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: nil,
@@ -68,7 +70,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let errorExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_Error")
     viewModel.error.sink {
-      error = $0.error
+      error = $0
       errorExpectation.fulfill()
     }.store(in: &subscriptions)
     
@@ -87,6 +89,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = TransactionDetailsViewModel(invoiceId: "",
+                                                needToCheckTos: true,
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: nil,
@@ -103,7 +106,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let errorExpectation = XCTestExpectation(description: "testErrorAcceptTos_Error")
     viewModel.error.sink {
-      error = $0.error
+      error = $0
       errorExpectation.fulfill()
     }.store(in: &subscriptions)
     

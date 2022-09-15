@@ -23,7 +23,8 @@ final class DemoViewController: UITableViewController {
                                               "TOS flow",
                                               "Checkout flow",
                                               "KYC flow",
-                                              "Transaction Details flow"])
+                                              "Transaction Details flow",
+                                              "Transaction History flow"])
   ]
   
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -85,6 +86,8 @@ final class DemoViewController: UITableViewController {
       viewController = KycFlowTestViewController()
     case (1, 5):
       viewController = TransactionDetailsFlowTestViewController()
+    case (1, 6):
+      viewController = TransactionHistoryFlowTestViewController()
     default:
       break
     }

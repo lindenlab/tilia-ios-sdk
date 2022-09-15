@@ -154,6 +154,8 @@ enum L {
   static let creditCard = "creditCard".localized
   static let paypal = "paypal".localized
   static let receiptSent = "receiptSent".localized
+  static let errorTransactionHistoryTitle = "errorTransactionHistoryTitle".localized
+  static let errorTransactionHistoryMessage = "errorTransactionHistoryMessage".localized
   
   static func kycInfoSubmitted(with argument: CVarArg) -> String {
     return "kycInfoSubmitted".localized(with: argument)

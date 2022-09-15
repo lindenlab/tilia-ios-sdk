@@ -39,7 +39,7 @@ final class TransactionDetailsRouter: TransactionDetailsRoutingProtocol {
                                                               manager: dataStore.manager,
                                                               onUpdate: dataStore.onUpdate,
                                                               onError: dataStore.onError)
-    viewController?.present(sendReceiptViewController , animated: true)
+    viewController?.present(sendReceiptViewController, animated: true)
   }
   
 }

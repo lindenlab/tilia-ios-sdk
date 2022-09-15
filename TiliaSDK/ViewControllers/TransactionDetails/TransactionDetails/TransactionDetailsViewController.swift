@@ -21,11 +21,13 @@ final class TransactionDetailsViewController: BaseTableViewController {
   private let builder = TransactionDetailsSectionBuilder()
   
   init(invoiceId: String,
+       needToCheckTos: Bool,
        manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = TransactionDetailsViewModel(invoiceId: invoiceId,
+                                                needToCheckTos: needToCheckTos,
                                                 manager: manager,
                                                 onUpdate: onUpdate,
                                                 onComplete: onComplete,
@@ -115,27 +117,25 @@ private extension TransactionDetailsViewController {
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
     
-    viewModel.error.sink { [weak self] in
+    viewModel.error.sink { [weak self] _ in
       guard let self = self else { return }
-      if $0.value {
-        self.showCancelButton()
-      }
+      self.showCancelButton()
       self.router.showToast(title: L.errorTransactionDetailsTitle,
                             message: L.errorTransactionDetailsMessage)
     }.store(in: &subscriptions)
     
-    viewModel.needToAcceptTos.sink { [weak self] _ in
+    viewModel.needToAcceptTos.sink { [weak self] in
       self?.router.routeToTosView()
+    }.store(in: &subscriptions)
+    
+    viewModel.dismiss.sink { [weak self] in
+      self?.dismiss(isFromCloseAction: false)
     }.store(in: &subscriptions)
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
       self.sections = self.builder.sections(with: $0)
       self.tableView.reloadData()
-    }.store(in: &subscriptions)
-    
-    viewModel.dismiss.sink { [weak self] _ in
-      self?.dismiss(isFromCloseAction: false)
     }.store(in: &subscriptions)
   }
   
