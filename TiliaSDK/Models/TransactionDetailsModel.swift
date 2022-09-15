@@ -21,7 +21,7 @@ struct TransactionDetailsModel: Decodable {
   let subTotal: String?
   let tax: String?
   let lineItems: [LineItemModel]?
-  let recipientItems: [RecipientItemModel]?
+  let recipientItems: [TransactionRecipientItemModel]?
   let paymentMethods: [TransactionPaymentMethodModel]?
   
   private enum RootCodingKeys: String, CodingKey {
@@ -77,7 +77,7 @@ struct TransactionDetailsModel: Decodable {
     let lineItems = try transactionContainer.decodeIfPresent([String: LineItemModel].self, forKey: .lineItems)
     self.lineItems = lineItems?.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
     
-    let recipientItems = try transactionContainer.decodeIfPresent([RecipientItemModel].self, forKey: .recipientItems)
+    let recipientItems = try transactionContainer.decodeIfPresent([TransactionRecipientItemModel].self, forKey: .recipientItems)
     self.recipientItems = recipientItems
     
     let paymentMethods = try transactionContainer.decodeIfPresent([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
@@ -162,6 +162,22 @@ enum TransactionPaymentTypeModel: String, Decodable, CustomStringConvertible {
     case .rebilly: return L.creditCard
     case .paypal: return L.paypal
     }
+  }
+  
+}
+
+struct TransactionRecipientItemModel: Decodable {
+  
+  let description: String
+  let displayAmount: String
+  let paymentMethodDescription: String
+  let paymentMethodDisplayAmount: String
+  
+  private enum CodingKeys: String, CodingKey {
+    case description
+    case displayAmount = "amount_received_display"
+    case paymentMethodDescription = "amount_received_less_fees_display"
+    case paymentMethodDisplayAmount = "payment_method_display_string"
   }
   
 }
