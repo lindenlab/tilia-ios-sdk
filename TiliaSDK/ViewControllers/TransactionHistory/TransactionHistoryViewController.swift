@@ -100,7 +100,9 @@ private extension TransactionHistoryViewController {
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      self.contentCloseButton.isHidden = false
+      if self.contentCloseButton.isHidden {
+        self.contentCloseButton.isHidden = false
+      }
     }.store(in: &subscriptions)
   }
   
