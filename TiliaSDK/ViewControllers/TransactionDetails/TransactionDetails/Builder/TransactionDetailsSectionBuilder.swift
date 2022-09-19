@@ -164,14 +164,13 @@ private extension TransactionDetailsSectionBuilder {
                                          isDividerHidden: false) }
     }
     
-    model.subTotal.map {
-      items.append(.init(title: L.subtotal,
-                         value: $0,
-                         image: nil,
-                         leftInset: 16,
-                         isDividerHidden: model.tax != nil))
-    }
-    model.tax.map {
+    items.append(.init(title: L.subtotal,
+                       value: model.total.subTotal,
+                       image: nil,
+                       leftInset: 16,
+                       isDividerHidden: model.total.tax != nil))
+    
+    model.total.tax.map {
       items.append(.init(title: L.transactionFees,
                          value: $0,
                          image: nil,
@@ -179,11 +178,11 @@ private extension TransactionDetailsSectionBuilder {
                          isDividerHidden: false))
     }
     
-    let type = Section.SectionType.header(.init(image: model.role.image,
-                                                title: model.role.attributedDescription(amount: model.total),
+    let type = Section.SectionType.header(.init(image: model.type.image,
+                                                title: model.type.attributedDescription(amount: model.total.total),
                                                 subTitle: model.transactionDate.formattedDescription(),
                                                 status: nil,
-                                                footer: .init(title: L.total, value: model.total)))
+                                                footer: .init(title: L.total, value: model.total.total)))
     return .init(type: type, items: items)
   }
   
@@ -258,7 +257,7 @@ private extension TransactionDetailsSectionBuilder {
     } else {
       items = [] // TODO: - Fix me
     }
-    let type = Section.SectionType.content(.init(title: model.role.description,
+    let type = Section.SectionType.content(.init(title: model.type.description,
                                                  footer: nil))
     return .init(type: type, items: items)
   }
@@ -286,13 +285,14 @@ private extension TransactionStatus {
   
 }
 
-private extension TransactionRole {
+private extension TransactionType {
   
   func attributedDescription(amount: String) -> NSAttributedString {
     let str: String
     switch self {
-    case .buyer: str = L.youPaid(with: amount)
-    case .seller: str = L.youReceived(with: amount)
+    case .userPurchase: str = L.youPaid(with: amount)
+    case .userPurchaseRecipient: str = L.youReceived(with: amount)
+    case .payout: str = L.payoutOf(with: amount)
     }
     return str.attributedString(font: .systemFont(ofSize: 20),
                                 color: .primaryTextColor,
@@ -301,15 +301,17 @@ private extension TransactionRole {
   
   var image: UIImage? {
     switch self {
-    case .buyer: return .purchaseBuyerIcon
-    case .seller: return .purchaseSellerIcon
+    case .userPurchase: return .purchaseBuyerIcon
+    case .userPurchaseRecipient: return .purchaseSellerIcon
+    case .payout: return .payoutGenericIcon
     }
   }
   
   var description: String {
     switch self {
-    case .buyer: return L.paidWith
-    case .seller: return L.depositedInto
+    case .userPurchase: return L.paidWith
+    case .userPurchaseRecipient: return L.depositedInto
+    case .payout: return L.payoutTo
     }
   }
   

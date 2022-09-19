@@ -11,15 +11,13 @@ struct TransactionDetailsModel: Decodable {
   
   let id: String
   let type: TransactionType
-  let role: TransactionRole
   let status: TransactionStatus
   let accountId: String
   let referenceType: String?
   let referenceId: String?
   let transactionDate: Date
-  let total: String
-  let subTotal: String?
-  let tax: String?
+  let createdDate: Date?
+  let total: TransactionTotalModel
   let lineItems: [LineItemModel]?
   let recipientItems: [TransactionRecipientItemModel]?
   let paymentMethods: [TransactionPaymentMethodModel]?
@@ -27,7 +25,6 @@ struct TransactionDetailsModel: Decodable {
   private enum RootCodingKeys: String, CodingKey {
     case id = "transaction_id"
     case type = "transaction_type"
-    case role = "transaction_role"
     case status = "transaction_status"
     case accountId = "account_id"
     case data = "transaction_data"
@@ -40,35 +37,21 @@ struct TransactionDetailsModel: Decodable {
     case lineItems = "line_items"
     case recipientItems = "recipient_items"
     case paymentMethods = "payment_methods"
-    case summary
-    case totalReceivedLessFeesDisplay = "total_received_less_fees_display"
-    case totalReceivedDisplay = "total_received_display"
-    case totalReceivedAmount = "total_received"
-    case totalFeesPaidDisplay = "total_fees_paid_display"
-    case totalFeesPaidAmount = "total_fees_paid"
+    case payout
   }
   
-  private enum SummaryCodingKeys: String, CodingKey {
-    case totalAmount = "total_amount"
-    case displayAmount = "display_amount"
-    case subTotal = "subtotal"
-    case tax
+  private enum PayoutCodingKeys: String, CodingKey {
+    case createdDate = "created"
   }
   
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: RootCodingKeys.self)
     id = try container.decode(String.self, forKey: .id)
     type = try container.decode(TransactionType.self, forKey: .type)
-    role = try container.decode(TransactionRole.self, forKey: .role)
     status = try container.decode(TransactionStatus.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
-    
-    let transactionDateString = try container.decode(String.self, forKey: .transactionDate)
-    if let transactionDate = DateFormatter.customDateAndTimeWithTimeZoneFormatter.date(from: transactionDateString) {
-      self.transactionDate = transactionDate
-    } else {
-      throw TLError.invalidDateFormatForString(transactionDateString)
-    }
+    transactionDate = try Self.date(for: container, with: .transactionDate)
+    total = try container.decode(TransactionTotalModel.self, forKey: .data)
     
     let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .data)
     referenceType = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType)
@@ -83,25 +66,21 @@ struct TransactionDetailsModel: Decodable {
     let paymentMethods = try transactionContainer.decodeIfPresent([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
     self.paymentMethods = paymentMethods?.values.sorted { $0.type.isWallet && !$1.type.isWallet }
     
-    if transactionContainer.contains(.summary) {
-      let summaryContainer = try transactionContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .summary)
-      total = try summaryContainer.decode(String.self, forKey: .displayAmount)
-      
-      let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .subTotal)
-      subTotal = try Self.displayAmount(for: subTotalContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
-      
-      let taxContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .tax)
-      tax = try Self.displayAmount(for: taxContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
+    if transactionContainer.contains(.payout) {
+      let payoutContainer = try transactionContainer.nestedContainer(keyedBy: PayoutCodingKeys.self, forKey: .payout)
+      createdDate = try Self.date(for: payoutContainer, with: .createdDate)
     } else {
-      total = try transactionContainer.decode(String.self, forKey: .totalReceivedLessFeesDisplay)
-      subTotal = try Self.displayAmount(for: transactionContainer, doubleKey: .totalReceivedAmount, stringKey: .totalReceivedDisplay)
-      tax = try Self.displayAmount(for: transactionContainer, doubleKey: .totalFeesPaidAmount, stringKey: .totalFeesPaidDisplay)
+      createdDate = nil
     }
   }
   
-  private static func displayAmount<T: CodingKey>(for container: KeyedDecodingContainer<T>, doubleKey: KeyedDecodingContainer<T>.Key, stringKey: KeyedDecodingContainer<T>.Key) throws -> String? {
-    let doubleValue = try container.decode(Double.self, forKey: doubleKey)
-    return doubleValue.isEmpty ? nil : try container.decode(String.self, forKey: stringKey)
+  private static func date<T: CodingKey>(for container: KeyedDecodingContainer<T>, with key: KeyedDecodingContainer<T>.Key) throws -> Date {
+    let dateString = try container.decode(String.self, forKey: key)
+    if let date = DateFormatter.customDateAndTimeWithTimeZoneFormatter.date(from: dateString) {
+      return date
+    } else {
+      throw TLError.invalidDateFormatForString(dateString)
+    }
   }
   
 }
@@ -110,13 +89,7 @@ enum TransactionType: String, Decodable {
   
   case userPurchase = "user_purchase"
   case userPurchaseRecipient = "user_purchase_recipient"
-  
-}
-
-enum TransactionRole: String, Decodable {
-  
-  case buyer
-  case seller
+  case payout
   
 }
 
@@ -178,6 +151,71 @@ struct TransactionRecipientItemModel: Decodable {
     case displayAmount = "amount_received_display"
     case paymentMethodDescription = "amount_received_less_fees_display"
     case paymentMethodDisplayAmount = "payment_method_display_string"
+  }
+  
+}
+
+struct TransactionTotalModel: Decodable {
+  
+  let total: String
+  let subTotal: String
+  let tax: String?
+  
+  private enum CodingKeys: String, CodingKey {
+    case summary
+    case totalReceivedLessFeesDisplay = "total_received_less_fees_display"
+    case totalReceivedDisplay = "total_received_display"
+    case totalFeesPaidDisplay = "total_fees_paid_display"
+    case totalFeesPaidAmount = "total_fees_paid"
+    case payoutLessFeesDisplay = "payout_amount_less_fee_display"
+    case payoutTotalDisplay = "payout_total_display"
+    case payoutFeesDisplay = "payout_fee_display"
+    case payoutFeesAmount = "payout_fee"
+  }
+  
+  private enum SummaryCodingKeys: String, CodingKey {
+    case totalAmount = "total_amount"
+    case displayAmount = "display_amount"
+    case subTotal = "subtotal"
+    case tax
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    
+    if container.contains(.summary) {
+      let summaryContainer = try container.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .summary)
+      total = try summaryContainer.decode(String.self, forKey: .displayAmount)
+      
+      let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .subTotal)
+      subTotal = try subTotalContainer.decode(String.self, forKey: .displayAmount)
+      
+      let taxContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .tax)
+      tax = try Self.displayAmount(for: taxContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
+    } else {
+      if let total = try container.decodeIfPresent(String.self, forKey: .totalReceivedLessFeesDisplay) {
+        self.total = total
+      } else {
+        total = try container.decode(String.self, forKey: .payoutLessFeesDisplay)
+      }
+      
+      if let subTotal = try container.decodeIfPresent(String.self, forKey: .totalReceivedDisplay) {
+        self.subTotal = subTotal
+      } else {
+        subTotal = try container.decode(String.self, forKey: .payoutTotalDisplay)
+      }
+      
+      if let tax = try Self.displayAmount(for: container, doubleKey: .totalFeesPaidAmount, stringKey: .totalFeesPaidDisplay) {
+        self.tax = tax
+      } else {
+        tax = try Self.displayAmount(for: container, doubleKey: .payoutFeesAmount, stringKey: .payoutFeesDisplay)
+      }
+    }
+  }
+  
+  private static func displayAmount<T: CodingKey>(for container: KeyedDecodingContainer<T>, doubleKey: KeyedDecodingContainer<T>.Key, stringKey: KeyedDecodingContainer<T>.Key) throws -> String? {
+    let doubleValue = try container.decode(Double.self, forKey: doubleKey)
+    return doubleValue.isEmpty ? nil : try container.decode(String.self, forKey: stringKey)
   }
   
 }
