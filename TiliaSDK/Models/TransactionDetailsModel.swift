@@ -21,6 +21,7 @@ struct TransactionDetailsModel: Decodable {
   let lineItems: [LineItemModel]?
   let recipientItems: [TransactionRecipientItemModel]?
   let paymentMethods: [TransactionPaymentMethodModel]?
+  let paymentMethod: String?
   
   private enum RootCodingKeys: String, CodingKey {
     case id = "transaction_id"
@@ -37,6 +38,7 @@ struct TransactionDetailsModel: Decodable {
     case lineItems = "line_items"
     case recipientItems = "recipient_items"
     case paymentMethods = "payment_methods"
+    case paymentMethod = "destination_payment_method_display_string"
     case payout
   }
   
@@ -51,7 +53,7 @@ struct TransactionDetailsModel: Decodable {
     status = try container.decode(TransactionStatus.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
     transactionDate = try Self.date(for: container, with: .transactionDate)
-    total = try container.decode(TransactionTotalModel.self, forKey: .data)
+    total = try TransactionTotalModel(from: decoder)
     
     let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .data)
     referenceType = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType)
@@ -65,6 +67,7 @@ struct TransactionDetailsModel: Decodable {
     
     let paymentMethods = try transactionContainer.decodeIfPresent([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
     self.paymentMethods = paymentMethods?.values.sorted { $0.type.isWallet && !$1.type.isWallet }
+    paymentMethod = try transactionContainer.decodeIfPresent(String.self, forKey: .paymentMethod)
     
     if transactionContainer.contains(.payout) {
       let payoutContainer = try transactionContainer.nestedContainer(keyedBy: PayoutCodingKeys.self, forKey: .payout)
@@ -149,8 +152,8 @@ struct TransactionRecipientItemModel: Decodable {
   private enum CodingKeys: String, CodingKey {
     case description
     case displayAmount = "amount_received_display"
-    case paymentMethodDescription = "amount_received_less_fees_display"
-    case paymentMethodDisplayAmount = "payment_method_display_string"
+    case paymentMethodDescription = "payment_method_display_string"
+    case paymentMethodDisplayAmount = "amount_received_less_fees_display"
   }
   
 }
@@ -162,54 +165,55 @@ struct TransactionTotalModel: Decodable {
   let tax: String?
   
   private enum CodingKeys: String, CodingKey {
-    case summary
-    case totalReceivedLessFeesDisplay = "total_received_less_fees_display"
-    case totalReceivedDisplay = "total_received_display"
-    case totalFeesPaidDisplay = "total_fees_paid_display"
-    case totalFeesPaidAmount = "total_fees_paid"
-    case payoutLessFeesDisplay = "payout_amount_less_fee_display"
-    case payoutTotalDisplay = "payout_total_display"
-    case payoutFeesDisplay = "payout_fee_display"
-    case payoutFeesAmount = "payout_fee"
+    case transactionType = "transaction_type"
+    case transactionData = "transaction_data"
   }
   
-  private enum SummaryCodingKeys: String, CodingKey {
+  private enum PurchaseBuyerCodingKeys: String, CodingKey {
+    case summary
     case totalAmount = "total_amount"
     case displayAmount = "display_amount"
     case subTotal = "subtotal"
     case tax
   }
   
+  private enum PurchaseSellerCodingKeys: String, CodingKey {
+    case totalReceivedLessFeesDisplay = "total_received_less_fees_display"
+    case totalReceivedDisplay = "total_received_display"
+    case totalFeesPaidDisplay = "total_fees_paid_display"
+    case totalFeesPaidAmount = "total_fees_paid"
+  }
+  
+  private enum PayoutCodingKeys: String, CodingKey {
+    case payoutLessFeesDisplay = "payout_amount_less_fee_display"
+    case payoutTotalDisplay = "payout_total_display"
+    case payoutFeesDisplay = "payout_fee_display"
+    case payoutFeesAmount = "payout_fee"
+  }
+  
   init(from decoder: Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let rootContainer = try decoder.container(keyedBy: CodingKeys.self)
+    let type = try rootContainer.decode(TransactionType.self, forKey: .transactionType)
     
-    if container.contains(.summary) {
-      let summaryContainer = try container.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .summary)
+    switch type {
+    case .userPurchase:
+      let container = try rootContainer.nestedContainer(keyedBy: PurchaseBuyerCodingKeys.self, forKey: .transactionData)
+      let summaryContainer = try container.nestedContainer(keyedBy: PurchaseBuyerCodingKeys.self, forKey: .summary)
       total = try summaryContainer.decode(String.self, forKey: .displayAmount)
-      
-      let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .subTotal)
+      let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: PurchaseBuyerCodingKeys.self, forKey: .subTotal)
       subTotal = try subTotalContainer.decode(String.self, forKey: .displayAmount)
-      
-      let taxContainer = try summaryContainer.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .tax)
+      let taxContainer = try summaryContainer.nestedContainer(keyedBy: PurchaseBuyerCodingKeys.self, forKey: .tax)
       tax = try Self.displayAmount(for: taxContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
-    } else {
-      if let total = try container.decodeIfPresent(String.self, forKey: .totalReceivedLessFeesDisplay) {
-        self.total = total
-      } else {
-        total = try container.decode(String.self, forKey: .payoutLessFeesDisplay)
-      }
-      
-      if let subTotal = try container.decodeIfPresent(String.self, forKey: .totalReceivedDisplay) {
-        self.subTotal = subTotal
-      } else {
-        subTotal = try container.decode(String.self, forKey: .payoutTotalDisplay)
-      }
-      
-      if let tax = try Self.displayAmount(for: container, doubleKey: .totalFeesPaidAmount, stringKey: .totalFeesPaidDisplay) {
-        self.tax = tax
-      } else {
-        tax = try Self.displayAmount(for: container, doubleKey: .payoutFeesAmount, stringKey: .payoutFeesDisplay)
-      }
+    case .userPurchaseRecipient:
+      let container = try rootContainer.nestedContainer(keyedBy: PurchaseSellerCodingKeys.self, forKey: .transactionData)
+      total = try container.decode(String.self, forKey: .totalReceivedLessFeesDisplay)
+      subTotal = try container.decode(String.self, forKey: .totalReceivedDisplay)
+      tax = try Self.displayAmount(for: container, doubleKey: .totalFeesPaidAmount, stringKey: .totalFeesPaidDisplay)
+    case .payout:
+      let container = try rootContainer.nestedContainer(keyedBy: PayoutCodingKeys.self, forKey: .transactionData)
+      total = try container.decode(String.self, forKey: .payoutLessFeesDisplay)
+      subTotal = try container.decode(String.self, forKey: .payoutTotalDisplay)
+      tax = try Self.displayAmount(for: container, doubleKey: .payoutFeesAmount, stringKey: .payoutFeesDisplay)
     }
   }
   

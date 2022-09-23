@@ -194,8 +194,10 @@
 		D1EFAB3828B94EBC00AB1C31 /* SendReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3728B94EBC00AB1C31 /* SendReceiptValidator.swift */; };
 		D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */; };
 		D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */; };
-		D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json */; };
+		D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json */; };
 		D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */; };
+		D1F7D3B228DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1F7D3B128DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json */; };
+		D1F7D3B428DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
@@ -413,8 +415,10 @@
 		D1EFAB3728B94EBC00AB1C31 /* SendReceiptValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidator.swift; sourceTree = "<group>"; };
 		D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidatorTests.swift; sourceTree = "<group>"; };
 		D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceInfoModel.swift; sourceTree = "<group>"; };
-		D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsResponse.json; sourceTree = "<group>"; };
+		D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsPurchaseBuyerResponse.json; sourceTree = "<group>"; };
 		D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewModelTests.swift; sourceTree = "<group>"; };
+		D1F7D3B128DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsPurchaseSellerResponse.json; sourceTree = "<group>"; };
+		D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsPayoutResponse.json; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
@@ -918,7 +922,9 @@
 				D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */,
 				D1BB6346287F2CC0007616DE /* SubmitKycResponse.json */,
 				D1BB634A287F3121007616DE /* GetKycStatusResponse.json */,
-				D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json */,
+				D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json */,
+				D1F7D3B128DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json */,
+				D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */,
 				D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */,
 			);
 			path = JSONFiles;
@@ -1125,6 +1131,7 @@
 				D13A872628C21DE000444EDB /* SendTransactionReceiptResponse.json in Resources */,
 				D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */,
 				D126AF182875872F00CAC5F2 /* ResedencePermitBackImage.svg in Resources */,
+				D1F7D3B428DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json in Resources */,
 				D1BB634B287F3121007616DE /* GetKycStatusResponse.json in Resources */,
 				D1CCE8CE27F4A65100FD0E25 /* Icons.xcassets in Resources */,
 				D126AF172875872F00CAC5F2 /* DriversLicenseBackImage.svg in Resources */,
@@ -1137,7 +1144,8 @@
 				D135DC8027E74A4A0009D888 /* Main.storyboard in Resources */,
 				D1C8A84627F5EC9A00BF2910 /* LocalizedConstants.strings in Resources */,
 				D1B872C628044CC900DD1F7B /* SignTosForUserResponse.json in Resources */,
-				D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsResponse.json in Resources */,
+				D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json in Resources */,
+				D1F7D3B228DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

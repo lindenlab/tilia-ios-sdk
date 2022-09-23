@@ -57,7 +57,7 @@ extension InvoiceRouter {
     case .payInvoice:
       return readJSONFromFile("PayInvoiceResponse")
     case .getTransactionDetails:
-      return readJSONFromFile("GetTransactionDetailsResponse")
+      return readJSONFromFile("GetTransactionDetailsPurchaseSellerResponse")
     case .sendTransactionReceipt:
       return readJSONFromFile("SendTransactionReceiptResponse")
     }

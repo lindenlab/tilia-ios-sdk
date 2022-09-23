@@ -1,0 +1,65 @@
+{
+  "status": "Success",
+  "message": [],
+  "codes": [],
+  "payload": {
+    "transaction_id": "74349cc3-8cea-41b8-a796-3b695035dd40",
+    "transaction_id_type": "invoicing.invoice_v2.invoice_id",
+    "transaction_type": "user_purchase_recipient",
+    "transaction_role": "seller",
+    "transaction_status": "processed",
+    "account_id": "78a15c06-51f0-48a3-b3b9-75190bcb44e2",
+    "transaction_data": {
+      "invoice_id": "74349cc3-8cea-41b8-a796-3b695035dd40",
+      "recipient_account_id": "78a15c06-51f0-48a3-b3b9-75190bcb44e2",
+      "currency": "USD",
+      "total_received": 5,
+      "total_received_less_fees": 5,
+      "total_fees_paid": 0,
+      "total_received_display": "USD 0.05",
+      "total_received_less_fees_display": "USD 0.05",
+      "total_fees_paid_display": "USD 0.00",
+      "recipient_items": [
+        {
+          "line_item_id": "7854eda8-547f-4585-a8f6-bfdef851081b",
+          "reference_type": "",
+          "reference_id": "",
+          "product_sku": "DEF456",
+          "product_code": "",
+          "description": "Line item 2",
+          "recipient_subitem_id": "6d592dec-5f36-4387-9122-9161b41fb4e9",
+          "amount_received": 2,
+          "amount_received_less_fees": 2,
+          "amount_fees_paid": 0,
+          "amount_received_display": "USD 0.02",
+          "amount_received_less_fees_display": "USD 0.02",
+          "amount_fees_paid_display": "USD 0.00",
+          "currency": "USD",
+          "payment_method_id": "5ee85a7a-8319-4a53-837c-5d909d18fcd0",
+          "payment_method_display_string": "USD Wallet",
+          "fees": []
+        },
+        {
+          "line_item_id": "613fd66a-ecef-44a7-95de-439eecafdf26",
+          "reference_type": "",
+          "reference_id": "",
+          "product_sku": "GHI789",
+          "product_code": "",
+          "description": "Line item 3",
+          "recipient_subitem_id": "f15a35c3-6194-47ca-a175-099a6436c609",
+          "amount_received": 3,
+          "amount_received_less_fees": 3,
+          "amount_fees_paid": 0,
+          "amount_received_display": "USD 0.03",
+          "amount_received_less_fees_display": "USD 0.03",
+          "amount_fees_paid_display": "USD 0.00",
+          "currency": "USD",
+          "payment_method_id": "5ee85a7a-8319-4a53-837c-5d909d18fcd0",
+          "payment_method_display_string": "USD Wallet",
+          "fees": []
+        }
+      ]
+    },
+    "transaction_date": "2022-09-06 20:55:18.723733 +0000 UTC"
+  }
+}
