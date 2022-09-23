@@ -36,6 +36,7 @@ final class TransactionDetailsHeaderView: UITableViewHeaderFooterView {
     let label = UILabel()
     label.textColor = .primaryTextColor
     label.font = .boldSystemFont(ofSize: 14)
+    label.text = L.status
     return label
   }()
   
@@ -83,7 +84,7 @@ final class TransactionDetailsHeaderView: UITableViewHeaderFooterView {
     statusInfoStackView.isHidden = statusImage == nil && statusTitle == nil
     statusImageView.image = statusImage?.withRenderingMode(.alwaysTemplate)
     statusImageView.tintColor = statusImageColor
-    statusTitleLabel.text = statusTitle
+    statusValueLabel.text = statusTitle
     failureToastView.configure(title: nil, message: statusSubTitle)
     failureToastView.isHidden = statusSubTitle == nil
   }

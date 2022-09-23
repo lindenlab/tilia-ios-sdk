@@ -157,6 +157,11 @@ enum L {
   static let errorTransactionHistoryTitle = "errorTransactionHistoryTitle".localized
   static let errorTransactionHistoryMessage = "errorTransactionHistoryMessage".localized
   static let payoutTo = "payoutTo".localized
+  static let requested = "requested".localized
+  static let requestDate = "requestDate".localized
+  static let requestTime = "requestTime".localized
+  static let processedDate = "processedDate".localized
+  static let processedTime = "processedTime".localized
   
   static func kycInfoSubmitted(with argument: CVarArg) -> String {
     return "kycInfoSubmitted".localized(with: argument)
@@ -167,8 +172,14 @@ enum L {
   static func yesterdayAt(with argument: CVarArg) -> String {
     return "yesterdayAt".localized(with: argument)
   }
-  static func requested(with arguments: CVarArg...) -> String {
-    return "requestedWithArguments".localized(with: arguments)
+  static func requestedOn(with argument: CVarArg...) -> String {
+    return "requestedOn".localized(with: argument)
+  }
+  static func requestedTodayAt(with argument: CVarArg) -> String {
+    return "requestedTodayAt".localized(with: argument)
+  }
+  static func requestedYesterdayAt(with argument: CVarArg) -> String {
+    return "requestedYesterdayAt".localized(with: argument)
   }
   static func youPaid(with argument: CVarArg) -> String {
     return "youPaid".localized(with: argument)

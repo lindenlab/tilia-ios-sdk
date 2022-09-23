@@ -164,7 +164,7 @@ private extension TransactionDetailsSectionBuilder {
                                          isDividerHidden: false) }
     }
     
-    items.append(.init(title: L.subtotal,
+    items.append(.init(title: model.type.headerTitle,
                        value: model.total.subTotal,
                        image: nil,
                        leftInset: 16,
@@ -180,8 +180,8 @@ private extension TransactionDetailsSectionBuilder {
     
     let type = Section.SectionType.header(.init(image: model.type.image,
                                                 title: model.type.attributedDescription(amount: model.total.total),
-                                                subTitle: model.transactionDate.formattedDescription(),
-                                                status: nil,
+                                                subTitle: formattedDate(for: model),
+                                                status: status(for: model),
                                                 footer: .init(title: L.total, value: model.total.total)))
     return .init(type: type, items: items)
   }
@@ -220,20 +220,49 @@ private extension TransactionDetailsSectionBuilder {
                          isDividerHidden: false))
     }
     
-    items.append(contentsOf: [
-      .init(title: L.transactionDate,
-            value: DateFormatter.longDateFormatter.string(from: model.transactionDate),
-            image: nil,
-            leftInset: 32,
-            isDividerHidden: false),
-      .init(title: L.transactionTime,
-            value: DateFormatter.shortTimeFormatter.string(from: model.transactionDate),
-            image: nil,
-            leftInset: 32,
-            isDividerHidden: true)
+    if let createdDate = model.createdDate {
+      items.append(contentsOf: [
+        .init(title: L.requestDate,
+              value: createdDate.longDateDescription(showTimeZone: false),
+              image: nil,
+              leftInset: 32,
+              isDividerHidden: false),
+        .init(title: L.requestTime,
+              value: createdDate.shortTimeDescription(),
+              image: nil,
+              leftInset: 32,
+              isDividerHidden: model.status == .pending)
 
-      
-    ])
+        
+      ])
+      if model.status != .pending {
+        items.append(contentsOf: [
+          .init(title: L.processedDate,
+                value: model.transactionDate.longDateDescription(showTimeZone: false),
+                image: nil,
+                leftInset: 32,
+                isDividerHidden: false),
+          .init(title: L.processedTime,
+                value: model.transactionDate.shortTimeDescription(),
+                image: nil,
+                leftInset: 32,
+                isDividerHidden: true)
+        ])
+      }
+    } else {
+      items.append(contentsOf: [
+        .init(title: L.transactionDate,
+              value: model.transactionDate.longDateDescription(showTimeZone: false),
+              image: nil,
+              leftInset: 32,
+              isDividerHidden: false),
+        .init(title: L.transactionTime,
+              value: model.transactionDate.shortTimeDescription(),
+              image: nil,
+              leftInset: 32,
+              isDividerHidden: true)
+      ])
+    }
     
     let type = Section.SectionType.content(.init(title: L.invoiceDetails,
                                                  footer: .init(isPrimaryButtonHidden: false)))
@@ -241,7 +270,7 @@ private extension TransactionDetailsSectionBuilder {
   }
   
   func paymentSection(for model: TransactionDetailsModel) -> Section {
-    let items: [Section.Item]
+    var items: [Section.Item] = []
     if let paymentMethods = model.paymentMethods {
       items = paymentMethods.enumerated().map { .init(title: $0.element.type.description,
                                                       value: $0.element.displayAmount,
@@ -254,12 +283,35 @@ private extension TransactionDetailsSectionBuilder {
                                                       image: nil,
                                                       leftInset: 32,
                                                       isDividerHidden: $0.offset == recipientItems.count - 1) }
-    } else {
-      items = [] // TODO: - Fix me
+    } else if let paymentMethod = model.paymentMethod {
+      items = [
+        .init(title: paymentMethod,
+              value: model.total.total,
+              image: nil,
+              leftInset: 32,
+              isDividerHidden: true)
+      ]
     }
     let type = Section.SectionType.content(.init(title: model.type.description,
                                                  footer: nil))
     return .init(type: type, items: items)
+  }
+  
+  
+  func formattedDate(for model: TransactionDetailsModel) -> String {
+    if let createdDate = model.createdDate {
+      return createdDate.formattedRequestedDescription()
+    } else {
+      return model.transactionDate.formattedDefaultDescription()
+    }
+  }
+  
+  func status(for model: TransactionDetailsModel) -> Section.SectionType.Header.Status? {
+    guard model.type == .payout else { return nil }
+    return .init(image: model.status.icon,
+                 imageColor: model.status.color,
+                 title: model.status.description,
+                 subTitle: nil) // TODO: - Add here failure reason
   }
   
 }
@@ -313,6 +365,10 @@ private extension TransactionType {
     case .userPurchaseRecipient: return L.depositedInto
     case .payout: return L.payoutTo
     }
+  }
+  
+  var headerTitle: String {
+    return self == .payout ? L.requested : L.total
   }
   
 }

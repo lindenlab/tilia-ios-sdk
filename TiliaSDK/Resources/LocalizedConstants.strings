@@ -132,7 +132,9 @@
 "depositedInto" = "Deposited into";
 "todayAt" = "today at %@";
 "yesterdayAt" = "yesterday at %@";
-"requestedWithArguments" = "requested on %@ at %@";
+"requestedOn" = "requested on %@";
+"requestedTodayAt" = "requested today at %@";
+"requestedYesterdayAt" = "requested yesterday at %@";
 "youPaid" = "You paid %@";
 "youReceived" = "You received %@";
 "send" = "Send";
@@ -152,3 +154,8 @@
 "errorTransactionHistoryMessage" = "Sorry, we were unable to get transaction history. Please try again later.";
 "payoutOf" = "Payout of %@";
 "payoutTo" = "Payout to";
+"requested" = "Requested";
+"requestDate" = "Request date";
+"requestTime" = "Request time";
+"processedDate" = "Processed date";
+"processedTime" = "Processed time";
