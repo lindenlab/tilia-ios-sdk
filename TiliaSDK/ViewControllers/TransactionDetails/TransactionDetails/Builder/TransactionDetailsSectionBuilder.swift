@@ -232,8 +232,6 @@ private extension TransactionDetailsSectionBuilder {
               image: nil,
               leftInset: 32,
               isDividerHidden: model.status == .pending)
-
-        
       ])
       if model.status != .pending {
         items.append(contentsOf: [
@@ -308,10 +306,11 @@ private extension TransactionDetailsSectionBuilder {
   
   func status(for model: TransactionDetailsModel) -> Section.SectionType.Header.Status? {
     guard model.type == .payout else { return nil }
+    let subTitle = model.status == .failed ? "Here must be a failure reason" : nil
     return .init(image: model.status.icon,
                  imageColor: model.status.color,
                  title: model.status.description,
-                 subTitle: nil) // TODO: - Add here failure reason
+                 subTitle: subTitle)
   }
   
 }
