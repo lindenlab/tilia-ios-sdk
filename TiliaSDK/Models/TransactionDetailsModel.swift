@@ -93,6 +93,8 @@ enum TransactionType: String, Decodable {
   case userPurchase = "user_purchase"
   case userPurchaseRecipient = "user_purchase_recipient"
   case payout
+  case tokenPurchase = "token_purchase"
+  case tokenConvert = "token_convert"
   
 }
 
@@ -214,6 +216,8 @@ struct TransactionTotalModel: Decodable {
       total = try container.decode(String.self, forKey: .payoutLessFeesDisplay)
       subTotal = try container.decode(String.self, forKey: .payoutTotalDisplay)
       tax = try Self.displayAmount(for: container, doubleKey: .payoutFeesAmount, stringKey: .payoutFeesDisplay)
+    case .tokenPurchase, .tokenConvert:
+      throw TLError.invalidToken // Fix me
     }
   }
   

@@ -26,7 +26,7 @@ extension String {
     return self.replacingCharacters(in: range, with: replacementString)
   }
   
-  func attributedString(font: UIFont, color: UIColor, subStrings: (String, UIFont, UIColor)...) -> NSAttributedString {
+  func attributedString(font: UIFont, color: UIColor, subStrings: [(String, UIFont, UIColor)]) -> NSAttributedString {
     let rootAttributes: [NSAttributedString.Key: Any] = [
       .font: font,
       .foregroundColor: color
@@ -43,6 +43,10 @@ extension String {
                                      range: NSRange(range, in: self))
     }
     return attributedString
+  }
+  
+  func attributedString(font: UIFont, color: UIColor, subStrings: (String, UIFont, UIColor)...) -> NSAttributedString {
+    return attributedString(font: font, color: color, subStrings: subStrings)
   }
   
 }

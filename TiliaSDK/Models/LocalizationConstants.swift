@@ -162,33 +162,40 @@ enum L {
   static let requestTime = "requestTime".localized
   static let processedDate = "processedDate".localized
   static let processedTime = "processedTime".localized
+  static let transferredFrom = "transferredFrom".localized
   
-  static func kycInfoSubmitted(with argument: CVarArg) -> String {
-    return "kycInfoSubmitted".localized(with: argument)
+  static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
+    return "kycInfoSubmitted".localized(with: arguments)
   }
-  static func todayAt(with argument: CVarArg) -> String {
-    return "todayAt".localized(with: argument)
+  static func todayAt(with arguments: CVarArg...) -> String {
+    return "todayAt".localized(with: arguments)
   }
-  static func yesterdayAt(with argument: CVarArg) -> String {
-    return "yesterdayAt".localized(with: argument)
+  static func yesterdayAt(with arguments: CVarArg...) -> String {
+    return "yesterdayAt".localized(with: arguments)
   }
   static func requestedOn(with argument: CVarArg...) -> String {
     return "requestedOn".localized(with: argument)
   }
-  static func requestedTodayAt(with argument: CVarArg) -> String {
-    return "requestedTodayAt".localized(with: argument)
+  static func requestedTodayAt(with arguments: CVarArg...) -> String {
+    return "requestedTodayAt".localized(with: arguments)
   }
-  static func requestedYesterdayAt(with argument: CVarArg) -> String {
-    return "requestedYesterdayAt".localized(with: argument)
+  static func requestedYesterdayAt(with arguments: CVarArg...) -> String {
+    return "requestedYesterdayAt".localized(with: arguments)
   }
-  static func youPaid(with argument: CVarArg) -> String {
-    return "youPaid".localized(with: argument)
+  static func youPaid(with arguments: CVarArg...) -> String {
+    return "youPaid".localized(with: arguments)
   }
-  static func youReceived(with argument: CVarArg) -> String {
-    return "youReceived".localized(with: argument)
+  static func youReceived(with arguments: CVarArg...) -> String {
+    return "youReceived".localized(with: arguments)
   }
-  static func payoutOf(with argument: CVarArg) -> String {
-    return "payoutOf".localized(with: argument)
+  static func payoutOf(with arguments: CVarArg...) -> String {
+    return "payoutOf".localized(with: arguments)
+  }
+  static func youPurchased(with arguments: CVarArg...) -> String {
+    return "youPurchased".localized(with: arguments)
+  }
+  static func convertedTo(with arguments: CVarArg...) -> String {
+    return "convertedTo".localized(with: arguments)
   }
   
 }

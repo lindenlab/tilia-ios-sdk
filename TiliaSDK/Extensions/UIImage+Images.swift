@@ -24,7 +24,7 @@ extension UIImage {
   static let purchaseSellerIcon = UIImage(str: "purchaseSellerIcon")
   static let refundIcon = UIImage(str: "refundIcon")
   static let tokenPurchaseIcon = UIImage(str: "tokenPurchaseIcon")
-  static let tokenToWalletIcon = UIImage(str: "tokenToWalletIcon")
+  static let tokenConvertIcon = UIImage(str: "tokenConvertIcon")
   static let payoutGenericIcon = UIImage(str: "payoutGenericIcon")
   static let sendIcon = UIImage(str: "sendIcon")
   

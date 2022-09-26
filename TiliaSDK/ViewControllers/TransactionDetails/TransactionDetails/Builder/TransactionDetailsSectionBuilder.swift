@@ -179,7 +179,7 @@ private extension TransactionDetailsSectionBuilder {
     }
     
     let type = Section.SectionType.header(.init(image: model.type.image,
-                                                title: model.type.attributedDescription(amount: model.total.total),
+                                                title: model.type.attributedDescription(with: model.total.total),
                                                 subTitle: formattedDate(for: model),
                                                 status: status(for: model),
                                                 footer: .init(title: L.total, value: model.total.total)))
@@ -339,16 +339,21 @@ private extension TransactionStatus {
 
 private extension TransactionType {
   
-  func attributedDescription(amount: String) -> NSAttributedString {
+  func attributedDescription(with arguments: String...) -> NSAttributedString {
     let str: String
     switch self {
-    case .userPurchase: str = L.youPaid(with: amount)
-    case .userPurchaseRecipient: str = L.youReceived(with: amount)
-    case .payout: str = L.payoutOf(with: amount)
+    case .userPurchase: str = L.youPaid(with: arguments)
+    case .userPurchaseRecipient: str = L.youReceived(with: arguments)
+    case .payout: str = L.payoutOf(with: arguments)
+    case .tokenPurchase: str = L.youPurchased(with: arguments)
+    case .tokenConvert: str = L.convertedTo(with: arguments)
+    }
+    let subStrings: [(String, UIFont, UIColor)] = arguments.map {
+      return ($0, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor)
     }
     return str.attributedString(font: .systemFont(ofSize: 20),
                                 color: .primaryTextColor,
-                                subStrings: (amount, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor))
+                                subStrings: subStrings)
   }
   
   var image: UIImage? {
@@ -356,14 +361,24 @@ private extension TransactionType {
     case .userPurchase: return .purchaseBuyerIcon
     case .userPurchaseRecipient: return .purchaseSellerIcon
     case .payout: return .payoutGenericIcon
+    case .tokenPurchase: return .tokenPurchaseIcon
+    case .tokenConvert: return .tokenConvertIcon
     }
   }
   
   var description: String {
     switch self {
-    case .userPurchase: return L.paidWith
+    case .userPurchase, .tokenPurchase: return L.paidWith
     case .userPurchaseRecipient: return L.depositedInto
     case .payout: return L.payoutTo
+    case .tokenConvert: return L.transferredFrom
+    }
+  }
+  
+  var subDescription: String? {
+    switch self {
+    case .tokenPurchase, .tokenConvert: return L.depositedInto
+    default: return nil
     }
   }
   

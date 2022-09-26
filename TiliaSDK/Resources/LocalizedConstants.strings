@@ -159,3 +159,6 @@
 "requestTime" = "Request time";
 "processedDate" = "Processed date";
 "processedTime" = "Processed time";
+"youPurchased" = "You purchased %@";
+"convertedTo" = "%@ converted to %@";
+"transferredFrom" = "Transferred from";
