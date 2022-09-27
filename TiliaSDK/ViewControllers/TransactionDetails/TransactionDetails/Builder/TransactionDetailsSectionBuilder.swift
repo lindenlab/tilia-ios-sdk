@@ -306,7 +306,7 @@ private extension TransactionDetailsSectionBuilder {
   
   func status(for model: TransactionDetailsModel) -> Section.SectionType.Header.Status? {
     guard model.type == .payout else { return nil }
-    let subTitle = model.status == .failed ? "Here must be a failure reason" : nil
+    let subTitle = model.status == .failed ? L.payoutErrorMessage : nil
     return .init(image: model.status.icon,
                  imageColor: model.status.color,
                  title: model.status.description,
@@ -340,12 +340,13 @@ private extension TransactionType {
   
   func attributedDescription(with arguments: String...) -> NSAttributedString {
     let str: String
+    let cArguments = arguments.map { $0 as CVarArg }
     switch self {
-    case .userPurchase: str = L.youPaid(with: arguments)
-    case .userPurchaseRecipient: str = L.youReceived(with: arguments)
-    case .payout: str = L.payoutOf(with: arguments)
-    case .tokenPurchase: str = L.youPurchased(with: arguments)
-    case .tokenConvert: str = L.convertedTo(with: arguments)
+    case .userPurchase: str = L.youPaid(with: cArguments)
+    case .userPurchaseRecipient: str = L.youReceived(with: cArguments)
+    case .payout: str = L.payoutOf(with: cArguments)
+    case .tokenPurchase: str = L.youPurchased(with: cArguments)
+    case .tokenConvert: str = L.convertedTo(with: cArguments)
     }
     let subStrings: [(String, UIFont, UIColor)] = arguments.map {
       return ($0, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor)
