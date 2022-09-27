@@ -326,7 +326,7 @@ private extension TransactionDetailsSectionBuilder {
 
 // MARK: - Helpers
 
-private extension TransactionStatus {
+private extension TransactionStatusModel {
   
   var icon: UIImage? {
     switch self {
@@ -345,7 +345,7 @@ private extension TransactionStatus {
   
 }
 
-private extension TransactionType {
+private extension TransactionTypeModel {
   
   func attributedDescription(with arguments: String...) -> NSAttributedString {
     let str: String

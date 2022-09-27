@@ -10,8 +10,8 @@ import Foundation
 struct TransactionDetailsModel: Decodable {
   
   let id: String
-  let type: TransactionType
-  let status: TransactionStatus
+  let type: TransactionTypeModel
+  let status: TransactionStatusModel
   let accountId: String
   let referenceType: String?
   let referenceId: String?
@@ -49,8 +49,8 @@ struct TransactionDetailsModel: Decodable {
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: RootCodingKeys.self)
     id = try container.decode(String.self, forKey: .id)
-    type = try container.decode(TransactionType.self, forKey: .type)
-    status = try container.decode(TransactionStatus.self, forKey: .status)
+    type = try container.decode(TransactionTypeModel.self, forKey: .type)
+    status = try container.decode(TransactionStatusModel.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
     transactionDate = try Self.date(for: container, with: .transactionDate)
     total = try TransactionTotalModel(from: decoder)
@@ -88,7 +88,7 @@ struct TransactionDetailsModel: Decodable {
   
 }
 
-enum TransactionType: String, Decodable {
+enum TransactionTypeModel: String, Decodable {
   
   case userPurchase = "user_purchase"
   case userPurchaseRecipient = "user_purchase_recipient"
@@ -98,7 +98,7 @@ enum TransactionType: String, Decodable {
   
 }
 
-enum TransactionStatus: String, Decodable, CustomStringConvertible {
+enum TransactionStatusModel: String, Decodable, CustomStringConvertible {
   
   case pending
   case processed
@@ -195,7 +195,7 @@ struct TransactionTotalModel: Decodable {
   
   init(from decoder: Decoder) throws {
     let rootContainer = try decoder.container(keyedBy: CodingKeys.self)
-    let type = try rootContainer.decode(TransactionType.self, forKey: .transactionType)
+    let type = try rootContainer.decode(TransactionTypeModel.self, forKey: .transactionType)
     
     switch type {
     case .userPurchase:
