@@ -23,6 +23,12 @@ extension UIColor {
     }
   }
   
+  static var backgroundDarkerColor: UIColor {
+    return UIColor { _ in
+      return backgroundColor.modifiedHue().modifiedHue(brightness: -0.03)
+    }
+  }
+  
   static var primaryColor: UIColor {
     return UIColor {
       if $0.userInterfaceStyle == .dark {
@@ -140,6 +146,21 @@ extension UIColor {
     let green = CGFloat(g) / 255.0
     let blue = CGFloat(b) / 255.0
     self.init(red: red, green: green, blue: blue, alpha: alpha)
+  }
+  
+  func modifiedHue(_ hue: CGFloat = 0, saturation: CGFloat = 0, brightness: CGFloat = 0) -> UIColor {
+    var currentHue: CGFloat = 0.0
+    var currentSaturation: CGFloat = 0.0
+    var currentBrightness: CGFloat = 0.0
+    var currentAlpha: CGFloat = 0.0
+    if getHue(&currentHue, saturation: &currentSaturation, brightness: &currentBrightness, alpha: &currentAlpha) {
+      return .init(hue: currentHue + hue,
+                   saturation: currentSaturation + saturation,
+                   brightness: currentBrightness + brightness,
+                   alpha: currentAlpha)
+    } else {
+      return self
+    }
   }
   
 }

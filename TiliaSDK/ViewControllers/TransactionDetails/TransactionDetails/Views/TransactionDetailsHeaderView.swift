@@ -110,7 +110,7 @@ private extension TransactionDetailsHeaderView {
     rootStackView.axis = .vertical
     rootStackView.translatesAutoresizingMaskIntoConstraints = false
     
-    contentView.backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundDarkerColor
     contentView.addSubview(rootStackView)
     
     let topConstraint = rootStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 32)

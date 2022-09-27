@@ -57,7 +57,7 @@ private extension TransactionDetailsTitleFooterView {
     stackView.alignment = .center
     stackView.translatesAutoresizingMaskIntoConstraints = false
     
-    contentView.backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundDarkerColor
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
     

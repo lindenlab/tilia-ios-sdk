@@ -46,6 +46,13 @@ struct TransactionDetailsSectionBuilder {
       
       case header(Header)
       case content(Content)
+      
+      var backgroundColor: UIColor {
+        switch self {
+        case .header: return .backgroundDarkerColor
+        case .content: return .backgroundColor
+        }
+      }
     }
     
     struct Item {
@@ -90,6 +97,8 @@ struct TransactionDetailsSectionBuilder {
                    color: item.image?.color,
                    leftInset: item.leftInset,
                    isDividerHidden: item.isDividerHidden)
+    cell.backgroundColor = section.type.backgroundColor
+    cell.contentView.backgroundColor = section.type.backgroundColor
     return cell
   }
   
