@@ -83,9 +83,11 @@ private extension TransactionHistoryViewController {
       $0 ? self.startLoading() : self.stopLoading()
     }.store(in: &subscriptions)
     
-    viewModel.error.sink { [weak self] _ in
+    viewModel.error.sink { [weak self] in
       guard let self = self else { return }
-      self.showCancelButton() // TODO: - Add here showing button only on first error - when content is failed fully
+      if $0.value {
+        self.showCancelButton()
+      }
       self.router.showToast(title: L.errorTransactionHistoryTitle,
                             message: L.errorTransactionHistoryMessage)
     }.store(in: &subscriptions)

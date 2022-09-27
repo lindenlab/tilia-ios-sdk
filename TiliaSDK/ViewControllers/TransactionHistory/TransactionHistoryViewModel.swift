@@ -14,7 +14,7 @@ protocol TransactionHistoryViewModelInputProtocol {
 
 protocol TransactionHistoryViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
-  var error: PassthroughSubject<Error, Never> { get }
+  var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
   var content: PassthroughSubject<Void, Never> { get }
@@ -34,7 +34,7 @@ protocol TransactionHistoryViewModelProtocol: TransactionHistoryViewModelInputPr
 final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, TransactionHistoryDataStore {
   
   let loading = PassthroughSubject<Bool, Never>()
-  let error = PassthroughSubject<Error, Never>()
+  let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<Void, Never>()
@@ -104,7 +104,9 @@ private extension TransactionHistoryViewModel {
       switch result {
       case .success(let model):
         self.content.send()
-        self.isLoaded = true
+        if !self.isLoaded {
+          self.isLoaded = true
+        }
       case .failure(let error):
         self.didFail(with: error)
       }
@@ -113,7 +115,7 @@ private extension TransactionHistoryViewModel {
   }
   
   func didFail(with error: Error) {
-    self.error.send(error)
+    self.error.send(.init(error: error, value: !isLoaded))
     let event = TLEvent(flow: .transactionHistory, action: .error)
     let model = TLErrorCallback(event: event,
                                 error: L.errorTransactionHistoryTitle,
