@@ -66,11 +66,11 @@ final class SendReceiptViewController: BaseViewController {
     return button
   }()
   
-  init(invoiceId: String,
+  init(transactionId: String,
        manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    let viewModel = SendReceiptViewModel(invoiceId: invoiceId,
+    let viewModel = SendReceiptViewModel(transactionId: transactionId,
                                          manager: manager,
                                          onUpdate: onUpdate,
                                          onError: onError)

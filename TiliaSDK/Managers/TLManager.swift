@@ -207,18 +207,18 @@ public extension TLManager {
   /// Show Transaction Details flow, user access token is required
   /// - Parameters:
   ///   - viewController: view controller that is used for presenting Transaction Details flow
-  ///   - invoiceId: invoice id
+  ///   - transactionId: transaction id
   ///   - animated: animated flag
   ///   - onUpdate: completion that returns receipt about transaction is sent
   ///   - onComplete: completion that returns Transaction Details flow state
   ///   - onError: completion that returns Transaction Details flow error
   func presentTransactionDetailsViewController(on viewController: UIViewController,
-                                               withInvoiceId invoiceId: String,
+                                               withTransactionId transactionId: String,
                                                animated: Bool,
                                                onUpdate: ((TLUpdateCallback) -> Void)? = nil,
                                                onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                                onError: ((TLErrorCallback) -> Void)? = nil) {
-    guard !isTokenEmpty, !invoiceId.isEmpty else {
+    guard !isTokenEmpty, !transactionId.isEmpty else {
       let errorCallback = TLErrorCallback(event: TLEvent(flow: .transactionDetails, action: .missingRequiredData),
                                           error: L.errorTransactionDetailsTitle,
                                           message: L.missedRequiredData)
@@ -226,7 +226,7 @@ public extension TLManager {
       return
     }
     
-    let transactionDetailsViewController = TransactionDetailsViewController(invoiceId: invoiceId,
+    let transactionDetailsViewController = TransactionDetailsViewController(transactionId: transactionId,
                                                                             needToCheckTos: true,
                                                                             manager: networkManager,
                                                                             onUpdate: onUpdate,

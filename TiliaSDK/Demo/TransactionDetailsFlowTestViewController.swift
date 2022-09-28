@@ -9,11 +9,11 @@ import UIKit
 
 final class TransactionDetailsFlowTestViewController: TestViewController {
   
-  let invoiceIdTextField: UITextField = {
+  let transactionIdTextField: UITextField = {
     let textField = UITextField()
     textField.borderStyle = .roundedRect
-    textField.placeholder = "Invoice id"
-    textField.accessibilityIdentifier = "invoiceIdTextField"
+    textField.placeholder = "Transaction id"
+    textField.accessibilityIdentifier = "transactionIdTextField"
     return textField
   }()
   
@@ -35,7 +35,7 @@ final class TransactionDetailsFlowTestViewController: TestViewController {
     super.viewDidLoad()
     label.text = "onUpdate callback will be here"
     button.setTitle("Run Transaction Details flow", for: .normal)
-    stackView.insertArrangedSubview(invoiceIdTextField, at: 1)
+    stackView.insertArrangedSubview(transactionIdTextField, at: 1)
     stackView.addArrangedSubview(onCompleteLabel)
     stackView.addArrangedSubview(onErrorLabel)
   }
@@ -43,7 +43,7 @@ final class TransactionDetailsFlowTestViewController: TestViewController {
   override func buttonTapped() {
     manager.setToken(accessTokenTextField.text ?? "")
     manager.presentTransactionDetailsViewController(on: self,
-                                                    withInvoiceId: invoiceIdTextField.text ?? "",
+                                                    withTransactionId: transactionIdTextField.text ?? "",
                                                     animated: true) {
       self.label.attributedText = Self.attributedString(text: "onUpdate callback",
                                                         message: $0.description)

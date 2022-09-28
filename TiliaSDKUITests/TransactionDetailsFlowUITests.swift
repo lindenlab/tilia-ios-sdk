@@ -30,10 +30,10 @@ final class TransactionDetailsFlowUITests: XCTestCase {
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
-    let invoiceIdTextField = app.textFields["invoiceIdTextField"]
-    XCTAssert(invoiceIdTextField.exists)
-    invoiceIdTextField.tap()
-    invoiceIdTextField.typeText(UUID().uuidString)
+    let transactionIdTextField = app.textFields["transactionIdTextField"]
+    XCTAssert(transactionIdTextField.exists)
+    transactionIdTextField.tap()
+    transactionIdTextField.typeText(UUID().uuidString)
     
     app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
     

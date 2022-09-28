@@ -11,20 +11,32 @@ import Combine
 final class TransactionHistoryViewController: BaseTableViewController {
   
   override var hideableView: UIView {
-    return tableView
+    return contentStackView
   }
   
   private let viewModel: TransactionHistoryViewModelProtocol
   private let router: TransactionHistoryRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
   
-  private lazy var contentCloseButton: NonPrimaryButton = {
+  private lazy var contentStackView: UIStackView = {
+    tableView.removeFromSuperview()
+    let stackView = UIStackView(arrangedSubviews: [tableView, closeButtonStackView])
+    stackView.axis = .vertical
+    stackView.spacing = 16
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    return stackView
+  }()
+  
+  private lazy var closeButtonStackView: UIStackView = {
     let button = NonPrimaryButton()
-    button.isHidden = true
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle(L.close, for: .normal)
     button.addTarget(self, action: #selector(contentCloseButtonDidTap), for: .touchUpInside)
-    return button
+    let stackView = UIStackView(arrangedSubviews: [button])
+    stackView.isLayoutMarginsRelativeArrangement = true
+    stackView.directionalLayoutMargins = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+    stackView.isHidden = true
+    return stackView
   }()
   
   init(manager: NetworkManager,
@@ -53,13 +65,18 @@ final class TransactionHistoryViewController: BaseTableViewController {
     viewModel.checkIsTosRequired()
   }
   
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    tableView.contentInset.bottom = contentCloseButton.frame.height + 32
-  }
-  
   override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     viewModel.complete(isFromCloseAction: false)
+  }
+  
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 100
+  }
+  
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = UITableViewCell()
+    cell.textLabel?.text = "Text \(indexPath.row)"
+    return cell
   }
   
 }
@@ -69,11 +86,13 @@ final class TransactionHistoryViewController: BaseTableViewController {
 private extension TransactionHistoryViewController {
   
   func setup() {
-    view.addSubview(contentCloseButton)
+    view.addSubview(contentStackView)
+    
     NSLayoutConstraint.activate([
-      contentCloseButton.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
-      contentCloseButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-      contentCloseButton.bottomAnchor.constraint(equalTo: divider.topAnchor, constant: -16),
+      contentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      contentStackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+      contentStackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+      contentStackView.bottomAnchor.constraint(equalTo: divider.topAnchor, constant: -16)
     ])
   }
   
@@ -102,8 +121,8 @@ private extension TransactionHistoryViewController {
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      if self.contentCloseButton.isHidden {
-        self.contentCloseButton.isHidden = false
+      if self.closeButtonStackView.isHidden {
+        self.closeButtonStackView.isHidden = false
       }
     }.store(in: &subscriptions)
   }

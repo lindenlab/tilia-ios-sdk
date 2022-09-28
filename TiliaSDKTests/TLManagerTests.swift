@@ -150,7 +150,7 @@ final class TLManagerTests: XCTestCase {
     var errorCallback: TLErrorCallback?
     let expectation = XCTestExpectation(description: "testMissedRequiredDataForTransactionDetailsFlow")
     TLManager.shared.presentTransactionDetailsViewController(on: UIViewController(),
-                                                             withInvoiceId: "",
+                                                             withTransactionId: "",
                                                              animated: true,
                                                              onError: { errorCallback = $0; expectation.fulfill() })
     wait(for: [expectation], timeout: 1)

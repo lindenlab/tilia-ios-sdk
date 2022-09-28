@@ -21,7 +21,7 @@ protocol TransactionDetailsViewModelOutputProtocol {
 }
 
 protocol TransactionDetailsDataStore {
-  var invoiceId: String { get }
+  var transactionId: String { get }
   var manager: NetworkManager { get }
   var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
@@ -38,7 +38,7 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   let dismiss = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<TransactionDetailsModel, Never>()
   
-  let invoiceId: String
+  let transactionId: String
   let manager: NetworkManager
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
@@ -56,13 +56,13 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   private let needToCheckTos: Bool
   private var isLoaded = false
   
-  init(invoiceId: String,
+  init(transactionId: String,
        needToCheckTos: Bool,
        manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    self.invoiceId = invoiceId
+    self.transactionId = transactionId
     self.needToCheckTos = needToCheckTos
     self.manager = manager
     self.onUpdate = onUpdate
@@ -107,7 +107,7 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
 private extension TransactionDetailsViewModel {
   
   func getTransactionDetails() {
-    manager.getTransactionDetails(with: invoiceId) { [weak self] result in
+    manager.getTransactionDetails(with: transactionId) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let model):

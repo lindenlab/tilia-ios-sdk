@@ -21,7 +21,7 @@ protocol TransactionHistoryViewModelOutputProtocol {
 }
 
 protocol TransactionHistoryDataStore {
-  var selectedInvoiceId: String { get }
+  var selectedTransactionId: String { get }
   var manager: NetworkManager { get }
   var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
@@ -39,7 +39,7 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
   let dismiss = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<Void, Never>()
   
-  var selectedInvoiceId: String { return "" } // TODO: - Fix me
+  var selectedTransactionId: String { return "" } // TODO: - Fix me
   let manager: NetworkManager
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in

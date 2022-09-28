@@ -24,7 +24,7 @@ final class SendReceiptViewModelTests: XCTestCase {
     
     let updateCallbackExpectation = XCTestExpectation(description: "testSuccessSend_UpdateCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = SendReceiptViewModel(invoiceId: "",
+    let viewModel = SendReceiptViewModel(transactionId: "",
                                          manager: networkManager,
                                          onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
                                          onError: nil)
@@ -65,7 +65,7 @@ final class SendReceiptViewModelTests: XCTestCase {
     let errorCallbackExpectation = XCTestExpectation(description: "testFailureSend_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     
-    let viewModel = SendReceiptViewModel(invoiceId: "",
+    let viewModel = SendReceiptViewModel(transactionId: "",
                                          manager: networkManager,
                                          onUpdate: nil,
                                          onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })

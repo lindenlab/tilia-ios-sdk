@@ -24,7 +24,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let completeCallbackExpectation = XCTestExpectation(description: "testSuccessGetTransactionDetails_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(invoiceId: "",
+    let viewModel = TransactionDetailsViewModel(transactionId: "",
                                                 needToCheckTos: true,
                                                 manager: networkManager,
                                                 onUpdate: nil,
@@ -61,7 +61,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(invoiceId: "",
+    let viewModel = TransactionDetailsViewModel(transactionId: "",
                                                 needToCheckTos: true,
                                                 manager: networkManager,
                                                 onUpdate: nil,
@@ -88,7 +88,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(invoiceId: "",
+    let viewModel = TransactionDetailsViewModel(transactionId: "",
                                                 needToCheckTos: true,
                                                 manager: networkManager,
                                                 onUpdate: nil,

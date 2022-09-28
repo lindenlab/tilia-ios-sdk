@@ -29,16 +29,16 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol {
   let dismiss = PassthroughSubject<Void, Never>()
   let isEmailValid = PassthroughSubject<Bool, Never>()
   
-  private let invoiceId: String
+  private let transactionId: String
   private let manager: NetworkManager
   private let onError: ((TLErrorCallback) -> Void)?
   private let onUpdate: ((TLUpdateCallback) -> Void)?
   
-  init(invoiceId: String,
+  init(transactionId: String,
        manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    self.invoiceId = invoiceId
+    self.transactionId = transactionId
     self.manager = manager
     self.onUpdate = onUpdate
     self.onError = onError
@@ -50,7 +50,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol {
   
   func sendEmail(_ email: String) {
     loading.send(true)
-    manager.sendTransactionReceipt(withId: invoiceId, email: email) { [weak self] result in
+    manager.sendTransactionReceipt(withId: transactionId, email: email) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success:
