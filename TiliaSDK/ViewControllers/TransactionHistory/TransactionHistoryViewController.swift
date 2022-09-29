@@ -69,14 +69,33 @@ final class TransactionHistoryViewController: BaseTableViewController {
     viewModel.complete(isFromCloseAction: false)
   }
   
+  override func numberOfSections(in tableView: UITableView) -> Int {
+    return 5
+  }
+  
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 100
+    return 10
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = UITableViewCell()
-    cell.textLabel?.text = "Text \(indexPath.row)"
+    let cell = tableView.dequeue(TransactionHistoryCell.self, for: indexPath)
+    let value = NSMutableAttributedString(string: "String", attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .medium), .foregroundColor: UIColor.red])
+    let isDividerHidden = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+    cell.configure(title: "Tile", subTitle: "SubTitle", value: value, subValueImage: .failureIcon?.withRenderingMode(.alwaysTemplate), subValueTitle: "Failed", isDividerHidden: isDividerHidden)
     return cell
+  }
+  
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view = tableView.dequeue(TransactionHistoryHeaderView.self)
+    let value = "3 total".attributedString(font: .boldSystemFont(ofSize: 12), color: .tertiaryTextColor, subStrings: ("total", UIFont.systemFont(ofSize: 12), UIColor.tertiaryTextColor))
+    view.configure(title: "String", value: value)
+    return view
+  }
+  
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    let view = tableView.dequeue(DividerHeaderFooterView.self)
+    view.configure(insets: .init(top: 8, left: 0, bottom: 0, right: 0))
+    return view
   }
   
 }
@@ -86,6 +105,9 @@ final class TransactionHistoryViewController: BaseTableViewController {
 private extension TransactionHistoryViewController {
   
   func setup() {
+    tableView.register(TransactionHistoryHeaderView.self)
+    tableView.register(TransactionHistoryCell.self)
+    tableView.register(DividerHeaderFooterView.self)
     view.addSubview(contentStackView)
     
     NSLayoutConstraint.activate([
