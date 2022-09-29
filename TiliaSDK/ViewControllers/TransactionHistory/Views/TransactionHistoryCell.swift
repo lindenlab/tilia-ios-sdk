@@ -102,9 +102,9 @@ private extension TransactionHistoryCell {
     stackView.distribution = .equalCentering
     stackView.alignment = .center
     
-    selectionStyle = .none
-    backgroundColor = .backgroundColor
-    contentView.backgroundColor = .backgroundColor
+    isExclusiveTouch = true
+    backgroundColor = .clear
+    contentView.backgroundColor = .clear
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
     
