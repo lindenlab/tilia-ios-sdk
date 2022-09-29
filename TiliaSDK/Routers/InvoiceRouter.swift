@@ -14,10 +14,11 @@ enum InvoiceRouter: RouterProtocol {
   case payInvoice(id: String, isEscrow: Bool)
   case getTransactionDetails(id: String)
   case sendTransactionReceipt(id: String, email: String)
+  case getTransactionHistory(limit: Int, offset: Int)
   
   var method: HTTPMethod {
     switch self {
-    case .getInvoiceDetails, .getTransactionDetails: return .get
+    case .getInvoiceDetails, .getTransactionDetails, .getTransactionHistory: return .get
     default: return .post
     }
   }
@@ -39,6 +40,7 @@ enum InvoiceRouter: RouterProtocol {
     case let .payInvoice(id, isEscrow): return isEscrow ? "/v2/escrow/\(id)/pay" : "/v2/invoice/\(id)/pay"
     case let .getTransactionDetails(id): return "/v1/transaction/\(id)"
     case let .sendTransactionReceipt(id, _): return "/v1/transaction/\(id)/receipt"
+    case .getTransactionHistory: return "/v1/transactions"
     }
   }
   
@@ -62,6 +64,8 @@ extension InvoiceRouter {
 //      return readJSONFromFile("GetTransactionDetailsPayoutResponse")
     case .sendTransactionReceipt:
       return readJSONFromFile("SendTransactionReceiptResponse")
+    case .getTransactionHistory:
+      return readJSONFromFile("GetTransactionHistoryResponse")
     }
   }
   

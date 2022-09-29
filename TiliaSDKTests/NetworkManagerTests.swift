@@ -232,9 +232,9 @@ final class NetworkManagerTests: XCTestCase {
   
   func testGetTransactionHistorySuccess() {
     TLManager.shared.setToken(UUID().uuidString)
-    var model: EmptyModel?
+    var model: TransactionHistoryModel?
     let expectation = XCTestExpectation(description: "testGetTransactionHistorySuccess")
-    networkManager.getTransactionHistory { result in
+    networkManager.getTransactionHistory(withLimit: 10, offset: 0) { result in
       expectation.fulfill()
       switch result {
       case .success(let item):
@@ -244,7 +244,7 @@ final class NetworkManagerTests: XCTestCase {
       }
     }
     wait(for: [expectation], timeout: 2)
-    XCTAssertNotNil(model)
+    XCTAssertEqual(model?.total, 10)
   }
   
   func testGetAddCreditCardRedirectUrlSuccess() {

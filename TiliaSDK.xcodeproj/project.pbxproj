@@ -61,6 +61,8 @@
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
 		D154AD492811E320003976CB /* AddCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD482811E320003976CB /* AddCreditCardViewController.swift */; };
 		D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD4A2811E785003976CB /* BaseViewController.swift */; };
+		D155C7F228E586E100F04BD2 /* TransactionHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D155C7F128E586E100F04BD2 /* TransactionHistoryModel.swift */; };
+		D155C7F428E5898400F04BD2 /* GetTransactionHistoryResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D155C7F328E5898400F04BD2 /* GetTransactionHistoryResponse.json */; };
 		D15BA9ED282A9B2C00511785 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9EC282A9B2C00511785 /* TextFieldCell.swift */; };
 		D15BA9EF282A9B6500511785 /* TwoTextFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9EE282A9B6500511785 /* TwoTextFieldsCell.swift */; };
 		D15BA9F1282A9B9500511785 /* ThreeTextFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15BA9F0282A9B9500511785 /* ThreeTextFieldsCell.swift */; };
@@ -281,6 +283,8 @@
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
 		D154AD482811E320003976CB /* AddCreditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewController.swift; sourceTree = "<group>"; };
 		D154AD4A2811E785003976CB /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		D155C7F128E586E100F04BD2 /* TransactionHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryModel.swift; sourceTree = "<group>"; };
+		D155C7F328E5898400F04BD2 /* GetTransactionHistoryResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionHistoryResponse.json; sourceTree = "<group>"; };
 		D15BA9EC282A9B2C00511785 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		D15BA9EE282A9B6500511785 /* TwoTextFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoTextFieldsCell.swift; sourceTree = "<group>"; };
 		D15BA9F0282A9B9500511785 /* ThreeTextFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeTextFieldsCell.swift; sourceTree = "<group>"; };
@@ -646,6 +650,7 @@
 				D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */,
 				D1EFAB3228B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift */,
 				D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */,
+				D155C7F128E586E100F04BD2 /* TransactionHistoryModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -926,6 +931,7 @@
 				D1F7D3B128DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json */,
 				D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */,
 				D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */,
+				D155C7F328E5898400F04BD2 /* GetTransactionHistoryResponse.json */,
 			);
 			path = JSONFiles;
 			sourceTree = "<group>";
@@ -1126,6 +1132,7 @@
 				D135DC8527E74A520009D888 /* LaunchScreen.storyboard in Resources */,
 				D135DC8227E74A510009D888 /* Assets.xcassets in Resources */,
 				D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */,
+				D155C7F428E5898400F04BD2 /* GetTransactionHistoryResponse.json in Resources */,
 				D1B872C928044CC900DD1F7B /* GetUserBalanceByCurrencyCodeResponse.json in Resources */,
 				D123208628A6693A0039990A /* GetTosContentResponse.json in Resources */,
 				D13A872628C21DE000444EDB /* SendTransactionReceiptResponse.json in Resources */,
@@ -1266,6 +1273,7 @@
 				D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */,
 				D1BB6343287F0A40007616DE /* KycRouter.swift in Sources */,
 				D17A451528B3873A00B0C9AB /* TransactionDetailsTitleHeaderView.swift in Sources */,
+				D155C7F228E586E100F04BD2 /* TransactionHistoryModel.swift in Sources */,
 				D1C8A84827F60FFE00BF2910 /* InvoiceModel.swift in Sources */,
 				D188165927E7C0AF0082A85B /* AccountRouter.swift in Sources */,
 				D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */,

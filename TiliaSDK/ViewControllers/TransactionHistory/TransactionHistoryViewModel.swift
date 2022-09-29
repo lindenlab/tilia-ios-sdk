@@ -99,7 +99,7 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
 private extension TransactionHistoryViewModel {
   
   func getTransactionHistory() {
-    manager.getTransactionHistory { [weak self] result in
+    manager.getTransactionHistory(withLimit: 10, offset: 0) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let model):
