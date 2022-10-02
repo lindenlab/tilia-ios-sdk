@@ -10,6 +10,7 @@ import Combine
 protocol TransactionHistoryViewModelInputProtocol {
   func checkIsTosRequired()
   func complete(isFromCloseAction: Bool)
+  func setSelectedSection(for index: Int)
 }
 
 protocol TransactionHistoryViewModelOutputProtocol {
@@ -92,6 +93,10 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
     onComplete?(model)
   }
   
+  func setSelectedSection(for index: Int) {
+    
+  }
+  
 }
 
 // MARK: - Private Methods
@@ -103,10 +108,10 @@ private extension TransactionHistoryViewModel {
       guard let self = self else { return }
       switch result {
       case .success(let model):
-        self.content.send()
         if !self.isLoaded {
           self.isLoaded = true
         }
+        self.content.send()
       case .failure(let error):
         self.didFail(with: error)
       }

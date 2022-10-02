@@ -21,7 +21,8 @@ final class TransactionHistoryViewController: BaseTableViewController {
   private let builder = TransactionHistorySectionBuilder()
   
   private lazy var sectionTypeStackView: UIStackView = {
-    let segmentedControl = UISegmentedControl(items: [L.pending, L.history])
+    let titles = TransactionHistorySectionBuilder.SectionType.allCases.map { $0.description }
+    let segmentedControl = UISegmentedControl(items: [titles])
     segmentedControl.addTarget(self, action: #selector(sectionTypeDidChange(_:)), for: .valueChanged)
     segmentedControl.selectedSegmentTintColor = .primaryColor
     segmentedControl.selectedSegmentIndex = 0
@@ -201,7 +202,7 @@ private extension TransactionHistoryViewController {
   }
   
   @objc func sectionTypeDidChange(_ sender: UISegmentedControl) {
-    
+    viewModel.setSelectedSection(for: sender.selectedSegmentIndex)
   }
   
 }

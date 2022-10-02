@@ -9,17 +9,23 @@ import UIKit
 
 struct TransactionHistorySectionBuilder {
   
+  enum SectionType: Int, CaseIterable {
+    case pending
+    case history
+    
+    var description: String {
+      switch self {
+      case .pending: return L.pending
+      case .history: return L.history
+      }
+    }
+  }
+  
   struct Section {
     
-    enum SectionType {
-      
-      struct Header {
-        let title: String
-        let value: NSAttributedString
-      }
-      
-      case pending
-      case history(Header)
+    struct Header {
+      let title: String
+      let value: NSAttributedString
     }
     
     struct Item {
@@ -31,7 +37,7 @@ struct TransactionHistorySectionBuilder {
       let isDividerHidden: Bool
     }
     
-    let type: SectionType
+    let header: Header?
     let items: [Item]
   }
   
@@ -55,12 +61,11 @@ struct TransactionHistorySectionBuilder {
   
   func header(for section: Section,
               in tableView: UITableView) -> UIView? {
-    switch section.type {
-    case let .history(model):
+    if let header = section.header {
       let view = tableView.dequeue(TransactionHistoryHeaderView.self)
-      view.configure(title: model.title, value: model.value)
+      view.configure(title: header.title, value: header.value)
       return view
-    default:
+    } else {
       return nil
     }
   }
