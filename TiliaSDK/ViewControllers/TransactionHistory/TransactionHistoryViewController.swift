@@ -17,13 +17,20 @@ final class TransactionHistoryViewController: BaseTableViewController {
   private let viewModel: TransactionHistoryViewModelProtocol
   private let router: TransactionHistoryRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
+  private var sections: [TransactionHistorySectionBuilder.Section] = []
+  private let builder = TransactionHistorySectionBuilder()
   
-  private lazy var contentStackView: UIStackView = {
-    tableView.removeFromSuperview()
-    let stackView = UIStackView(arrangedSubviews: [tableView, closeButtonStackView])
-    stackView.axis = .vertical
-    stackView.spacing = 16
-    stackView.translatesAutoresizingMaskIntoConstraints = false
+  private lazy var sectionTypeStackView: UIStackView = {
+    let segmentedControl = UISegmentedControl(items: [L.pending, L.history])
+    segmentedControl.addTarget(self, action: #selector(sectionTypeDidChange(_:)), for: .valueChanged)
+    segmentedControl.selectedSegmentTintColor = .primaryColor
+    segmentedControl.selectedSegmentIndex = 0
+    segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.primaryButtonTextColor], for: .selected)
+    segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.primaryTextColor], for: .normal)
+    let stackView = UIStackView(arrangedSubviews: [segmentedControl])
+    stackView.isLayoutMarginsRelativeArrangement = true
+    stackView.directionalLayoutMargins = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+    stackView.isHidden = true
     return stackView
   }()
   
@@ -36,6 +43,16 @@ final class TransactionHistoryViewController: BaseTableViewController {
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.directionalLayoutMargins = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
     stackView.isHidden = true
+    return stackView
+  }()
+  
+  private lazy var contentStackView: UIStackView = {
+    tableView.removeFromSuperview()
+    let stackView = UIStackView(arrangedSubviews: [sectionTypeStackView,
+                                                   tableView,
+                                                   closeButtonStackView])
+    stackView.axis = .vertical
+    stackView.translatesAutoresizingMaskIntoConstraints = false
     return stackView
   }()
   
@@ -70,33 +87,44 @@ final class TransactionHistoryViewController: BaseTableViewController {
   }
   
   override func numberOfSections(in tableView: UITableView) -> Int {
-    return 5
+    return sections.count
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+    return builder.numberOfRows(in: sections[section])
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeue(TransactionHistoryCell.self, for: indexPath)
-    let value = NSMutableAttributedString(string: "String", attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .medium), .foregroundColor: UIColor.red])
-    let isDividerHidden = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
-    cell.configure(title: "Tile", subTitle: "SubTitle", value: value, subValueImage: .failureIcon?.withRenderingMode(.alwaysTemplate), subValueTitle: "Failed", isDividerHidden: isDividerHidden)
-    return cell
+    return builder.cell(for: sections[indexPath.section],
+                        in: tableView,
+                        at: indexPath)
   }
   
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let view = tableView.dequeue(TransactionHistoryHeaderView.self)
-    let value = "3 total".attributedString(font: .boldSystemFont(ofSize: 12), color: .tertiaryTextColor, subStrings: ("total", UIFont.systemFont(ofSize: 12), UIColor.tertiaryTextColor))
-    view.configure(title: "String", value: value)
-    return view
+    return builder.header(for: sections[section],
+                          in: tableView)
   }
   
-  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let view = tableView.dequeue(DividerHeaderFooterView.self)
-    view.configure(insets: .init(top: 8, left: 0, bottom: 0, right: 0))
-    return view
-  }
+//  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//    let cell = tableView.dequeue(TransactionHistoryCell.self, for: indexPath)
+//    let value = NSMutableAttributedString(string: "String", attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .medium), .foregroundColor: UIColor.red])
+//    let isDividerHidden = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+//    cell.configure(title: "Tile", subTitle: "SubTitle", value: value, subValueImage: .failureIcon?.withRenderingMode(.alwaysTemplate), subValueTitle: "Failed", isDividerHidden: isDividerHidden)
+//    return cell
+//  }
+//
+//  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//    let view = tableView.dequeue(TransactionHistoryHeaderView.self)
+//    let value = "3 total".attributedString(font: .boldSystemFont(ofSize: 12), color: .tertiaryTextColor, subStrings: ("total", UIFont.systemFont(ofSize: 12), UIColor.tertiaryTextColor))
+//    view.configure(title: "String", value: value)
+//    return view
+//  }
+//
+//  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//    let view = tableView.dequeue(DividerHeaderFooterView.self)
+//    view.configure(insets: .init(top: 8, left: 0, bottom: 0, right: 0))
+//    return view
+//  }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
@@ -115,7 +143,7 @@ private extension TransactionHistoryViewController {
     view.addSubview(contentStackView)
     
     NSLayoutConstraint.activate([
-      contentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      contentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
       contentStackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
       contentStackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       contentStackView.bottomAnchor.constraint(equalTo: divider.topAnchor, constant: -16)
@@ -150,6 +178,9 @@ private extension TransactionHistoryViewController {
       if self.closeButtonStackView.isHidden {
         self.closeButtonStackView.isHidden = false
       }
+      if self.sectionTypeStackView.isHidden {
+        self.sectionTypeStackView.isHidden = false
+      }
     }.store(in: &subscriptions)
   }
   
@@ -167,6 +198,10 @@ private extension TransactionHistoryViewController {
   
   @objc func contentCloseButtonDidTap() {
     dismiss(isFromCloseAction: false)
+  }
+  
+  @objc func sectionTypeDidChange(_ sender: UISegmentedControl) {
+    
   }
   
 }
