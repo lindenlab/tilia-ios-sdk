@@ -22,7 +22,7 @@ final class TransactionHistoryViewController: BaseTableViewController {
   
   private lazy var sectionTypeStackView: UIStackView = {
     let titles = TransactionHistorySectionBuilder.SectionType.allCases.map { $0.description }
-    let segmentedControl = UISegmentedControl(items: [titles])
+    let segmentedControl = UISegmentedControl(items: titles)
     segmentedControl.addTarget(self, action: #selector(sectionTypeDidChange(_:)), for: .valueChanged)
     segmentedControl.selectedSegmentTintColor = .primaryColor
     segmentedControl.selectedSegmentIndex = 0
@@ -54,6 +54,7 @@ final class TransactionHistoryViewController: BaseTableViewController {
                                                    closeButtonStackView])
     stackView.axis = .vertical
     stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.setCustomSpacing(8, after: tableView)
     return stackView
   }()
   
@@ -68,7 +69,7 @@ final class TransactionHistoryViewController: BaseTableViewController {
     let router = TransactionHistoryRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    super.init()
+    super.init(style: .plain)
     router.viewController = self
   }
   
@@ -106,26 +107,9 @@ final class TransactionHistoryViewController: BaseTableViewController {
                           in: tableView)
   }
   
-//  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//    let cell = tableView.dequeue(TransactionHistoryCell.self, for: indexPath)
-//    let value = NSMutableAttributedString(string: "String", attributes: [.font: UIFont.systemFont(ofSize: 14, weight: .medium), .foregroundColor: UIColor.red])
-//    let isDividerHidden = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
-//    cell.configure(title: "Tile", subTitle: "SubTitle", value: value, subValueImage: .failureIcon?.withRenderingMode(.alwaysTemplate), subValueTitle: "Failed", isDividerHidden: isDividerHidden)
-//    return cell
-//  }
-//
-//  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//    let view = tableView.dequeue(TransactionHistoryHeaderView.self)
-//    let value = "3 total".attributedString(font: .boldSystemFont(ofSize: 12), color: .tertiaryTextColor, subStrings: ("total", UIFont.systemFont(ofSize: 12), UIColor.tertiaryTextColor))
-//    view.configure(title: "String", value: value)
-//    return view
-//  }
-//
-//  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//    let view = tableView.dequeue(DividerHeaderFooterView.self)
-//    view.configure(insets: .init(top: 8, left: 0, bottom: 0, right: 0))
-//    return view
-//  }
+  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return .leastNormalMagnitude
+  }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
@@ -138,9 +122,11 @@ final class TransactionHistoryViewController: BaseTableViewController {
 private extension TransactionHistoryViewController {
   
   func setup() {
+    if #available(iOS 15.0, *) {
+      tableView.sectionHeaderTopPadding = 0
+    }
     tableView.register(TransactionHistoryHeaderView.self)
     tableView.register(TransactionHistoryCell.self)
-    tableView.register(DividerHeaderFooterView.self)
     view.addSubview(contentStackView)
     
     NSLayoutConstraint.activate([
@@ -181,6 +167,30 @@ private extension TransactionHistoryViewController {
       }
       if self.sectionTypeStackView.isHidden {
         self.sectionTypeStackView.isHidden = false
+      }
+      if $0.needReload {
+        self.sections.removeAll()
+      }
+      if $0.hasMore {
+        let spinner = UIActivityIndicatorView(style: .medium)
+        spinner.startAnimating()
+        self.tableView.tableFooterView = spinner
+      } else {
+        self.tableView.tableFooterView = nil
+      }
+      
+      let tableUpdate = self.builder.updateHistorySections(with: $0.models,
+                                                           oldLastItem: $0.lastItem,
+                                                           sections: &self.sections)
+      if $0.needReload {
+        self.tableView.reloadData()
+      } else {
+        UIView.performWithoutAnimation {
+          self.tableView.performBatchUpdates {
+            self.tableView.insertRows(at: tableUpdate.insertRows, with: .fade)
+            self.tableView.insertSections(tableUpdate.insertSections, with: .fade)
+          }
+        }
       }
     }.store(in: &subscriptions)
   }

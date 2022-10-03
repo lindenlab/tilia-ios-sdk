@@ -188,6 +188,7 @@
 		D1D5B53C27F759E000E04EE1 /* CheckoutSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B53B27F759E000E04EE1 /* CheckoutSectionBuilder.swift */; };
 		D1D5B54027F7654500E04EE1 /* CheckoutPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B53F27F7654500E04EE1 /* CheckoutPaymentMethodCell.swift */; };
 		D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B54127F7675C00E04EE1 /* RadioButton.swift */; };
+		D1E6F59A28EB41B8000CDA5E /* Collection+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F59928EB41B8000CDA5E /* Collection+Helpers.swift */; };
 		D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */; };
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
 		D1EFAB3128B7F14800AB1C31 /* LineItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */; };
@@ -206,7 +207,6 @@
 		D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */; };
 		D1FF582A28E6208A00B7CB3F /* TransactionHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF582928E6208A00B7CB3F /* TransactionHistoryHeaderView.swift */; };
 		D1FF582C28E6209800B7CB3F /* TransactionHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF582B28E6209800B7CB3F /* TransactionHistoryCell.swift */; };
-		D1FF583028E62C6400B7CB3F /* DividerHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FF582F28E62C6400B7CB3F /* DividerHeaderFooterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -414,6 +414,7 @@
 		D1D5B53B27F759E000E04EE1 /* CheckoutSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutSectionBuilder.swift; sourceTree = "<group>"; };
 		D1D5B53F27F7654500E04EE1 /* CheckoutPaymentMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentMethodCell.swift; sourceTree = "<group>"; };
 		D1D5B54127F7675C00E04EE1 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		D1E6F59928EB41B8000CDA5E /* Collection+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItemModel.swift; sourceTree = "<group>"; };
@@ -432,7 +433,6 @@
 		D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidatorTests.swift; sourceTree = "<group>"; };
 		D1FF582928E6208A00B7CB3F /* TransactionHistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryHeaderView.swift; sourceTree = "<group>"; };
 		D1FF582B28E6209800B7CB3F /* TransactionHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCell.swift; sourceTree = "<group>"; };
-		D1FF582F28E62C6400B7CB3F /* DividerHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerHeaderFooterView.swift; sourceTree = "<group>"; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -540,7 +540,6 @@
 				D1CCE8BF27F3927F00FD0E25 /* NonPrimaryButton.swift */,
 				D16D56A4282560DC0088FB3D /* ButtonsView.swift */,
 				D1C8A83527F4F5D100BF2910 /* DividerView.swift */,
-				D1FF582F28E62C6400B7CB3F /* DividerHeaderFooterView.swift */,
 				D1D5B54127F7675C00E04EE1 /* RadioButton.swift */,
 				D1BA29F628009D5700F046E8 /* ToastView.swift */,
 				D124DA1627F7A99600A75DF8 /* ToastViewCell.swift */,
@@ -842,6 +841,7 @@
 				D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */,
 				D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */,
 				D163D9E4284F53CC00F478DA /* Animation+Animations.swift */,
+				D1E6F59928EB41B8000CDA5E /* Collection+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1346,11 +1346,11 @@
 				D19C79902837958C0024BB6F /* UserDocumentsPhotoCell.swift in Sources */,
 				D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */,
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,
+				D1E6F59A28EB41B8000CDA5E /* Collection+Helpers.swift in Sources */,
 				D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */,
 				D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */,
 				D15BA9F3282AABF900511785 /* Date+Helpers.swift in Sources */,
 				D1C8A83427F4F36D00BF2910 /* CheckoutPayloadCell.swift in Sources */,
-				D1FF583028E62C6400B7CB3F /* DividerHeaderFooterView.swift in Sources */,
 				D1EFAB3128B7F14800AB1C31 /* LineItemModel.swift in Sources */,
 				D179123B282C3A2B0053DB10 /* UserInfoValidator.swift in Sources */,
 				D1A165B6287F5CB900EFD999 /* CountryStateModel.swift in Sources */,

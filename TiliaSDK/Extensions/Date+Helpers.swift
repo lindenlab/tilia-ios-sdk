@@ -63,4 +63,9 @@ extension Date {
     }
   }
   
+  func getDateDiff(for date: Date) -> Int {
+    let value = Calendar.current.dateComponents([.day], from: self, to: date).day ?? 0
+    return abs(value)
+  }
+  
 }

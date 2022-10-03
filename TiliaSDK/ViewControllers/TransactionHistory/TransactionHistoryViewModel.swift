@@ -7,6 +7,8 @@
 
 import Combine
 
+typealias TransactionHistoryContent = (models: [TransactionDetailsModel], lastItem: TransactionDetailsModel?, needReload: Bool, hasMore: Bool)
+
 protocol TransactionHistoryViewModelInputProtocol {
   func checkIsTosRequired()
   func complete(isFromCloseAction: Bool)
@@ -18,7 +20,7 @@ protocol TransactionHistoryViewModelOutputProtocol {
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
-  var content: PassthroughSubject<Void, Never> { get }
+  var content: PassthroughSubject<TransactionHistoryContent, Never> { get }
 }
 
 protocol TransactionHistoryDataStore {
@@ -38,7 +40,7 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
-  let content = PassthroughSubject<Void, Never>()
+  let content = PassthroughSubject<TransactionHistoryContent, Never>()
   
   var selectedTransactionId: String { return "" } // TODO: - Fix me
   let manager: NetworkManager
@@ -111,7 +113,7 @@ private extension TransactionHistoryViewModel {
         if !self.isLoaded {
           self.isLoaded = true
         }
-        self.content.send()
+        self.content.send((model.transactions, nil, true, false))
       case .failure(let error):
         self.didFail(with: error)
       }

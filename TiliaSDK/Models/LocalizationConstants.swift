@@ -199,5 +199,8 @@ enum L {
   static func convertedTo(with arguments: CVarArg...) -> String {
     return "convertedTo".localized(with: arguments)
   }
+  static func total(with arguments: CVarArg...) -> String {
+    return "totalWithArgument".localized(with: arguments)
+  }
   
 }
