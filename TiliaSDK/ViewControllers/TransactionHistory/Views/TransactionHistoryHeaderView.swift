@@ -32,9 +32,9 @@ final class TransactionHistoryHeaderView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String, value: String?) {
+  func configure(title: String, value: NSAttributedString?) {
     titleLabel.text = title
-    valueLabel.text = value
+    valueLabel.attributedText = value
   }
   
 }

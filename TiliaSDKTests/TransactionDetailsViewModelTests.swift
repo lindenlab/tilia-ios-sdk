@@ -24,8 +24,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let completeCallbackExpectation = XCTestExpectation(description: "testSuccessGetTransactionDetails_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(transactionId: "",
-                                                needToCheckTos: true,
+    let viewModel = TransactionDetailsViewModel(type: .id(""),
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
@@ -61,8 +60,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(transactionId: "",
-                                                needToCheckTos: true,
+    let viewModel = TransactionDetailsViewModel(type: .id(""),
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: nil,
@@ -88,8 +86,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(transactionId: "",
-                                                needToCheckTos: true,
+    let viewModel = TransactionDetailsViewModel(type: .id(""),
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: nil,

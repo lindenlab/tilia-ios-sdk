@@ -27,7 +27,7 @@ struct TransactionHistorySectionBuilder {
     
     struct Header {
       let title: String
-      var value: String?
+      var value: NSAttributedString?
     }
     
     struct Item {
@@ -90,8 +90,11 @@ struct TransactionHistorySectionBuilder {
                               items: [self.item(for: item, isLast: isItemLast)]))
       }
       if isItemLast {
-        let count = sections[sections.count - 1].items.count
-        sections[sections.count - 1].header?.value = L.total(with: String(count))
+        let count = String(sections[sections.count - 1].items.count)
+        let value = L.total(with: count).attributedString(font: .systemFont(ofSize: 12),
+                                                          color: .tertiaryTextColor,
+                                                          subStrings: (count, .boldSystemFont(ofSize: 12), .tertiaryTextColor))
+        sections[sections.count - 1].header?.value = value
       }
       lastItem = item
     }
@@ -106,7 +109,7 @@ private extension TransactionHistorySectionBuilder {
   
   func item(for model: TransactionDetailsModel, isLast: Bool) -> Section.Item {
     return .init(title: "Title for transaction",
-                 subTitle: "SubTitle for transaction",
+                 subTitle: model.type.description,
                  value: model.attributedValue,
                  subValueImage: model.status.subValueImage,
                  subValueTitle: model.status.subValueTitle,
@@ -153,6 +156,20 @@ private extension TransactionStatusModel {
   
   var subValueTitle: String? {
     return self == .failed ? self.description : nil
+  }
+  
+}
+
+private extension TransactionTypeModel {
+  
+  var description: String {
+    switch self {
+    case .userPurchase: return L.purchase
+    case .userPurchaseRecipient: return L.sale
+    case .payout: return L.payout
+    case .tokenPurchase: return L.tokenPurchase
+    case .tokenConvert: return L.tokenConvert
+    }
   }
   
 }

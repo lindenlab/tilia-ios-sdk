@@ -20,14 +20,12 @@ final class TransactionDetailsViewController: BaseTableViewController {
   private var sections: [TransactionDetailsSectionBuilder.Section] = []
   private let builder = TransactionDetailsSectionBuilder()
   
-  init(transactionId: String,
-       needToCheckTos: Bool,
+  init(type: TransactionDetailsType,
        manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    let viewModel = TransactionDetailsViewModel(transactionId: transactionId,
-                                                needToCheckTos: needToCheckTos,
+    let viewModel = TransactionDetailsViewModel(type: type,
                                                 manager: manager,
                                                 onUpdate: onUpdate,
                                                 onComplete: onComplete,

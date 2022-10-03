@@ -165,6 +165,12 @@ enum L {
   static let transferredFrom = "transferredFrom".localized
   static let payoutErrorMessage = "payoutErrorMessage".localized
   static let history = "history".localized
+  static let payout = "payout".localized
+  static let sale = "sale".localized
+  static let purchase = "purchase".localized
+  static let tokenPurchase = "tokenPurchase".localized
+  static let tokenConvert = "tokenConvert".localized
+  static let refund = "refund".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)

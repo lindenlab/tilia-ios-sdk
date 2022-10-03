@@ -35,8 +35,7 @@ final class TransactionHistoryRouter: TransactionHistoryRoutingProtocol {
   }
   
   func routeToTransactionDetailsView() {
-    let transactionDetailsController = TransactionDetailsViewController(transactionId: dataStore.selectedTransactionId,
-                                                                        needToCheckTos: false,
+    let transactionDetailsController = TransactionDetailsViewController(type: .id("123"), // Fix me
                                                                         manager: dataStore.manager,
                                                                         onUpdate: dataStore.onUpdate,
                                                                         onComplete: dataStore.onComplete,

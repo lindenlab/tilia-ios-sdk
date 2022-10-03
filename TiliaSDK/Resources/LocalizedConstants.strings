@@ -165,3 +165,9 @@
 "payoutErrorMessage" = "There was an error processing your payout, your funds will be returned to your Tilia wallet.";
 "history" = "History";
 "totalWithArgument" = "%@ total";
+"payout" = "Payout";
+"sale" = "Sale";
+"purchase" = "Purchase";
+"tokenPurchase" = "Token purchase";
+"tokenConvert" = "Token convert";
+"refund" = "Refund";
