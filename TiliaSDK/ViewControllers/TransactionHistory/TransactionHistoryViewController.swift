@@ -20,15 +20,19 @@ final class TransactionHistoryViewController: BaseTableViewController {
   private var sections: [TransactionHistorySectionBuilder.Section] = []
   private let builder = TransactionHistorySectionBuilder()
   
-  private lazy var sectionTypeStackView: UIStackView = {
+  private lazy var sectionTypeSegmentedControl: UISegmentedControl = {
     let titles = TransactionHistorySectionBuilder.SectionType.allCases.map { $0.description }
     let segmentedControl = UISegmentedControl(items: titles)
-    segmentedControl.addTarget(self, action: #selector(sectionTypeDidChange(_:)), for: .valueChanged)
+    segmentedControl.addTarget(self, action: #selector(sectionTypeDidChange), for: .valueChanged)
     segmentedControl.selectedSegmentTintColor = .primaryColor
-    segmentedControl.selectedSegmentIndex = 0
+    segmentedControl.selectedSegmentIndex = viewModel.selectedSegmentIndex
     segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.primaryButtonTextColor], for: .selected)
     segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.primaryTextColor], for: .normal)
-    let stackView = UIStackView(arrangedSubviews: [segmentedControl])
+    return segmentedControl
+  }()
+  
+  private lazy var sectionTypeStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [sectionTypeSegmentedControl])
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.directionalLayoutMargins = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
     stackView.isHidden = true
@@ -180,16 +184,17 @@ private extension TransactionHistoryViewController {
         self.tableView.tableFooterView = nil
       }
       
-      let tableUpdate = self.builder.updateHistorySections(with: $0.models,
-                                                           oldLastItem: $0.lastItem,
-                                                           sections: &self.sections)
+      let tableUpdate = self.builder.updateSections(with: $0.models,
+                                                    for: $0.sectionType,
+                                                    oldLastItem: $0.lastItem,
+                                                    sections: &self.sections)
       if $0.needReload {
         self.tableView.reloadData()
       } else {
         UIView.performWithoutAnimation {
           self.tableView.performBatchUpdates {
-            self.tableView.insertRows(at: tableUpdate.insertRows, with: .fade)
-            self.tableView.insertSections(tableUpdate.insertSections, with: .fade)
+            tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .fade) }
+            tableUpdate.insertSections.map { self.tableView.insertSections($0, with: .fade) }
           }
         }
       }
@@ -212,8 +217,8 @@ private extension TransactionHistoryViewController {
     dismiss(isFromCloseAction: false)
   }
   
-  @objc func sectionTypeDidChange(_ sender: UISegmentedControl) {
-    viewModel.setSelectedSection(for: sender.selectedSegmentIndex)
+  @objc func sectionTypeDidChange() {
+    viewModel.setSelectedSegmentIndex(sectionTypeSegmentedControl.selectedSegmentIndex)
   }
   
 }

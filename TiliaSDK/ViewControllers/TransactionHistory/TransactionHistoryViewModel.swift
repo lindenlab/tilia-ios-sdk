@@ -7,15 +7,16 @@
 
 import Combine
 
-typealias TransactionHistoryContent = (models: [TransactionDetailsModel], lastItem: TransactionDetailsModel?, needReload: Bool, hasMore: Bool)
+typealias TransactionHistoryContent = (models: [TransactionDetailsModel], lastItem: TransactionDetailsModel?, needReload: Bool, hasMore: Bool, sectionType: TransactionHistorySectionBuilder.SectionType)
 
 protocol TransactionHistoryViewModelInputProtocol {
   func checkIsTosRequired()
   func complete(isFromCloseAction: Bool)
-  func setSelectedSection(for index: Int)
+  func setSelectedSegmentIndex(_ index: Int)
 }
 
 protocol TransactionHistoryViewModelOutputProtocol {
+  var selectedSegmentIndex: Int { get }
   var loading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
@@ -42,6 +43,7 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
   let dismiss = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<TransactionHistoryContent, Never>()
   
+  private(set) var selectedSegmentIndex = 0
   var selectedTransaction: String { return "" } // TODO: - Fix me
   let manager: NetworkManager
   let onUpdate: ((TLUpdateCallback) -> Void)?
@@ -95,8 +97,8 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
     onComplete?(model)
   }
   
-  func setSelectedSection(for index: Int) {
-    
+  func setSelectedSegmentIndex(_ index: Int) {
+    selectedSegmentIndex = index
   }
   
 }
@@ -113,7 +115,7 @@ private extension TransactionHistoryViewModel {
         if !self.isLoaded {
           self.isLoaded = true
         }
-        self.content.send((model.transactions, nil, true, false))
+        self.content.send((model.transactions, nil, true, false, .history))
       case .failure(let error):
         self.didFail(with: error)
       }
