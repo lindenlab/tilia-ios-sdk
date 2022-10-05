@@ -17,6 +17,7 @@ protocol TransactionHistoryChildViewModelDelegate: AnyObject {
 
 protocol TransactionHistoryChildViewModelInputProtocol {
   func loadTransactions()
+  func loadMoreTransactions()
   func selectTransaction(at index: Int)
 }
 
@@ -55,6 +56,10 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
       }
       self.loading.send(false)
     }
+  }
+  
+  func loadMoreTransactions() {
+    
   }
   
   func selectTransaction(at index: Int) {

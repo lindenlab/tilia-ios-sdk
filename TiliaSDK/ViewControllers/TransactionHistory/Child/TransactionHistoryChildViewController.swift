@@ -67,6 +67,12 @@ final class TransactionHistoryChildViewController: UITableViewController {
     viewModel.selectTransaction(at: index(for: indexPath))
   }
   
+  override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    guard tableView.tableFooterView != nil,
+          indexPath == tableView.indexPathOfLastRow else { return }
+    viewModel.loadMoreTransactions()
+  }
+  
 }
 
 // MARK: - Private Methods
@@ -106,6 +112,7 @@ private extension TransactionHistoryChildViewController {
         self.sections.removeAll()
       }
       if $0.hasMore {
+        guard self.tableView.tableFooterView == nil else { return }
         let spinner = UIActivityIndicatorView(style: .medium)
         spinner.startAnimating()
         self.tableView.tableFooterView = spinner
