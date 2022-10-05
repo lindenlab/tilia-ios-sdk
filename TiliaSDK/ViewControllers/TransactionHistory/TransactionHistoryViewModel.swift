@@ -7,25 +7,22 @@
 
 import Combine
 
-typealias TransactionHistoryContent = (models: [TransactionDetailsModel], lastItem: TransactionDetailsModel?, needReload: Bool, hasMore: Bool, sectionType: TransactionHistorySectionBuilder.SectionType)
-
 protocol TransactionHistoryViewModelInputProtocol {
   func checkIsTosRequired()
   func complete(isFromCloseAction: Bool)
-  func setSelectedSegmentIndex(_ index: Int)
 }
 
 protocol TransactionHistoryViewModelOutputProtocol {
-  var selectedSegmentIndex: Int { get }
   var loading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
-  var content: PassthroughSubject<TransactionHistoryContent, Never> { get }
+  var content: PassthroughSubject<Void, Never> { get }
+  var selectTransaction: PassthroughSubject<Void, Never> { get }
 }
 
 protocol TransactionHistoryDataStore {
-  var selectedTransaction: String { get }
+  var selectedTransaction: TransactionDetailsModel? { get }
   var manager: NetworkManager { get }
   var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
@@ -41,16 +38,16 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
-  let content = PassthroughSubject<TransactionHistoryContent, Never>()
+  let content = PassthroughSubject<Void, Never>()
+  let selectTransaction = PassthroughSubject<Void, Never>()
   
-  private(set) var selectedSegmentIndex = 0
-  var selectedTransaction: String { return "" } // TODO: - Fix me
+  private(set) var selectedTransaction: TransactionDetailsModel?
   let manager: NetworkManager
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
     guard let self = self else { return }
     if $0.state == .completed {
-      self.getTransactionHistory()
+      self.didLoad()
     } else {
       self.dismiss.send()
     }
@@ -80,7 +77,7 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
         if !model.isTosSigned {
           self.needToAcceptTos.send()
         } else {
-          self.getTransactionHistory()
+          self.didLoad()
         }
       case .failure(let error):
         self.didFail(with: error)
@@ -97,8 +94,25 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
     onComplete?(model)
   }
   
-  func setSelectedSegmentIndex(_ index: Int) {
-    selectedSegmentIndex = index
+}
+
+// MARK: - TransactionHistoryChildViewModelDelegate
+
+extension TransactionHistoryViewModel: TransactionHistoryChildViewModelDelegate {
+  
+  func transactionHistoryChildViewModelDidLoad() {
+    guard !isLoaded else { return }
+    isLoaded = true
+  }
+  
+  func transactionHistoryChildViewModel(didFailWithError error: Error) {
+    didFail(with: error)
+  }
+  
+  func transactionHistoryChildViewModel(didSelectTransaction transaction: TransactionDetailsModel) {
+    self.selectedTransaction = transaction
+    selectTransaction.send()
+    self.selectedTransaction = nil
   }
   
 }
@@ -107,20 +121,9 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
 
 private extension TransactionHistoryViewModel {
   
-  func getTransactionHistory() {
-    manager.getTransactionHistory(withLimit: 10, offset: 0) { [weak self] result in
-      guard let self = self else { return }
-      switch result {
-      case .success(let model):
-        if !self.isLoaded {
-          self.isLoaded = true
-        }
-        self.content.send((model.transactions, nil, true, false, .history))
-      case .failure(let error):
-        self.didFail(with: error)
-      }
-      self.loading.send(false)
-    }
+  func didLoad() {
+    content.send()
+    loading.send(false)
   }
   
   func didFail(with error: Error) {

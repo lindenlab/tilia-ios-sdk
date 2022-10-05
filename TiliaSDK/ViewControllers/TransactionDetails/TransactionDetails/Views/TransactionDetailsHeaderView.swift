@@ -24,6 +24,7 @@ final class TransactionDetailsHeaderView: UITableViewHeaderFooterView {
     label.textColor = .tertiaryTextColor
     label.numberOfLines = 0
     label.font = .systemFont(ofSize: 14)
+    label.textAlignment = .center
     return label
   }()
   

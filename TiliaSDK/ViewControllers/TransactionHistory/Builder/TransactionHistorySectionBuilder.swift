@@ -7,47 +7,23 @@
 
 import UIKit
 
-struct TransactionHistorySectionBuilder {
-  
+protocol TransactionHistorySectionBuilder {
   typealias TableUpdate = (insertSections: IndexSet?, insertRows: [IndexPath]?)
   
-  enum SectionType: Int, CaseIterable {
-    case pending
-    case history
-    
-    var description: String {
-      switch self {
-      case .pending: return L.pending
-      case .history: return L.history
-      }
-    }
-  }
+  func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate
+}
+
+extension TransactionHistorySectionBuilder {
   
-  struct Section {
-    
-    struct Header {
-      let title: String
-      var value: NSAttributedString?
-    }
-    
-    struct Item {
-      let title: String
-      let subTitle: String
-      let value: NSAttributedString
-      let subValueImage: UIImage?
-      let subValueTitle: String?
-      var isLast: Bool
-    }
-    
-    var header: Header?
-    var items: [Item]
-  }
-  
-  func numberOfRows(in section: Section) -> Int {
+  func numberOfRows(in section: TransactionHistorySectionModel) -> Int {
     return section.items.count
   }
   
-  func cell(for section: Section,
+  func heightForHeader(in section: TransactionHistorySectionModel) -> CGFloat {
+    return section.header == nil ? .leastNormalMagnitude : UITableView.automaticDimension
+  }
+  
+  func cell(for section: TransactionHistorySectionModel,
             in tableView: UITableView,
             at indexPath: IndexPath) -> UITableViewCell {
     let item = section.items[indexPath.row]
@@ -61,7 +37,7 @@ struct TransactionHistorySectionBuilder {
     return cell
   }
   
-  func header(for section: Section,
+  func header(for section: TransactionHistorySectionModel,
               in tableView: UITableView) -> UIView? {
     if let header = section.header {
       let view = tableView.dequeue(TransactionHistoryHeaderView.self)
@@ -72,27 +48,36 @@ struct TransactionHistorySectionBuilder {
     }
   }
   
-  func updateSections(with items: [TransactionDetailsModel], for sectionType: SectionType, oldLastItem: TransactionDetailsModel?, sections: inout [Section]) -> TableUpdate {
-    switch sectionType {
-    case .pending:
-      return updatePendingSection(with: items,
-                                  for: sectionType,
-                                  sections: &sections)
-    case .history:
-      return updateHistorySections(with: items,
-                                   for: sectionType,
-                                   oldLastItem: oldLastItem,
-                                   sections: &sections)
+}
+
+struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder {
+  
+  func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
+    var insertRows: [IndexPath] = []
+    if sections.isEmpty {
+      let count = items.count
+      let headerItems = items.enumerated().map { index, item in
+        return self.item(for: item,
+                         isLast: index == count - 1,
+                         sectionType: .pending)
+      }
+      sections.append(.init(header: nil, items: headerItems))
+    } else {
+      let lastItemIndex = sections[0].items.count - 1
+      if lastItemIndex >= 0, sections[0].items[lastItemIndex].isLast {
+        sections[0].items[lastItemIndex].isLast = false
+      }
+      insertRows.append(.init(row: lastItemIndex + 1, section: 0))
     }
+    return (nil, insertRows.isEmpty ? nil : insertRows)
   }
   
 }
 
-// MARK: - Private Methods
 
-private extension TransactionHistorySectionBuilder {
+struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder {
   
-  func updateHistorySections(with items: [TransactionDetailsModel], for sectionType: SectionType, oldLastItem: TransactionDetailsModel?, sections: inout [Section]) -> TableUpdate {
+  func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
     let oldLastSectionIndex = sections.count - 1
     var lastItem = oldLastItem
     var insertRows: [IndexPath] = []
@@ -110,13 +95,13 @@ private extension TransactionHistorySectionBuilder {
         }
         sections[lastSectionIndex].items.append(self.item(for: item,
                                                           isLast: isItemLast,
-                                                          sectionType: sectionType))
+                                                          sectionType: .history))
       } else {
         let title = item.transactionDate.string(formatter: .longDateFormatter)
         sections.append(.init(header: .init(title: title, value: nil),
                               items: [self.item(for: item,
                                                 isLast: isItemLast,
-                                                sectionType: sectionType)]))
+                                                sectionType: .history)]))
       }
       if isItemLast {
         let count = String(sections[sections.count - 1].items.count)
@@ -132,27 +117,24 @@ private extension TransactionHistorySectionBuilder {
     return (insertSections, insertRows.isEmpty ? nil : insertRows)
   }
   
-  func updatePendingSection(with items: [TransactionDetailsModel], for sectionType: SectionType, sections: inout [Section]) -> TableUpdate {
-    var insertRows: [IndexPath] = []
-    if sections.isEmpty {
-      let count = items.count
-      let headerItems = items.enumerated().map { index, item in
-        return self.item(for: item,
-                         isLast: index == count - 1,
-                         sectionType: sectionType)
-      }
-      sections.append(.init(header: nil, items: headerItems))
-    } else {
-      let lastItemIndex = sections[0].items.count - 1
-      if lastItemIndex >= 0, sections[0].items[lastItemIndex].isLast {
-        sections[0].items[lastItemIndex].isLast = false
-      }
-      insertRows.append(.init(row: lastItemIndex + 1, section: 0))
+}
+
+extension TransactionHistorySectionModel.SectionType {
+  
+  var builder: TransactionHistorySectionBuilder {
+    switch self {
+    case .pending: return TransactionHistoryPendingSectionBuilder()
+    case .history: return TransactionHistoryHistorySectionBuilder()
     }
-    return (nil, insertRows.isEmpty ? nil : insertRows)
   }
   
-  func item(for model: TransactionDetailsModel, isLast: Bool, sectionType: SectionType) -> Section.Item {
+}
+
+// MARK: - Private Methods
+
+private extension TransactionHistorySectionBuilder {
+  
+  func item(for model: TransactionDetailsModel, isLast: Bool, sectionType: TransactionHistorySectionModel.SectionType) -> TransactionHistorySectionModel.Item {
     let subTitle: String
     switch sectionType {
     case .pending:

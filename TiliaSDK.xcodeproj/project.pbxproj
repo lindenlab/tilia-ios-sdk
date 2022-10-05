@@ -189,6 +189,10 @@
 		D1D5B54027F7654500E04EE1 /* CheckoutPaymentMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B53F27F7654500E04EE1 /* CheckoutPaymentMethodCell.swift */; };
 		D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B54127F7675C00E04EE1 /* RadioButton.swift */; };
 		D1E6F59A28EB41B8000CDA5E /* Collection+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F59928EB41B8000CDA5E /* Collection+Helpers.swift */; };
+		D1E6F59C28ECBCD7000CDA5E /* TransactionHistorySectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F59B28ECBCD7000CDA5E /* TransactionHistorySectionModel.swift */; };
+		D1E6F5A328ECC157000CDA5E /* TransactionHistoryChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F5A228ECC157000CDA5E /* TransactionHistoryChildViewModel.swift */; };
+		D1E6F5A528ECC19B000CDA5E /* TransactionHistoryChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F5A428ECC19B000CDA5E /* TransactionHistoryChildViewController.swift */; };
+		D1E6F5A728ECD2FF000CDA5E /* UIViewController+Childs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F5A628ECD2FF000CDA5E /* UIViewController+Childs.swift */; };
 		D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */; };
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
 		D1EFAB3128B7F14800AB1C31 /* LineItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */; };
@@ -415,6 +419,10 @@
 		D1D5B53F27F7654500E04EE1 /* CheckoutPaymentMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentMethodCell.swift; sourceTree = "<group>"; };
 		D1D5B54127F7675C00E04EE1 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		D1E6F59928EB41B8000CDA5E /* Collection+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Helpers.swift"; sourceTree = "<group>"; };
+		D1E6F59B28ECBCD7000CDA5E /* TransactionHistorySectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySectionModel.swift; sourceTree = "<group>"; };
+		D1E6F5A228ECC157000CDA5E /* TransactionHistoryChildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryChildViewModel.swift; sourceTree = "<group>"; };
+		D1E6F5A428ECC19B000CDA5E /* TransactionHistoryChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryChildViewController.swift; sourceTree = "<group>"; };
+		D1E6F5A628ECD2FF000CDA5E /* UIViewController+Childs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Childs.swift"; sourceTree = "<group>"; };
 		D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItemModel.swift; sourceTree = "<group>"; };
@@ -657,6 +665,7 @@
 				D1EFAB3228B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift */,
 				D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */,
 				D155C7F128E586E100F04BD2 /* TransactionHistoryModel.swift */,
+				D1E6F59B28ECBCD7000CDA5E /* TransactionHistorySectionModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -687,6 +696,7 @@
 		D13759C428D355160046234B /* TransactionHistory */ = {
 			isa = PBXGroup;
 			children = (
+				D1E6F5A128ECC127000CDA5E /* Child */,
 				D13759CC28D363EF0046234B /* Builder */,
 				D13759CB28D3558F0046234B /* Views */,
 				D13759C528D3556A0046234B /* TransactionHistoryViewModel.swift */,
@@ -835,6 +845,7 @@
 				D1C8A83F27F4FEC200BF2910 /* UITableViewHeaderFooterView+Helpers.swift */,
 				D17EFFA42846462500F4B6DD /* UICollectionView+Helpers.swift */,
 				D17EFFA62846466900F4B6DD /* UICollectionViewCell+Helpers.swift */,
+				D1E6F5A628ECD2FF000CDA5E /* UIViewController+Childs.swift */,
 				D1C8A84327F5E49600BF2910 /* String+Helpers.swift */,
 				D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */,
 				D15BA9F2282AABF900511785 /* Date+Helpers.swift */,
@@ -1017,6 +1028,15 @@
 				D1D5B53B27F759E000E04EE1 /* CheckoutSectionBuilder.swift */,
 			);
 			path = Builder;
+			sourceTree = "<group>";
+		};
+		D1E6F5A128ECC127000CDA5E /* Child */ = {
+			isa = PBXGroup;
+			children = (
+				D1E6F5A228ECC157000CDA5E /* TransactionHistoryChildViewModel.swift */,
+				D1E6F5A428ECC19B000CDA5E /* TransactionHistoryChildViewController.swift */,
+			);
+			path = Child;
 			sourceTree = "<group>";
 		};
 		D1EFAB3628B94EA100AB1C31 /* Validator */ = {
@@ -1250,9 +1270,11 @@
 				D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */,
 				D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */,
 				D16E2A9728AFA16700287C55 /* SendReceiptViewController.swift in Sources */,
+				D1E6F59C28ECBCD7000CDA5E /* TransactionHistorySectionModel.swift in Sources */,
 				D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */,
 				D123208828A669800039990A /* TosContentModel.swift in Sources */,
 				D135DCBA27E777030009D888 /* ServerClient.swift in Sources */,
+				D1E6F5A528ECC19B000CDA5E /* TransactionHistoryChildViewController.swift in Sources */,
 				D16E2A9F28AFBBB400287C55 /* BaseTableViewController.swift in Sources */,
 				D135DC7D27E74A4A0009D888 /* DemoViewController.swift in Sources */,
 				D16D56A3282538F00088FB3D /* TitleBaseCell.swift in Sources */,
@@ -1264,6 +1286,7 @@
 				D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */,
 				D16E2A9328AFA14B00287C55 /* SendReceiptViewModel.swift in Sources */,
 				D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */,
+				D1E6F5A728ECD2FF000CDA5E /* UIViewController+Childs.swift in Sources */,
 				D1BB6345287F2B8B007616DE /* SubmittedKycModel.swift in Sources */,
 				D1D5B53C27F759E000E04EE1 /* CheckoutSectionBuilder.swift in Sources */,
 				D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */,
@@ -1370,6 +1393,7 @@
 				D120F2D627F21082009B30DD /* PrimaryButton.swift in Sources */,
 				D1EFAB3328B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift in Sources */,
 				D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */,
+				D1E6F5A328ECC157000CDA5E /* TransactionHistoryChildViewModel.swift in Sources */,
 				D1CCE8C027F3927F00FD0E25 /* NonPrimaryButton.swift in Sources */,
 				D1CCE8CB27F4A43D00FD0E25 /* CheckoutRouter.swift in Sources */,
 				D163D9E3284F52D400F478DA /* UserInfoSuccessCell.swift in Sources */,

@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class TransactionHistoryViewController: BaseTableViewController {
+final class TransactionHistoryViewController: BaseViewController {
   
   override var hideableView: UIView {
     return contentStackView
@@ -17,15 +17,13 @@ final class TransactionHistoryViewController: BaseTableViewController {
   private let viewModel: TransactionHistoryViewModelProtocol
   private let router: TransactionHistoryRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
-  private var sections: [TransactionHistorySectionBuilder.Section] = []
-  private let builder = TransactionHistorySectionBuilder()
+  private var viewControllers: [UIViewController] = []
+  private var selectedViewController: UIViewController?
   
   private lazy var sectionTypeSegmentedControl: UISegmentedControl = {
-    let titles = TransactionHistorySectionBuilder.SectionType.allCases.map { $0.description }
-    let segmentedControl = UISegmentedControl(items: titles)
+    let segmentedControl = UISegmentedControl()
     segmentedControl.addTarget(self, action: #selector(sectionTypeDidChange), for: .valueChanged)
     segmentedControl.selectedSegmentTintColor = .primaryColor
-    segmentedControl.selectedSegmentIndex = viewModel.selectedSegmentIndex
     segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.primaryButtonTextColor], for: .selected)
     segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.primaryTextColor], for: .normal)
     return segmentedControl
@@ -52,13 +50,10 @@ final class TransactionHistoryViewController: BaseTableViewController {
   }()
   
   private lazy var contentStackView: UIStackView = {
-    tableView.removeFromSuperview()
     let stackView = UIStackView(arrangedSubviews: [sectionTypeStackView,
-                                                   tableView,
                                                    closeButtonStackView])
     stackView.axis = .vertical
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.setCustomSpacing(8, after: tableView)
     return stackView
   }()
   
@@ -73,7 +68,16 @@ final class TransactionHistoryViewController: BaseTableViewController {
     let router = TransactionHistoryRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    super.init(style: .plain)
+    super.init(nibName: nil, bundle: nil)
+    TransactionHistorySectionModel.SectionType.allCases.enumerated().forEach { index, item in
+      viewControllers.append(TransactionHistoryChildViewController(manager: manager,
+                                                                   delegate: viewModel,
+                                                                   builder: item.builder))
+      sectionTypeSegmentedControl.insertSegment(withTitle: item.description,
+                                                at: index,
+                                                animated: false)
+    }
+    sectionTypeSegmentedControl.selectedSegmentIndex = 0
     router.viewController = self
   }
   
@@ -92,34 +96,6 @@ final class TransactionHistoryViewController: BaseTableViewController {
     viewModel.complete(isFromCloseAction: false)
   }
   
-  override func numberOfSections(in tableView: UITableView) -> Int {
-    return sections.count
-  }
-  
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return builder.numberOfRows(in: sections[section])
-  }
-  
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return builder.cell(for: sections[indexPath.section],
-                        in: tableView,
-                        at: indexPath)
-  }
-  
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return builder.header(for: sections[section],
-                          in: tableView)
-  }
-  
-  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return .leastNormalMagnitude
-  }
-  
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.deselectRow(at: indexPath, animated: true)
-    router.routeToTransactionDetailsView()
-  }
-  
 }
 
 // MARK: - Private Methods
@@ -127,11 +103,6 @@ final class TransactionHistoryViewController: BaseTableViewController {
 private extension TransactionHistoryViewController {
   
   func setup() {
-    if #available(iOS 15.0, *) {
-      tableView.sectionHeaderTopPadding = 0
-    }
-    tableView.register(TransactionHistoryHeaderView.self)
-    tableView.register(TransactionHistoryCell.self)
     view.addSubview(contentStackView)
     
     NSLayoutConstraint.activate([
@@ -140,6 +111,16 @@ private extension TransactionHistoryViewController {
       contentStackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       contentStackView.bottomAnchor.constraint(equalTo: divider.topAnchor, constant: -16)
     ])
+  }
+  
+  func setupContent() {
+    selectedViewController?.removeAsChildViewController()
+    let selectedViewController = viewControllers[sectionTypeSegmentedControl.selectedSegmentIndex]
+    self.selectedViewController = selectedViewController
+    addChild(selectedViewController)
+    contentStackView.insertArrangedSubview(selectedViewController.view, at: 1)
+    contentStackView.setCustomSpacing(8, after: selectedViewController.view)
+    selectedViewController.didMove(toParent: self)
   }
   
   func bind() {
@@ -167,37 +148,13 @@ private extension TransactionHistoryViewController {
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      if self.closeButtonStackView.isHidden {
-        self.closeButtonStackView.isHidden = false
-      }
-      if self.sectionTypeStackView.isHidden {
-        self.sectionTypeStackView.isHidden = false
-      }
-      if $0.needReload {
-        self.sections.removeAll()
-      }
-      if $0.hasMore {
-        let spinner = UIActivityIndicatorView(style: .medium)
-        spinner.startAnimating()
-        self.tableView.tableFooterView = spinner
-      } else {
-        self.tableView.tableFooterView = nil
-      }
-      
-      let tableUpdate = self.builder.updateSections(with: $0.models,
-                                                    for: $0.sectionType,
-                                                    oldLastItem: $0.lastItem,
-                                                    sections: &self.sections)
-      if $0.needReload {
-        self.tableView.reloadData()
-      } else {
-        UIView.performWithoutAnimation {
-          self.tableView.performBatchUpdates {
-            tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .fade) }
-            tableUpdate.insertSections.map { self.tableView.insertSections($0, with: .fade) }
-          }
-        }
-      }
+      self.sectionTypeStackView.isHidden = false
+      self.closeButtonStackView.isHidden = false
+      self.setupContent()
+    }.store(in: &subscriptions)
+    
+    viewModel.selectTransaction.sink { [weak self] in
+      self?.router.routeToTransactionDetailsView()
     }.store(in: &subscriptions)
   }
   
@@ -218,7 +175,7 @@ private extension TransactionHistoryViewController {
   }
   
   @objc func sectionTypeDidChange() {
-    viewModel.setSelectedSegmentIndex(sectionTypeSegmentedControl.selectedSegmentIndex)
+    setupContent()
   }
   
 }
