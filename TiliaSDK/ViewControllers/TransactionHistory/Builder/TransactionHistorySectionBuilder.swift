@@ -55,19 +55,18 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
   func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
     var insertRows: [IndexPath] = []
     if sections.isEmpty {
-      let count = items.count
-      let headerItems = items.enumerated().map { index, item in
-        return self.item(for: item,
-                         isLast: index == count - 1,
-                         sectionType: .pending)
-      }
-      sections.append(.init(header: nil, items: headerItems))
-    } else {
-      let lastItemIndex = sections[0].items.count - 1
-      if lastItemIndex >= 0, sections[0].items[lastItemIndex].isLast {
-        sections[0].items[lastItemIndex].isLast = false
-      }
-      insertRows.append(.init(row: lastItemIndex + 1, section: 0))
+      sections.append(.init(header: nil, items: []))
+    }
+    let lastItemIndex = sections[0].items.count - 1
+    if lastItemIndex >= 0, sections[0].items[lastItemIndex].isLast {
+      sections[0].items[lastItemIndex].isLast = false
+    }
+    let count = items.count
+    items.enumerated().forEach { index, item in
+      insertRows.append(.init(row: lastItemIndex + index + 1, section: 0))
+      sections[0].items.append(self.item(for: item,
+                                         isLast: index == count - 1,
+                                         sectionType: .pending))
     }
     return (nil, insertRows.isEmpty ? nil : insertRows)
   }
@@ -113,7 +112,7 @@ struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder
       lastItem = item
     }
     let insertSectionsRange = oldLastSectionIndex + 1..<sections.count
-    let insertSections = insertSectionsRange.isEmpty ? nil : IndexSet(integersIn:insertSectionsRange)
+    let insertSections = insertSectionsRange.isEmpty ? nil : IndexSet(integersIn: insertSectionsRange)
     return (insertSections, insertRows.isEmpty ? nil : insertRows)
   }
   

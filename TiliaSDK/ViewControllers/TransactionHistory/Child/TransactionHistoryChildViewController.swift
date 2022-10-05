@@ -112,10 +112,11 @@ private extension TransactionHistoryChildViewController {
         self.sections.removeAll()
       }
       if $0.hasMore {
-        guard self.tableView.tableFooterView == nil else { return }
-        let spinner = UIActivityIndicatorView(style: .medium)
-        spinner.startAnimating()
-        self.tableView.tableFooterView = spinner
+        if self.tableView.tableFooterView == nil {
+          let spinner = UIActivityIndicatorView(style: .medium)
+          spinner.startAnimating()
+          self.tableView.tableFooterView = spinner
+        }
       } else {
         self.tableView.tableFooterView?.removeFromSuperview()
         self.tableView.tableFooterView = nil

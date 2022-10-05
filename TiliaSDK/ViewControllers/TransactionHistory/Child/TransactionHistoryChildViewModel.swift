@@ -37,6 +37,7 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   private weak var delegate: TransactionHistoryChildViewModelDelegate?
   private var transactions: [TransactionDetailsModel] = []
   private var offset = 0
+  private var isLoadingMore = false
   
   init(manager: NetworkManager, delegate: TransactionHistoryChildViewModelDelegate?) {
     self.manager = manager
@@ -62,6 +63,8 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   }
   
   func loadMoreTransactions() {
+    guard !isLoadingMore else { return }
+    isLoadingMore = true
     offset += 1
     manager.getTransactionHistory(withLimit: 20, offset: offset) { [weak self] result in
       guard let self = self, self.offset != 0 else { return }
@@ -72,8 +75,10 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
         let hasMore = self.hasMore(total: model.total)
         self.content.send((model.transactions, lastItem, false, hasMore))
       case .failure(let error):
+        self.offset -= 1
         self.delegate?.transactionHistoryChildViewModel(didFailWithError: error)
       }
+      self.isLoadingMore = false
     }
   }
   

@@ -80,7 +80,7 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
           self.didLoad()
         }
       case .failure(let error):
-        self.didFail(with: error)
+        self.didFail(with: .init(error: error, value: true))
         self.loading.send(false)
       }
     }
@@ -106,7 +106,7 @@ extension TransactionHistoryViewModel: TransactionHistoryChildViewModelDelegate 
   }
   
   func transactionHistoryChildViewModel(didFailWithError error: Error) {
-    didFail(with: error)
+    didFail(with: .init(error: error, value: false))
   }
   
   func transactionHistoryChildViewModel(didSelectTransaction transaction: TransactionDetailsModel) {
@@ -126,12 +126,12 @@ private extension TransactionHistoryViewModel {
     loading.send(false)
   }
   
-  func didFail(with error: Error) {
-    self.error.send(.init(error: error, value: !isLoaded))
+  func didFail(with error: ErrorWithBoolModel) {
+    self.error.send(error)
     let event = TLEvent(flow: .transactionHistory, action: .error)
     let model = TLErrorCallback(event: event,
                                 error: L.errorTransactionHistoryTitle,
-                                message: error.localizedDescription)
+                                message: error.error.localizedDescription)
     onError?(model)
   }
   
