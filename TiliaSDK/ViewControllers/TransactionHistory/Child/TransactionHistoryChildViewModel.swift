@@ -36,6 +36,7 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   private let manager: NetworkManager
   private weak var delegate: TransactionHistoryChildViewModelDelegate?
   private var transactions: [TransactionDetailsModel] = []
+  private var offset = 0
   
   init(manager: NetworkManager, delegate: TransactionHistoryChildViewModelDelegate?) {
     self.manager = manager
@@ -44,12 +45,14 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   
   func loadTransactions() {
     loading.send(true)
-    manager.getTransactionHistory(withLimit: 10, offset: 0) { [weak self] result in
+    offset = 0
+    manager.getTransactionHistory(withLimit: 20, offset: offset) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let model):
         self.transactions = model.transactions
-        self.content.send((model.transactions, nil, true, false))
+        let hasMore = self.hasMore(total: model.total)
+        self.content.send((model.transactions, nil, true, hasMore))
         self.delegate?.transactionHistoryChildViewModelDidLoad()
       case .failure(let error):
         self.delegate?.transactionHistoryChildViewModel(didFailWithError: error)
@@ -59,11 +62,33 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   }
   
   func loadMoreTransactions() {
-    
+    offset += 1
+    manager.getTransactionHistory(withLimit: 20, offset: offset) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success(let model):
+        let lastItem = self.transactions.last
+        self.transactions.append(contentsOf: model.transactions)
+        let hasMore = self.hasMore(total: model.total)
+        self.content.send((model.transactions, lastItem, false, hasMore))
+      case .failure(let error):
+        self.delegate?.transactionHistoryChildViewModel(didFailWithError: error)
+      }
+    }
   }
   
   func selectTransaction(at index: Int) {
     delegate?.transactionHistoryChildViewModel(didSelectTransaction: transactions[index])
+  }
+  
+}
+
+// MARK: - Private Methods
+
+private extension TransactionHistoryChildViewModel {
+  
+  func hasMore(total: Int) -> Bool {
+    return transactions.count < total
   }
   
 }
