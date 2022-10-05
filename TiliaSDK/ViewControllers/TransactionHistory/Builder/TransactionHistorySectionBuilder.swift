@@ -119,7 +119,7 @@ struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder
   
 }
 
-extension TransactionHistorySectionModel.SectionType {
+extension TransactionHistorySectionTypeModel {
   
   var builder: TransactionHistorySectionBuilder {
     switch self {
@@ -134,7 +134,7 @@ extension TransactionHistorySectionModel.SectionType {
 
 private extension TransactionHistorySectionBuilder {
   
-  func item(for model: TransactionDetailsModel, isLast: Bool, sectionType: TransactionHistorySectionModel.SectionType) -> TransactionHistorySectionModel.Item {
+  func item(for model: TransactionDetailsModel, isLast: Bool, sectionType: TransactionHistorySectionTypeModel) -> TransactionHistorySectionModel.Item {
     let subTitle: String
     switch sectionType {
     case .pending:
