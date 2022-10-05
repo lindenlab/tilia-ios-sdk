@@ -53,6 +53,7 @@ extension TransactionHistorySectionBuilder {
 struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder {
   
   func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
+    guard !items.isEmpty else { return (nil, nil) }
     var insertRows: [IndexPath] = []
     if oldLastItem == nil {
       sections.append(.init(header: nil, items: []))
@@ -77,6 +78,7 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
 struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder {
   
   func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
+    guard !items.isEmpty else { return (nil, nil) }
     let oldLastSectionIndex = sections.count - 1
     var lastSectionIndex = oldLastSectionIndex
     var lastItemIndex = -1
