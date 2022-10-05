@@ -64,7 +64,7 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   func loadMoreTransactions() {
     offset += 1
     manager.getTransactionHistory(withLimit: 20, offset: offset) { [weak self] result in
-      guard let self = self else { return }
+      guard let self = self, self.offset != 0 else { return }
       switch result {
       case .success(let model):
         let lastItem = self.transactions.last
