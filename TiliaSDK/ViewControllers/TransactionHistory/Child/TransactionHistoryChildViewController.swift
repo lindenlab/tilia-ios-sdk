@@ -128,6 +128,9 @@ private extension TransactionHistoryChildViewController {
       if $0.needReload {
         self.tableView.reloadData()
       } else {
+        if let updateRow = tableUpdate.updateRow, let cell = self.tableView.cellForRow(at: updateRow) as? TransactionHistoryCell {
+          cell.configure(isLast: false)
+        }
         UIView.performWithoutAnimation {
           self.tableView.performBatchUpdates {
             tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .fade) }

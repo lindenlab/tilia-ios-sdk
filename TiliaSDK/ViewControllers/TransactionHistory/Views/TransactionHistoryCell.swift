@@ -91,14 +91,16 @@ final class TransactionHistoryCell: UITableViewCell {
                  subTitle: String,
                  value: NSAttributedString,
                  subValueImage: UIImage?,
-                 subValueTitle: String?,
-                 isLast: Bool) {
+                 subValueTitle: String?) {
     titleLabel.text = title
     subTitleLabel.text = subTitle
     valueLabel.attributedText = value
     subValueImageView.image = subValueImage
     subValueLabel.text = subValueTitle
     subValueStackView.isHidden = subValueImage == nil && subValueTitle == nil
+  }
+  
+  func configure(isLast: Bool) {
     dividerLeftConstraint.constant = isLast ? 0 : 16
     dividerRightConstraint.constant = isLast ? 0 : -16
     contentStackViewBottomConstraint.constant = isLast ? -20 : -12

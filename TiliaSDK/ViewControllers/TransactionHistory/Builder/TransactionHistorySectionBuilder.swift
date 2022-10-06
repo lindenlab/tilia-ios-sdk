@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TransactionHistorySectionBuilder {
-  typealias TableUpdate = (insertSections: IndexSet?, insertRows: [IndexPath]?)
+  typealias TableUpdate = (insertSections: IndexSet?, insertRows: [IndexPath]?, updateRow: IndexPath?)
   
   func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate
 }
@@ -32,8 +32,8 @@ extension TransactionHistorySectionBuilder {
                    subTitle: item.subTitle,
                    value: item.value,
                    subValueImage: item.subValueImage,
-                   subValueTitle: item.subValueTitle,
-                   isLast: item.isLast)
+                   subValueTitle: item.subValueTitle)
+    cell.configure(isLast: item.isLast)
     return cell
   }
   
@@ -53,14 +53,16 @@ extension TransactionHistorySectionBuilder {
 struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder {
   
   func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
-    guard !items.isEmpty else { return (nil, nil) }
+    guard !items.isEmpty else { return (nil, nil, nil) }
     var insertRows: [IndexPath] = []
+    var updateRow: IndexPath?
     if oldLastItem == nil {
       sections.append(.init(header: nil, items: []))
     }
     let lastItemIndex = sections[0].items.count - 1
     if lastItemIndex >= 0 {
       sections[0].items[lastItemIndex].isLast = false
+      updateRow = .init(row: lastItemIndex, section: 0)
     }
     let count = items.count
     items.enumerated().forEach { index, item in
@@ -69,7 +71,7 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
                                          isLast: index == count - 1,
                                          sectionType: .pending))
     }
-    return (nil, insertRows.isEmpty ? nil : insertRows)
+    return (nil, insertRows.isEmpty ? nil : insertRows, updateRow)
   }
   
 }
@@ -78,16 +80,18 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
 struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder {
   
   func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
-    guard !items.isEmpty else { return (nil, nil) }
+    guard !items.isEmpty else { return (nil, nil, nil) }
     let oldLastSectionIndex = sections.count - 1
     var lastSectionIndex = oldLastSectionIndex
     var lastItemIndex = -1
+    var lastItem = oldLastItem
+    var insertRows: [IndexPath] = []
+    var updateRow: IndexPath?
     if lastSectionIndex >= 0 && sections[lastSectionIndex].items.count - 1 >= 0 {
       lastItemIndex = sections[lastSectionIndex].items.count - 1
       sections[lastSectionIndex].items[lastItemIndex].isLast = false
+      updateRow = .init(row: lastSectionIndex, section: lastSectionIndex)
     }
-    var lastItem = oldLastItem
-    var insertRows: [IndexPath] = []
     items.enumerated().forEach { index, item in
       let isItemLast = self.isLast(in: items, index: index)
       if let lastItem = lastItem, lastItem.transactionDate.getDateDiff(for: item.transactionDate) == 0 {
@@ -117,7 +121,7 @@ struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder
     }
     let insertSectionsRange = oldLastSectionIndex + 1...lastSectionIndex
     let insertSections = insertSectionsRange.isEmpty ? nil : IndexSet(integersIn: insertSectionsRange)
-    return (insertSections, insertRows.isEmpty ? nil : insertRows)
+    return (insertSections, insertRows.isEmpty ? nil : insertRows, updateRow)
   }
   
 }
