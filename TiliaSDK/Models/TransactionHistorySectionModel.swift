@@ -28,7 +28,7 @@ struct TransactionHistorySectionModel {
   
 }
 
-enum TransactionHistorySectionTypeModel: Int, CaseIterable {
+enum TransactionHistorySectionTypeModel: Int, CaseIterable, CustomStringConvertible {
   
   case pending
   case history
