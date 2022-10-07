@@ -144,11 +144,11 @@ struct TransactionDetailsSectionBuilder {
   }
   
   func sections(with model: TransactionDetailsModel) -> [Section] {
-    return [
-      headerSection(for: model),
-      paymentSection(for: model),
-      invoiceDetailsSection(for: model)
-    ]
+    var sections: [Section] = []
+    sections.append(headerSection(for: model))
+    sections.append(contentsOf: paymentSections(for: model))
+    sections.append(invoiceDetailsSection(for: model))
+    return sections
   }
   
 }
@@ -276,32 +276,33 @@ private extension TransactionDetailsSectionBuilder {
     return .init(type: type, items: items)
   }
   
-  func paymentSection(for model: TransactionDetailsModel) -> Section {
+  func paymentSections(for model: TransactionDetailsModel) -> [Section] {
     var items: [Section.Item] = []
     if let paymentMethods = model.paymentMethods {
-      items = paymentMethods.enumerated().map { .init(title: $0.element.type.description,
-                                                      value: $0.element.displayAmount,
-                                                      image: nil,
-                                                      leftInset: 32,
-                                                      isDividerHidden: $0.offset == paymentMethods.count - 1) }
+      items.append(contentsOf: paymentMethods.enumerated().map { .init(title: $0.element.type.description,
+                                                                       value: $0.element.displayAmount,
+                                                                       image: nil,
+                                                                       leftInset: 32,
+                                                                       isDividerHidden: $0.offset == paymentMethods.count - 1) })
     } else if let recipientItems = model.recipientItems {
-      items = recipientItems.enumerated().map { .init(title: $0.element.paymentMethodDescription,
-                                                      value: $0.element.paymentMethodDisplayAmount,
-                                                      image: nil,
-                                                      leftInset: 32,
-                                                      isDividerHidden: $0.offset == recipientItems.count - 1) }
-    } else if let paymentMethod = model.paymentMethod {
-      items = [
-        .init(title: paymentMethod,
-              value: model.total.total,
-              image: nil,
-              leftInset: 32,
-              isDividerHidden: true)
-      ]
+      items.append(contentsOf: recipientItems.enumerated().map { .init(title: $0.element.paymentMethodDescription,
+                                                                       value: $0.element.paymentMethodDisplayAmount,
+                                                                       image: nil,
+                                                                       leftInset: 32,
+                                                                       isDividerHidden: $0.offset == recipientItems.count - 1) })
+    } else if let destinationPaymentMethod = model.destinationPaymentMethod {
+      items.append(.init(title: destinationPaymentMethod,
+                         value: model.total.total,
+                         image: nil,
+                         leftInset: 32,
+                         isDividerHidden: true))
     }
-    let type = Section.SectionType.content(.init(title: model.type.description,
-                                                 footer: nil))
-    return .init(type: type, items: items)
+    var sections: [Section] = [
+      .init(type: .content(.init(title: model.type.description,
+                                 footer: nil)),
+            items: items)
+    ]
+    return sections
   }
   
   
@@ -351,7 +352,7 @@ private extension TransactionTypeModel {
     let str: String
     let cArguments = arguments.map { $0 as CVarArg }
     switch self {
-    case .userPurchase: str = L.youPaid(with: cArguments)
+    case .userPurchase, .userPurchaseEscrow: str = L.youPaid(with: cArguments)
     case .userPurchaseRecipient: str = L.youReceived(with: cArguments)
     case .payout: str = L.payoutOf(with: cArguments)
     case .tokenPurchase: str = L.youPurchased(with: cArguments)
@@ -367,7 +368,7 @@ private extension TransactionTypeModel {
   
   var image: UIImage? {
     switch self {
-    case .userPurchase: return .purchaseBuyerIcon
+    case .userPurchase, .userPurchaseEscrow: return .purchaseBuyerIcon
     case .userPurchaseRecipient: return .purchaseSellerIcon
     case .payout: return .payoutGenericIcon
     case .tokenPurchase: return .tokenPurchaseIcon
@@ -377,7 +378,7 @@ private extension TransactionTypeModel {
   
   var description: String {
     switch self {
-    case .userPurchase, .tokenPurchase: return L.paidWith
+    case .userPurchase, .userPurchaseEscrow, .tokenPurchase: return L.paidWith
     case .userPurchaseRecipient: return L.depositedInto
     case .payout: return L.payoutTo
     case .tokenConvert: return L.transferredFrom

@@ -205,7 +205,7 @@ private extension TransactionTypeModel {
   
   var description: String {
     switch self {
-    case .userPurchase: return L.purchase
+    case .userPurchase, .userPurchaseEscrow: return L.purchase
     case .userPurchaseRecipient: return L.sale
     case .payout: return L.payout
     case .tokenPurchase: return L.tokenPurchase

@@ -193,6 +193,8 @@
 		D1E6F5A328ECC157000CDA5E /* TransactionHistoryChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F5A228ECC157000CDA5E /* TransactionHistoryChildViewModel.swift */; };
 		D1E6F5A528ECC19B000CDA5E /* TransactionHistoryChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F5A428ECC19B000CDA5E /* TransactionHistoryChildViewController.swift */; };
 		D1E6F5A728ECD2FF000CDA5E /* UIViewController+Childs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F5A628ECD2FF000CDA5E /* UIViewController+Childs.swift */; };
+		D1E6F5AA28F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1E6F5A828F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json */; };
+		D1E6F5AB28F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1E6F5A928F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json */; };
 		D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */; };
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
 		D1EFAB3128B7F14800AB1C31 /* LineItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */; };
@@ -201,9 +203,9 @@
 		D1EFAB3828B94EBC00AB1C31 /* SendReceiptValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3728B94EBC00AB1C31 /* SendReceiptValidator.swift */; };
 		D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */; };
 		D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */; };
-		D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json */; };
+		D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsBuyerPurchaseResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsBuyerPurchaseResponse.json */; };
 		D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */; };
-		D1F7D3B228DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1F7D3B128DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json */; };
+		D1F7D3B228DD8121004BC92B /* GetTransactionDetailsSellerPurchaseResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1F7D3B128DD8121004BC92B /* GetTransactionDetailsSellerPurchaseResponse.json */; };
 		D1F7D3B428DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
@@ -423,6 +425,8 @@
 		D1E6F5A228ECC157000CDA5E /* TransactionHistoryChildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryChildViewModel.swift; sourceTree = "<group>"; };
 		D1E6F5A428ECC19B000CDA5E /* TransactionHistoryChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryChildViewController.swift; sourceTree = "<group>"; };
 		D1E6F5A628ECD2FF000CDA5E /* UIViewController+Childs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Childs.swift"; sourceTree = "<group>"; };
+		D1E6F5A828F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsTokenConvertResponse.json; sourceTree = "<group>"; };
+		D1E6F5A928F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsTokenPurchaseResponse.json; sourceTree = "<group>"; };
 		D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItemModel.swift; sourceTree = "<group>"; };
@@ -431,9 +435,9 @@
 		D1EFAB3728B94EBC00AB1C31 /* SendReceiptValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidator.swift; sourceTree = "<group>"; };
 		D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptValidatorTests.swift; sourceTree = "<group>"; };
 		D1EFAB3B28BD48D600AB1C31 /* InvoiceInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceInfoModel.swift; sourceTree = "<group>"; };
-		D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsPurchaseBuyerResponse.json; sourceTree = "<group>"; };
+		D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsBuyerPurchaseResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsBuyerPurchaseResponse.json; sourceTree = "<group>"; };
 		D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewModelTests.swift; sourceTree = "<group>"; };
-		D1F7D3B128DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsPurchaseSellerResponse.json; sourceTree = "<group>"; };
+		D1F7D3B128DD8121004BC92B /* GetTransactionDetailsSellerPurchaseResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsSellerPurchaseResponse.json; sourceTree = "<group>"; };
 		D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsPayoutResponse.json; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
@@ -947,9 +951,11 @@
 				D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */,
 				D1BB6346287F2CC0007616DE /* SubmitKycResponse.json */,
 				D1BB634A287F3121007616DE /* GetKycStatusResponse.json */,
-				D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json */,
-				D1F7D3B128DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json */,
+				D1EFAB3D28BEBF0700AB1C31 /* GetTransactionDetailsBuyerPurchaseResponse.json */,
+				D1F7D3B128DD8121004BC92B /* GetTransactionDetailsSellerPurchaseResponse.json */,
 				D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */,
+				D1E6F5A928F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json */,
+				D1E6F5A828F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json */,
 				D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */,
 				D155C7F328E5898400F04BD2 /* GetTransactionHistoryResponse.json */,
 			);
@@ -1164,6 +1170,7 @@
 				D155C7F428E5898400F04BD2 /* GetTransactionHistoryResponse.json in Resources */,
 				D1B872C928044CC900DD1F7B /* GetUserBalanceByCurrencyCodeResponse.json in Resources */,
 				D123208628A6693A0039990A /* GetTosContentResponse.json in Resources */,
+				D1E6F5AA28F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json in Resources */,
 				D13A872628C21DE000444EDB /* SendTransactionReceiptResponse.json in Resources */,
 				D1B80AA92865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json in Resources */,
 				D126AF182875872F00CAC5F2 /* ResedencePermitBackImage.svg in Resources */,
@@ -1180,8 +1187,9 @@
 				D135DC8027E74A4A0009D888 /* Main.storyboard in Resources */,
 				D1C8A84627F5EC9A00BF2910 /* LocalizedConstants.strings in Resources */,
 				D1B872C628044CC900DD1F7B /* SignTosForUserResponse.json in Resources */,
-				D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsPurchaseBuyerResponse.json in Resources */,
-				D1F7D3B228DD8121004BC92B /* GetTransactionDetailsPurchaseSellerResponse.json in Resources */,
+				D1EFAB3E28BEBF0700AB1C31 /* GetTransactionDetailsBuyerPurchaseResponse.json in Resources */,
+				D1F7D3B228DD8121004BC92B /* GetTransactionDetailsSellerPurchaseResponse.json in Resources */,
+				D1E6F5AB28F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
