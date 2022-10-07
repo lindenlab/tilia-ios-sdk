@@ -23,6 +23,7 @@ struct TransactionDetailsModel: Decodable {
   let paymentMethods: [TransactionPaymentMethodModel]?
   let destinationPaymentMethod: String?
   let sourcePaymentMethod: String?
+  let isPoboSourcePaymentMethodProvider: Bool
   let userReceivedAmount: String?
   
   private enum RootCodingKeys: String, CodingKey {
@@ -58,14 +59,9 @@ struct TransactionDetailsModel: Decodable {
     status = try container.decode(TransactionStatusModel.self, forKey: .status)
     accountId = try container.decode(String.self, forKey: .accountId)
     transactionDate = try Self.date(for: container, with: .transactionDate)
+    total = try TransactionTotalModel(from: decoder)
     
     let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .data)
-    
-    if try transactionContainer.decodeIfPresent(String.self, forKey: .sourcePaymentMethodProvider) == "pobo" {
-      total = try TransactionTotalModel(from: decoder)
-    } else {
-      total = try TransactionTotalModel(from: decoder)
-    }
     
     referenceType = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType)
     referenceId = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId)
@@ -86,6 +82,7 @@ struct TransactionDetailsModel: Decodable {
     default:
       sourcePaymentMethod = nil
     }
+    isPoboSourcePaymentMethodProvider = try transactionContainer.decodeIfPresent(String.self, forKey: .sourcePaymentMethodProvider) == "pobo"
         
     if transactionContainer.contains(.payout) {
       let payoutContainer = try transactionContainer.nestedContainer(keyedBy: PayoutCodingKeys.self, forKey: .payout)
