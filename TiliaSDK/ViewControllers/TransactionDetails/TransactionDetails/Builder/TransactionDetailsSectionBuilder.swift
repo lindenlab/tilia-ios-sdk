@@ -31,7 +31,7 @@ struct TransactionDetailsSectionBuilder {
         let title: NSAttributedString
         let subTitle: String
         let status: Status?
-        let footer: Footer?
+        var footer: Footer?
       }
       
       struct Content {
@@ -66,7 +66,7 @@ struct TransactionDetailsSectionBuilder {
       let value: String
       let image: Image?
       let leftInset: CGFloat
-      let isDividerHidden: Bool
+      var isDividerHidden: Bool
     }
     
     let type: SectionType
@@ -158,41 +158,62 @@ struct TransactionDetailsSectionBuilder {
 private extension TransactionDetailsSectionBuilder {
   
   func headerSection(for model: TransactionDetailsModel) -> Section {
-    var items: [Section.Item] = []
-    if let lineItems = model.lineItems {
-      items = lineItems.map { .init(title: $0.description,
-                                    value: $0.displayAmount,
-                                    image: nil,
-                                    leftInset: 16,
-                                    isDividerHidden: false) }
-    } else if let recipientItems = model.recipientItems {
-      items = recipientItems.map { .init(title: $0.description,
-                                         value: $0.displayAmount,
-                                         image: nil,
-                                         leftInset: 16,
-                                         isDividerHidden: false) }
-    }
-    
-    items.append(.init(title: model.type.headerTitle,
-                       value: model.total.subTotal,
-                       image: nil,
-                       leftInset: 16,
-                       isDividerHidden: model.total.tax != nil))
-    
-    model.total.tax.map {
-      items.append(.init(title: L.transactionFees,
-                         value: $0,
+    var headerModel = Section.SectionType.Header(image: model.type.image,
+                                                 title: headerAttributedDescription(for: model),
+                                                 subTitle: formattedDate(for: model),
+                                                 status: status(for: model),
+                                                 footer: nil)
+    switch model.type {
+    case .tokenPurchase where model.isPoboSourcePaymentMethodProvider, .tokenConvert:
+      return .init(type: .header(headerModel), items: [])
+    default:
+      var items: [Section.Item] = []
+      if let lineItems = model.lineItems {
+        items = lineItems.map { .init(title: $0.description,
+                                      value: $0.displayAmount,
+                                      image: nil,
+                                      leftInset: 16,
+                                      isDividerHidden: false) }
+      } else if let recipientItems = model.recipientItems {
+        items = recipientItems.map { .init(title: $0.description,
+                                           value: $0.displayAmount,
+                                           image: nil,
+                                           leftInset: 16,
+                                           isDividerHidden: false) }
+      }
+      items.append(.init(title: model.type.headerTitle,
+                         value: model.total.subTotal,
                          image: nil,
                          leftInset: 16,
                          isDividerHidden: false))
+      model.total.tax.map {
+        items[items.count - 1].isDividerHidden = true
+        items.append(.init(title: L.transactionFees,
+                           value: $0,
+                           image: nil,
+                           leftInset: 16,
+                           isDividerHidden: false))
+        
+      }
+      model.total.tiliaFee.map {
+        items[items.count - 1].isDividerHidden = true
+        items.append(.init(title: L.tiliaFees,
+                           value: $0,
+                           image: nil,
+                           leftInset: 16,
+                           isDividerHidden: false))
+      }
+      model.total.publisherFee.map {
+        items[items.count - 1].isDividerHidden = true
+        items.append(.init(title: L.publisherFees,
+                           value: $0,
+                           image: nil,
+                           leftInset: 16,
+                           isDividerHidden: false))
+      }
+      headerModel.footer = .init(title: L.total, value: model.total.total)
+      return .init(type: .header(headerModel), items: items)
     }
-    
-    let type = Section.SectionType.header(.init(image: model.type.image,
-                                                title: model.type.attributedDescription(with: model.total.total),
-                                                subTitle: formattedDate(for: model),
-                                                status: status(for: model),
-                                                footer: .init(title: L.total, value: model.total.total)))
-    return .init(type: type, items: items)
   }
   
   func invoiceDetailsSection(for model: TransactionDetailsModel) -> Section {
@@ -323,6 +344,34 @@ private extension TransactionDetailsSectionBuilder {
                  subTitle: subTitle)
   }
   
+  func headerAttributedDescription(for model: TransactionDetailsModel) -> NSAttributedString {
+    let str: String
+    let arguments: [String]
+    switch model.type {
+    case .userPurchase, .userPurchaseEscrow:
+      arguments = [model.total.total]
+      str = L.youPaid(with: arguments.map { $0 as CVarArg })
+    case .userPurchaseRecipient:
+      arguments = [model.total.total]
+      str = L.youReceived(with: arguments.map { $0 as CVarArg })
+    case .payout:
+      arguments = [model.total.total]
+      str = L.payoutOf(with: arguments.map { $0 as CVarArg })
+    case .tokenPurchase:
+      arguments = [model.userReceivedAmount ?? ""]
+      str = L.youPurchased(with: arguments.map { $0 as CVarArg })
+    case .tokenConvert:
+      arguments = [model.total.total, model.userReceivedAmount ?? ""]
+      str = L.convertedTo(with: arguments.map { $0 as CVarArg })
+    }
+    let subStrings: [(String, UIFont, UIColor)] = arguments.map {
+      return ($0, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor)
+    }
+    return str.attributedString(font: .systemFont(ofSize: 20),
+                                color: .primaryTextColor,
+                                subStrings: subStrings)
+  }
+  
 }
 
 // MARK: - Helpers
@@ -347,24 +396,6 @@ private extension TransactionStatusModel {
 }
 
 private extension TransactionTypeModel {
-  
-  func attributedDescription(with arguments: String...) -> NSAttributedString {
-    let str: String
-    let cArguments = arguments.map { $0 as CVarArg }
-    switch self {
-    case .userPurchase, .userPurchaseEscrow: str = L.youPaid(with: cArguments)
-    case .userPurchaseRecipient: str = L.youReceived(with: cArguments)
-    case .payout: str = L.payoutOf(with: cArguments)
-    case .tokenPurchase: str = L.youPurchased(with: cArguments)
-    case .tokenConvert: str = L.convertedTo(with: cArguments)
-    }
-    let subStrings: [(String, UIFont, UIColor)] = arguments.map {
-      return ($0, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor)
-    }
-    return str.attributedString(font: .systemFont(ofSize: 20),
-                                color: .primaryTextColor,
-                                subStrings: subStrings)
-  }
   
   var image: UIImage? {
     switch self {

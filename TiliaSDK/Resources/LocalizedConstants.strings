@@ -171,3 +171,5 @@
 "tokenPurchase" = "Token purchase";
 "tokenConvert" = "Token convert";
 "refund" = "Refund";
+"tiliaFees" = "Tilia fees";
+"publisherFees" = "Publisher fees";
