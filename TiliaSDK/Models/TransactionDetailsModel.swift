@@ -204,18 +204,15 @@ struct TransactionTotalModel: Decodable {
     case payoutFeesAmount = "payout_fee"
   }
   
-  private enum FeesCodingKeys: String, CodingKey {
+  private enum TokenCodingKeys: String, CodingKey {
+    case subtotalAmountDisplay = "subtotal_amount_display"
+    case taxAmount = "tax_amount"
+    case taxAmountDisplay = "tax_amount_display"
+    case totalAmountDisplay = "total_amount_display"
     case tiliaFeeAmount = "tilia_fee_amount"
     case tiliaFeeAmountDisplay = "tilia_fee_amount_display"
     case publisherFeeAmount = "publisher_fee_amount"
     case publisherFeeAmountDisplay = "publisher_fee_amount_display"
-  }
-  
-  private enum TotalCodingKeys: String, CodingKey {
-    case subtotalAmountDisplay = "subtotal_amount_display"
-    case taxTotalAmount = "tax_total_amount"
-    case taxAmountDisplay = "tax_amount_display"
-    case totalAmountDisplay = "total_amount_display"
   }
   
   init(from decoder: Decoder) throws {
@@ -248,13 +245,12 @@ struct TransactionTotalModel: Decodable {
       tiliaFee = nil
       publisherFee = nil
     case .tokenPurchase, .tokenConvert:
-      let totalContainer = try rootContainer.nestedContainer(keyedBy: TotalCodingKeys.self, forKey: .transactionData)
-      total = try totalContainer.decode(String.self, forKey: .totalAmountDisplay)
-      subTotal = try totalContainer.decode(String.self, forKey: .subtotalAmountDisplay)
-      tax = try Self.displayAmount(for: totalContainer, doubleKey: .taxTotalAmount, stringKey: .taxAmountDisplay)
-      let feesContainer = try rootContainer.nestedContainer(keyedBy: FeesCodingKeys.self, forKey: .transactionData)
-      tiliaFee = try Self.displayAmount(for: feesContainer, doubleKey: .tiliaFeeAmount, stringKey: .tiliaFeeAmountDisplay)
-      publisherFee = try Self.displayAmount(for: feesContainer, doubleKey: .publisherFeeAmount, stringKey: .publisherFeeAmountDisplay)
+      let container = try rootContainer.nestedContainer(keyedBy: TokenCodingKeys.self, forKey: .transactionData)
+      total = try container.decode(String.self, forKey: .totalAmountDisplay)
+      subTotal = try container.decode(String.self, forKey: .subtotalAmountDisplay)
+      tax = try Self.displayAmount(for: container, doubleKey: .taxAmount, stringKey: .taxAmountDisplay)
+      tiliaFee = try Self.displayAmount(for: container, doubleKey: .tiliaFeeAmount, stringKey: .tiliaFeeAmountDisplay)
+      publisherFee = try Self.displayAmount(for: container, doubleKey: .publisherFeeAmount, stringKey: .publisherFeeAmountDisplay)
     }
   }
   

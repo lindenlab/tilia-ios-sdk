@@ -181,7 +181,7 @@ private extension TransactionDetailsSectionBuilder {
                                            leftInset: 16,
                                            isDividerHidden: false) }
       }
-      items.append(.init(title: model.type.headerTitle,
+      items.append(.init(title: model.type.headerSubTotalTitle,
                          value: model.total.subTotal,
                          image: nil,
                          leftInset: 16,
@@ -423,8 +423,8 @@ private extension TransactionTypeModel {
     }
   }
   
-  var headerTitle: String {
-    return self == .payout ? L.requested : L.total
+  var headerSubTotalTitle: String {
+    return self == .payout ? L.requested : L.subtotal
   }
   
 }
