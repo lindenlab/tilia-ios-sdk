@@ -76,6 +76,7 @@ struct TransactionDetailsModel: Decodable {
     self.paymentMethods = paymentMethods?.values.sorted { $0.type.isWallet && !$1.type.isWallet }
     destinationPaymentMethod = try transactionContainer.decodeIfPresent(String.self, forKey: .destinationPaymentMethod)
     userReceivedAmount = try transactionContainer.decodeIfPresent(String.self, forKey: .userReceivedAmount)
+    // Parse only for tokenPurchase and tokenConvert
     switch self.type {
     case .tokenPurchase, .tokenConvert:
       sourcePaymentMethod = try transactionContainer.decode(String.self, forKey: .sourcePaymentMethod)
@@ -83,7 +84,8 @@ struct TransactionDetailsModel: Decodable {
       sourcePaymentMethod = nil
     }
     isPoboSourcePaymentMethodProvider = try transactionContainer.decodeIfPresent(String.self, forKey: .sourcePaymentMethodProvider) == "pobo"
-        
+    
+    // Parse only for payout
     if transactionContainer.contains(.payout) {
       let payoutContainer = try transactionContainer.nestedContainer(keyedBy: PayoutCodingKeys.self, forKey: .payout)
       createdDate = try Self.date(for: payoutContainer, with: .createdDate)
