@@ -158,6 +158,7 @@ final class TLManagerTests: XCTestCase {
   }
   
   func testMissedRequiredDataForTransactionHistoryFlow() {
+    TLManager.shared.setToken("")
     var errorCallback: TLErrorCallback?
     let expectation = XCTestExpectation(description: "testMissedRequiredDataForTransactionHistoryFlow")
     TLManager.shared.presentTransactionHistoryViewController(on: UIViewController(),
