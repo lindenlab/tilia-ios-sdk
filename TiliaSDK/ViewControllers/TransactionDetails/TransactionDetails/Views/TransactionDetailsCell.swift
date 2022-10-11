@@ -36,11 +36,14 @@ final class TransactionDetailsCell: UITableViewCell {
     return divider
   }()
   
+  private lazy var valueStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [valueImageView, valueLabel])
+    stackView.alignment = .center
+    stackView.spacing = 4
+    return stackView
+  }()
+  
   private lazy var stackView: UIStackView = {
-    let valueStackView = UIStackView(arrangedSubviews: [valueImageView, valueLabel])
-    valueStackView.alignment = .center
-    valueStackView.spacing = 4
-    
     let stackView = UIStackView(arrangedSubviews: [titleLabel, valueStackView])
     stackView.spacing = 10
     stackView.alignment = .center
@@ -62,13 +65,14 @@ final class TransactionDetailsCell: UITableViewCell {
   }
   
   func configure(title: String,
-                 value: String,
+                 value: String?,
                  image: UIImage?,
                  color: UIColor?,
                  leftInset: CGFloat,
                  isDividerHidden: Bool) {
     titleLabel.text = title
     valueLabel.text = value
+    valueStackView.isHidden = value == nil
     valueImageView.image = image?.withRenderingMode(.alwaysTemplate)
     valueImageView.isHidden = image == nil
     valueImageView.tintColor = color

@@ -63,7 +63,7 @@ struct TransactionDetailsSectionBuilder {
       }
       
       let title: String
-      let value: String
+      let value: String?
       let image: Image?
       let leftInset: CGFloat
       var isDividerHidden: Bool
@@ -298,6 +298,18 @@ private extension TransactionDetailsSectionBuilder {
   }
   
   func paymentSections(for model: TransactionDetailsModel) -> [Section] {
+    var sections: [Section] = []
+    
+    model.sourcePaymentMethod.map {
+      let items = [Section.Item(title: $0,
+                                value: sourcePaymentAmount(for: model),
+                                image: nil,
+                                leftInset: 32,
+                                isDividerHidden: true)]
+      sections.append(.init(type: .content(.init(title: model.type.sourcePaymentMethodDescription ?? "", footer: nil)),
+                            items: items))
+    }
+    
     var items: [Section.Item] = []
     if let paymentMethods = model.paymentMethods {
       items.append(contentsOf: paymentMethods.enumerated().map { .init(title: $0.element.type.description,
@@ -313,16 +325,14 @@ private extension TransactionDetailsSectionBuilder {
                                                                        isDividerHidden: $0.offset == recipientItems.count - 1) })
     } else if let destinationPaymentMethod = model.destinationPaymentMethod {
       items.append(.init(title: destinationPaymentMethod,
-                         value: model.total.total,
+                         value: destinationPaymentAmount(for: model),
                          image: nil,
                          leftInset: 32,
                          isDividerHidden: true))
     }
-    var sections: [Section] = [
-      .init(type: .content(.init(title: model.type.description,
-                                 footer: nil)),
-            items: items)
-    ]
+    
+    sections.append(.init(type: .content(.init(title: model.type.destinationPaymentMethodDescription, footer: nil)),
+                          items: items))
     return sections
   }
   
@@ -372,6 +382,14 @@ private extension TransactionDetailsSectionBuilder {
                                 subStrings: subStrings)
   }
   
+  func sourcePaymentAmount(for model: TransactionDetailsModel) -> String? {
+    return model.isPoboSourcePaymentMethodProvider ? nil : model.total.total
+  }
+  
+  func destinationPaymentAmount(for model: TransactionDetailsModel) -> String {
+    return model.userReceivedAmount ?? model.total.total
+  }
+  
 }
 
 // MARK: - Helpers
@@ -407,19 +425,22 @@ private extension TransactionTypeModel {
     }
   }
   
-  var description: String {
+  var sourcePaymentMethodDescription: String? {
     switch self {
-    case .userPurchase, .userPurchaseEscrow, .tokenPurchase: return L.paidWith
-    case .userPurchaseRecipient: return L.depositedInto
-    case .payout: return L.payoutTo
+    case .tokenPurchase: return L.paidWith
     case .tokenConvert: return L.transferredFrom
+    default: return nil
     }
   }
   
-  var subDescription: String? {
+  var destinationPaymentMethodDescription: String {
     switch self {
-    case .tokenPurchase, .tokenConvert: return L.depositedInto
-    default: return nil
+    case .userPurchase, .userPurchaseEscrow:
+      return L.paidWith
+    case .userPurchaseRecipient, .tokenPurchase, .tokenConvert:
+      return L.depositedInto
+    case .payout:
+      return L.payoutTo
     }
   }
   
