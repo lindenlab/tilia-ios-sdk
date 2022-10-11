@@ -173,6 +173,7 @@ enum L {
   static let refund = "refund".localized
   static let tiliaFees = "tiliaFees".localized
   static let publisherFees = "publisherFees".localized
+  static let refundTo = "refundTo".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)
@@ -209,6 +210,9 @@ enum L {
   }
   static func total(with arguments: CVarArg...) -> String {
     return "totalWithArgument".localized(with: arguments)
+  }
+  static func refundOf(with arguments: CVarArg...) -> String {
+    return "refundOf".localized(with: arguments)
   }
   
 }

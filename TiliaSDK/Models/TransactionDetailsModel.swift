@@ -20,7 +20,9 @@ struct TransactionDetailsModel: Decodable {
   let total: TransactionTotalModel
   let lineItems: [LineItemModel]?
   let recipientItems: [TransactionRecipientItemModel]?
+  let refundLineItems: [RefundItemModel]?
   let paymentMethods: [TransactionPaymentMethodModel]?
+  let refundPaymentMethods: [RefundItemModel]?
   let destinationPaymentMethod: String?
   let sourcePaymentMethod: String?
   let isPoboSourcePaymentMethodProvider: Bool
@@ -40,7 +42,9 @@ struct TransactionDetailsModel: Decodable {
     case referenceId = "reference_id"
     case lineItems = "line_items"
     case recipientItems = "recipient_items"
+    case refundLineItems = "refund_line_items"
     case paymentMethods = "payment_methods"
+    case refundPaymentMethods = "refund_payment_methods"
     case destinationPaymentMethod = "destination_payment_method_display_string"
     case sourcePaymentMethod = "source_payment_method_display_string"
     case sourcePaymentMethodProvider = "source_payment_method_provider"
@@ -68,12 +72,12 @@ struct TransactionDetailsModel: Decodable {
     
     let lineItems = try transactionContainer.decodeIfPresent([String: LineItemModel].self, forKey: .lineItems)
     self.lineItems = lineItems?.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
-    
-    let recipientItems = try transactionContainer.decodeIfPresent([TransactionRecipientItemModel].self, forKey: .recipientItems)
-    self.recipientItems = recipientItems
+    recipientItems = try transactionContainer.decodeIfPresent([TransactionRecipientItemModel].self, forKey: .recipientItems)
+    refundLineItems = try transactionContainer.decodeIfPresent([RefundItemModel].self, forKey: .refundLineItems)
     
     let paymentMethods = try transactionContainer.decodeIfPresent([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
     self.paymentMethods = paymentMethods?.values.sorted { $0.type.isWallet && !$1.type.isWallet }
+    refundPaymentMethods = try transactionContainer.decodeIfPresent([RefundItemModel].self, forKey: .refundPaymentMethods)
     destinationPaymentMethod = try transactionContainer.decodeIfPresent(String.self, forKey: .destinationPaymentMethod)
     userReceivedAmount = try transactionContainer.decodeIfPresent(String.self, forKey: .userReceivedAmount)
     // Parse only for tokenPurchase and tokenConvert
@@ -104,6 +108,7 @@ enum TransactionTypeModel: String, Decodable {
   case payout
   case tokenPurchase = "token_purchase"
   case tokenConvert = "token_convert"
+  case refund
   
 }
 
@@ -215,6 +220,13 @@ struct TransactionTotalModel: Decodable {
     case publisherFeeAmountDisplay = "publisher_fee_amount_display"
   }
   
+  private enum RefundCodingKeys: String, CodingKey {
+    case subtotalAmountDisplay = "subtotal_amount_display"
+    case taxAmount = "tax_total_amount"
+    case taxAmountDisplay = "tax_amount_display"
+    case totalAmountDisplay = "total_amount_display"
+  }
+  
   init(from decoder: Decoder) throws {
     let rootContainer = try decoder.container(keyedBy: CodingKeys.self)
     let type = try rootContainer.decode(TransactionTypeModel.self, forKey: .transactionType)
@@ -251,7 +263,26 @@ struct TransactionTotalModel: Decodable {
       tax = try Self.displayAmount(for: container, doubleKey: .taxAmount, stringKey: .taxAmountDisplay)
       tiliaFee = try Self.displayAmount(for: container, doubleKey: .tiliaFeeAmount, stringKey: .tiliaFeeAmountDisplay)
       publisherFee = try Self.displayAmount(for: container, doubleKey: .publisherFeeAmount, stringKey: .publisherFeeAmountDisplay)
+    case .refund:
+      let container = try rootContainer.nestedContainer(keyedBy: RefundCodingKeys.self, forKey: .transactionData)
+      total = try container.decode(String.self, forKey: .totalAmountDisplay)
+      subTotal = try container.decode(String.self, forKey: .subtotalAmountDisplay)
+      tax = try Self.displayAmount(for: container, doubleKey: .taxAmount, stringKey: .taxAmountDisplay)
+      tiliaFee = nil
+      publisherFee = nil
     }
+  }
+  
+}
+
+struct RefundItemModel: Decodable {
+  
+  let description: String
+  let displayAmount: String
+  
+  private enum CodingKeys: String, CodingKey {
+    case description
+    case displayAmount = "amount_display"
   }
   
 }

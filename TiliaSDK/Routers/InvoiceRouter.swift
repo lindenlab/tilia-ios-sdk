@@ -64,6 +64,7 @@ extension InvoiceRouter {
 //      return readJSONFromFile("GetTransactionDetailsPayoutResponse")
 //      return readJSONFromFile("GetTransactionDetailsTokenPurchaseResponse")
 //      return readJSONFromFile("GetTransactionDetailsTokenConvertResponse")
+//      return readJSONFromFile("GetTransactionDetailsFullRefundResponse")
     case .sendTransactionReceipt:
       return readJSONFromFile("SendTransactionReceiptResponse")
     case .getTransactionHistory:

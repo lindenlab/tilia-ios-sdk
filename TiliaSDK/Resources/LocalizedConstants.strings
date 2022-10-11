@@ -173,3 +173,5 @@
 "refund" = "Refund";
 "tiliaFees" = "Tilia fees";
 "publisherFees" = "Publisher fees";
+"refundTo" = "Refund to";
+"refundOf" = "Refund of %@";

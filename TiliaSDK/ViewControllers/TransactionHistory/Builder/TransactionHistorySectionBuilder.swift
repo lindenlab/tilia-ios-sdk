@@ -210,6 +210,7 @@ private extension TransactionTypeModel {
     case .payout: return L.payout
     case .tokenPurchase: return L.tokenPurchase
     case .tokenConvert: return L.tokenConvert
+    case .refund: return L.refund
     }
   }
   

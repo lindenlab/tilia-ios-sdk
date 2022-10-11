@@ -1,0 +1,49 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "transaction_id": "inv_2FoahCKkBHwcy7gr1Cg1zVYIGoM",
+        "transaction_id_type": "invoicing.invoice_v2.invoice_id",
+        "transaction_type": "refund",
+        "transaction_role": "buyer",
+        "transaction_status": "processed",
+        "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "transaction_data": {
+            "subtotal_amount": 6,
+            "subtotal_amount_display": "USD 0.06",
+            "tax_total_amount": 0,
+            "tax_amount_display": "USD 0.00",
+            "total_amount": 6,
+            "total_amount_display": "USD 0.06",
+            "amount_currency": "USD",
+            "refund_invoice_id": "inv_2FoahCKkBHwcy7gr1Cg1zVYIGoM",
+            "original_invoice_id": "f24f64f2-d050-4793-a317-9e4c2ff2afb8",
+            "original_reference_type": "My test order",
+            "original_reference_id": "123456789",
+            "original_date": "2022-10-07 16:39:19.108578 +0000 UTC",
+            "partial_refund_line_item_id": "",
+            "refund_line_items": [
+                {
+                    "description": "Line item 3",
+                    "amount_display": "USD 0.03"
+                },
+                {
+                    "description": "Line item 1",
+                    "amount_display": "USD 0.01"
+                },
+                {
+                    "description": "Line item 2",
+                    "amount_display": "USD 0.02"
+                }
+            ],
+            "refund_payment_methods": [
+                {
+                    "description": "Default USD Wallet",
+                    "amount_display": "USD 0.06"
+                }
+            ]
+        },
+        "transaction_date": "2022-10-07 16:43:27.714424 +0000 UTC"
+    }
+}

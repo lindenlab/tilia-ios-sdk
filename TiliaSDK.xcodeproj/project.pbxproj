@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
 		D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */; };
+		D11A7E5528F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */; };
 		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
 		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
 		D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */; };
@@ -237,6 +238,7 @@
 		67A0E480FF265BAE1A0957EA /* Pods-TiliaSDK.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.cicd.xcconfig"; sourceTree = "<group>"; };
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
 		D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidator.swift; sourceTree = "<group>"; };
+		D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsFullRefundResponse.json; sourceTree = "<group>"; };
 		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
 		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
 		D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosAcceptModel.swift; sourceTree = "<group>"; };
@@ -956,6 +958,7 @@
 				D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */,
 				D1E6F5A928F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json */,
 				D1E6F5A828F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json */,
+				D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */,
 				D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */,
 				D155C7F328E5898400F04BD2 /* GetTransactionHistoryResponse.json */,
 			);
@@ -1165,6 +1168,7 @@
 				D126AF152875872F00CAC5F2 /* IdentityCardBackImage.svg in Resources */,
 				D126AF1B2875872F00CAC5F2 /* ResedencePermitFrontImage.svg in Resources */,
 				D135DC8527E74A520009D888 /* LaunchScreen.storyboard in Resources */,
+				D11A7E5528F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json in Resources */,
 				D135DC8227E74A510009D888 /* Assets.xcassets in Resources */,
 				D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */,
 				D155C7F428E5898400F04BD2 /* GetTransactionHistoryResponse.json in Resources */,

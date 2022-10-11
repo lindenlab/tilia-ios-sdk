@@ -169,17 +169,23 @@ private extension TransactionDetailsSectionBuilder {
     default:
       var items: [Section.Item] = []
       if let lineItems = model.lineItems {
-        items = lineItems.map { .init(title: $0.description,
-                                      value: $0.displayAmount,
-                                      image: nil,
-                                      leftInset: 16,
-                                      isDividerHidden: false) }
+        items.append(contentsOf: lineItems.map { .init(title: $0.description,
+                                                       value: $0.displayAmount,
+                                                       image: nil,
+                                                       leftInset: 16,
+                                                       isDividerHidden: false) })
       } else if let recipientItems = model.recipientItems {
-        items = recipientItems.map { .init(title: $0.description,
-                                           value: $0.displayAmount,
-                                           image: nil,
-                                           leftInset: 16,
-                                           isDividerHidden: false) }
+        items.append(contentsOf: recipientItems.map { .init(title: $0.description,
+                                                            value: $0.displayAmount,
+                                                            image: nil,
+                                                            leftInset: 16,
+                                                            isDividerHidden: false) })
+      } else if let refundLineItems = model.refundLineItems {
+        items.append(contentsOf: refundLineItems.map { .init(title: $0.description,
+                                                             value: $0.displayAmount,
+                                                             image: nil,
+                                                             leftInset: 16,
+                                                             isDividerHidden: false) })
       }
       items.append(.init(title: model.type.headerSubTotalTitle,
                          value: model.total.subTotal,
@@ -323,6 +329,12 @@ private extension TransactionDetailsSectionBuilder {
                                                                        image: nil,
                                                                        leftInset: 32,
                                                                        isDividerHidden: $0.offset == recipientItems.count - 1) })
+    } else if let refundPaymentMethods = model.refundPaymentMethods {
+      items.append(contentsOf: refundPaymentMethods.enumerated().map { .init(title: $0.element.description,
+                                                                             value: $0.element.displayAmount,
+                                                                             image: nil,
+                                                                             leftInset: 32,
+                                                                             isDividerHidden: $0.offset == refundPaymentMethods.count - 1) })
     } else if let destinationPaymentMethod = model.destinationPaymentMethod {
       items.append(.init(title: destinationPaymentMethod,
                          value: destinationPaymentAmount(for: model),
@@ -373,6 +385,9 @@ private extension TransactionDetailsSectionBuilder {
     case .tokenConvert:
       arguments = [model.total.total, model.userReceivedAmount ?? ""]
       str = L.convertedTo(with: arguments.map { $0 as CVarArg })
+    case .refund:
+      arguments = [model.total.total]
+      str = L.refundOf(with: arguments.map { $0 as CVarArg })
     }
     let subStrings: [(String, UIFont, UIColor)] = arguments.map {
       return ($0, .systemFont(ofSize: 20, weight: .semibold), .primaryTextColor)
@@ -417,11 +432,12 @@ private extension TransactionTypeModel {
   
   var image: UIImage? {
     switch self {
-    case .userPurchase, .userPurchaseEscrow: return .purchaseBuyerIcon
-    case .userPurchaseRecipient: return .purchaseSellerIcon
+    case .userPurchase, .userPurchaseEscrow: return .buyerPurchaseIcon
+    case .userPurchaseRecipient: return .sellerPurchaseIcon
     case .payout: return .payoutGenericIcon
     case .tokenPurchase: return .tokenPurchaseIcon
     case .tokenConvert: return .tokenConvertIcon
+    case .refund: return .refundIcon
     }
   }
   
@@ -441,6 +457,8 @@ private extension TransactionTypeModel {
       return L.depositedInto
     case .payout:
       return L.payoutTo
+    case .refund:
+      return L.refundTo
     }
   }
   
