@@ -167,7 +167,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         self.updateFillingSectionObserver()
       }
       error.map { self.chooseFileDidFail.send($0) }
-      urls.forEach { url in self.deleteTempFile(at: url) }
+      urls.forEach { self.deleteTempFile(at: $0) }
     }
   }
   
