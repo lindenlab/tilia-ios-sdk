@@ -160,10 +160,8 @@ private extension TransactionHistorySectionBuilder {
   func isLast(in items: [TransactionDetailsModel], index: Int) -> Bool {
     if let nextItem = items[safe: index + 1], items[index].transactionDate.getDateDiff(for: nextItem.transactionDate) != 0 {
       return true
-    } else if index == items.count - 1 {
-      return true
     } else {
-      return false
+      return index == items.count - 1
     }
   }
   
