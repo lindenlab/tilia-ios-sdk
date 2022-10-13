@@ -110,9 +110,9 @@ extension TransactionHistoryViewModel: TransactionHistoryChildViewModelDelegate 
   }
   
   func transactionHistoryChildViewModel(didSelectTransaction transaction: TransactionDetailsModel) {
-    self.selectedTransaction = transaction
+    selectedTransaction = transaction
     selectTransaction.send()
-    self.selectedTransaction = nil
+    selectedTransaction = nil
   }
   
 }
