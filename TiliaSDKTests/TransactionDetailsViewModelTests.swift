@@ -21,10 +21,11 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     var loading: Bool?
     var needToAcceptTos: Void?
     var completeCallback: TLCompleteCallback?
+    var transaction: TransactionDetailsModel?
     
     let completeCallbackExpectation = XCTestExpectation(description: "testSuccessGetTransactionDetails_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(type: .id(""),
+    let viewModel = TransactionDetailsViewModel(mode: .id(""),
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
@@ -45,13 +46,20 @@ final class TransactionDetailsViewModelTests: XCTestCase {
       viewModel?.onTosComplete(event)
     }.store(in: &subscriptions)
     
+    let contentExpectation = XCTestExpectation(description: "testSuccessGetTransactionDetails_Content")
+    viewModel.content.sink {
+      transaction = $0
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
     TLManager.shared.setToken(UUID().uuidString)
     viewModel.checkIsTosRequired()
     
-    wait(for: [loadingExpectation, needToAcceptTosExpectation], timeout: 2)
+    wait(for: [loadingExpectation, needToAcceptTosExpectation, contentExpectation], timeout: 2)
     XCTAssertNotNil(loading)
     XCTAssertNotNil(needToAcceptTos)
     XCTAssertEqual(completeCallback?.state, .completed)
+    XCTAssertNotNil(transaction)
   }
   
   func testErrorCheckIsTosRequired() {
@@ -60,7 +68,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(type: .id(""),
+    let viewModel = TransactionDetailsViewModel(mode: .id(""),
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: nil,
@@ -86,7 +94,7 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorCheckIsTosRequired_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = TransactionDetailsViewModel(type: .id(""),
+    let viewModel = TransactionDetailsViewModel(mode: .id(""),
                                                 manager: networkManager,
                                                 onUpdate: nil,
                                                 onComplete: nil,
