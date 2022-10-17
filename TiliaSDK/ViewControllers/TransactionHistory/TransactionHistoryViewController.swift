@@ -42,6 +42,7 @@ final class TransactionHistoryViewController: BaseViewController {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle(L.close, for: .normal)
     button.addTarget(self, action: #selector(contentCloseButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "closeButton"
     let stackView = UIStackView(arrangedSubviews: [button])
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.directionalLayoutMargins = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
