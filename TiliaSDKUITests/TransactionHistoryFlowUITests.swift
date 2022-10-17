@@ -48,7 +48,6 @@ final class TransactionHistoryFlowUITests: XCTestCase {
     XCTAssert(transactionCell.waitForExistence(timeout: 2))
     transactionCell.tap()
     
-    let _ = XCTWaiter.wait(for: [XCTestExpectation()], timeout: 1)
     let visibleCells = app.tables.cells
     let startElement = visibleCells.element(boundBy: (visibleCells.count - 1) / 2)
     scrollUp(app: app, dy: -400, startElement: startElement)
