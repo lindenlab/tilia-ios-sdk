@@ -10,6 +10,9 @@
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
 		D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */; };
 		D11A7E5528F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */; };
+		D11A7E5728FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */; };
+		D11A7E5928FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */; };
+		D11A7E5B28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5A28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift */; };
 		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
 		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
 		D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */; };
@@ -239,6 +242,9 @@
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
 		D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidator.swift; sourceTree = "<group>"; };
 		D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsFullRefundResponse.json; sourceTree = "<group>"; };
+		D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryFlowUITests.swift; sourceTree = "<group>"; };
+		D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewModelTests.swift; sourceTree = "<group>"; };
+		D11A7E5A28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryChildViewModelTests.swift; sourceTree = "<group>"; };
 		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
 		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
 		D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosAcceptModel.swift; sourceTree = "<group>"; };
@@ -630,6 +636,8 @@
 				D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */,
 				D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */,
 				D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */,
+				D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */,
+				D11A7E5A28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";
@@ -1027,6 +1035,7 @@
 				D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */,
 				D1408F59288EB26600CABA3E /* KycFlowUITests.swift */,
 				D167248728C8E6590033899B /* TransactionDetailsFlowUITests.swift */,
+				D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */,
 			);
 			path = TiliaSDKUITests;
 			sourceTree = "<group>";
@@ -1429,6 +1438,7 @@
 				D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
 				D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */,
+				D11A7E5928FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift in Sources */,
 				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
 				D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */,
 				D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */,
@@ -1436,6 +1446,7 @@
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
 				D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */,
+				D11A7E5B28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1446,6 +1457,7 @@
 				D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */,
 				D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */,
 				D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */,
+				D11A7E5728FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift in Sources */,
 				D167248A28C8E80C0033899B /* XCTestCase+Extensions.swift in Sources */,
 				D167248828C8E6590033899B /* TransactionDetailsFlowUITests.swift in Sources */,
 			);
