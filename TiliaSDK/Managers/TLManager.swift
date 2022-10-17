@@ -226,7 +226,7 @@ public extension TLManager {
       return
     }
     
-    let transactionDetailsViewController = TransactionDetailsViewController(type: .id(transactionId),
+    let transactionDetailsViewController = TransactionDetailsViewController(mode: .id(transactionId),
                                                                             manager: networkManager,
                                                                             onUpdate: onUpdate,
                                                                             onComplete: onComplete,

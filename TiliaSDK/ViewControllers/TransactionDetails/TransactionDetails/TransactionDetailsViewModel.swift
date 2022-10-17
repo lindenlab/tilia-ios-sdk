@@ -7,7 +7,7 @@
 
 import Combine
 
-enum TransactionDetailsType {
+enum TransactionDetailsMode {
   case id(String)
   case transaction(TransactionDetailsModel)
   
@@ -50,7 +50,7 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   let dismiss = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<TransactionDetailsModel, Never>()
   
-  var transactionId: String { return type.id }
+  var transactionId: String { return mode.id }
   let manager: NetworkManager
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
@@ -65,15 +65,15 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   let onError: ((TLErrorCallback) -> Void)?
   
   private let onComplete: ((TLCompleteCallback) -> Void)?
-  private let type: TransactionDetailsType
+  private let mode: TransactionDetailsMode
   private var isLoaded = false
   
-  init(type: TransactionDetailsType,
+  init(mode: TransactionDetailsMode,
        manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    self.type = type
+    self.mode = mode
     self.manager = manager
     self.onUpdate = onUpdate
     self.onComplete = onComplete
@@ -81,7 +81,7 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   }
   
   func checkIsTosRequired() {
-    switch type {
+    switch mode {
     case let .transaction(model):
       isLoaded = true
       content.send(model)
