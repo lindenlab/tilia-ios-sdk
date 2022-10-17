@@ -14,12 +14,19 @@ enum InvoiceRouter: RouterProtocol {
   case payInvoice(id: String, isEscrow: Bool)
   case getTransactionDetails(id: String)
   case sendTransactionReceipt(id: String, email: String)
-  case getTransactionHistory(limit: Int, offset: Int)
+  case getTransactionHistory(model: GetTransactionHistoryModel)
   
   var method: HTTPMethod {
     switch self {
     case .getInvoiceDetails, .getTransactionDetails, .getTransactionHistory: return .get
     default: return .post
+    }
+  }
+  
+  var queryParameters: Parameters? {
+    switch self {
+    case let .getTransactionHistory(model): return model.encodedParameters
+    default: return nil
     }
   }
   

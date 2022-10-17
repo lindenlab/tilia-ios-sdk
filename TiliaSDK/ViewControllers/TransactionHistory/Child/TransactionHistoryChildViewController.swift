@@ -16,11 +16,12 @@ final class TransactionHistoryChildViewController: UITableViewController {
   private var sections: [TransactionHistorySectionModel] = []
   
   init(manager: NetworkManager,
-       delegate: TransactionHistoryChildViewModelDelegate?,
-       builder: TransactionHistorySectionBuilder) {
+       sectionType: TransactionHistorySectionTypeModel,
+       delegate: TransactionHistoryChildViewModelDelegate?) {
     self.viewModel = TransactionHistoryChildViewModel(manager: manager,
+                                                      sectionType: sectionType,
                                                       delegate: delegate)
-    self.builder = builder
+    self.builder = sectionType.builder
     super.init(style: .plain)
   }
   

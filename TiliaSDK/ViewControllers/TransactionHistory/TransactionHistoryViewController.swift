@@ -72,8 +72,8 @@ final class TransactionHistoryViewController: BaseViewController {
     super.init(nibName: nil, bundle: nil)
     TransactionHistorySectionTypeModel.allCases.enumerated().forEach { index, item in
       viewControllers.append(TransactionHistoryChildViewController(manager: manager,
-                                                                   delegate: viewModel,
-                                                                   builder: item.builder))
+                                                                   sectionType: item,
+                                                                   delegate: viewModel))
       sectionTypeSegmentedControl.insertSegment(withTitle: item.description,
                                                 at: index,
                                                 animated: false)

@@ -34,20 +34,24 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   let content = PassthroughSubject<TransactionHistoryChildContent, Never>()
   
   private let manager: NetworkManager
+  private let sectionType: TransactionHistorySectionTypeModel
   private weak var delegate: TransactionHistoryChildViewModelDelegate?
   private var transactions: [TransactionDetailsModel] = []
   private var offset = 0
   private var isLoadingMore = false
   
-  init(manager: NetworkManager, delegate: TransactionHistoryChildViewModelDelegate?) {
+  init(manager: NetworkManager,
+       sectionType: TransactionHistorySectionTypeModel,
+       delegate: TransactionHistoryChildViewModelDelegate?) {
     self.manager = manager
+    self.sectionType = sectionType
     self.delegate = delegate
   }
   
   func loadTransactions() {
     loading.send(true)
     offset = 0
-    manager.getTransactionHistory(withLimit: 20, offset: offset) { [weak self] result in
+    manager.getTransactionHistory(withLimit: 20, offset: offset, sectionType: sectionType) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let model):
@@ -66,7 +70,7 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
     guard !isLoadingMore else { return }
     isLoadingMore = true
     offset += 1
-    manager.getTransactionHistory(withLimit: 20, offset: offset) { [weak self] result in
+    manager.getTransactionHistory(withLimit: 20, offset: offset, sectionType: sectionType) { [weak self] result in
       guard let self = self, self.offset != 0 else { return }
       switch result {
       case .success(let model):

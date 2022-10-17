@@ -6,8 +6,15 @@
 //
 
 import XCTest
+import Combine
 @testable import TiliaSDK
 
 final class TransactionHistoryChildViewModelTests: XCTestCase {
+  
+  var subscriptions: Set<AnyCancellable>!
+  
+  override func setUpWithError() throws {
+    subscriptions = []
+  }
   
 }
