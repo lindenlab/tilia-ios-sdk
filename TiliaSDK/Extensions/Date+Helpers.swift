@@ -64,7 +64,10 @@ extension Date {
   }
   
   func getDateDiff(for date: Date) -> Int {
-    let value = Calendar.current.dateComponents([.day], from: self, to: date).day ?? 0
+    let calendar = Calendar.current
+    let fromDate = calendar.startOfDay(for: self)
+    let toDate = calendar.startOfDay(for: date)
+    let value = calendar.dateComponents([.day], from: fromDate, to: toDate).day ?? 0
     return abs(value)
   }
   
