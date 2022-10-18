@@ -71,13 +71,7 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
     if oldLastItem == nil {
       sections.append(.init(header: nil, items: []))
     }
-    let lastItemIndex = sections[0].items.count - 1
-    if lastItemIndex >= 0 {
-      sections[0].items[lastItemIndex].isLast = false
-      updateTable(tableView,
-                  at: .init(row: lastItemIndex, section: 0),
-                  isLast: false)
-    }
+    let lastItemIndex = updateLastSection(with: &sections, in: tableView).item
     let count = items.count
     items.enumerated().forEach { index, item in
       insertRows.append(.init(row: lastItemIndex + index + 1, section: 0))
@@ -95,23 +89,15 @@ struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder
   
   func updateSections(_ sections: inout [TransactionHistorySectionModel], in tableView: UITableView, with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?) -> TableUpdate {
     guard !items.isEmpty else { return (nil, nil) }
-    var oldLastSectionIndex = sections.count - 1
-    var lastSectionIndex = oldLastSectionIndex
-    var lastItemIndex = -1
+    var oldLastIndexes = updateLastSection(with: &sections, in: tableView)
+    var lastSectionIndex = oldLastIndexes.section
     var lastItem = oldLastItem
     var insertRows: [IndexPath] = []
-    if lastSectionIndex >= 0 && sections[lastSectionIndex].items.count - 1 >= 0 {
-      lastItemIndex = sections[lastSectionIndex].items.count - 1
-      sections[lastSectionIndex].items[lastItemIndex].isLast = false
-      updateTable(tableView,
-                  at: .init(row: lastItemIndex, section: lastSectionIndex),
-                  isLast: false)
-    }
     items.enumerated().forEach { index, item in
       let isItemLast = self.isLast(in: items, index: index)
       if let lastItem = lastItem, lastItem.transactionDate.getDateDiff(for: item.transactionDate) == 0 {
-        if lastSectionIndex == oldLastSectionIndex {
-          insertRows.append(.init(row: lastItemIndex + index + 1,
+        if lastSectionIndex == oldLastIndexes.section {
+          insertRows.append(.init(row: oldLastIndexes.item + index + 1,
                                   section: lastSectionIndex))
         }
         sections[lastSectionIndex].items.append(self.item(for: item,
@@ -131,7 +117,7 @@ struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder
                                                           color: .tertiaryTextColor,
                                                           subStrings: (count, .boldSystemFont(ofSize: 12), .tertiaryTextColor))
         sections[lastSectionIndex].header?.value = value
-        if lastSectionIndex == oldLastSectionIndex {
+        if lastSectionIndex == oldLastIndexes.section {
           updateTable(tableView,
                       at: lastSectionIndex,
                       total: value)
@@ -139,8 +125,8 @@ struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder
       }
       lastItem = item
     }
-    oldLastSectionIndex += 1
-    let insertSections = oldLastSectionIndex <= lastSectionIndex ? IndexSet(integersIn: oldLastSectionIndex...lastSectionIndex) : nil
+    oldLastIndexes.section += 1
+    let insertSections = oldLastIndexes.section <= lastSectionIndex ? IndexSet(integersIn: oldLastIndexes.section...lastSectionIndex) : nil
     return (insertSections, insertRows.isEmpty ? nil : insertRows)
   }
   
@@ -160,6 +146,8 @@ extension TransactionHistorySectionTypeModel {
 // MARK: - Private Methods
 
 private extension TransactionHistorySectionBuilder {
+  
+  typealias Indexes = (section: Int, item: Int)
   
   func item(for model: TransactionDetailsModel, isLast: Bool, sectionType: TransactionHistorySectionTypeModel) -> TransactionHistorySectionModel.Item {
     let subTitle: String
@@ -183,6 +171,19 @@ private extension TransactionHistorySectionBuilder {
     } else {
       return index == items.count - 1
     }
+  }
+  
+  func updateLastSection(with sections: inout [TransactionHistorySectionModel], in tableView: UITableView) -> Indexes {
+    let lastSectionIndex = sections.count - 1
+    var lastItemIndex = -1
+    if lastSectionIndex >= 0 && sections[lastSectionIndex].items.count - 1 >= 0 {
+      lastItemIndex = sections[lastSectionIndex].items.count - 1
+      sections[lastSectionIndex].items[lastItemIndex].isLast = false
+      updateTable(tableView,
+                  at: .init(row: lastItemIndex, section: lastSectionIndex),
+                  isLast: false)
+    }
+    return (lastSectionIndex, lastItemIndex)
   }
   
   func updateTable(_ tableView: UITableView, at indexPath: IndexPath, isLast: Bool) {
