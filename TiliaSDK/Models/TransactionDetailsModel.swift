@@ -293,7 +293,7 @@ private extension TransactionDetailsModel {
   
   static func date<T: CodingKey>(for container: KeyedDecodingContainer<T>, with key: KeyedDecodingContainer<T>.Key) throws -> Date {
     let dateString = try container.decode(String.self, forKey: key)
-    if let date = DateFormatter.customDateAndTimeWithTimeZoneFormatter.date(from: dateString) {
+    if let date = ISO8601DateFormatter().date(from: dateString) {
       return date
     } else {
       throw TLError.invalidDateFormatForString(dateString)

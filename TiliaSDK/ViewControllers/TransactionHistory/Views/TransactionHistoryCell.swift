@@ -113,9 +113,10 @@ final class TransactionHistoryCell: UITableViewCell {
 private extension TransactionHistoryCell {
   
   func setup() {
+    selectionStyle = .none
     isExclusiveTouch = true
-    backgroundColor = .clear
-    contentView.backgroundColor = .clear
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(contentStackView)
     contentView.addSubview(divider)
     

@@ -31,10 +31,10 @@
                 "status": "SUCCESS",
                 "token_exchange_invoice_id": "",
                 "balance_transfer_id": "",
-                "created": "2022-09-06 20:50:18.723733 +0000 UTC",
-                "updated": "2022-09-06 20:55:18.723733 +0000 UTC"
+                "created": "2022-09-06T20:55:15Z",
+                "updated": "2022-09-06T20:55:15Z"
             }
         },
-        "transaction_date": "2022-09-06 20:55:18.723733 +0000 UTC"
+        "transaction_date": "2022-09-06T20:55:15Z"
     }
 }
