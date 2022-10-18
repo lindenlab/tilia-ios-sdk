@@ -174,6 +174,7 @@ enum L {
   static let tiliaFees = "tiliaFees".localized
   static let publisherFees = "publisherFees".localized
   static let refundTo = "refundTo".localized
+  static let transactionHistoryIsEmpty = "transactionHistoryIsEmpty".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)

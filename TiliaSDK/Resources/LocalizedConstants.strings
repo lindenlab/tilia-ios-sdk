@@ -175,3 +175,4 @@
 "publisherFees" = "Publisher fees";
 "refundTo" = "Refund to";
 "refundOf" = "Refund of %@";
+"transactionHistoryIsEmpty" = "There are no transactions.";

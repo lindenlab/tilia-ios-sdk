@@ -61,6 +61,21 @@ extension TransactionHistorySectionBuilder {
     }
   }
   
+  func updateTable(_ tableView: UITableView, isEmpty: Bool) {
+    if isEmpty {
+      guard tableView.backgroundView == nil else { return }
+      let label = UILabel()
+      label.font = .systemFont(ofSize: 14)
+      label.textColor = .primaryTextColor
+      label.textAlignment = .center
+      label.text = L.transactionHistoryIsEmpty
+      tableView.backgroundView = label
+    } else {
+      tableView.backgroundView?.removeFromSuperview()
+      tableView.backgroundView = nil
+    }
+  }
+  
 }
 
 struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder {

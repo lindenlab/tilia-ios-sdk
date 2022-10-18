@@ -108,13 +108,11 @@ private extension TransactionHistoryChildViewController {
 
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      
       if $0.needReload {
         self.sections.removeAll()
+        self.builder.updateTable(self.tableView, isEmpty: $0.models.isEmpty)
       }
-      
       self.builder.updateTable(self.tableView, hasMore: $0.hasMore)
-      
       let tableUpdate = self.builder.updateSections(&self.sections,
                                                     in: self.tableView,
                                                     with: $0.models,
