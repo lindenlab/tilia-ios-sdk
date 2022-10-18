@@ -112,26 +112,16 @@ private extension TransactionHistoryChildViewController {
       if $0.needReload {
         self.sections.removeAll()
       }
-      if $0.hasMore {
-        if self.tableView.tableFooterView == nil {
-          let spinner = UIActivityIndicatorView(style: .medium)
-          spinner.startAnimating()
-          self.tableView.tableFooterView = spinner
-        }
-      } else {
-        self.tableView.tableFooterView?.removeFromSuperview()
-        self.tableView.tableFooterView = nil
-      }
-
-      let tableUpdate = self.builder.updateSections(with: $0.models,
-                                                    oldLastItem: $0.lastItem,
-                                                    sections: &self.sections)
+      
+      self.builder.updateTable(self.tableView, hasMore: $0.hasMore)
+      
+      let tableUpdate = self.builder.updateSections(&self.sections,
+                                                    in: self.tableView,
+                                                    with: $0.models,
+                                                    oldLastItem: $0.lastItem)
       if $0.needReload {
         self.tableView.reloadData()
       } else {
-        if let updateRow = tableUpdate.updateRow, let cell = self.tableView.cellForRow(at: updateRow) as? TransactionHistoryCell {
-          cell.configure(isLast: false)
-        }
         UIView.performWithoutAnimation {
           self.tableView.performBatchUpdates {
             tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .fade) }

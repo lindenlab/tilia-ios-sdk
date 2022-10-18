@@ -8,9 +8,9 @@
 import UIKit
 
 protocol TransactionHistorySectionBuilder {
-  typealias TableUpdate = (insertSections: IndexSet?, insertRows: [IndexPath]?, updateRow: IndexPath?)
+  typealias TableUpdate = (insertSections: IndexSet?, insertRows: [IndexPath]?)
   
-  func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate
+  func updateSections(_ sections: inout [TransactionHistorySectionModel], in tableView: UITableView, with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?) -> TableUpdate
 }
 
 extension TransactionHistorySectionBuilder {
@@ -41,10 +41,23 @@ extension TransactionHistorySectionBuilder {
               in tableView: UITableView) -> UIView? {
     if let header = section.header {
       let view = tableView.dequeue(TransactionHistoryHeaderView.self)
-      view.configure(title: header.title, value: header.value)
+      view.configure(title: header.title)
+      view.configure(value: header.value)
       return view
     } else {
       return nil
+    }
+  }
+  
+  func updateTable(_ tableView: UITableView, hasMore: Bool) {
+    if hasMore {
+      guard tableView.tableFooterView == nil else { return }
+      let spinner = UIActivityIndicatorView(style: .medium)
+      spinner.startAnimating()
+      tableView.tableFooterView = spinner
+    } else {
+      tableView.tableFooterView?.removeFromSuperview()
+      tableView.tableFooterView = nil
     }
   }
   
@@ -52,17 +65,18 @@ extension TransactionHistorySectionBuilder {
 
 struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder {
   
-  func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
-    guard !items.isEmpty else { return (nil, nil, nil) }
+  func updateSections(_ sections: inout [TransactionHistorySectionModel], in tableView: UITableView, with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?) -> TableUpdate {
+    guard !items.isEmpty else { return (nil, nil) }
     var insertRows: [IndexPath] = []
-    var updateRow: IndexPath?
     if oldLastItem == nil {
       sections.append(.init(header: nil, items: []))
     }
     let lastItemIndex = sections[0].items.count - 1
     if lastItemIndex >= 0 {
       sections[0].items[lastItemIndex].isLast = false
-      updateRow = .init(row: lastItemIndex, section: 0)
+      updateTable(tableView,
+                  at: .init(row: lastItemIndex, section: 0),
+                  isLast: false)
     }
     let count = items.count
     items.enumerated().forEach { index, item in
@@ -71,7 +85,7 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
                                          isLast: index == count - 1,
                                          sectionType: .pending))
     }
-    return (nil, insertRows.isEmpty ? nil : insertRows, updateRow)
+    return (nil, insertRows.isEmpty ? nil : insertRows)
   }
   
 }
@@ -79,18 +93,19 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
 
 struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder {
   
-  func updateSections(with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?, sections: inout [TransactionHistorySectionModel]) -> TableUpdate {
-    guard !items.isEmpty else { return (nil, nil, nil) }
-    let oldLastSectionIndex = sections.count - 1
+  func updateSections(_ sections: inout [TransactionHistorySectionModel], in tableView: UITableView, with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?) -> TableUpdate {
+    guard !items.isEmpty else { return (nil, nil) }
+    var oldLastSectionIndex = sections.count - 1
     var lastSectionIndex = oldLastSectionIndex
     var lastItemIndex = -1
     var lastItem = oldLastItem
     var insertRows: [IndexPath] = []
-    var updateRow: IndexPath?
     if lastSectionIndex >= 0 && sections[lastSectionIndex].items.count - 1 >= 0 {
       lastItemIndex = sections[lastSectionIndex].items.count - 1
       sections[lastSectionIndex].items[lastItemIndex].isLast = false
-      updateRow = .init(row: lastSectionIndex, section: lastSectionIndex)
+      updateTable(tableView,
+                  at: .init(row: lastItemIndex, section: lastSectionIndex),
+                  isLast: false)
     }
     items.enumerated().forEach { index, item in
       let isItemLast = self.isLast(in: items, index: index)
@@ -116,12 +131,17 @@ struct TransactionHistoryHistorySectionBuilder: TransactionHistorySectionBuilder
                                                           color: .tertiaryTextColor,
                                                           subStrings: (count, .boldSystemFont(ofSize: 12), .tertiaryTextColor))
         sections[lastSectionIndex].header?.value = value
+        if lastSectionIndex == oldLastSectionIndex {
+          updateTable(tableView,
+                      at: lastSectionIndex,
+                      total: value)
+        }
       }
       lastItem = item
     }
-    let insertSectionsRange = oldLastSectionIndex + 1...lastSectionIndex
-    let insertSections = insertSectionsRange.isEmpty ? nil : IndexSet(integersIn: insertSectionsRange)
-    return (insertSections, insertRows.isEmpty ? nil : insertRows, updateRow)
+    oldLastSectionIndex += 1
+    let insertSections = oldLastSectionIndex <= lastSectionIndex ? IndexSet(integersIn: oldLastSectionIndex...lastSectionIndex) : nil
+    return (insertSections, insertRows.isEmpty ? nil : insertRows)
   }
   
 }
@@ -163,6 +183,16 @@ private extension TransactionHistorySectionBuilder {
     } else {
       return index == items.count - 1
     }
+  }
+  
+  func updateTable(_ tableView: UITableView, at indexPath: IndexPath, isLast: Bool) {
+    guard let cell = tableView.cellForRow(at: indexPath) as? TransactionHistoryCell else { return }
+    cell.configure(isLast: isLast)
+  }
+  
+  func updateTable(_ tableView: UITableView, at sectionIndex: Int, total: NSAttributedString) {
+    guard let header = tableView.headerView(forSection: sectionIndex) as? TransactionHistoryHeaderView else { return }
+    header.configure(value: total)
   }
   
 }
