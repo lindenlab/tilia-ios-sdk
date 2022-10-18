@@ -234,7 +234,7 @@ final class NetworkManagerTests: XCTestCase {
     TLManager.shared.setToken(UUID().uuidString)
     var model: TransactionHistoryModel?
     let expectation = XCTestExpectation(description: "testGetTransactionHistorySuccess")
-    networkManager.getTransactionHistory(withLimit: 10, offset: 0) { result in
+    networkManager.getTransactionHistory(withLimit: 10, offset: 0, sectionType: .pending) { result in
       expectation.fulfill()
       switch result {
       case .success(let item):

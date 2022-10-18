@@ -12,7 +12,6 @@
 		D11A7E5528F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */; };
 		D11A7E5728FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */; };
 		D11A7E5928FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */; };
-		D11A7E5B28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5A28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift */; };
 		D11A7E5D28FDDD11005B93D2 /* GetTransactionHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5C28FDDD11005B93D2 /* GetTransactionHistoryModel.swift */; };
 		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
 		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
@@ -245,7 +244,6 @@
 		D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsFullRefundResponse.json; sourceTree = "<group>"; };
 		D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryFlowUITests.swift; sourceTree = "<group>"; };
 		D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewModelTests.swift; sourceTree = "<group>"; };
-		D11A7E5A28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryChildViewModelTests.swift; sourceTree = "<group>"; };
 		D11A7E5C28FDDD11005B93D2 /* GetTransactionHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTransactionHistoryModel.swift; sourceTree = "<group>"; };
 		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
 		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
@@ -639,7 +637,6 @@
 				D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */,
 				D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */,
 				D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */,
-				D11A7E5A28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";
@@ -1450,7 +1447,6 @@
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
 				D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */,
-				D11A7E5B28FD2CDA005B93D2 /* TransactionHistoryChildViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

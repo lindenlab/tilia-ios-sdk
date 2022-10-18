@@ -54,7 +54,13 @@ final class TransactionHistoryViewModelTests: XCTestCase {
     TLManager.shared.setToken(UUID().uuidString)
     viewModel.checkIsTosRequired()
     
-    wait(for: [loadingExpectation, needToAcceptTosExpectation, contentExpectation], timeout: 2)
+    let expectations = [
+      loadingExpectation,
+      needToAcceptTosExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
     XCTAssertNotNil(loading)
     XCTAssertNotNil(needToAcceptTos)
     XCTAssertEqual(completeCallback?.state, .completed)
@@ -81,9 +87,127 @@ final class TransactionHistoryViewModelTests: XCTestCase {
     TLManager.shared.setToken("")
     viewModel.checkIsTosRequired()
     
-    wait(for: [errorExpectation, errorCallbackExpectation], timeout: 2)
+    let expectations = [
+      errorExpectation,
+      errorCallbackExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
     XCTAssertNotNil(error)
     XCTAssertNotNil(errorCallback)
+  }
+  
+  func testSuccessLoadTransactions() {
+    var loading: Bool?
+    var completeCallback: TLCompleteCallback?
+    var content: TransactionHistoryChildContent?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let completeCallbackExpectation = XCTestExpectation(description: "testSuccessLoadTransactions_CompleteCallback")
+    let parentViewModel = TransactionHistoryViewModel(manager: networkManager,
+                                                      onUpdate: nil,
+                                                      onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
+                                                      onError: nil)
+    let childViewModel = TransactionHistoryChildViewModel(manager: networkManager,
+                                                          sectionType: .pending,
+                                                          delegate: parentViewModel)
+    
+    let loadingExpectation = XCTestExpectation(description: "testSuccessLoadTransactions_Loading")
+    childViewModel.loading.sink {
+      loading = $0
+      loadingExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessLoadTransactions_Content")
+    childViewModel.content.sink { [weak parentViewModel] in
+      content = $0
+      contentExpectation.fulfill()
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        parentViewModel?.complete(isFromCloseAction: false)
+      }
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    childViewModel.loadTransactions()
+    
+    let expectations = [
+      loadingExpectation,
+      completeCallbackExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(loading)
+    XCTAssertEqual(completeCallback?.state, .completed)
+    XCTAssertEqual(content?.models.isEmpty, false)
+    XCTAssertEqual(content?.needReload, true)
+    XCTAssertNil(content?.lastItem)
+    XCTAssertEqual(content?.hasMore, false)
+  }
+  
+  func testErrorLoadTransactions() {
+    var error: Error?
+    var errorCallback: TLErrorCallback?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let errorCallbackExpectation = XCTestExpectation(description: "testErrorLoadTransactions_ErrorCallback")
+    let parentViewModel = TransactionHistoryViewModel(manager: networkManager,
+                                                      onUpdate: nil,
+                                                      onComplete: nil,
+                                                      onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
+    let childViewModel = TransactionHistoryChildViewModel(manager: networkManager,
+                                                          sectionType: .pending,
+                                                          delegate: parentViewModel)
+    
+    let errorExpectation = XCTestExpectation(description: "testErrorLoadTransactions_Error")
+    parentViewModel.error.sink {
+      error = $0.error
+      errorExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken("")
+    childViewModel.loadTransactions()
+    
+    let expectations = [
+      errorExpectation,
+      errorCallbackExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(error)
+    XCTAssertNotNil(errorCallback)
+  }
+  
+  func testSuccessSelectTransaction() {
+    var selectedTransaction: TransactionDetailsModel?
+    var content: TransactionHistoryChildContent?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let parentViewModel = TransactionHistoryViewModel(manager: networkManager,
+                                                      onUpdate: nil,
+                                                      onComplete: nil,
+                                                      onError: nil)
+    let childViewModel = TransactionHistoryChildViewModel(manager: networkManager,
+                                                          sectionType: .pending,
+                                                          delegate: parentViewModel)
+    
+    childViewModel.content.sink { [weak childViewModel] in
+      content = $0
+      childViewModel?.selectTransaction(at: 0)
+    }.store(in: &subscriptions)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessSelectTransaction_SelectTransaction")
+    parentViewModel.selectTransaction.sink { [weak parentViewModel] in
+      selectedTransaction = parentViewModel?.selectedTransaction
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    childViewModel.loadTransactions()
+    
+    wait(for: [contentExpectation], timeout: 2)
+    XCTAssertNotNil(selectedTransaction)
+    XCTAssertNotNil(content)
   }
   
 }

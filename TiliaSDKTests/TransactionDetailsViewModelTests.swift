@@ -55,7 +55,13 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     TLManager.shared.setToken(UUID().uuidString)
     viewModel.checkIsTosRequired()
     
-    wait(for: [loadingExpectation, needToAcceptTosExpectation, contentExpectation], timeout: 2)
+    let expectations = [
+      loadingExpectation,
+      needToAcceptTosExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
     XCTAssertNotNil(loading)
     XCTAssertNotNil(needToAcceptTos)
     XCTAssertEqual(completeCallback?.state, .completed)
@@ -83,7 +89,12 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     TLManager.shared.setToken("")
     viewModel.checkIsTosRequired()
     
-    wait(for: [errorExpectation, errorCallbackExpectation], timeout: 2)
+    let expectations = [
+      errorExpectation,
+      errorCallbackExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
     XCTAssertNotNil(error)
     XCTAssertNotNil(errorCallback)
   }
@@ -118,7 +129,12 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     TLManager.shared.setToken(UUID().uuidString)
     viewModel.checkIsTosRequired()
     
-    wait(for: [errorExpectation, errorCallbackExpectation], timeout: 2)
+    let expectations = [
+      errorExpectation,
+      errorCallbackExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
     XCTAssertNotNil(error)
     XCTAssertNotNil(errorCallback)
   }
