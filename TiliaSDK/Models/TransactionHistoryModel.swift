@@ -12,4 +12,16 @@ struct TransactionHistoryModel: Decodable {
   let total: Int
   let transactions: [TransactionDetailsModel]
   
+  private enum CodingKeys: String, CodingKey {
+    case total
+    case transactions
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.total = try container.decode(Int.self, forKey: .total)
+    let transactions = try container.decode([OptionalModel<TransactionDetailsModel>].self, forKey: .transactions)
+    self.transactions = transactions.compactMap { $0.model }
+  }
+  
 }

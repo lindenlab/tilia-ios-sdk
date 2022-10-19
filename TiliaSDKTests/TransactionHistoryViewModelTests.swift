@@ -195,7 +195,7 @@ final class TransactionHistoryViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
-    childViewModel.loadMoreTransactions()
+    childViewModel.loadMoreTransactionsIfNeeded()
     
     wait(for: [contentExpectation], timeout: 2)
     XCTAssertEqual(content?.models.isEmpty, false)
@@ -223,7 +223,7 @@ final class TransactionHistoryViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken("")
-    childViewModel.loadMoreTransactions()
+    childViewModel.loadMoreTransactionsIfNeeded()
     
     let expectations = [
       errorExpectation,
