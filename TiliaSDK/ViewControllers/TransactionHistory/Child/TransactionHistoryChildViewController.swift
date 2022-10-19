@@ -15,6 +15,12 @@ final class TransactionHistoryChildViewController: UITableViewController {
   private var subscriptions: Set<AnyCancellable> = []
   private var sections: [TransactionHistorySectionModel] = []
   
+  private lazy var bottomSpinner: UIActivityIndicatorView = {
+    let spinner = UIActivityIndicatorView(style: .medium)
+    tableView.tableFooterView = spinner
+    return spinner
+  }()
+  
   init(manager: NetworkManager,
        sectionType: TransactionHistorySectionTypeModel,
        delegate: TransactionHistoryChildViewModelDelegate?) {
@@ -69,9 +75,8 @@ final class TransactionHistoryChildViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    guard tableView.tableFooterView != nil,
-          indexPath == tableView.indexPathOfLastRow else { return }
-    viewModel.loadMoreTransactions()
+    guard indexPath == tableView.indexPathOfLastRow else { return }
+    viewModel.loadMoreTransactionsIfNeeded()
   }
   
 }
@@ -106,13 +111,21 @@ private extension TransactionHistoryChildViewController {
       }
     }.store(in: &subscriptions)
 
+    viewModel.loadingMore.sink { [weak self] in
+      guard let self = self else { return }
+      if $0 {
+        self.bottomSpinner.startAnimating()
+      } else {
+        self.bottomSpinner.stopAnimating()
+      }
+    }.store(in: &subscriptions)
+    
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
       if $0.needReload {
         self.sections.removeAll()
         self.builder.updateTable(self.tableView, isEmpty: $0.models.isEmpty)
       }
-      self.builder.updateTable(self.tableView, hasMore: $0.hasMore)
       let tableUpdate = self.builder.updateSections(&self.sections,
                                                     in: self.tableView,
                                                     with: $0.models,

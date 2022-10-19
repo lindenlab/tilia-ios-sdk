@@ -7,7 +7,7 @@
 
 import Combine
 
-typealias TransactionHistoryChildContent = (models: [TransactionDetailsModel], lastItem: TransactionDetailsModel?, needReload: Bool, hasMore: Bool)
+typealias TransactionHistoryChildContent = (models: [TransactionDetailsModel], lastItem: TransactionDetailsModel?, needReload: Bool)
 
 protocol TransactionHistoryChildViewModelDelegate: AnyObject {
   func transactionHistoryChildViewModelDidLoad()
@@ -17,12 +17,13 @@ protocol TransactionHistoryChildViewModelDelegate: AnyObject {
 
 protocol TransactionHistoryChildViewModelInputProtocol {
   func loadTransactions()
-  func loadMoreTransactions()
+  func loadMoreTransactionsIfNeeded()
   func selectTransaction(at index: Int)
 }
 
 protocol TransactionHistoryChildViewModelOutputProtocol {
-  var loading: CurrentValueSubject<Bool, Never> { get }
+  var loading: PassthroughSubject<Bool, Never> { get }
+  var loadingMore: PassthroughSubject<Bool, Never> { get }
   var content: PassthroughSubject<TransactionHistoryChildContent, Never> { get }
 }
 
@@ -30,7 +31,8 @@ protocol TransactionHistoryChildViewModelProtocol: TransactionHistoryChildViewMo
 
 final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelProtocol {
   
-  let loading = CurrentValueSubject<Bool, Never>(false)
+  let loading = PassthroughSubject<Bool, Never>()
+  let loadingMore = PassthroughSubject<Bool, Never>()
   let content = PassthroughSubject<TransactionHistoryChildContent, Never>()
   
   private let manager: NetworkManager
@@ -38,7 +40,12 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   private weak var delegate: TransactionHistoryChildViewModelDelegate?
   private var transactions: [TransactionDetailsModel] = []
   private var offset = 0
-  private var isLoadingMore = false
+  private var hasMore = false
+  private var isLoadingMore = false {
+    didSet {
+      loadingMore.send(isLoadingMore)
+    }
+  }
   
   init(manager: NetworkManager,
        sectionType: TransactionHistorySectionTypeModel,
@@ -51,13 +58,14 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   func loadTransactions() {
     loading.send(true)
     offset = 0
+    hasMore = false
     manager.getTransactionHistory(withLimit: 20, offset: offset, sectionType: sectionType) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let model):
         self.transactions = model.transactions
-        let hasMore = self.hasMore(total: model.total)
-        self.content.send((model.transactions, nil, true, hasMore))
+        self.hasMore = self.hasMore(total: model.total)
+        self.content.send((model.transactions, nil, true))
         self.delegate?.transactionHistoryChildViewModelDidLoad()
       case .failure(let error):
         self.delegate?.transactionHistoryChildViewModel(didFailWithError: error)
@@ -66,20 +74,20 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
     }
   }
   
-  func loadMoreTransactions() {
-    guard !isLoadingMore && !loading.value else { return }
+  func loadMoreTransactionsIfNeeded() {
+    guard hasMore && !isLoadingMore else { return }
     isLoadingMore = true
     offset += 1
     manager.getTransactionHistory(withLimit: 20, offset: offset, sectionType: sectionType) { [weak self] result in
       guard let self = self else { return }
       self.isLoadingMore = false
-      guard !self.loading.value else { return }
+      guard self.hasMore else { return }
       switch result {
       case .success(let model):
         let lastItem = self.transactions.last
         self.transactions.append(contentsOf: model.transactions)
-        let hasMore = self.hasMore(total: model.total)
-        self.content.send((model.transactions, lastItem, false, hasMore))
+        self.hasMore = self.hasMore(total: model.total)
+        self.content.send((model.transactions, lastItem, false))
       case .failure(let error):
         self.offset -= 1
         self.delegate?.transactionHistoryChildViewModel(didFailWithError: error)

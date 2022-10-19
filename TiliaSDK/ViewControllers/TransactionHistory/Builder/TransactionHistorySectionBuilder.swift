@@ -49,18 +49,6 @@ extension TransactionHistorySectionBuilder {
     }
   }
   
-  func updateTable(_ tableView: UITableView, hasMore: Bool) {
-    if hasMore {
-      guard tableView.tableFooterView == nil else { return }
-      let spinner = UIActivityIndicatorView(style: .medium)
-      spinner.startAnimating()
-      tableView.tableFooterView = spinner
-    } else {
-      tableView.tableFooterView?.removeFromSuperview()
-      tableView.tableFooterView = nil
-    }
-  }
-  
   func updateTable(_ tableView: UITableView, isEmpty: Bool) {
     if isEmpty {
       guard tableView.backgroundView == nil else { return }
