@@ -12,6 +12,7 @@ struct TransactionDetailsModel: Decodable {
   let id: String
   let type: TransactionTypeModel
   let status: TransactionStatusModel
+  let description: String
   let accountId: String
   let referenceType: String?
   let referenceId: String?
@@ -35,6 +36,7 @@ struct TransactionDetailsModel: Decodable {
     case accountId = "account_id"
     case data = "transaction_data"
     case transactionDate = "transaction_date"
+    case description = "transaction_description"
   }
   
   private enum TransactionCodingKeys: String, CodingKey {
@@ -61,6 +63,7 @@ struct TransactionDetailsModel: Decodable {
     id = try container.decode(String.self, forKey: .id)
     type = try container.decode(TransactionTypeModel.self, forKey: .type)
     status = try container.decode(TransactionStatusModel.self, forKey: .status)
+    description = try container.decode(String.self, forKey: .description)
     accountId = try container.decode(String.self, forKey: .accountId)
     transactionDate = try Self.date(for: container, with: .transactionDate)
     total = try TransactionTotalModel(from: decoder)

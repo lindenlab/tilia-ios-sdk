@@ -44,6 +44,7 @@
                 }
             ]
         },
-        "transaction_date": "2022-10-07T00:29:16.087112Z"
+        "transaction_date": "2022-10-07T00:29:16Z",
+        "transaction_description": "Line item 1"
     }
 }

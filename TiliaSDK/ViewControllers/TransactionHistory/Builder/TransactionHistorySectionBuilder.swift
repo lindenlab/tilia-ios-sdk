@@ -160,7 +160,7 @@ private extension TransactionHistorySectionBuilder {
     case .history:
       subTitle = model.type.description
     }
-    return .init(title: "Title for transaction",
+    return .init(title: model.description,
                  subTitle: subTitle,
                  value: model.attributedValue,
                  subValueImage: model.status.subValueImage,

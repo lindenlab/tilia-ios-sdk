@@ -43,10 +43,11 @@
                 "fee_currency": "",
                 "destination_wallet_id": "0df7252d-7b5d-46c0-b49d-9f7292ae1c17",
                 "status": "SUCCESS",
-                "created": "2022-10-07T00:29:16.087112Z",
-                "updated": "2022-10-07T00:33:28.807909Z"
+                "created": "2022-10-07T00:29:16Z",
+                "updated": "2022-10-07T00:33:28Z"
             }
         },
-        "transaction_date": "2022-10-07T00:29:16.087112Z"
+        "transaction_date": "2022-10-07T00:29:16Z",
+        "transaction_description": "Line item 1"
     }
 }

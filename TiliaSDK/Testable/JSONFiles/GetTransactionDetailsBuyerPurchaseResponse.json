@@ -160,6 +160,7 @@
         }
       }
     },
-    "transaction_date": "2022-09-06T20:55:15Z"
+    "transaction_date": "2022-09-06T20:55:15Z",
+    "transaction_description": "Line item 1"
   }
 }
