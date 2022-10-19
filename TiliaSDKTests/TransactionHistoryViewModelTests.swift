@@ -177,6 +177,7 @@ final class TransactionHistoryViewModelTests: XCTestCase {
   }
   
   func testSuccessLoadMoreTransactions() {
+    var loading: Bool?
     var content: TransactionHistoryChildContent?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
@@ -188,16 +189,32 @@ final class TransactionHistoryViewModelTests: XCTestCase {
                                                           sectionType: .pending,
                                                           delegate: parentViewModel)
     
+    let loadingExpectation = XCTestExpectation(description: "testSuccessLoadMoreTransactions_Loading")
+    childViewModel.loadingMore.sink {
+      loading = $0
+      loadingExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
     let contentExpectation = XCTestExpectation(description: "testSuccessLoadMoreTransactions_Content")
-    childViewModel.content.sink {
+    childViewModel.content.sink { [weak childViewModel] in
       content = $0
-      contentExpectation.fulfill()
+      if $0.needReload {
+        childViewModel?.loadMoreTransactionsIfNeeded()
+      } else {
+        contentExpectation.fulfill()
+      }
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
-    childViewModel.loadMoreTransactionsIfNeeded()
+    childViewModel.loadTransactions()
     
-    wait(for: [contentExpectation], timeout: 2)
+    let expectations = [
+      loadingExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(loading)
     XCTAssertEqual(content?.models.isEmpty, false)
     XCTAssertEqual(content?.needReload, false)
   }
@@ -222,8 +239,15 @@ final class TransactionHistoryViewModelTests: XCTestCase {
       errorExpectation.fulfill()
     }.store(in: &subscriptions)
     
-    TLManager.shared.setToken("")
-    childViewModel.loadMoreTransactionsIfNeeded()
+    childViewModel.content.sink { [weak childViewModel] in
+      if $0.needReload {
+        TLManager.shared.setToken("")
+        childViewModel?.loadMoreTransactionsIfNeeded()
+      }
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    childViewModel.loadTransactions()
     
     let expectations = [
       errorExpectation,
