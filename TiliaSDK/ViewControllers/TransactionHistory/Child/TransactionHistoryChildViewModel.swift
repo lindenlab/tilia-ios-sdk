@@ -22,7 +22,7 @@ protocol TransactionHistoryChildViewModelInputProtocol {
 }
 
 protocol TransactionHistoryChildViewModelOutputProtocol {
-  var loading: PassthroughSubject<Bool, Never> { get }
+  var loading: CurrentValueSubject<Bool, Never> { get }
   var content: PassthroughSubject<TransactionHistoryChildContent, Never> { get }
 }
 
@@ -30,7 +30,7 @@ protocol TransactionHistoryChildViewModelProtocol: TransactionHistoryChildViewMo
 
 final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelProtocol {
   
-  let loading = PassthroughSubject<Bool, Never>()
+  let loading = CurrentValueSubject<Bool, Never>(false)
   let content = PassthroughSubject<TransactionHistoryChildContent, Never>()
   
   private let manager: NetworkManager
@@ -67,11 +67,13 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   }
   
   func loadMoreTransactions() {
-    guard !isLoadingMore else { return }
+    guard !isLoadingMore && !loading.value else { return }
     isLoadingMore = true
     offset += 1
     manager.getTransactionHistory(withLimit: 20, offset: offset, sectionType: sectionType) { [weak self] result in
-      guard let self = self, self.offset != 0 else { return }
+      guard let self = self else { return }
+      self.isLoadingMore = false
+      guard self.offset != 0 else { return }
       switch result {
       case .success(let model):
         let lastItem = self.transactions.last
@@ -82,7 +84,6 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
         self.offset -= 1
         self.delegate?.transactionHistoryChildViewModel(didFailWithError: error)
       }
-      self.isLoadingMore = false
     }
   }
   
