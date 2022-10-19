@@ -222,7 +222,7 @@ private extension CheckoutViewController {
   }
   
   func showCancelButton() {
-    closeButton.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
+    showCloseButton(target: self, action: #selector(closeButtonDidTap))
   }
   
   @objc func closeButtonDidTap() {
