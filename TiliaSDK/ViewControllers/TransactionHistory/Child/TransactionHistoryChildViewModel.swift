@@ -80,7 +80,6 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   func loadMoreTransactionsIfNeeded() {
     guard hasMore && !isLoadingMore else { return }
     isLoadingMore = true
-    offset += limit
     manager.getTransactionHistory(withLimit: limit, offset: offset, sectionType: sectionType) { [weak self] result in
       guard let self = self, self.hasMore else { return }
       switch result {
@@ -90,7 +89,6 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
         self.hasMore = self.hasMore(total: model.total)
         self.content.send((model.transactions, lastItem, false))
       case .failure(let error):
-        self.offset -= self.limit
         self.delegate?.transactionHistoryChildViewModel(didFailWithError: error)
       }
       self.isLoadingMore = false
@@ -110,7 +108,8 @@ private extension TransactionHistoryChildViewModel {
   var limit: Int { return 20 }
   
   func hasMore(total: Int) -> Bool {
-    return transactions.count < total
+    offset += limit
+    return offset <= total
   }
   
 }
