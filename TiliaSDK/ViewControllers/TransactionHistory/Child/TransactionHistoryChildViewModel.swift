@@ -109,7 +109,7 @@ private extension TransactionHistoryChildViewModel {
   
   func hasMore(total: Int) -> Bool {
     offset += limit
-    return offset <= total
+    return offset < total
   }
   
 }
