@@ -15,11 +15,7 @@ final class TransactionHistoryChildViewController: UITableViewController {
   private var subscriptions: Set<AnyCancellable> = []
   private var sections: [TransactionHistorySectionModel] = []
   
-  private lazy var bottomSpinner: UIActivityIndicatorView = {
-    let spinner = UIActivityIndicatorView(style: .medium)
-    tableView.tableFooterView = spinner
-    return spinner
-  }()
+  private let bottomSpinner = UIActivityIndicatorView(style: .medium)
   
   init(manager: NetworkManager,
        sectionType: TransactionHistorySectionTypeModel,
@@ -94,6 +90,7 @@ private extension TransactionHistoryChildViewController {
     tableView.delaysContentTouches = false
     tableView.register(TransactionHistoryHeaderView.self)
     tableView.register(TransactionHistoryCell.self)
+    tableView.tableFooterView = bottomSpinner
     
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(contentDidRefresh), for: .valueChanged)

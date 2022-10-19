@@ -120,7 +120,6 @@ private extension TransactionHistoryViewController {
     self.selectedViewController = selectedViewController
     addChild(selectedViewController)
     contentStackView.insertArrangedSubview(selectedViewController.view, at: 1)
-    contentStackView.setCustomSpacing(8, after: selectedViewController.view)
     selectedViewController.didMove(toParent: self)
   }
   
