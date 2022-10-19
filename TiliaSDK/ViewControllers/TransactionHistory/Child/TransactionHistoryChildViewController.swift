@@ -70,7 +70,6 @@ final class TransactionHistoryChildViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    tableView.deselectRow(at: indexPath, animated: true)
     viewModel.selectTransaction(at: index(for: indexPath))
   }
   
