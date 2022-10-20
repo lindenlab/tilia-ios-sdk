@@ -68,6 +68,9 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
       case .success(let model):
         self.transactions = model.transactions
         self.hasMore = self.hasMore(total: model.total)
+        if self.hasMore {
+          self.transactions.reserveCapacity(model.total)
+        }
         self.content.send((model.transactions, nil, true))
         self.delegate?.transactionHistoryChildViewModelDidLoad()
       case .failure(let error):
