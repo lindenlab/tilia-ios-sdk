@@ -856,7 +856,7 @@
                         "updated": "2022-10-04T20:16:55.058848Z"
                     }
                 },
-                "transaction_date": "2022-10-04T20:16:55.058848Z",
+                "transaction_date": "2022-10-04T20:16:55Z",
                 "transaction_description": "TST 10000"
             },
             {
@@ -2671,11 +2671,11 @@
                         "fee_currency": "",
                         "destination_wallet_id": "72934b0b-3841-47cc-a732-6fd75780b037",
                         "status": "SUCCESS",
-                        "created": "2022-09-12T19:01:58.335404Z",
-                        "updated": "2022-09-12T19:02:40.412115Z"
+                        "created": "2022-09-12T19:01:58Z",
+                        "updated": "2022-09-12T19:02:40Z"
                     }
                 },
-                "transaction_date": "2022-09-12T19:02:40.412115Z",
+                "transaction_date": "2022-09-12T19:02:40Z",
                 "transaction_description": "TST 100"
             },
             {
