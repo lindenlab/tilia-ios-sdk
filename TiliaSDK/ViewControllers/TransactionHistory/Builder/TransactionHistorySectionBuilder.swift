@@ -71,6 +71,7 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
   func updateSections(_ sections: inout [TransactionHistorySectionModel], in tableView: UITableView, with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?) -> TableUpdate {
     guard !items.isEmpty else { return (nil, nil) }
     var insertRows: [IndexPath] = []
+    insertRows.reserveCapacity(items.count)
     if oldLastItem == nil {
       sections.append(.init(header: nil, items: []))
     }

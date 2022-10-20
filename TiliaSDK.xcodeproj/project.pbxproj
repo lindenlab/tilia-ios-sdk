@@ -77,7 +77,7 @@
 		D163D9E3284F52D400F478DA /* UserInfoSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E2284F52D400F478DA /* UserInfoSuccessCell.swift */; };
 		D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* Animation+Animations.swift */; };
 		D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = D163D9E8284F556000F478DA /* SuccessAnimation.json */; };
-		D164A616290083FE00747B42 /* OptionalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D164A615290083FE00747B42 /* OptionalModel.swift */; };
+		D164A616290083FE00747B42 /* FailableDecodableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D164A615290083FE00747B42 /* FailableDecodableModel.swift */; };
 		D167248828C8E6590033899B /* TransactionDetailsFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D167248728C8E6590033899B /* TransactionDetailsFlowUITests.swift */; };
 		D167248A28C8E80C0033899B /* XCTestCase+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D167248928C8E80C0033899B /* XCTestCase+Extensions.swift */; };
 		D16ADFA028A43C6A0096006C /* SwiftProgrammingLanguage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */; };
@@ -313,7 +313,7 @@
 		D163D9E2284F52D400F478DA /* UserInfoSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSuccessCell.swift; sourceTree = "<group>"; };
 		D163D9E4284F53CC00F478DA /* Animation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+Animations.swift"; sourceTree = "<group>"; };
 		D163D9E8284F556000F478DA /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
-		D164A615290083FE00747B42 /* OptionalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalModel.swift; sourceTree = "<group>"; };
+		D164A615290083FE00747B42 /* FailableDecodableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailableDecodableModel.swift; sourceTree = "<group>"; };
 		D167248728C8E6590033899B /* TransactionDetailsFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsFlowUITests.swift; sourceTree = "<group>"; };
 		D167248928C8E80C0033899B /* XCTestCase+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extensions.swift"; sourceTree = "<group>"; };
 		D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SwiftProgrammingLanguage.pdf; sourceTree = "<group>"; };
@@ -682,7 +682,7 @@
 				D155C7F128E586E100F04BD2 /* TransactionHistoryModel.swift */,
 				D11A7E5C28FDDD11005B93D2 /* GetTransactionHistoryModel.swift */,
 				D1E6F59B28ECBCD7000CDA5E /* TransactionHistorySectionModel.swift */,
-				D164A615290083FE00747B42 /* OptionalModel.swift */,
+				D164A615290083FE00747B42 /* FailableDecodableModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1380,7 +1380,7 @@
 				D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,
 				D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */,
-				D164A616290083FE00747B42 /* OptionalModel.swift in Sources */,
+				D164A616290083FE00747B42 /* FailableDecodableModel.swift in Sources */,
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
 				D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */,

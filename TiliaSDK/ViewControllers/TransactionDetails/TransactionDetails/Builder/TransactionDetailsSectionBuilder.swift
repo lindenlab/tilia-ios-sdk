@@ -169,29 +169,23 @@ private extension TransactionDetailsSectionBuilder {
     default:
       var items: [Section.Item] = []
       if let lineItems = model.lineItems {
-        lineItems.forEach {
-          items.append(.init(title: $0.description,
-                             value: $0.displayAmount,
-                             image: nil,
-                             leftInset: 16,
-                             isDividerHidden: false))
-        }
+        items = lineItems.map { .init(title: $0.description,
+                                      value: $0.displayAmount,
+                                      image: nil,
+                                      leftInset: 16,
+                                      isDividerHidden: false) }
       } else if let recipientItems = model.recipientItems {
-        recipientItems.forEach {
-          items.append(.init(title: $0.description,
-                             value: $0.displayAmount,
-                             image: nil,
-                             leftInset: 16,
-                             isDividerHidden: false))
-        }
+        items = recipientItems.map { .init(title: $0.description,
+                                           value: $0.displayAmount,
+                                           image: nil,
+                                           leftInset: 16,
+                                           isDividerHidden: false) }
       } else if let refundLineItems = model.refundLineItems {
-        refundLineItems.forEach {
-          items.append(.init(title: $0.description,
-                             value: $0.displayAmount,
-                             image: nil,
-                             leftInset: 16,
-                             isDividerHidden: false))
-        }
+        items = refundLineItems.map { .init(title: $0.description,
+                                            value: $0.displayAmount,
+                                            image: nil,
+                                            leftInset: 16,
+                                            isDividerHidden: false) }
       }
       items.append(.init(title: model.type.headerSubTotalTitle,
                          value: model.total.subTotal,
@@ -263,39 +257,45 @@ private extension TransactionDetailsSectionBuilder {
     }
     
     if let createdDate = model.createdDate {
-      items.append(.init(title: L.requestDate,
-                         value: createdDate.longDateDescription(showTimeZone: false),
-                         image: nil,
-                         leftInset: 32,
-                         isDividerHidden: false))
-      items.append(.init(title: L.requestTime,
-                         value: createdDate.shortTimeDescription(),
-                         image: nil,
-                         leftInset: 32,
-                         isDividerHidden: model.status == .pending))
+      items.append(contentsOf: [
+        .init(title: L.requestDate,
+                           value: createdDate.longDateDescription(showTimeZone: false),
+                           image: nil,
+                           leftInset: 32,
+                           isDividerHidden: false),
+        .init(title: L.requestTime,
+                           value: createdDate.shortTimeDescription(),
+                           image: nil,
+                           leftInset: 32,
+                           isDividerHidden: model.status == .pending)
+      ])
       if model.status != .pending {
-        items.append(.init(title: L.processedDate,
+        items.append(contentsOf: [
+          .init(title: L.processedDate,
+                             value: model.transactionDate.longDateDescription(showTimeZone: false),
+                             image: nil,
+                             leftInset: 32,
+                             isDividerHidden: false),
+          .init(title: L.processedTime,
+                             value: model.transactionDate.shortTimeDescription(),
+                             image: nil,
+                             leftInset: 32,
+                             isDividerHidden: true)
+        ])
+      }
+    } else {
+      items.append(contentsOf: [
+        .init(title: L.transactionDate,
                            value: model.transactionDate.longDateDescription(showTimeZone: false),
                            image: nil,
                            leftInset: 32,
-                           isDividerHidden: false))
-        items.append(.init(title: L.processedTime,
+                           isDividerHidden: false),
+        .init(title: L.transactionTime,
                            value: model.transactionDate.shortTimeDescription(),
                            image: nil,
                            leftInset: 32,
-                           isDividerHidden: true))
-      }
-    } else {
-      items.append(.init(title: L.transactionDate,
-                         value: model.transactionDate.longDateDescription(showTimeZone: false),
-                         image: nil,
-                         leftInset: 32,
-                         isDividerHidden: false))
-      items.append(.init(title: L.transactionTime,
-                         value: model.transactionDate.shortTimeDescription(),
-                         image: nil,
-                         leftInset: 32,
-                         isDividerHidden: true))
+                           isDividerHidden: true)
+      ])
     }
     
     let type = Section.SectionType.content(.init(title: L.invoiceDetails,
@@ -318,29 +318,23 @@ private extension TransactionDetailsSectionBuilder {
     
     var items: [Section.Item] = []
     if let paymentMethods = model.paymentMethods {
-      paymentMethods.enumerated().forEach {
-        items.append(.init(title: $0.element.type.description,
-                           value: $0.element.displayAmount,
-                           image: nil,
-                           leftInset: 32,
-                           isDividerHidden: $0.offset == paymentMethods.count - 1))
-      }
+      items = paymentMethods.enumerated().map { .init(title: $0.element.type.description,
+                                                      value: $0.element.displayAmount,
+                                                      image: nil,
+                                                      leftInset: 32,
+                                                      isDividerHidden: $0.offset == paymentMethods.count - 1) }
     } else if let recipientItems = model.recipientItems {
-      recipientItems.enumerated().forEach {
-        items.append(.init(title: $0.element.paymentMethodDescription,
-                           value: $0.element.paymentMethodDisplayAmount,
-                           image: nil,
-                           leftInset: 32,
-                           isDividerHidden: $0.offset == recipientItems.count - 1))
-      }
+      items = recipientItems.enumerated().map { .init(title: $0.element.paymentMethodDescription,
+                                                      value: $0.element.paymentMethodDisplayAmount,
+                                                      image: nil,
+                                                      leftInset: 32,
+                                                      isDividerHidden: $0.offset == recipientItems.count - 1) }
     } else if let refundPaymentMethods = model.refundPaymentMethods {
-      refundPaymentMethods.enumerated().forEach {
-        items.append(.init(title: $0.element.description,
-                           value: $0.element.displayAmount,
-                           image: nil,
-                           leftInset: 32,
-                           isDividerHidden: $0.offset == refundPaymentMethods.count - 1))
-      }
+      items = refundPaymentMethods.enumerated().map { .init(title: $0.element.description,
+                                                            value: $0.element.displayAmount,
+                                                            image: nil,
+                                                            leftInset: 32,
+                                                            isDividerHidden: $0.offset == refundPaymentMethods.count - 1) }
     } else if let destinationPaymentMethod = model.destinationPaymentMethod {
       items.append(.init(title: destinationPaymentMethod,
                          value: destinationPaymentAmount(for: model),
