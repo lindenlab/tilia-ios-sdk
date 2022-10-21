@@ -48,9 +48,7 @@ final class TransactionHistoryFlowUITests: XCTestCase {
     XCTAssert(transactionCell.waitForExistence(timeout: 2))
     transactionCell.tap()
     
-    let visibleCells = app.tables.cells
-    let startElement = visibleCells.element(boundBy: (visibleCells.count - 1) / 2)
-    scrollUp(app: app, dy: -400, startElement: startElement)
+    scrollUp(app: app, dy: -400)
     
     let emailReceiptButton = app.buttons["emailReceiptButton"]
     XCTAssert(emailReceiptButton.waitForExistence(timeout: 2))

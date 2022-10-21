@@ -411,15 +411,3 @@ final class KycFlowUITests: XCTestCase {
   }
   
 }
-
-// MARK: - Private Methods
-
-private extension KycFlowUITests {
-  
-  func scrollUp(app: XCUIApplication, dy: CGFloat) {
-    let visibleCells = app.tables.cells
-    let startElement = visibleCells.element(boundBy: visibleCells.count - 1)
-    scrollUp(app: app, dy: dy, startElement: startElement)
-  }
-  
-}
