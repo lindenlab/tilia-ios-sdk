@@ -296,10 +296,17 @@ private extension TransactionDetailsModel {
   
   static func date<T: CodingKey>(for container: KeyedDecodingContainer<T>, with key: KeyedDecodingContainer<T>.Key) throws -> Date {
     let dateString = try container.decode(String.self, forKey: key)
-    if let date = ISO8601DateFormatter().date(from: dateString) {
+    let formatter = ISO8601DateFormatter()
+    // Try to parse without fractional seconds
+    if let date = formatter.date(from: dateString) {
       return date
     } else {
-      throw TLError.invalidDateFormatForString(dateString)
+      formatter.formatOptions.insert(.withFractionalSeconds)
+      if let date = formatter.date(from: dateString) {
+        return date
+      } else {
+        throw TLError.invalidDateFormatForString(dateString)
+      }
     }
   }
     
