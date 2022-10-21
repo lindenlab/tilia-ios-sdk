@@ -180,7 +180,7 @@ struct TransactionRecipientItemModel: Decodable {
 struct TransactionTotalModel: Decodable {
   
   let total: String
-  let subTotal: String
+  let subTotal: String?
   let tax: String?
   let tiliaFee: String?
   let publisherFee: String?
@@ -240,7 +240,8 @@ struct TransactionTotalModel: Decodable {
       let summaryContainer = try container.nestedContainer(keyedBy: BuyerPurchaseCodingKeys.self, forKey: .summary)
       total = try summaryContainer.decode(String.self, forKey: .displayAmount)
       let subTotalContainer = try summaryContainer.nestedContainer(keyedBy: BuyerPurchaseCodingKeys.self, forKey: .subTotal)
-      subTotal = try subTotalContainer.decode(String.self, forKey: .displayAmount)
+      let subTotal = try subTotalContainer.decode(String.self, forKey: .displayAmount)
+      self.subTotal = Self.subTotal(total: total, subTotal: subTotal)
       let taxContainer = try summaryContainer.nestedContainer(keyedBy: BuyerPurchaseCodingKeys.self, forKey: .tax)
       tax = try Self.displayAmount(for: taxContainer, doubleKey: .totalAmount, stringKey: .displayAmount)
       tiliaFee = nil
@@ -248,28 +249,32 @@ struct TransactionTotalModel: Decodable {
     case .userPurchaseRecipient:
       let container = try rootContainer.nestedContainer(keyedBy: SellerPurchaseCodingKeys.self, forKey: .transactionData)
       total = try container.decode(String.self, forKey: .totalReceivedLessFeesDisplay)
-      subTotal = try container.decode(String.self, forKey: .totalReceivedDisplay)
+      let subTotal = try container.decode(String.self, forKey: .totalReceivedDisplay)
+      self.subTotal = Self.subTotal(total: total, subTotal: subTotal)
       tax = try Self.displayAmount(for: container, doubleKey: .totalFeesPaidAmount, stringKey: .totalFeesPaidDisplay)
       tiliaFee = nil
       publisherFee = nil
     case .payout:
       let container = try rootContainer.nestedContainer(keyedBy: PayoutCodingKeys.self, forKey: .transactionData)
       total = try container.decode(String.self, forKey: .payoutLessFeesDisplay)
-      subTotal = try container.decode(String.self, forKey: .payoutTotalDisplay)
+      let subTotal = try container.decode(String.self, forKey: .payoutTotalDisplay)
+      self.subTotal = Self.subTotal(total: total, subTotal: subTotal)
       tax = try Self.displayAmount(for: container, doubleKey: .payoutFeesAmount, stringKey: .payoutFeesDisplay)
       tiliaFee = nil
       publisherFee = nil
     case .tokenPurchase, .tokenConvert:
       let container = try rootContainer.nestedContainer(keyedBy: TokenCodingKeys.self, forKey: .transactionData)
       total = try container.decode(String.self, forKey: .totalAmountDisplay)
-      subTotal = try container.decode(String.self, forKey: .subtotalAmountDisplay)
+      let subTotal = try container.decode(String.self, forKey: .subtotalAmountDisplay)
+      self.subTotal = Self.subTotal(total: total, subTotal: subTotal)
       tax = try Self.displayAmount(for: container, doubleKey: .taxAmount, stringKey: .taxAmountDisplay)
       tiliaFee = try Self.displayAmount(for: container, doubleKey: .tiliaFeeAmount, stringKey: .tiliaFeeAmountDisplay)
       publisherFee = try Self.displayAmount(for: container, doubleKey: .publisherFeeAmount, stringKey: .publisherFeeAmountDisplay)
     case .refund:
       let container = try rootContainer.nestedContainer(keyedBy: RefundCodingKeys.self, forKey: .transactionData)
       total = try container.decode(String.self, forKey: .totalAmountDisplay)
-      subTotal = try container.decode(String.self, forKey: .subtotalAmountDisplay)
+      let subTotal = try container.decode(String.self, forKey: .subtotalAmountDisplay)
+      self.subTotal = Self.subTotal(total: total, subTotal: subTotal)
       tax = try Self.displayAmount(for: container, doubleKey: .taxAmount, stringKey: .taxAmountDisplay)
       tiliaFee = nil
       publisherFee = nil
@@ -309,7 +314,7 @@ private extension TransactionDetailsModel {
       }
     }
   }
-    
+  
 }
 
 private extension TransactionTotalModel {
@@ -317,6 +322,10 @@ private extension TransactionTotalModel {
   static func displayAmount<T: CodingKey>(for container: KeyedDecodingContainer<T>, doubleKey: KeyedDecodingContainer<T>.Key, stringKey: KeyedDecodingContainer<T>.Key) throws -> String? {
     let doubleValue = try container.decode(Double.self, forKey: doubleKey)
     return doubleValue.isEmpty ? nil : try container.decode(String.self, forKey: stringKey)
+  }
+  
+  static func subTotal(total: String, subTotal: String) -> String? {
+    return total != subTotal ? subTotal : nil
   }
   
 }

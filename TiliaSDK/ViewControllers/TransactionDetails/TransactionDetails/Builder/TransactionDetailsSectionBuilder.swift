@@ -187,13 +187,14 @@ private extension TransactionDetailsSectionBuilder {
                                             leftInset: 16,
                                             isDividerHidden: false) }
       }
-      items.append(.init(title: model.type.headerSubTotalTitle,
-                         value: model.total.subTotal,
-                         image: nil,
-                         leftInset: 16,
-                         isDividerHidden: false))
+      model.total.subTotal.map {
+        items.append(.init(title: model.type.headerSubTotalTitle,
+                           value: $0,
+                           image: nil,
+                           leftInset: 16,
+                           isDividerHidden: true))
+      }
       model.total.tax.map {
-        items[items.count - 1].isDividerHidden = true
         items.append(.init(title: L.transactionFees,
                            value: $0,
                            image: nil,
@@ -202,7 +203,6 @@ private extension TransactionDetailsSectionBuilder {
         
       }
       model.total.tiliaFee.map {
-        items[items.count - 1].isDividerHidden = true
         items.append(.init(title: L.tiliaFees,
                            value: $0,
                            image: nil,
@@ -210,7 +210,6 @@ private extension TransactionDetailsSectionBuilder {
                            isDividerHidden: false))
       }
       model.total.publisherFee.map {
-        items[items.count - 1].isDividerHidden = true
         items.append(.init(title: L.publisherFees,
                            value: $0,
                            image: nil,
