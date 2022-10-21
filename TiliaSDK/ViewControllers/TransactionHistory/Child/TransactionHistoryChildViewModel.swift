@@ -23,7 +23,7 @@ protocol TransactionHistoryChildViewModelInputProtocol {
 
 protocol TransactionHistoryChildViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
-  var loadingMore: PassthroughSubject<Bool, Never> { get }
+  var loadingMore: CurrentValueSubject<Bool, Never> { get }
   var content: PassthroughSubject<TransactionHistoryChildContent, Never> { get }
 }
 
@@ -32,7 +32,7 @@ protocol TransactionHistoryChildViewModelProtocol: TransactionHistoryChildViewMo
 final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelProtocol {
   
   let loading = PassthroughSubject<Bool, Never>()
-  let loadingMore = PassthroughSubject<Bool, Never>()
+  let loadingMore = CurrentValueSubject<Bool, Never>(false)
   let content = PassthroughSubject<TransactionHistoryChildContent, Never>()
   
   private let manager: NetworkManager
@@ -41,11 +41,6 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   private var transactions: [TransactionDetailsModel] = []
   private var offset = 0
   private var hasMore = false
-  private var isLoadingMore = false {
-    didSet {
-      loadingMore.send(isLoadingMore)
-    }
-  }
   
   init(manager: NetworkManager,
        sectionType: TransactionHistorySectionTypeModel,
@@ -59,8 +54,8 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
     loading.send(true)
     offset = 0
     hasMore = false
-    if isLoadingMore {
-      isLoadingMore = false
+    if loadingMore.value {
+      loadingMore.send(false)
     }
     manager.getTransactionHistory(withLimit: limit, offset: offset, sectionType: sectionType) { [weak self] result in
       guard let self = self else { return }
@@ -81,8 +76,8 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   }
   
   func loadMoreTransactionsIfNeeded() {
-    guard hasMore && !isLoadingMore else { return }
-    isLoadingMore = true
+    guard hasMore && !loadingMore.value else { return }
+    loadingMore.send(true)
     manager.getTransactionHistory(withLimit: limit, offset: offset, sectionType: sectionType) { [weak self] result in
       guard let self = self, self.hasMore else { return }
       switch result {
@@ -94,7 +89,7 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
       case .failure(let error):
         self.delegate?.transactionHistoryChildViewModel(didFailWithError: error)
       }
-      self.isLoadingMore = false
+      self.loadingMore.send(false)
     }
   }
   
