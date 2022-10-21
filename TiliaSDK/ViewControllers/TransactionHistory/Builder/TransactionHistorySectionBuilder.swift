@@ -213,6 +213,7 @@ private extension TransactionDetailsModel {
       switch type {
       case .userPurchase:
         attributes[.foregroundColor] = UIColor.failureBackgroundColor
+        // TODO: - Added here other cases
       default:
         attributes[.foregroundColor] = UIColor.successBackgroundColor
       }
