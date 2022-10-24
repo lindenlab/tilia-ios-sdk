@@ -33,6 +33,7 @@ final class CheckoutFlowTestViewController: TestViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    invoiceIdTextField.delegate = self
     label.text = "onUpdate callback will be here"
     button.setTitle("Run Checkout flow", for: .normal)
     stackView.insertArrangedSubview(invoiceIdTextField, at: 1)

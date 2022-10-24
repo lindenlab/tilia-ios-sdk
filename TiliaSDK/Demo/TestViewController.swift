@@ -44,7 +44,8 @@ class TestViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .white
+    view.backgroundColor = .backgroundColor
+    accessTokenTextField.delegate = self
     stackView.addArrangedSubview(accessTokenTextField)
     stackView.addArrangedSubview(label)
     view.addSubview(stackView)
@@ -79,6 +80,17 @@ class TestViewController: UIViewController {
     return str.attributedString(font: .systemFont(ofSize: 16),
                                 color: .black,
                                 subStrings: (text, .systemFont(ofSize: 16), .black), (dateStr, .systemFont(ofSize: 16), .lightGray), (message, .systemFont(ofSize: 16), .lightGray))
+  }
+  
+}
+
+// MARK: - UITextFieldDelegate
+
+extension TestViewController: UITextFieldDelegate {
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
   }
   
 }

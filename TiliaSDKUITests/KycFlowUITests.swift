@@ -30,7 +30,7 @@ final class KycFlowUITests: XCTestCase {
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
@@ -153,7 +153,7 @@ final class KycFlowUITests: XCTestCase {
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
@@ -304,7 +304,7 @@ final class KycFlowUITests: XCTestCase {
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)

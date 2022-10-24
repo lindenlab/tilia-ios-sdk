@@ -33,6 +33,7 @@ final class TransactionDetailsFlowTestViewController: TestViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    transactionIdTextField.delegate = self
     label.text = "onUpdate callback will be here"
     button.setTitle("Run Transaction Details flow", for: .normal)
     stackView.insertArrangedSubview(transactionIdTextField, at: 1)

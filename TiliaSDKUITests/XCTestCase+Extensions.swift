@@ -29,4 +29,10 @@ extension XCTestCase {
     return element
   }
   
+  func closeKeyboard(app: XCUIApplication) {
+    let returnButton = app.keyboards.buttons["return"]
+    XCTAssert(returnButton.exists)
+    returnButton.tap()
+  }
+  
 }
