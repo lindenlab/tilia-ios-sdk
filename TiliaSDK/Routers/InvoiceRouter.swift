@@ -64,7 +64,7 @@ extension InvoiceRouter {
     case let .createInvoice(isEscrow, _):
       return isEscrow ? readJSONFromFile("CreateEscrowInvoiceResponse") : readJSONFromFile("CreateInvoiceResponse")
     case .payInvoice:
-      return readJSONFromFile("PayInvoiceResponse")
+      return readJSONFromFile("EmptySuccessResponse")
     case .getTransactionDetails:
       return readJSONFromFile("GetTransactionDetailsBuyerPurchaseResponse")
 //      return readJSONFromFile("GetTransactionDetailsSellerPurchaseResponse")

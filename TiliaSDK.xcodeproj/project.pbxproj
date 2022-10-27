@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4FEC119D44CD8356A75A0B47 /* Pods_TiliaSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC8E4F68FDB5F1AB6F47904 /* Pods_TiliaSDKTests.framework */; };
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
 		D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */; };
 		D11A7E5528F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */; };
@@ -146,7 +147,7 @@
 		D1B8720028351B4600C44441 /* UserDocumentsSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B871FF28351B4600C44441 /* UserDocumentsSectionBuilder.swift */; };
 		D1B872BA2804498500DD1F7B /* ServerTestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B872B92804498500DD1F7B /* ServerTestClient.swift */; };
 		D1B872C428044CC900DD1F7B /* CreateInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */; };
-		D1B872C528044CC900DD1F7B /* PayInvoiceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */; };
+		D1B872C528044CC900DD1F7B /* EmptySuccessResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872BF28044CC900DD1F7B /* EmptySuccessResponse.json */; };
 		D1B872C628044CC900DD1F7B /* SignTosForUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872C028044CC900DD1F7B /* SignTosForUserResponse.json */; };
 		D1B872C728044CC900DD1F7B /* GetInvoiceDetailsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872C128044CC900DD1F7B /* GetInvoiceDetailsResponse.json */; };
 		D1B872C828044CC900DD1F7B /* GetTosRequiredForUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1B872C228044CC900DD1F7B /* GetTosRequiredForUserResponse.json */; };
@@ -202,6 +203,12 @@
 		D1E6F5AB28F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1E6F5A928F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json */; };
 		D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */; };
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
+		D1E97794290AADBE00FB20AB /* AccountRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E97793290AADBE00FB20AB /* AccountRouterTests.swift */; };
+		D1E97796290AADCC00FB20AB /* PaymentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E97795290AADCC00FB20AB /* PaymentRouterTests.swift */; };
+		D1E97798290AADDB00FB20AB /* InvoiceRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E97797290AADDB00FB20AB /* InvoiceRouterTests.swift */; };
+		D1E9779A290AAE0300FB20AB /* AuthRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E97799290AAE0300FB20AB /* AuthRouterTests.swift */; };
+		D1E9779C290AAE1300FB20AB /* KycRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E9779B290AAE1300FB20AB /* KycRouterTests.swift */; };
+		D1E977A6290AB1D200FB20AB /* BaseRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E977A5290AB1D200FB20AB /* BaseRouterTests.swift */; };
 		D1EFAB3128B7F14800AB1C31 /* LineItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */; };
 		D1EFAB3328B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3228B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift */; };
 		D1EFAB3528B7FE4400AB1C31 /* TransactionDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */; };
@@ -240,7 +247,10 @@
 /* Begin PBXFileReference section */
 		17015F9D98A8CC831972F763 /* Pods-TiliaSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		67A0E480FF265BAE1A0957EA /* Pods-TiliaSDK.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.cicd.xcconfig"; sourceTree = "<group>"; };
+		81EE3A4B1F91219461A26831 /* Pods-TiliaSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8BC8E4F68FDB5F1AB6F47904 /* Pods_TiliaSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
+		BB1E529034D47E85C7B88885 /* Pods-TiliaSDKTests.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.cicd.xcconfig"; sourceTree = "<group>"; };
 		D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidator.swift; sourceTree = "<group>"; };
 		D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsFullRefundResponse.json; sourceTree = "<group>"; };
 		D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryFlowUITests.swift; sourceTree = "<group>"; };
@@ -382,7 +392,7 @@
 		D1B871FF28351B4600C44441 /* UserDocumentsSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsSectionBuilder.swift; sourceTree = "<group>"; };
 		D1B872B92804498500DD1F7B /* ServerTestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTestClient.swift; sourceTree = "<group>"; };
 		D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CreateInvoiceResponse.json; sourceTree = "<group>"; };
-		D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PayInvoiceResponse.json; sourceTree = "<group>"; };
+		D1B872BF28044CC900DD1F7B /* EmptySuccessResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EmptySuccessResponse.json; sourceTree = "<group>"; };
 		D1B872C028044CC900DD1F7B /* SignTosForUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SignTosForUserResponse.json; sourceTree = "<group>"; };
 		D1B872C128044CC900DD1F7B /* GetInvoiceDetailsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetInvoiceDetailsResponse.json; sourceTree = "<group>"; };
 		D1B872C228044CC900DD1F7B /* GetTosRequiredForUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTosRequiredForUserResponse.json; sourceTree = "<group>"; };
@@ -439,6 +449,12 @@
 		D1E6F5A928F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsTokenPurchaseResponse.json; sourceTree = "<group>"; };
 		D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
+		D1E97793290AADBE00FB20AB /* AccountRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouterTests.swift; sourceTree = "<group>"; };
+		D1E97795290AADCC00FB20AB /* PaymentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentRouterTests.swift; sourceTree = "<group>"; };
+		D1E97797290AADDB00FB20AB /* InvoiceRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceRouterTests.swift; sourceTree = "<group>"; };
+		D1E97799290AAE0300FB20AB /* AuthRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouterTests.swift; sourceTree = "<group>"; };
+		D1E9779B290AAE1300FB20AB /* KycRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycRouterTests.swift; sourceTree = "<group>"; };
+		D1E977A5290AB1D200FB20AB /* BaseRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRouterTests.swift; sourceTree = "<group>"; };
 		D1EFAB3028B7F14800AB1C31 /* LineItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineItemModel.swift; sourceTree = "<group>"; };
 		D1EFAB3228B7FC7900AB1C31 /* CheckoutPaymentMethodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentMethodModel.swift; sourceTree = "<group>"; };
 		D1EFAB3428B7FE4400AB1C31 /* TransactionDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsModel.swift; sourceTree = "<group>"; };
@@ -455,6 +471,7 @@
 		D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidatorTests.swift; sourceTree = "<group>"; };
 		D1FF582928E6208A00B7CB3F /* TransactionHistoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryHeaderView.swift; sourceTree = "<group>"; };
 		D1FF582B28E6209800B7CB3F /* TransactionHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryCell.swift; sourceTree = "<group>"; };
+		E5ACA2B023B85E2431420FAB /* Pods-TiliaSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -471,6 +488,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FEC119D44CD8356A75A0B47 /* Pods_TiliaSDKTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,6 +506,7 @@
 			isa = PBXGroup;
 			children = (
 				F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */,
+				8BC8E4F68FDB5F1AB6F47904 /* Pods_TiliaSDKTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -498,6 +517,9 @@
 				17015F9D98A8CC831972F763 /* Pods-TiliaSDK.debug.xcconfig */,
 				982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */,
 				67A0E480FF265BAE1A0957EA /* Pods-TiliaSDK.cicd.xcconfig */,
+				81EE3A4B1F91219461A26831 /* Pods-TiliaSDKTests.debug.xcconfig */,
+				E5ACA2B023B85E2431420FAB /* Pods-TiliaSDKTests.release.xcconfig */,
+				BB1E529034D47E85C7B88885 /* Pods-TiliaSDKTests.cicd.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -625,20 +647,13 @@
 		D135DC8E27E74A540009D888 /* TiliaSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				D135DC8F27E74A540009D888 /* NetworkManagerTests.swift */,
-				D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */,
-				D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */,
-				D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */,
-				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
-				D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */,
-				D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */,
-				D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */,
-				D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */,
-				D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */,
-				D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */,
-				D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */,
-				D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */,
-				D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */,
+				D1E9779D290AAE7300FB20AB /* Managers */,
+				D1E9779F290AAE8D00FB20AB /* Tos */,
+				D1E977A0290AAE9C00FB20AB /* Checkout */,
+				D1E977A1290AAEB100FB20AB /* Kyc */,
+				D1E977A2290AAEC100FB20AB /* TransactionDetails */,
+				D1E977A3290AAED500FB20AB /* TransactionHistory */,
+				D1E977A4290AAEE700FB20AB /* Routers */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";
@@ -960,7 +975,7 @@
 				D1B872C128044CC900DD1F7B /* GetInvoiceDetailsResponse.json */,
 				D1B872BE28044CC900DD1F7B /* CreateInvoiceResponse.json */,
 				D1B872CB280453DB00DD1F7B /* CreateEscrowInvoiceResponse.json */,
-				D1B872BF28044CC900DD1F7B /* PayInvoiceResponse.json */,
+				D1B872BF28044CC900DD1F7B /* EmptySuccessResponse.json */,
 				D1B80AA82865A5E200E1C9BD /* GetAddCreditCardRedirectUrlResponse.json */,
 				D1BB6346287F2CC0007616DE /* SubmitKycResponse.json */,
 				D1BB634A287F3121007616DE /* GetKycStatusResponse.json */,
@@ -1060,6 +1075,75 @@
 			path = Child;
 			sourceTree = "<group>";
 		};
+		D1E9779D290AAE7300FB20AB /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D135DC8F27E74A540009D888 /* NetworkManagerTests.swift */,
+				D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		D1E9779F290AAE8D00FB20AB /* Tos */ = {
+			isa = PBXGroup;
+			children = (
+				D1B872D82805A1C200DD1F7B /* TosViewModelTests.swift */,
+				D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */,
+			);
+			path = Tos;
+			sourceTree = "<group>";
+		};
+		D1E977A0290AAE9C00FB20AB /* Checkout */ = {
+			isa = PBXGroup;
+			children = (
+				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
+				D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */,
+			);
+			path = Checkout;
+			sourceTree = "<group>";
+		};
+		D1E977A1290AAEB100FB20AB /* Kyc */ = {
+			isa = PBXGroup;
+			children = (
+				D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */,
+				D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */,
+				D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */,
+				D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */,
+			);
+			path = Kyc;
+			sourceTree = "<group>";
+		};
+		D1E977A2290AAEC100FB20AB /* TransactionDetails */ = {
+			isa = PBXGroup;
+			children = (
+				D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */,
+				D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */,
+				D1EFAB3928B9501F00AB1C31 /* SendReceiptValidatorTests.swift */,
+			);
+			path = TransactionDetails;
+			sourceTree = "<group>";
+		};
+		D1E977A3290AAED500FB20AB /* TransactionHistory */ = {
+			isa = PBXGroup;
+			children = (
+				D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */,
+			);
+			path = TransactionHistory;
+			sourceTree = "<group>";
+		};
+		D1E977A4290AAEE700FB20AB /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				D1E977A5290AB1D200FB20AB /* BaseRouterTests.swift */,
+				D1E97793290AADBE00FB20AB /* AccountRouterTests.swift */,
+				D1E97795290AADCC00FB20AB /* PaymentRouterTests.swift */,
+				D1E97797290AADDB00FB20AB /* InvoiceRouterTests.swift */,
+				D1E97799290AAE0300FB20AB /* AuthRouterTests.swift */,
+				D1E9779B290AAE1300FB20AB /* KycRouterTests.swift */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
 		D1EFAB3628B94EA100AB1C31 /* Validator */ = {
 			isa = PBXGroup;
 			children = (
@@ -1094,9 +1178,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D135DCA227E74A540009D888 /* Build configuration list for PBXNativeTarget "TiliaSDKTests" */;
 			buildPhases = (
+				7A1A60C836B11D719E9AF8CA /* [CP] Check Pods Manifest.lock */,
 				D135DC8727E74A540009D888 /* Sources */,
 				D135DC8827E74A540009D888 /* Frameworks */,
 				D135DC8927E74A540009D888 /* Resources */,
+				C7179B1F18DDA7789CF91F15 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1198,7 +1284,7 @@
 				D1B872C728044CC900DD1F7B /* GetInvoiceDetailsResponse.json in Resources */,
 				D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */,
 				D126AF1A2875872F00CAC5F2 /* PassportImage.svg in Resources */,
-				D1B872C528044CC900DD1F7B /* PayInvoiceResponse.json in Resources */,
+				D1B872C528044CC900DD1F7B /* EmptySuccessResponse.json in Resources */,
 				D1B872C828044CC900DD1F7B /* GetTosRequiredForUserResponse.json in Resources */,
 				D135DC8027E74A4A0009D888 /* Main.storyboard in Resources */,
 				D1C8A84627F5EC9A00BF2910 /* LocalizedConstants.strings in Resources */,
@@ -1264,6 +1350,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A1A60C836B11D719E9AF8CA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TiliaSDKTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C7179B1F18DDA7789CF91F15 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1439,18 +1564,24 @@
 			files = (
 				D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */,
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
+				D1E97794290AADBE00FB20AB /* AccountRouterTests.swift in Sources */,
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
 				D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */,
+				D1E97796290AADCC00FB20AB /* PaymentRouterTests.swift in Sources */,
+				D1E9779A290AAE0300FB20AB /* AuthRouterTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
 				D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */,
+				D1E97798290AADDB00FB20AB /* InvoiceRouterTests.swift in Sources */,
 				D11A7E5928FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift in Sources */,
 				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
 				D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */,
 				D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */,
+				D1E9779C290AAE1300FB20AB /* KycRouterTests.swift in Sources */,
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
 				D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */,
+				D1E977A6290AB1D200FB20AB /* BaseRouterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1591,6 +1722,7 @@
 		};
 		818C64F7280A1FEB009FD3A7 /* CICD */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB1E529034D47E85C7B88885 /* Pods-TiliaSDKTests.cicd.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1808,6 +1940,7 @@
 		};
 		D135DCA327E74A540009D888 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81EE3A4B1F91219461A26831 /* Pods-TiliaSDKTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1828,6 +1961,7 @@
 		};
 		D135DCA427E74A540009D888 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E5ACA2B023B85E2431420FAB /* Pods-TiliaSDKTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

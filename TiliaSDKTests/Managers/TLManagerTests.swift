@@ -25,7 +25,7 @@ final class TLManagerTests: XCTestCase {
   func testSetEnvironment() {
     let environment = TLEnvironment.production
     TLManager.shared.setEnvironment(environment)
-    XCTAssertEqual(TLManager.shared.networkManager.serverConfiguration.environment.description, environment.description)
+    XCTAssertEqual(TLManager.shared.networkManager.serverConfiguration.environment, environment)
   }
   
   func testSetBackgroundColor() {
