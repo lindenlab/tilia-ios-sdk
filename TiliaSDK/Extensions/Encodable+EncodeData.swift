@@ -13,10 +13,6 @@ extension Encodable {
     return try? JSONEncoder().encode(self)
   }
   
-  var encodedStringUTF8: String? {
-    return self.encodedData?.stringUTF8
-  }
-  
   var encodedParameters: [String: Any]? {
     return self.encodedData?.simpleSerialize as? [String: Any]
   }

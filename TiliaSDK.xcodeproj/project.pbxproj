@@ -61,6 +61,7 @@
 		D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */; };
 		D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1408F59288EB26600CABA3E /* KycFlowUITests.swift */; };
 		D151A8D028947E050055FF98 /* UserInfoImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D151A8CF28947E050055FF98 /* UserInfoImageCell.swift */; };
+		D152CD66290AFEAE00BC515C /* DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D152CD65290AFEAE00BC515C /* DecodableTests.swift */; };
 		D154AD42280F071E003976CB /* CreateInvoiceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD41280F071E003976CB /* CreateInvoiceModel.swift */; };
 		D154AD452811E302003976CB /* AddCreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD442811E302003976CB /* AddCreditCardViewModel.swift */; };
 		D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D154AD462811E313003976CB /* AddCreditCardRouter.swift */; };
@@ -219,6 +220,8 @@
 		D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */; };
 		D1F7D3B228DD8121004BC92B /* GetTransactionDetailsSellerPurchaseResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1F7D3B128DD8121004BC92B /* GetTransactionDetailsSellerPurchaseResponse.json */; };
 		D1F7D3B428DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */; };
+		D1FC23CE290B032100ECD7AF /* EncodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC23CD290B032100ECD7AF /* EncodableTests.swift */; };
+		D1FC23D0290B048300ECD7AF /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC23CF290B048300ECD7AF /* UIColorTests.swift */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
@@ -306,6 +309,7 @@
 		D13BDD73282279B800A31F2D /* UserInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoHeaderView.swift; sourceTree = "<group>"; };
 		D1408F59288EB26600CABA3E /* KycFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowUITests.swift; sourceTree = "<group>"; };
 		D151A8CF28947E050055FF98 /* UserInfoImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoImageCell.swift; sourceTree = "<group>"; };
+		D152CD65290AFEAE00BC515C /* DecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableTests.swift; sourceTree = "<group>"; };
 		D154AD41280F071E003976CB /* CreateInvoiceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvoiceModel.swift; sourceTree = "<group>"; };
 		D154AD442811E302003976CB /* AddCreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModel.swift; sourceTree = "<group>"; };
 		D154AD462811E313003976CB /* AddCreditCardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardRouter.swift; sourceTree = "<group>"; };
@@ -465,6 +469,8 @@
 		D1EFAB3F28BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsViewModelTests.swift; sourceTree = "<group>"; };
 		D1F7D3B128DD8121004BC92B /* GetTransactionDetailsSellerPurchaseResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsSellerPurchaseResponse.json; sourceTree = "<group>"; };
 		D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsPayoutResponse.json; sourceTree = "<group>"; };
+		D1FC23CD290B032100ECD7AF /* EncodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodableTests.swift; sourceTree = "<group>"; };
+		D1FC23CF290B048300ECD7AF /* UIColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
@@ -654,6 +660,7 @@
 				D1E977A2290AAEC100FB20AB /* TransactionDetails */,
 				D1E977A3290AAED500FB20AB /* TransactionHistory */,
 				D1E977A4290AAEE700FB20AB /* Routers */,
+				D152CD64290AFD4200BC515C /* Extensions */,
 			);
 			path = TiliaSDKTests;
 			sourceTree = "<group>";
@@ -782,6 +789,16 @@
 				D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */,
 			);
 			path = PDFFiles;
+			sourceTree = "<group>";
+		};
+		D152CD64290AFD4200BC515C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D152CD65290AFEAE00BC515C /* DecodableTests.swift */,
+				D1FC23CD290B032100ECD7AF /* EncodableTests.swift */,
+				D1FC23CF290B048300ECD7AF /* UIColorTests.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D154AD432811E2D5003976CB /* AddCreditCard */ = {
@@ -1566,12 +1583,14 @@
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
 				D1E97794290AADBE00FB20AB /* AccountRouterTests.swift in Sources */,
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
+				D152CD66290AFEAE00BC515C /* DecodableTests.swift in Sources */,
 				D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */,
 				D1E97796290AADCC00FB20AB /* PaymentRouterTests.swift in Sources */,
 				D1E9779A290AAE0300FB20AB /* AuthRouterTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
 				D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */,
 				D1E97798290AADDB00FB20AB /* InvoiceRouterTests.swift in Sources */,
+				D1FC23CE290B032100ECD7AF /* EncodableTests.swift in Sources */,
 				D11A7E5928FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift in Sources */,
 				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
 				D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */,
@@ -1580,6 +1599,7 @@
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
+				D1FC23D0290B048300ECD7AF /* UIColorTests.swift in Sources */,
 				D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */,
 				D1E977A6290AB1D200FB20AB /* BaseRouterTests.swift in Sources */,
 			);

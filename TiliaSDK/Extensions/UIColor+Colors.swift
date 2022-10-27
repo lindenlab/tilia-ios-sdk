@@ -41,7 +41,7 @@ extension UIColor {
   
   static var primaryButtonTextColor: UIColor {
     return UIColor { _ in
-      return primaryColor.isColorDark() ? .white : .customBlack
+      return primaryColor.isColorDark ? .white : .customBlack
     }
   }
   
@@ -54,7 +54,7 @@ extension UIColor {
           return primaryTextColor.lightModeColor
         }
       } else {
-        return backgroundColor.isColorDark() ? .white : .customBlack
+        return backgroundColor.isColorDark ? .white : .customBlack
       }
     }
     
@@ -74,7 +74,7 @@ extension UIColor {
   
   static var borderColor: UIColor {
     return UIColor { _ in
-      return backgroundColor.isColorDark() ? .customWhite : .customBlack.withAlphaComponent(0.18)
+      return backgroundColor.isColorDark ? .customWhite : .customBlack.withAlphaComponent(0.18)
     }
   }
   
@@ -94,7 +94,7 @@ extension UIColor {
   
   static var successPrimaryColor: UIColor {
     return UIColor { _ in
-      return successBackgroundColor.isColorDark() ? .white : .customBlack
+      return successBackgroundColor.isColorDark ? .white : .customBlack
     }
   }
   
@@ -114,7 +114,7 @@ extension UIColor {
   
   static var failurePrimaryColor: UIColor {
     return UIColor { _ in
-      return failureBackgroundColor.isColorDark() ? .white : .customBlack
+      return failureBackgroundColor.isColorDark ? .white : .customBlack
     }
   }
   
@@ -163,13 +163,7 @@ extension UIColor {
     }
   }
   
-}
-
-// MARK: - Private Methods
-
-private extension UIColor {
-  
-  func isColorDark() -> Bool {
+  var isColorDark: Bool {
     var r: CGFloat = 0.0
     var g: CGFloat = 0.0
     var b: CGFloat = 0.0
