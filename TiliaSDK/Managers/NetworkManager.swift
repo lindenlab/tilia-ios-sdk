@@ -82,6 +82,16 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
+  func submitKyc(with model: SubmitKycModel, completion: @escaping CompletionResultHandler<SubmittedKycModel>) {
+    let router = KycRouter.submit(model)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  func getSubmittedKycStatus(with id: String, completion: @escaping CompletionResultHandler<SubmittedKycStatusModel>) {
+    let router = KycRouter.getStatus(id)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
 }
 
 // MARK: - For Testing

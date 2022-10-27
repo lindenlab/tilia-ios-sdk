@@ -35,9 +35,8 @@ protocol CheckoutViewModelOutputProtocol {
 protocol CheckoutDataStore {
   var manager: NetworkManager { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
-  var onTosError: ((TLErrorCallback) -> Void)? { get }
   var onReload: (Bool) -> Void { get }
-  var onAddCreditCardError: ((TLErrorCallback) -> Void)? { get }
+  var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
 protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutViewModelOutputProtocol { }
@@ -62,23 +61,17 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     if $0.state == .completed {
       self.getInvoiceDetails()
     } else {
-      self.dismiss.send(())
+      self.dismiss.send()
     }
     self.onComplete?($0)
-  }
-  var onTosError: ((TLErrorCallback) -> Void)? {
-    return onError
   }
   private(set) lazy var onReload: (Bool) -> Void = { [weak self] in
     guard $0 else { return }
     self?.getUserBalance()
   }
-  var onAddCreditCardError: ((TLErrorCallback) -> Void)? {
-    return onError
-  }
+  let onError: ((TLErrorCallback) -> Void)?
   
   private let onComplete: ((TLCompleteCallback) -> Void)?
-  private let onError: ((TLErrorCallback) -> Void)?
   private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let authorizedInvoiceId: String
   private var invoiceId: String?
@@ -107,7 +100,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
       switch result {
       case .success(let model):
         if !model.isTosSigned {
-          self.needToAcceptTos.send(())
+          self.needToAcceptTos.send()
         } else {
           self.getInvoiceDetails()
         }

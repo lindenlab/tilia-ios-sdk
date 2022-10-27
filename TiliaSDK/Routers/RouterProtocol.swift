@@ -10,6 +10,7 @@ import Alamofire
 protocol RouterProtocol: URLRequestConvertible {
   var serverConfiguration: ServerConfiguration { get }
   var method: HTTPMethod { get }
+  var queryParameters: Parameters? { get }
   var bodyParameters: Parameters? { get }
   var service: String { get }
   var endpoint: String { get }
@@ -25,6 +26,8 @@ extension RouterProtocol {
   var serverConfiguration: ServerConfiguration {
     return TLManager.shared.networkManager.serverConfiguration
   }
+  
+  var queryParameters: Parameters? { return nil }
   
   var bodyParameters: Parameters? { return nil }
   
@@ -45,7 +48,7 @@ extension RouterProtocol {
     let stringUrl = "https://\(service).\(serverConfiguration.environment.description).com\(endpoint)"
     let url = try stringUrl.asURL()
     
-    var urlRequest = URLRequest(url: url)
+    var urlRequest = try URLEncoding.default.encode(URLRequest(url: url), with: queryParameters)
     urlRequest.timeoutInterval = serverConfiguration.timeoutInterval
     urlRequest.httpMethod = method.rawValue
     
@@ -67,8 +70,8 @@ extension RouterProtocol {
   
   func readJSONFromFile(_ fileName: String) -> Data? {
     guard
-      let path = Bundle.main.path(forResource: fileName, ofType: "json"),
-      let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) else { return nil }
+      let url = Bundle.main.url(forResource: fileName, withExtension: "json"),
+      let data = try? Data(contentsOf: url, options: .mappedIfSafe) else { return nil }
     return data
   }
   

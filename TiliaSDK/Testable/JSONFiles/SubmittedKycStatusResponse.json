@@ -1,0 +1,19 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "kyc_id": "kyc_2BthX8IwaoevH9Phan8Cc0Z59Rr",
+        "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "state": "ACCEPT",
+        "initiator": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "data_source": "idmind",
+        "vendor_reference_id": "575ff8e3c198484485d0f557411a68e5",
+        "form_id": "575ff8e3c198484485d0f557411a68e5",
+        "note": "",
+        "integrator": "tilia-sdks",
+        "created": "2022-07-13T16:55:25.498074Z",
+        "updated": "2022-07-13T16:55:26.193839Z",
+        "rules": null
+    }
+}

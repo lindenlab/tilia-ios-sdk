@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PrimaryButton: ButtonWithBackgroundColor {
+class PrimaryButton: ButtonWithBackgroundColor {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: super.intrinsicContentSize.width, height: 44)

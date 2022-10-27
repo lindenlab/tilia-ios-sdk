@@ -135,4 +135,15 @@ final class TLManagerTests: XCTestCase {
     XCTAssertNotNil(errorCallback)
   }
   
+  func testMissedRequiredDataForKycFlow() {
+    TLManager.shared.setToken("")
+    var errorCallback: TLErrorCallback?
+    let expectation = XCTestExpectation(description: "testMissedRequiredDataForKycFlow")
+    TLManager.shared.presentKycViewController(on: UIViewController(),
+                                              animated: true,
+                                              onError: { errorCallback = $0; expectation.fulfill() })
+    wait(for: [expectation], timeout: 1)
+    XCTAssertNotNil(errorCallback)
+  }
+  
 }

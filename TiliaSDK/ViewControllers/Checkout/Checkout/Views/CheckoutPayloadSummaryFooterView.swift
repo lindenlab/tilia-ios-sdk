@@ -52,14 +52,12 @@ final class CheckoutPayloadSummaryFooterView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(amount: String, isLoading: Bool) {
+  func configure(amount: String) {
     amountLabel.text = amount
-    configure(isLoading: isLoading)
   }
   
   func configure(isLoading: Bool) {
     amountLabel.isHidden = isLoading
-    spinner.isHidden = !isLoading
     isLoading ? spinner.startAnimating() : spinner.stopAnimating()
   }
   
@@ -78,7 +76,7 @@ private extension CheckoutPayloadSummaryFooterView {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.distribution = .equalSpacing
     
-    contentView.backgroundColor = .clear
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     contentView.addSubview(topDivider)
     contentView.addSubview(bottomDivider)

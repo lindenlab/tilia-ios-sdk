@@ -21,7 +21,8 @@ final class DemoViewController: UITableViewController {
     Section(name: "Testable section", items: ["getTosRequiredForUser",
                                               "getUserBalanceByCurrency",
                                               "TOS flow",
-                                              "Checkout flow"])
+                                              "Checkout flow",
+                                              "KYC flow"])
   ]
   
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -79,6 +80,8 @@ final class DemoViewController: UITableViewController {
       viewController = TosRequiredForUserFlowTestViewController()
     case (1, 3):
       viewController = CheckoutFlowTestViewController()
+    case (1, 4):
+      viewController = KycFlowTestViewController()
     default:
       break
     }

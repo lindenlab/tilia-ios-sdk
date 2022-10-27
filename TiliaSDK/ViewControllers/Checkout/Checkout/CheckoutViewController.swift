@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class CheckoutViewController: BaseViewController {
+final class CheckoutViewController: BaseTableViewController {
   
   override var hideableView: UIView {
     return tableView
@@ -19,24 +19,6 @@ final class CheckoutViewController: BaseViewController {
   private var subscriptions: Set<AnyCancellable> = []
   private var sections: [CheckoutSectionBuilder.Section] = []
   private let builder = CheckoutSectionBuilder()
-  
-  private lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.showsVerticalScrollIndicator = false
-    tableView.backgroundColor = .clear
-    tableView.separatorStyle = .none
-    tableView.delaysContentTouches = false
-    tableView.delegate = self
-    tableView.dataSource = self
-    tableView.register(TitleInfoHeaderFooterView.self)
-    tableView.register(CheckoutPayloadSummaryFooterView.self)
-    tableView.register(CheckoutPayloadCell.self)
-    tableView.register(CheckoutPaymentFooterView.self)
-    tableView.register(CheckoutPaymentMethodCell.self)
-    tableView.register(CheckoutSuccessfulPaymentCell.self)
-    return tableView
-  }()
   
   init(invoiceId: String,
        manager: NetworkManager,
@@ -51,7 +33,7 @@ final class CheckoutViewController: BaseViewController {
     let router = CheckoutRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
   }
   
@@ -70,46 +52,33 @@ final class CheckoutViewController: BaseViewController {
     viewModel.complete(isFromCloseAction: false)
   }
   
-}
-
-// MARK: - UITableViewDataSource
-
-extension CheckoutViewController: UITableViewDataSource {
-  
-  func numberOfSections(in tableView: UITableView) -> Int {
+  override func numberOfSections(in tableView: UITableView) -> Int {
     return sections.count
   }
   
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return builder.numberOfRows(in: sections[section])
   }
   
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     return builder.cell(for: sections[indexPath.section],
                         in: tableView,
                         at: indexPath,
                         delegate: self)
   }
   
-}
-
-// MARK: - UITableViewDelegate {
-
-extension CheckoutViewController: UITableViewDelegate {
-  
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return builder.header(for: sections[section],
                           in: tableView)
   }
 
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections[section],
                           in: tableView,
-                          delegate: self,
-                          textViewDelegate: self)
+                          delegate: self)
   }
   
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return builder.heightForHeader(in: sections[section])
   }
   
@@ -159,14 +128,12 @@ extension CheckoutViewController: CheckoutPaymentMethodCellDelegate {
 private extension CheckoutViewController {
   
   func setup() {
-    view.addSubview(tableView)
-    
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-      tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-      tableView.bottomAnchor.constraint(equalTo: divider.topAnchor),
-    ])
+    tableView.register(TitleInfoHeaderFooterView.self)
+    tableView.register(CheckoutPayloadSummaryFooterView.self)
+    tableView.register(CheckoutPayloadCell.self)
+    tableView.register(CheckoutPaymentFooterView.self)
+    tableView.register(CheckoutPaymentMethodCell.self)
+    tableView.register(CheckoutSuccessfulPaymentCell.self)
   }
   
   func bind() {

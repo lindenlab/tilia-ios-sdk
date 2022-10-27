@@ -22,7 +22,7 @@ public final class TLManager {
   
   private let _networkManager = NetworkManager(serverClient: ServerClient())
   private let _colorsConfiguration = ColorsConfiguration()
-  private let synchronizationQueue = DispatchQueue(label: "TLManager#SynchronizationQueue", attributes: .concurrent)
+  private let synchronizationQueue = DispatchQueue(label: "io.tilia.ios.sdk.TLManagerSynchronizationQueue", attributes: .concurrent)
   
   private init() { }
   
@@ -175,6 +175,32 @@ public extension TLManager {
                                                         onComplete: onComplete,
                                                         onError: onError)
     viewController.present(checkoutViewController, animated: animated)
+  }
+  
+  /// Show KYC flow, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting KYC flow
+  ///   - animated: animated flag
+  ///   - onUpdate: completion that returns KYC info is processed
+  ///   - onComplete: completion that returns KYC flow state
+  ///   - onError: completion that returns KYC flow error
+  func presentKycViewController(on viewController: UIViewController,
+                                animated: Bool,
+                                onUpdate: ((TLUpdateCallback) -> Void)? = nil,
+                                onComplete: ((TLCompleteCallback) -> Void)? = nil,
+                                onError: ((TLErrorCallback) -> Void)? = nil) {
+    guard let token = networkManager.serverConfiguration.token, !token.isEmpty else {
+      let errorCallback = TLErrorCallback(event: TLEvent(flow: .kyc, action: .missingRequiredData),
+                                          error: L.errorKycTitle,
+                                          message: L.missedRequiredData)
+      onError?(errorCallback)
+      return
+    }
+    let userInfoViewController = UserInfoViewController(manager: networkManager,
+                                                        onUpdate: onUpdate,
+                                                        onComplete: onComplete,
+                                                        onError: onError)
+    viewController.present(userInfoViewController, animated: animated)
   }
   
 }

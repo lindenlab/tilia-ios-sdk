@@ -25,4 +25,17 @@ extension UITableView {
     dequeueReusableCell(withIdentifier: cellClass.reuseIdentifier, for: indexPath) as! T
   }
   
+  func updateTableHeaderHeightIfNeeded() {
+    tableHeaderView.map {
+      let targetSize = CGSize(width: frame.width,
+                              height: UIView.layoutFittingCompressedSize.height)
+      let newSize = $0.systemLayoutSizeFitting(targetSize,
+                                               withHorizontalFittingPriority: .required,
+                                               verticalFittingPriority: .fittingSizeLevel)
+      if $0.frame.size.height != newSize.height {
+        $0.frame.size.height = newSize.height
+      }
+    }
+  }
+  
 }
