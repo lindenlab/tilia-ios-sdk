@@ -222,6 +222,9 @@
 		D1F7D3B428DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */; };
 		D1FC23CE290B032100ECD7AF /* EncodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC23CD290B032100ECD7AF /* EncodableTests.swift */; };
 		D1FC23D0290B048300ECD7AF /* UIColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC23CF290B048300ECD7AF /* UIColorTests.swift */; };
+		D1FC23D2290B09EF00ECD7AF /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC23D1290B09EF00ECD7AF /* DateTests.swift */; };
+		D1FC23D4290B140000ECD7AF /* CollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC23D3290B140000ECD7AF /* CollectionTests.swift */; };
+		D1FC23D6290B14F000ECD7AF /* PossiblyEmptyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FC23D5290B14F000ECD7AF /* PossiblyEmptyTests.swift */; };
 		D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */; };
 		D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */; };
 		D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */; };
@@ -471,6 +474,9 @@
 		D1F7D3B328DD8163004BC92B /* GetTransactionDetailsPayoutResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsPayoutResponse.json; sourceTree = "<group>"; };
 		D1FC23CD290B032100ECD7AF /* EncodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodableTests.swift; sourceTree = "<group>"; };
 		D1FC23CF290B048300ECD7AF /* UIColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorTests.swift; sourceTree = "<group>"; };
+		D1FC23D1290B09EF00ECD7AF /* DateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTests.swift; sourceTree = "<group>"; };
+		D1FC23D3290B140000ECD7AF /* CollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTests.swift; sourceTree = "<group>"; };
+		D1FC23D5290B14F000ECD7AF /* PossiblyEmptyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossiblyEmptyTests.swift; sourceTree = "<group>"; };
 		D1FECF1E28884AC300EEC63B /* UserInfoViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModelTests.swift; sourceTree = "<group>"; };
 		D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidatorTests.swift; sourceTree = "<group>"; };
 		D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsViewModelTests.swift; sourceTree = "<group>"; };
@@ -797,6 +803,9 @@
 				D152CD65290AFEAE00BC515C /* DecodableTests.swift */,
 				D1FC23CD290B032100ECD7AF /* EncodableTests.swift */,
 				D1FC23CF290B048300ECD7AF /* UIColorTests.swift */,
+				D1FC23D1290B09EF00ECD7AF /* DateTests.swift */,
+				D1FC23D3290B140000ECD7AF /* CollectionTests.swift */,
+				D1FC23D5290B14F000ECD7AF /* PossiblyEmptyTests.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1598,7 +1607,10 @@
 				D1E9779C290AAE1300FB20AB /* KycRouterTests.swift in Sources */,
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
+				D1FC23D2290B09EF00ECD7AF /* DateTests.swift in Sources */,
+				D1FC23D6290B14F000ECD7AF /* PossiblyEmptyTests.swift in Sources */,
 				D1B872CF28048E7B00DD1F7B /* TLManagerTests.swift in Sources */,
+				D1FC23D4290B140000ECD7AF /* CollectionTests.swift in Sources */,
 				D1FC23D0290B048300ECD7AF /* UIColorTests.swift in Sources */,
 				D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */,
 				D1E977A6290AB1D200FB20AB /* BaseRouterTests.swift in Sources */,

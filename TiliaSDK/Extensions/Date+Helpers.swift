@@ -16,11 +16,11 @@ extension Date {
   func formattedDefaultDescription(showTimeZone: Bool = true) -> String {
     let description: String
     if Calendar.current.isDateInToday(self) {
-      description = L.todayAt(with: DateFormatter.shortTimeFormatter.string(from: self))
+      description = L.todayAt(with: string(formatter: .shortTimeFormatter))
     } else if Calendar.current.isDateInYesterday(self) {
-      description = L.yesterdayAt(with: DateFormatter.shortTimeFormatter.string(from: self))
+      description = L.yesterdayAt(with: string(formatter: .shortTimeFormatter))
     } else {
-      description = DateFormatter.longDateAndShortTimeFormatter.string(from: self)
+      description = string(formatter: .longDateAndShortTimeFormatter)
     }
     if showTimeZone, let abbreviation = TimeZone.current.abbreviation(for: self) {
       return "\(description) (\(abbreviation))"
@@ -32,11 +32,11 @@ extension Date {
   func formattedRequestedDescription(showTimeZone: Bool = true) -> String {
     let description: String
     if Calendar.current.isDateInToday(self) {
-      description = L.requestedTodayAt(with: DateFormatter.shortTimeFormatter.string(from: self))
+      description = L.requestedTodayAt(with: string(formatter: .shortTimeFormatter))
     } else if Calendar.current.isDateInYesterday(self) {
-      description = L.requestedYesterdayAt(with: DateFormatter.shortTimeFormatter.string(from: self))
+      description = L.requestedYesterdayAt(with: string(formatter: .shortTimeFormatter))
     } else {
-      description = L.requestedOn(with: DateFormatter.longDateAndShortTimeFormatter.string(from: self))
+      description = L.requestedOn(with: string(formatter: .longDateAndShortTimeFormatter))
     }
     if showTimeZone, let abbreviation = TimeZone.current.abbreviation(for: self) {
       return "\(description) (\(abbreviation))"
@@ -46,7 +46,7 @@ extension Date {
   }
   
   func longDateDescription(showTimeZone: Bool = true) -> String {
-    let description = DateFormatter.longDateFormatter.string(from: self)
+    let description = string(formatter: .longDateFormatter)
     if showTimeZone, let abbreviation = TimeZone.current.abbreviation(for: self) {
       return "\(description) (\(abbreviation))"
     } else {
@@ -55,7 +55,7 @@ extension Date {
   }
   
   func shortTimeDescription(showTimeZone: Bool = true) -> String {
-    let description = DateFormatter.shortTimeFormatter.string(from: self)
+    let description = string(formatter: .shortTimeFormatter)
     if showTimeZone, let abbreviation = TimeZone.current.abbreviation(for: self) {
       return "\(description) (\(abbreviation))"
     } else {

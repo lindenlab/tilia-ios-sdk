@@ -37,6 +37,8 @@ extension Array: PossiblyEmpty { }
 
 extension Set: PossiblyEmpty { }
 
+extension Dictionary: PossiblyEmpty { }
+
 extension Optional where Wrapped: PossiblyEmpty {
   
   var isEmpty: Bool {
