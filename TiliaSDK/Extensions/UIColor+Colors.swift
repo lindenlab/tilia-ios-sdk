@@ -25,7 +25,7 @@ extension UIColor {
   
   static var backgroundDarkerColor: UIColor {
     return UIColor { _ in
-      return backgroundColor.modifiedHue().modifiedHue(brightness: -0.03)
+      return backgroundColor.modifiedHue(brightness: -0.03)
     }
   }
   
