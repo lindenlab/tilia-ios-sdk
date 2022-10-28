@@ -168,4 +168,61 @@ final class TLManagerTests: XCTestCase {
     XCTAssertNotNil(errorCallback)
   }
   
+  func testPresentTosFlow() {
+    TLManager.shared.setToken(UUID().uuidString)
+    let viewController = UIViewController()
+    let window = UIWindow()
+    window.rootViewController = viewController
+    window.makeKeyAndVisible()
+    TLManager.shared.presentTosIsRequiredViewController(on: viewController,
+                                                        animated: false)
+    XCTAssertTrue(viewController.presentedViewController is TosViewController)
+  }
+  
+  func testPresentCheckoutFlow() {
+    TLManager.shared.setToken(UUID().uuidString)
+    let viewController = UIViewController()
+    let window = UIWindow()
+    window.rootViewController = viewController
+    window.makeKeyAndVisible()
+    TLManager.shared.presentCheckoutViewController(on: viewController,
+                                                   withInvoiceId: UUID().uuidString,
+                                                   animated: false)
+    XCTAssertTrue(viewController.presentedViewController is CheckoutViewController)
+  }
+  
+  func testPresentKycFlow() {
+    TLManager.shared.setToken(UUID().uuidString)
+    let viewController = UIViewController()
+    let window = UIWindow()
+    window.rootViewController = viewController
+    window.makeKeyAndVisible()
+    TLManager.shared.presentKycViewController(on: viewController,
+                                              animated: false)
+    XCTAssertTrue(viewController.presentedViewController is UserInfoViewController)
+  }
+  
+  func testPresentTransactionDetailsFlow() {
+    TLManager.shared.setToken(UUID().uuidString)
+    let viewController = UIViewController()
+    let window = UIWindow()
+    window.rootViewController = viewController
+    window.makeKeyAndVisible()
+    TLManager.shared.presentTransactionDetailsViewController(on: viewController,
+                                                             withTransactionId: UUID().uuidString,
+                                                             animated: false)
+    XCTAssertTrue(viewController.presentedViewController is TransactionDetailsViewController)
+  }
+  
+  func testPresentTransactionHistoryFlow() {
+    TLManager.shared.setToken(UUID().uuidString)
+    let viewController = UIViewController()
+    let window = UIWindow()
+    window.rootViewController = viewController
+    window.makeKeyAndVisible()
+    TLManager.shared.presentTransactionHistoryViewController(on: viewController,
+                                                             animated: false)
+    XCTAssertTrue(viewController.presentedViewController is TransactionHistoryViewController)
+  }
+  
 }
