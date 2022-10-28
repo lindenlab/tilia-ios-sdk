@@ -80,6 +80,7 @@
 		D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* Animation+Animations.swift */; };
 		D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = D163D9E8284F556000F478DA /* SuccessAnimation.json */; };
 		D164A616290083FE00747B42 /* FailableDecodableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D164A615290083FE00747B42 /* FailableDecodableModel.swift */; };
+		D1653B07290C053300DC2B20 /* ServerClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1653B06290C053300DC2B20 /* ServerClientTests.swift */; };
 		D167248828C8E6590033899B /* TransactionDetailsFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D167248728C8E6590033899B /* TransactionDetailsFlowUITests.swift */; };
 		D167248A28C8E80C0033899B /* XCTestCase+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D167248928C8E80C0033899B /* XCTestCase+Extensions.swift */; };
 		D16ADFA028A43C6A0096006C /* SwiftProgrammingLanguage.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */; };
@@ -331,6 +332,7 @@
 		D163D9E4284F53CC00F478DA /* Animation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+Animations.swift"; sourceTree = "<group>"; };
 		D163D9E8284F556000F478DA /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
 		D164A615290083FE00747B42 /* FailableDecodableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailableDecodableModel.swift; sourceTree = "<group>"; };
+		D1653B06290C053300DC2B20 /* ServerClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClientTests.swift; sourceTree = "<group>"; };
 		D167248728C8E6590033899B /* TransactionDetailsFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsFlowUITests.swift; sourceTree = "<group>"; };
 		D167248928C8E80C0033899B /* XCTestCase+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extensions.swift"; sourceTree = "<group>"; };
 		D16ADF9F28A43C6A0096006C /* SwiftProgrammingLanguage.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = SwiftProgrammingLanguage.pdf; sourceTree = "<group>"; };
@@ -1106,6 +1108,7 @@
 			children = (
 				D135DC8F27E74A540009D888 /* NetworkManagerTests.swift */,
 				D1B872CE28048E7B00DD1F7B /* TLManagerTests.swift */,
+				D1653B06290C053300DC2B20 /* ServerClientTests.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1605,6 +1608,7 @@
 				D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */,
 				D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */,
 				D1E9779C290AAE1300FB20AB /* KycRouterTests.swift in Sources */,
+				D1653B07290C053300DC2B20 /* ServerClientTests.swift in Sources */,
 				D1FECF2128884AD100EEC63B /* UserInfoValidatorTests.swift in Sources */,
 				D1FECF1F28884AC300EEC63B /* UserInfoViewModelTests.swift in Sources */,
 				D1FC23D2290B09EF00ECD7AF /* DateTests.swift in Sources */,
