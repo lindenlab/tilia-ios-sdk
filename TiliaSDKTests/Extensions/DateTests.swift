@@ -32,10 +32,12 @@ final class DateTests: XCTestCase {
     let todayDate = Date()
     let yesterdayDate = Date(timeInterval: -60*60*24, since: todayDate)
     let pastDate = Date(timeInterval: -60*60*24*2, since: todayDate)
-    let timeZone = TimeZone.current.abbreviation(for: todayDate) ?? ""
-    let todayDescription = L.todayAt(with: todayDate.string(formatter: .shortTimeFormatter)) + " (\(timeZone))"
-    let yesterdayDescription = L.yesterdayAt(with: yesterdayDate.string(formatter: .shortTimeFormatter)) + " (\(timeZone))"
-    let pastDescription = pastDate.string(formatter: .longDateAndShortTimeFormatter) + " (\(timeZone))"
+    let todayTimeZone = TimeZone.current.abbreviation(for: todayDate) ?? ""
+    let yesterdayTimeZone = TimeZone.current.abbreviation(for: yesterdayDate) ?? ""
+    let pastTimeZone = TimeZone.current.abbreviation(for: pastDate) ?? ""
+    let todayDescription = L.todayAt(with: todayDate.string(formatter: .shortTimeFormatter)) + " (\(todayTimeZone))"
+    let yesterdayDescription = L.yesterdayAt(with: yesterdayDate.string(formatter: .shortTimeFormatter)) + " (\(yesterdayTimeZone))"
+    let pastDescription = pastDate.string(formatter: .longDateAndShortTimeFormatter) + " (\(pastTimeZone))"
     XCTAssertEqual(todayDate.formattedDefaultDescription(), todayDescription)
     XCTAssertEqual(yesterdayDate.formattedDefaultDescription(), yesterdayDescription)
     XCTAssertEqual(pastDate.formattedDefaultDescription(), pastDescription)
@@ -57,10 +59,12 @@ final class DateTests: XCTestCase {
     let todayDate = Date()
     let yesterdayDate = Date(timeInterval: -60*60*24, since: todayDate)
     let pastDate = Date(timeInterval: -60*60*24*2, since: todayDate)
-    let timeZone = TimeZone.current.abbreviation(for: todayDate) ?? ""
-    let todayDescription = L.requestedTodayAt(with: todayDate.string(formatter: .shortTimeFormatter)) + " (\(timeZone))"
-    let yesterdayDescription = L.requestedYesterdayAt(with: yesterdayDate.string(formatter: .shortTimeFormatter)) + " (\(timeZone))"
-    let pastDescription = L.requestedOn(with: pastDate.string(formatter: .longDateAndShortTimeFormatter)) + " (\(timeZone))"
+    let todayTimeZone = TimeZone.current.abbreviation(for: todayDate) ?? ""
+    let yesterdayTimeZone = TimeZone.current.abbreviation(for: yesterdayDate) ?? ""
+    let pastTimeZone = TimeZone.current.abbreviation(for: pastDate) ?? ""
+    let todayDescription = L.requestedTodayAt(with: todayDate.string(formatter: .shortTimeFormatter)) + " (\(todayTimeZone))"
+    let yesterdayDescription = L.requestedYesterdayAt(with: yesterdayDate.string(formatter: .shortTimeFormatter)) + " (\(yesterdayTimeZone))"
+    let pastDescription = L.requestedOn(with: pastDate.string(formatter: .longDateAndShortTimeFormatter)) + " (\(pastTimeZone))"
     XCTAssertEqual(todayDate.formattedRequestedDescription(), todayDescription)
     XCTAssertEqual(yesterdayDate.formattedRequestedDescription(), yesterdayDescription)
     XCTAssertEqual(pastDate.formattedRequestedDescription(), pastDescription)
