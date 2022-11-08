@@ -70,8 +70,8 @@ struct TransactionDetailsModel: Decodable {
     
     let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .data)
     
-    referenceType = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType)
-    referenceId = try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId)
+    referenceType = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType))?.toNilIfEmpty()
+    referenceId = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId))?.toNilIfEmpty()
     
     let lineItems = try transactionContainer.decodeIfPresent([String: LineItemModel].self, forKey: .lineItems)
     self.lineItems = lineItems?.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
