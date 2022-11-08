@@ -13,7 +13,7 @@ final class TransactionDetailsCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 14, weight: .medium)
-    label.setContentCompressionResistancePriority(.required, for: .horizontal)
+    label.numberOfLines = 0
     return label
   }()
   
@@ -27,6 +27,7 @@ final class TransactionDetailsCell: UITableViewCell {
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 14)
     label.numberOfLines = 0
+    label.textAlignment = .right
     return label
   }()
   
