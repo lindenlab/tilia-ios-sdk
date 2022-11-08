@@ -30,13 +30,13 @@ struct TransactionHistorySectionModel {
 
 enum TransactionHistorySectionTypeModel: Int, CaseIterable, CustomStringConvertible {
   
+  case completed
   case pending
-  case history
   
   var description: String {
     switch self {
+    case .completed: return L.completed
     case .pending: return L.pending
-    case .history: return L.history
     }
   }
   

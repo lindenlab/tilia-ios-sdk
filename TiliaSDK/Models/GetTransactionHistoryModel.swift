@@ -27,8 +27,8 @@ private extension TransactionHistorySectionTypeModel {
   
   var statuses: String {
     switch self {
+    case .completed: return "processed,payout-failed"
     case .pending: return "pending"
-    case .history: return "processed,payout-failed"
     }
   }
   
