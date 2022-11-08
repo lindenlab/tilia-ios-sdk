@@ -210,7 +210,10 @@ private extension TransactionDetailsModel {
       attributes[.strikethroughStyle] = NSUnderlineStyle.single
     } else {
       switch type {
-      case .tokenPurchase where !isPoboSourcePaymentMethodProvider, .userPurchaseRecipient:
+      case .tokenPurchase where !isPoboSourcePaymentMethodProvider,
+          .userPurchaseRecipient,
+          .userPurchase,
+          .userPurchaseEscrow:
         attributes[.foregroundColor] = UIColor.failureBackgroundColor
       default:
         attributes[.foregroundColor] = UIColor.successBackgroundColor
