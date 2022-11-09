@@ -32,7 +32,7 @@ final class TransactionHistoryHeaderView: UITableViewHeaderFooterView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(title: String) {
+  func configure(title: String?) {
     titleLabel.text = title
   }
   
@@ -51,6 +51,7 @@ private extension TransactionHistoryHeaderView {
     stackView.alignment = .center
     stackView.spacing = 4
     stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.distribution = .equalCentering
     
     contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)

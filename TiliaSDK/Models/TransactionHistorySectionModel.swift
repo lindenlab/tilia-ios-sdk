@@ -10,8 +10,13 @@ import UIKit
 struct TransactionHistorySectionModel {
   
   struct Header {
-    let title: String
+    let title: String?
     var value: NSAttributedString?
+    
+    init(title: String? = nil, value: NSAttributedString? = nil) {
+      self.title = title
+      self.value = value
+    }
   }
   
   struct Item {
@@ -23,7 +28,7 @@ struct TransactionHistorySectionModel {
     var isLast: Bool
   }
   
-  var header: Header?
+  var header: Header
   var items: [Item]
   
 }

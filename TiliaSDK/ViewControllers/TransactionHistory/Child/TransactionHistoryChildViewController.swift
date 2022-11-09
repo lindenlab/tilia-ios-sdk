@@ -57,10 +57,6 @@ final class TransactionHistoryChildViewController: UITableViewController {
                           in: tableView)
   }
   
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return builder.heightForHeader(in: sections[section])
-  }
-  
   override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return .leastNormalMagnitude
   }

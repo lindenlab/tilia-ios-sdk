@@ -21,10 +21,6 @@ extension TransactionHistorySectionBuilder {
     return section.items.count
   }
   
-  func heightForHeader(in section: TransactionHistorySectionModel) -> CGFloat {
-    return section.header == nil ? .leastNormalMagnitude : UITableView.automaticDimension
-  }
-  
   func cell(for section: TransactionHistorySectionModel,
             in tableView: UITableView,
             at indexPath: IndexPath) -> UITableViewCell {
@@ -40,15 +36,11 @@ extension TransactionHistorySectionBuilder {
   }
   
   func header(for section: TransactionHistorySectionModel,
-              in tableView: UITableView) -> UIView? {
-    if let header = section.header {
-      let view = tableView.dequeue(TransactionHistoryHeaderView.self)
-      view.configure(title: header.title)
-      view.configure(value: header.value)
-      return view
-    } else {
-      return nil
-    }
+              in tableView: UITableView) -> UIView {
+    let view = tableView.dequeue(TransactionHistoryHeaderView.self)
+    view.configure(title: section.header.title)
+    view.configure(value: section.header.value)
+    return view
   }
   
   func updateTable(_ tableView: UITableView, isEmpty: Bool) {
@@ -98,11 +90,9 @@ struct TransactionHistoryCompletedSectionBuilder: TransactionHistorySectionBuild
                                                 sectionType: .completed)]))
       }
       if isItemLast {
-        let count = String(sections[lastSectionIndex].items.count)
-        let value = L.total(with: count).attributedString(font: .systemFont(ofSize: 12),
-                                                          color: .tertiaryTextColor,
-                                                          subStrings: (count, .boldSystemFont(ofSize: 12), .tertiaryTextColor))
-        sections[lastSectionIndex].header?.value = value
+        let count = sections[lastSectionIndex].items.count
+        let value = attributedTotal(for: count)
+        sections[lastSectionIndex].header.value = value
         if lastSectionIndex == oldLastIndexes.section {
           updateTable(tableView,
                       at: lastSectionIndex,
@@ -127,7 +117,7 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
     var insertRows: [IndexPath] = []
     insertRows.reserveCapacity(items.count)
     if oldLastItem == nil {
-      sections.append(.init(header: nil, items: []))
+      sections.append(.init(header: .init(), items: []))
     }
     let lastItemIndex = updateLastSection(with: &sections, in: tableView).item
     let count = items.count
@@ -137,6 +127,11 @@ struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder
                                          isLast: index == count - 1,
                                          sectionType: .pending))
     }
+    let value = attributedTotal(for: sections[0].items.count)
+    sections[0].header.value = value
+    updateTable(tableView,
+                at: 0,
+                total: value)
     return (nil, insertRows.isEmpty ? nil : insertRows)
   }
   
@@ -181,6 +176,14 @@ private extension TransactionHistorySectionBuilder {
     } else {
       return index == items.count - 1
     }
+  }
+  
+  func attributedTotal(for count: Int) -> NSAttributedString {
+    let countStr = String(count)
+    let value = L.total(with: countStr).attributedString(font: .systemFont(ofSize: 12),
+                                                         color: .tertiaryTextColor,
+                                                         subStrings: (countStr, .boldSystemFont(ofSize: 12), .tertiaryTextColor))
+    return value
   }
   
   func updateLastSection(with sections: inout [TransactionHistorySectionModel], in tableView: UITableView) -> Indexes {
