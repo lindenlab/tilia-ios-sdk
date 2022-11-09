@@ -229,7 +229,14 @@ private extension TransactionDetailsModel {
         attributes[.foregroundColor] = UIColor.successBackgroundColor
       }
     }
-    return NSAttributedString(string: total.total, attributes: attributes)
+    let value: String
+    switch type {
+    case .tokenPurchase where isPoboSourcePaymentMethodProvider:
+      value = userReceivedAmount ?? ""
+    default:
+      value = total.total
+    }
+    return NSAttributedString(string: value, attributes: attributes)
   }
   
 }
