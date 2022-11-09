@@ -298,7 +298,7 @@ private extension TransactionDetailsSectionBuilder {
     }
     
     let type = Section.SectionType.content(.init(title: L.invoiceDetails,
-                                                 footer: .init(isPrimaryButtonHidden: false)))
+                                                 footer: .init(isPrimaryButtonHidden: model.status.isPrimaryButtonHidden)))
     return .init(type: type, items: items)
   }
   
@@ -422,6 +422,13 @@ private extension TransactionStatusModel {
     switch self {
     case .pending, .processed: return .primaryColor
     case .failed: return .failureBackgroundColor
+    }
+  }
+  
+  var isPrimaryButtonHidden: Bool {
+    switch self {
+    case .pending, .failed: return true
+    case .processed: return false
     }
   }
   
