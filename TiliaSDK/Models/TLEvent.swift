@@ -23,10 +23,10 @@ public struct TLEvent {
     case kyc
     
     /// Transaction Details flow
-    case transactionDetails
+    case transactionDetails = "txndetails"
     
     /// Transaction History flow
-    case transactionHistory
+    case transactionHistory = "txnhistory"
     
   }
   
