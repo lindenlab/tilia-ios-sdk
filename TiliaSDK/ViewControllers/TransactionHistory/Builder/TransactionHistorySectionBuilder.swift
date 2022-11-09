@@ -10,6 +10,8 @@ import UIKit
 protocol TransactionHistorySectionBuilder {
   typealias TableUpdate = (insertSections: IndexSet?, insertRows: [IndexPath]?)
   
+  var emptyMessage: String { get }
+  
   func updateSections(_ sections: inout [TransactionHistorySectionModel], in tableView: UITableView, with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?) -> TableUpdate
 }
 
@@ -56,7 +58,8 @@ extension TransactionHistorySectionBuilder {
       label.font = .systemFont(ofSize: 14)
       label.textColor = .primaryTextColor
       label.textAlignment = .center
-      label.text = L.transactionHistoryIsEmpty
+      label.text = emptyMessage
+      label.numberOfLines = 0
       tableView.backgroundView = label
     } else {
       tableView.backgroundView?.removeFromSuperview()
@@ -67,6 +70,8 @@ extension TransactionHistorySectionBuilder {
 }
 
 struct TransactionHistoryCompletedSectionBuilder: TransactionHistorySectionBuilder {
+  
+  var emptyMessage: String { return L.completedTransactionListIsEmpty }
   
   func updateSections(_ sections: inout [TransactionHistorySectionModel], in tableView: UITableView, with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?) -> TableUpdate {
     guard !items.isEmpty else { return (nil, nil) }
@@ -114,6 +119,8 @@ struct TransactionHistoryCompletedSectionBuilder: TransactionHistorySectionBuild
 }
 
 struct TransactionHistoryPendingSectionBuilder: TransactionHistorySectionBuilder {
+  
+  var emptyMessage: String { return L.pendingTransactionListIsEmpty }
   
   func updateSections(_ sections: inout [TransactionHistorySectionModel], in tableView: UITableView, with items: [TransactionDetailsModel], oldLastItem: TransactionDetailsModel?) -> TableUpdate {
     guard !items.isEmpty else { return (nil, nil) }

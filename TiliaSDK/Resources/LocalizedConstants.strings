@@ -175,4 +175,5 @@
 "publisherFees" = "Publisher fees";
 "refundTo" = "Refund to";
 "refundOf" = "Refund of %@";
-"transactionHistoryIsEmpty" = "There are no transactions.";
+"completedTransactionListIsEmpty" = "This is where you’ll see your transactions.";
+"pendingTransactionListIsEmpty" = "You have no pending transactions.";
