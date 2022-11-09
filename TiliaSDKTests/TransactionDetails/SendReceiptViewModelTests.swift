@@ -18,15 +18,15 @@ final class SendReceiptViewModelTests: XCTestCase {
   }
   
   func testSuccessSend() {
-    var updateCallback: TLUpdateCallback?
+    var emailSent: Void?
     var loading: Bool?
     var isEmailValid: Bool?
     
-    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessSend_UpdateCallback")
+    let emailSentExpectation = XCTestExpectation(description: "testSuccessSend_EmailSent")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = SendReceiptViewModel(transactionId: "",
                                          manager: networkManager,
-                                         onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                         onEmailSent: { emailSent = (); emailSentExpectation.fulfill() },
                                          onError: nil)
     
     let loadingExpectation = XCTestExpectation(description: "testSuccessSend_Loading")
@@ -45,9 +45,10 @@ final class SendReceiptViewModelTests: XCTestCase {
     let email = "test@gmail.com"
     viewModel.checkEmail(email)
     viewModel.sendEmail(email)
+    viewModel.complete()
     
     let expectations = [
-      updateCallbackExpectation,
+      emailSentExpectation,
       loadingExpectation,
       isEmailValidExpectation
     ]
@@ -55,7 +56,7 @@ final class SendReceiptViewModelTests: XCTestCase {
     wait(for: expectations, timeout: 2)
     XCTAssertNotNil(loading)
     XCTAssertEqual(isEmailValid, true)
-    XCTAssertEqual(updateCallback?.event.action, .receiptSent)
+    XCTAssertNotNil(emailSent)
   }
   
   func testFailureSend() {
@@ -67,7 +68,7 @@ final class SendReceiptViewModelTests: XCTestCase {
     
     let viewModel = SendReceiptViewModel(transactionId: "",
                                          manager: networkManager,
-                                         onUpdate: nil,
+                                         onEmailSent: { },
                                          onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     
     let errorExpectation = XCTestExpectation(description: "testFailureSend_Error")

@@ -139,4 +139,34 @@ final class TransactionDetailsViewModelTests: XCTestCase {
     XCTAssertNotNil(errorCallback)
   }
   
+  func testSuccessSendEmail() {
+    var updateCallback: TLUpdateCallback?
+    var emailSent: Void?
+    
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessSendEmail_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = TransactionDetailsViewModel(mode: .id(""),
+                                                manager: networkManager,
+                                                onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                                onComplete: nil,
+                                                onError: nil)
+    
+    let emailSentExpectation = XCTestExpectation(description: "testSuccessSendEmail_EmailSent")
+    viewModel.emailSent.sink {
+      emailSent = $0
+      emailSentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    viewModel.onEmailSent()
+    
+    let expectations = [
+      updateCallbackExpectation,
+      emailSentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(emailSent)
+    XCTAssertEqual(updateCallback?.event.action, .receiptSent)
+  }
+  
 }
