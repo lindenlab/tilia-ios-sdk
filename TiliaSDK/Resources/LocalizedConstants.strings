@@ -168,7 +168,7 @@
 "payout" = "Payout";
 "sale" = "Sale";
 "purchase" = "Purchase";
-"tokenPurchase" = "Token purchase";
+"tokensIssued" = "Tokens issued";
 "tokenConvert" = "Token convert";
 "refund" = "Refund";
 "tiliaFees" = "Tilia fees";

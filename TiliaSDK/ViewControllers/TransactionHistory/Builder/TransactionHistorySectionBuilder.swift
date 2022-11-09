@@ -250,7 +250,7 @@ private extension TransactionTypeModel {
     case .userPurchase, .userPurchaseEscrow: return L.purchase
     case .userPurchaseRecipient: return L.sale
     case .payout: return L.payout
-    case .tokenPurchase: return L.tokenPurchase
+    case .tokenPurchase: return L.tokensIssued
     case .tokenConvert: return L.tokenConvert
     case .refund: return L.refund
     }

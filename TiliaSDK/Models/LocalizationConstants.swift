@@ -168,7 +168,7 @@ enum L {
   static let payout = "payout".localized
   static let sale = "sale".localized
   static let purchase = "purchase".localized
-  static let tokenPurchase = "tokenPurchase".localized
+  static let tokensIssued = "tokensIssued".localized
   static let tokenConvert = "tokenConvert".localized
   static let refund = "refund".localized
   static let tiliaFees = "tiliaFees".localized
