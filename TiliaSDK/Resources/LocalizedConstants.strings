@@ -177,3 +177,4 @@
 "refundOf" = "Refund of %@";
 "completedTransactionListIsEmpty" = "This is where you’ll see your transactions.";
 "pendingTransactionListIsEmpty" = "You have no pending transactions.";
+"emailSent" = "E-mail sent";

@@ -68,11 +68,11 @@ final class SendReceiptViewController: BaseViewController {
   
   init(transactionId: String,
        manager: NetworkManager,
-       onUpdate: ((TLUpdateCallback) -> Void)?,
+       onEmailSent: @escaping () -> Void,
        onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = SendReceiptViewModel(transactionId: transactionId,
                                          manager: manager,
-                                         onUpdate: onUpdate,
+                                         onEmailSent: onEmailSent,
                                          onError: onError)
     let router = SendReceiptRouter()
     self.viewModel = viewModel
@@ -157,8 +157,9 @@ private extension SendReceiptViewController {
                              message: L.errorSendReceiptMessage)
     }.store(in: &subscriptions)
     
-    viewModel.dismiss.sink { [weak self] _ in
-      self?.router.dismiss()
+    viewModel.emailSent.sink { [weak self] in
+      guard let self = self else { return }
+      self.router.dismiss { self.viewModel.complete() }
     }.store(in: &subscriptions)
     
     viewModel.isEmailValid.sink { [weak self] in

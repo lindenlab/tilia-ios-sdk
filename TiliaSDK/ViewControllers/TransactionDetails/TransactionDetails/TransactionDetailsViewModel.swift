@@ -30,13 +30,14 @@ protocol TransactionDetailsViewModelOutputProtocol {
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
   var content: PassthroughSubject<TransactionDetailsModel, Never> { get }
+  var emailSent: PassthroughSubject<Void, Never> { get }
 }
 
 protocol TransactionDetailsDataStore {
   var transactionId: String { get }
   var manager: NetworkManager { get }
-  var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
+  var onEmailSent: () -> Void { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -49,10 +50,10 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<TransactionDetailsModel, Never>()
+  let emailSent = PassthroughSubject<Void, Never>()
   
   var transactionId: String { return mode.id }
   let manager: NetworkManager
-  let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
     guard let self = self else { return }
     if $0.state == .completed {
@@ -62,8 +63,12 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
     }
     self.onComplete?($0)
   }
+  private(set) lazy var onEmailSent: () -> Void = { [weak self] in
+    self?.didSendEmail()
+  }
   let onError: ((TLErrorCallback) -> Void)?
   
+  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private let mode: TransactionDetailsMode
   private var isLoaded = false
@@ -144,6 +149,13 @@ private extension TransactionDetailsViewModel {
                                 error: L.errorTransactionDetailsTitle,
                                 message: error.localizedDescription)
     onError?(model)
+  }
+  
+  func didSendEmail() {
+    let event = TLEvent(flow: .transactionDetails, action: .receiptSent)
+    let model = TLUpdateCallback(event: event, message: L.receiptSent)
+    onUpdate?(model)
+    emailSent.send()
   }
   
 }

@@ -135,6 +135,12 @@ private extension TransactionDetailsViewController {
       self.sections = self.builder.sections(with: $0)
       self.tableView.reloadData()
     }.store(in: &subscriptions)
+    
+    viewModel.emailSent.sink { [weak self] in
+      self?.router.showToast(title: L.success,
+                             message: L.emailSent,
+                             isSuccess: true)
+    }.store(in: &subscriptions)
   }
   
   func dismiss(isFromCloseAction: Bool) {

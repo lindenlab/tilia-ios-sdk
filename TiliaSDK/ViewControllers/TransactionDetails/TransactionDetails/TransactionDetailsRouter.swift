@@ -37,7 +37,7 @@ final class TransactionDetailsRouter: TransactionDetailsRoutingProtocol {
   func routeToSendReceiptView() {
     let sendReceiptViewController = SendReceiptViewController(transactionId: dataStore.transactionId,
                                                               manager: dataStore.manager,
-                                                              onUpdate: dataStore.onUpdate,
+                                                              onEmailSent: dataStore.onEmailSent,
                                                               onError: dataStore.onError)
     viewController?.present(sendReceiptViewController, animated: true)
   }
