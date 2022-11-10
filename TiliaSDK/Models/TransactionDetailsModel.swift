@@ -79,7 +79,7 @@ struct TransactionDetailsModel: Decodable {
     refundLineItems = try transactionContainer.decodeIfPresent([RefundItemModel].self, forKey: .refundLineItems)
     
     let paymentMethods = try transactionContainer.decodeIfPresent([String: TransactionPaymentMethodModel].self, forKey: .paymentMethods)
-    self.paymentMethods = paymentMethods?.values.sorted { $0.type.isWallet && !$1.type.isWallet }
+    self.paymentMethods = paymentMethods.map { Array($0.values) }
     refundPaymentMethods = try transactionContainer.decodeIfPresent([RefundItemModel].self, forKey: .refundPaymentMethods)
     destinationPaymentMethod = try transactionContainer.decodeIfPresent(String.self, forKey: .destinationPaymentMethod)
     userReceivedAmount = try transactionContainer.decodeIfPresent(String.self, forKey: .userReceivedAmount)
@@ -133,30 +133,13 @@ enum TransactionStatusModel: String, Decodable, CustomStringConvertible {
 
 struct TransactionPaymentMethodModel: Decodable {
   
-  let displayAmount: String
-  let type: TransactionPaymentTypeModel
+  let title: String
+  let amount: String
+  
   
   private enum CodingKeys: String, CodingKey {
-    case displayAmount = "display_amount"
-    case type = "provider"
-  }
-  
-}
-
-enum TransactionPaymentTypeModel: String, Decodable, CustomStringConvertible {
-  
-  case wallet
-  case rebilly
-  case paypal
-  
-  var isWallet: Bool { return self == .wallet }
-  
-  var description: String {
-    switch self {
-    case .wallet: return L.tiliaWallet
-    case .rebilly: return L.creditCard
-    case .paypal: return L.paypal
-    }
+    case title = "display_string"
+    case amount = "display_amount"
   }
   
 }

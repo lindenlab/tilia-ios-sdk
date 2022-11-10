@@ -317,8 +317,8 @@ private extension TransactionDetailsSectionBuilder {
     
     var items: [Section.Item] = []
     if let paymentMethods = model.paymentMethods {
-      items = paymentMethods.enumerated().map { .init(title: $0.element.type.description,
-                                                      value: $0.element.displayAmount,
+      items = paymentMethods.enumerated().map { .init(title: $0.element.title,
+                                                      value: $0.element.amount,
                                                       image: nil,
                                                       leftInset: 32,
                                                       isDividerHidden: $0.offset == paymentMethods.count - 1) }

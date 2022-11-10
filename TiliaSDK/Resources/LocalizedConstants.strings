@@ -146,9 +146,6 @@
 "pending" = "Pending";
 "processed" = "Processed";
 "failed" = "Failed";
-"tiliaWallet" = "Tilia Wallet";
-"creditCard" = "Credit card";
-"paypal" = "Paypal";
 "receiptSent" = "Receipt has been sent";
 "errorTransactionHistoryTitle" = "Error getting transaction history";
 "errorTransactionHistoryMessage" = "Sorry, we were unable to get transaction history. Please try again later.";

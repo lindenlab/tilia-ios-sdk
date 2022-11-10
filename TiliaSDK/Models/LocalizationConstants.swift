@@ -150,9 +150,6 @@ enum L {
   static let pending = "pending".localized
   static let processed = "processed".localized
   static let failed = "failed".localized
-  static let tiliaWallet = "tiliaWallet".localized
-  static let creditCard = "creditCard".localized
-  static let paypal = "paypal".localized
   static let receiptSent = "receiptSent".localized
   static let errorTransactionHistoryTitle = "errorTransactionHistoryTitle".localized
   static let errorTransactionHistoryMessage = "errorTransactionHistoryMessage".localized
