@@ -214,5 +214,8 @@ enum L {
   static func refundOf(with arguments: CVarArg...) -> String {
     return "refundOf".localized(with: arguments)
   }
+  static func processedBy(with arguments: CVarArg...) -> String {
+    return "processedBy".localized(with: arguments)
+  }
   
 }

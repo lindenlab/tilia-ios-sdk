@@ -305,7 +305,7 @@ private extension TransactionDetailsSectionBuilder {
   func paymentSections(for model: TransactionDetailsModel) -> [Section] {
     var sections: [Section] = []
     
-    model.sourcePaymentMethod.map {
+    sourcePaymentMethod(for: model).map {
       let items = [Section.Item(title: $0,
                                 value: sourcePaymentAmount(for: model),
                                 image: nil,
@@ -394,6 +394,10 @@ private extension TransactionDetailsSectionBuilder {
     return str.attributedString(font: .systemFont(ofSize: 20),
                                 color: .primaryTextColor,
                                 subStrings: subStrings)
+  }
+  
+  func sourcePaymentMethod(for model: TransactionDetailsModel) -> String? {
+    return model.sourcePaymentMethod.map { model.isPoboSourcePaymentMethodProvider ? L.processedBy(with: $0) : $0 }
   }
   
   func sourcePaymentAmount(for model: TransactionDetailsModel) -> String? {
