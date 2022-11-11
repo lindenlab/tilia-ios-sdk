@@ -176,3 +176,4 @@
 "pendingTransactionListIsEmpty" = "You have no pending transactions.";
 "emailSent" = "E-mail sent";
 "processedBy" = "Processed by %@";
+"fees" = "Fees";

@@ -195,7 +195,7 @@ private extension TransactionDetailsSectionBuilder {
                            isDividerHidden: true))
       }
       model.total.tax.map {
-        items.append(.init(title: L.transactionFees,
+        items.append(.init(title: model.type.taxTitle,
                            value: $0,
                            image: nil,
                            leftInset: 16,
@@ -474,6 +474,10 @@ private extension TransactionTypeModel {
   
   var headerSubTotalTitle: String {
     return self == .payout ? L.requested : L.subtotal
+  }
+  
+  var taxTitle: String {
+    return self == .payout ? L.fees : L.transactionFees
   }
   
 }
