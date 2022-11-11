@@ -232,6 +232,8 @@ private extension TransactionDetailsModel {
     switch type {
     case .tokenPurchase where isPoboSourcePaymentMethodProvider:
       value = userReceivedAmount ?? ""
+    case .payout:
+      value = total.subTotal ?? ""
     default:
       value = total.total
     }
