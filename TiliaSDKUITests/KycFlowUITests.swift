@@ -36,10 +36,6 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
     
-    let locationHeader = app.tables.otherElements["locationHeader"]
-    XCTAssert(locationHeader.exists)
-    locationHeader.tap()
-    
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
     XCTAssert(countryOfResidenceTextField.exists)
     countryOfResidenceTextField.tap()
@@ -158,10 +154,6 @@ final class KycFlowUITests: XCTestCase {
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
-    
-    let locationHeader = app.tables.otherElements["locationHeader"]
-    XCTAssert(locationHeader.exists)
-    locationHeader.tap()
     
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
     XCTAssert(countryOfResidenceTextField.exists)
@@ -309,10 +301,6 @@ final class KycFlowUITests: XCTestCase {
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
-    
-    let locationHeader = app.tables.otherElements["locationHeader"]
-    XCTAssert(locationHeader.exists)
-    locationHeader.tap()
     
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
     XCTAssert(countryOfResidenceTextField.exists)
