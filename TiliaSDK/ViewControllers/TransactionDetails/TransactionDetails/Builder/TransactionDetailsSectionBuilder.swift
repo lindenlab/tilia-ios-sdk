@@ -376,7 +376,7 @@ private extension TransactionDetailsSectionBuilder {
       arguments = [model.total.total]
       str = L.youReceived(with: arguments.map { $0 as CVarArg })
     case .payout:
-      arguments = [model.total.total]
+      arguments = [model.total.subTotal ?? ""]
       str = L.payoutOf(with: arguments.map { $0 as CVarArg })
     case .tokenPurchase:
       arguments = [model.userReceivedAmount ?? ""]
