@@ -477,7 +477,11 @@ private extension TransactionTypeModel {
   }
   
   var taxTitle: String {
-    return self == .payout ? L.fees : L.transactionFees
+    switch self {
+    case .payout: return L.fees
+    case .refund: return L.tax
+    default: return L.transactionFees
+    }
   }
   
 }
