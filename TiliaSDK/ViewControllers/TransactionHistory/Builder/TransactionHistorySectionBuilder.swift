@@ -230,7 +230,7 @@ private extension TransactionDetailsModel {
     }
     let value: String
     switch type {
-    case .tokenPurchase where isPoboSourcePaymentMethodProvider:
+    case .tokenPurchase where isPoboSourcePaymentMethodProvider, .tokenConvert:
       value = userReceivedAmount ?? ""
     case .payout:
       value = total.subTotal ?? ""
