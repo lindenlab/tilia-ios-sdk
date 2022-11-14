@@ -187,6 +187,13 @@ private extension TransactionDetailsSectionBuilder {
                                             leftInset: 16,
                                             isDividerHidden: false) }
       }
+      if model.type == .tokenPurchase {
+        items.append(.init(title: L.tokenPurchase,
+                           value: model.total.subTotal ?? model.total.total,
+                           image: nil,
+                           leftInset: 16,
+                           isDividerHidden: false))
+      }
       model.total.subTotal.map {
         items.append(.init(title: model.type.headerSubTotalTitle,
                            value: $0,

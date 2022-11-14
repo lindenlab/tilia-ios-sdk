@@ -176,6 +176,7 @@ enum L {
   static let emailSent = "emailSent".localized
   static let fees = "fees".localized
   static let tax = "tax".localized
+  static let tokenPurchase = "tokenPurchase".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)
