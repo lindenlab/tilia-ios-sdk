@@ -42,6 +42,8 @@ struct TransactionDetailsModel: Decodable {
   private enum TransactionCodingKeys: String, CodingKey {
     case referenceType = "reference_type"
     case referenceId = "reference_id"
+    case originalReferenceType = "original_reference_type"
+    case originalReferenceId = "original_reference_id"
     case lineItems = "line_items"
     case recipientItems = "recipient_items"
     case refundLineItems = "refund_line_items"
@@ -70,8 +72,13 @@ struct TransactionDetailsModel: Decodable {
     
     let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .data)
     
-    referenceType = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType))?.toNilIfEmpty()
-    referenceId = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId))?.toNilIfEmpty()
+    if type == .refund {
+      referenceType = (try transactionContainer.decodeIfPresent(String.self, forKey: .originalReferenceType))?.toNilIfEmpty()
+      referenceId = (try transactionContainer.decodeIfPresent(String.self, forKey: .originalReferenceId))?.toNilIfEmpty()
+    } else {
+      referenceType = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceType))?.toNilIfEmpty()
+      referenceId = (try transactionContainer.decodeIfPresent(String.self, forKey: .referenceId))?.toNilIfEmpty()
+    }
     
     let lineItems = try transactionContainer.decodeIfPresent([String: LineItemModel].self, forKey: .lineItems)
     self.lineItems = lineItems?.values.sorted { $0.sortOrder ?? 0 < $1.sortOrder ?? 0 }
