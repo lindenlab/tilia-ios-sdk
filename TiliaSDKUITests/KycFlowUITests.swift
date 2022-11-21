@@ -30,15 +30,11 @@ final class KycFlowUITests: XCTestCase {
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
-    
-    let locationHeader = app.tables.otherElements["locationHeader"]
-    XCTAssert(locationHeader.exists)
-    locationHeader.tap()
     
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
     XCTAssert(countryOfResidenceTextField.exists)
@@ -153,15 +149,11 @@ final class KycFlowUITests: XCTestCase {
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
-    
-    let locationHeader = app.tables.otherElements["locationHeader"]
-    XCTAssert(locationHeader.exists)
-    locationHeader.tap()
     
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
     XCTAssert(countryOfResidenceTextField.exists)
@@ -304,15 +296,11 @@ final class KycFlowUITests: XCTestCase {
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
     doSmthButton.tap()
-    
-    let locationHeader = app.tables.otherElements["locationHeader"]
-    XCTAssert(locationHeader.exists)
-    locationHeader.tap()
     
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
     XCTAssert(countryOfResidenceTextField.exists)
@@ -408,17 +396,6 @@ final class KycFlowUITests: XCTestCase {
     let backButton = app.navigationBars["KYC flow"].buttons["Demo App"]
     XCTAssert(backButton.exists)
     backButton.tap()
-  }
-  
-}
-
-private extension KycFlowUITests {
-  
-  func scrollUp(app: XCUIApplication, dy: CGFloat) {
-    let visibleCells = app.tables.cells
-    let startCoordinate = visibleCells.element(boundBy: visibleCells.count - 1).coordinate(withNormalizedOffset: .zero)
-    let endCoordinate = startCoordinate.withOffset(CGVector(dx: 0.0, dy: dy))
-    startCoordinate.press(forDuration: 0.1, thenDragTo: endCoordinate)
   }
   
 }

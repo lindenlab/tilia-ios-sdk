@@ -20,7 +20,6 @@ final class TosContentViewController: BaseViewController {
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.textAlignment = .center
     label.text = L.tiliaTos
     label.numberOfLines = 0
     label.font = .boldSystemFont(ofSize: 20)
@@ -81,7 +80,7 @@ private extension TosContentViewController {
   
   func setup() {
     let stackView = UIStackView(arrangedSubviews: [titleLabel, dismissButton])
-    stackView.alignment = .top
+    stackView.alignment = .center
     stackView.distribution = .equalCentering
     stackView.spacing = 4
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +120,7 @@ private extension TosContentViewController {
   }
   
   func showCancelButton() {
-    closeButton.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
+    showCloseButton(target: self, action: #selector(closeButtonDidTap))
   }
   
   @objc func closeButtonDidTap() {

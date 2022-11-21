@@ -12,6 +12,7 @@ enum L {
   static let ok = "ok".localized
   static let tiliaTos = "tiliaTos".localized
   static let accept = "accept".localized
+  static let accepting = "accepting".localized
   static let cancel = "cancel".localized
   static let tos = "tos".localized
   static let privacyPolicy = "privacyPolicy".localized
@@ -38,6 +39,7 @@ enum L {
   static let addCreditCardTitle = "addCreditCardTitle".localized
   static let addCreditCardMessage = "addCreditCardMessage".localized
   static let openBrowser = "openBrowser".localized
+  static let opening = "opening".localized
   static let goBack = "goBack".localized
   static let errorAddCreditTitle = "errorAddCreditTitle".localized
   static let errorAddCreditMessage = "errorAddCreditMessage".localized
@@ -120,10 +122,102 @@ enum L {
   static let verifyingInformation = "verifyingInformation".localized
   static let dottingInformation = "dottingInformation".localized
   static let takingWhile = "takingWhile".localized
-  static let kycInfoSubmitted = "kycInfoSubmitted".localized
   static let underReview = "underReview".localized
   static let underReviewDescription = "underReviewDescription".localized
   static let willBeInTouch = "willBeInTouch".localized
   static let unableToVerifyDescription = "unableToVerifyDescription".localized
+  static let errorTransactionDetailsTitle = "errorTransactionDetailsTitle".localized
+  static let errorTransactionDetailsMessage = "errorTransactionDetailsMessage".localized
+  static let emailReceipt = "emailReceipt".localized
+  static let subtotal = "subtotal".localized
+  static let transactionFees = "transactionFees".localized
+  static let paidWith = "paidWith".localized
+  static let invoiceDetails = "invoiceDetails".localized
+  static let status = "status".localized
+  static let transactionId = "transactionId".localized
+  static let referenceType = "referenceType".localized
+  static let referenceId = "referenceId".localized
+  static let transactionDate = "transactionDate".localized
+  static let transactionTime = "transactionTime".localized
+  static let depositedInto = "depositedInto".localized
+  static let send = "send".localized
+  static let sending = "sending".localized
+  static let emailPlaceholder = "emailPlaceholder".localized
+  static let errorSendReceiptTitle = "errorSendReceiptTitle".localized
+  static let errorSendReceiptMessage = "errorSendReceiptMessage".localized
+  static let accountId = "accountId".localized
+  static let pending = "pending".localized
+  static let processed = "processed".localized
+  static let failed = "failed".localized
+  static let receiptSent = "receiptSent".localized
+  static let errorTransactionHistoryTitle = "errorTransactionHistoryTitle".localized
+  static let errorTransactionHistoryMessage = "errorTransactionHistoryMessage".localized
+  static let payoutTo = "payoutTo".localized
+  static let requested = "requested".localized
+  static let requestDate = "requestDate".localized
+  static let requestTime = "requestTime".localized
+  static let processedDate = "processedDate".localized
+  static let processedTime = "processedTime".localized
+  static let transferredFrom = "transferredFrom".localized
+  static let payoutErrorMessage = "payoutErrorMessage".localized
+  static let completed = "completed".localized
+  static let payout = "payout".localized
+  static let sale = "sale".localized
+  static let purchase = "purchase".localized
+  static let tokensIssued = "tokensIssued".localized
+  static let tokenConvert = "tokenConvert".localized
+  static let refund = "refund".localized
+  static let tiliaFees = "tiliaFees".localized
+  static let publisherFees = "publisherFees".localized
+  static let refundTo = "refundTo".localized
+  static let completedTransactionListIsEmpty = "completedTransactionListIsEmpty".localized
+  static let pendingTransactionListIsEmpty = "pendingTransactionListIsEmpty".localized
+  static let emailSent = "emailSent".localized
+  static let fees = "fees".localized
+  static let tax = "tax".localized
+  static let tokenPurchase = "tokenPurchase".localized
+  
+  static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
+    return "kycInfoSubmitted".localized(with: arguments)
+  }
+  static func todayAt(with arguments: CVarArg...) -> String {
+    return "todayAt".localized(with: arguments)
+  }
+  static func yesterdayAt(with arguments: CVarArg...) -> String {
+    return "yesterdayAt".localized(with: arguments)
+  }
+  static func requestedOn(with argument: CVarArg...) -> String {
+    return "requestedOn".localized(with: argument)
+  }
+  static func requestedTodayAt(with arguments: CVarArg...) -> String {
+    return "requestedTodayAt".localized(with: arguments)
+  }
+  static func requestedYesterdayAt(with arguments: CVarArg...) -> String {
+    return "requestedYesterdayAt".localized(with: arguments)
+  }
+  static func youPaid(with arguments: CVarArg...) -> String {
+    return "youPaid".localized(with: arguments)
+  }
+  static func youReceived(with arguments: CVarArg...) -> String {
+    return "youReceived".localized(with: arguments)
+  }
+  static func payoutOf(with arguments: CVarArg...) -> String {
+    return "payoutOf".localized(with: arguments)
+  }
+  static func youPurchased(with arguments: CVarArg...) -> String {
+    return "youPurchased".localized(with: arguments)
+  }
+  static func convertedTo(with arguments: CVarArg...) -> String {
+    return "convertedTo".localized(with: arguments)
+  }
+  static func total(with arguments: CVarArg...) -> String {
+    return "totalWithArgument".localized(with: arguments)
+  }
+  static func refundOf(with arguments: CVarArg...) -> String {
+    return "refundOf".localized(with: arguments)
+  }
+  static func processedBy(with arguments: CVarArg...) -> String {
+    return "processedBy".localized(with: arguments)
+  }
   
 }

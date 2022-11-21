@@ -1,5 +1,5 @@
 //
-//  CheckoutSuccessfulPaymentCell.swift
+//  ToastViewCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 02.04.2022.
@@ -7,12 +7,11 @@
 
 import UIKit
 
-final class CheckoutSuccessfulPaymentCell: UITableViewCell {
+final class ToastViewCell: UITableViewCell {
   
   private let toastView: ToastView = {
     let view = ToastView(isSuccess: true)
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.configure(title: L.success, message: L.paymentProcessed)
     return view
   }()
   
@@ -25,11 +24,16 @@ final class CheckoutSuccessfulPaymentCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  func configure(isSuccess: Bool, title: String?, message: String?) {
+    toastView.configure(isSuccess: isSuccess)
+    toastView.configure(title: title, message: message)
+  }
+  
 }
 
 // MARK: - Private Methods
 
-private extension CheckoutSuccessfulPaymentCell {
+private extension ToastViewCell {
   
   func setup() {
     backgroundColor = .backgroundColor

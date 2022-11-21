@@ -63,7 +63,6 @@ final class SetColorsTestView: UIView {
 final class SetColorsTestViewController: UIViewController {
   
   let manager: TLManager = TLManager.shared
-  let items: [String] = []
   
   let backgroundColorView: SetColorsTestView = {
     let view = SetColorsTestView()

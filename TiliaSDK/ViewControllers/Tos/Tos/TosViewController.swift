@@ -10,10 +10,6 @@ import Combine
 
 final class TosViewController: BaseViewController {
   
-  override var hideableView: UIView {
-    return stackView
-  }
-  
   private let viewModel: TosViewModelProtocol
   private let router: TosRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
@@ -38,7 +34,7 @@ final class TosViewController: BaseViewController {
   private lazy var messageTextView: TextViewWithLink = {
     let textView = TextViewWithLink()
     textView.linkDelegate = self
-    textView.font = UIFont.systemFont(ofSize: 16)
+    textView.font = .systemFont(ofSize: 16)
     textView.textColor = .primaryTextColor
     textView.linkColor = .primaryColor
     let text = TosAcceptModel.title
@@ -50,6 +46,7 @@ final class TosViewController: BaseViewController {
   private lazy var acceptButton: PrimaryButton = {
     let button = PrimaryButton()
     button.setTitle(L.accept, for: .normal)
+    button.setTitleForLoadingState(L.accepting)
     button.addTarget(self, action: #selector(acceptButtonDidTap), for: .touchUpInside)
     button.isEnabled = acceptSwitch.isOn
     button.accessibilityIdentifier = "acceptButton"
@@ -142,7 +139,9 @@ private extension TosViewController {
   func bind() {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
-      $0 ? self.startLoading() : self.stopLoading()
+      self.acceptButton.isLoading = $0
+      self.acceptSwitch.isUserInteractionEnabled = !$0
+      self.messageTextView.isUserInteractionEnabled = !$0
     }.store(in: &subscriptions)
     
     viewModel.accept.sink { [weak self] in

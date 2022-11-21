@@ -29,7 +29,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textColor = .primaryTextColor
-    label.font = UIFont.systemFont(ofSize: 16)
+    label.font = .systemFont(ofSize: 16)
     return label
   }()
   

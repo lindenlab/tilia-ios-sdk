@@ -35,8 +35,8 @@ final class UserDocumentsSelectDocumentCell: UITableViewCell {
     return label
   }()
   
-  private let addButton: NonPrimaryButtonWithStyle = {
-    let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
+  private let addButton: NonPrimaryButton = {
+    let button = NonPrimaryButton(style: .imageAndTitleCenter)
     button.setTitle(L.addDocument, for: .normal)
     button.setImage(.addIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)

@@ -1,0 +1,33 @@
+{
+  "status": "Success",
+  "message": [],
+  "codes": [],
+  "payload": {
+    "receipt_data": {
+      "template_id": "receipt_buyer_template",
+      "attributes": {
+        "account_id": "5555a15f-8cf2-4cb7-895d-4049777af316",
+        "integrator": "Upland",
+        "invoice_id": "e1e6bb12-8e33-4717-9a6e-3efd6a6cba58",
+        "line_items": [
+          {
+            "amount": "USD 9.99",
+            "description": "10000 UPX"
+          }
+        ],
+        "payment_methods": [
+          {
+            "charged_amount": "USD 9.99",
+            "payment_method": "Visa ending in 1111"
+          }
+        ],
+        "tax_amount": "",
+        "total_amount": "USD 9.99",
+        "transaction_date": "July 12, 2022 09:48:43 UTC",
+        "transaction_number": 4532886,
+        "virtual_amount": "",
+        "virtual_currency": ""
+      }
+    }
+  }
+}

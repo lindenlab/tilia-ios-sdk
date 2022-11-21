@@ -76,7 +76,7 @@ final class TextViewWithLink: UITextView {
   
 }
 
-// MARK: - UITextFieldDelegate
+// MARK: - UITextViewDelegate
 
 extension TextViewWithLink: UITextViewDelegate {
   

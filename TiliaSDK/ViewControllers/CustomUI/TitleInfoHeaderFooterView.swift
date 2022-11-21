@@ -12,7 +12,7 @@ final class TitleInfoHeaderFooterView: UITableViewHeaderFooterView {
   private let titleInfoView: TitleInfoView = {
     let view = TitleInfoView()
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.subTitleTextFont = UIFont.systemFont(ofSize: 14)
+    view.subTitleTextFont = .systemFont(ofSize: 14)
     return view
   }()
   

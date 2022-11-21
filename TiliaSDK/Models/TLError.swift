@@ -34,6 +34,11 @@ public enum TLError: Error {
   ///   - str: string representation of URL
   case urlDoesNotExistForString(String)
   
+  /// Date format is invalid
+  /// - Parameters:
+  ///   - str: string representation of date
+  case invalidDateFormatForString(String)
+  
 }
 
 // MARK: - LocalizedError
@@ -54,6 +59,8 @@ extension TLError: LocalizedError {
       return "User balance does not exist for currency: \(currency)"
     case .urlDoesNotExistForString(let str):
       return "URL does not exist for string: \(str)"
+    case .invalidDateFormatForString(let str):
+      return "Invalid date foramat for string: \(str)"
     }
   }
   

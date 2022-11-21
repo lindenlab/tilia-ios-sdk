@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TosAcceptModel: CaseIterable {
+enum TosAcceptModel: CustomStringConvertible, CaseIterable {
   
   case termsOfService
   case privacyPolicy

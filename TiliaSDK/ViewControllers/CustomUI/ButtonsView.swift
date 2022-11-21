@@ -12,16 +12,16 @@ protocol ButtonsViewDelegate: AnyObject {
   func buttonsViewPrimaryNonButtonDidTap()
 }
 
-final class ButtonsView<Primary: PrimaryButton, NonPrimary: NonPrimaryButton>: UIView {
+final class ButtonsView: UIView {
   
   weak var delegate: ButtonsViewDelegate?
   
-  let primaryButton: Primary
-  let nonPrimaryButton: NonPrimary
+  let primaryButton: PrimaryButton
+  let nonPrimaryButton: NonPrimaryButton
   
   init(frame: CGRect = .zero,
-       primaryButton: Primary,
-       nonPrimaryButton: NonPrimary,
+       primaryButton: PrimaryButton,
+       nonPrimaryButton: NonPrimaryButton,
        insets: UIEdgeInsets = .zero) {
     self.primaryButton = primaryButton
     self.nonPrimaryButton = nonPrimaryButton
@@ -31,14 +31,6 @@ final class ButtonsView<Primary: PrimaryButton, NonPrimary: NonPrimaryButton>: U
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-  
-  @objc private func primaryButtonDidTap() {
-    delegate?.buttonsViewPrimaryButtonDidTap()
-  }
-  
-  @objc private func nonPrimaryButtonDidTap() {
-    delegate?.buttonsViewPrimaryNonButtonDidTap()
   }
   
 }
@@ -65,6 +57,14 @@ private extension ButtonsView {
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
       stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -insets.right)
     ])
+  }
+  
+  @objc func primaryButtonDidTap() {
+    delegate?.buttonsViewPrimaryButtonDidTap()
+  }
+  
+  @objc func nonPrimaryButtonDidTap() {
+    delegate?.buttonsViewPrimaryNonButtonDidTap()
   }
   
 }

@@ -18,6 +18,7 @@ final class UserBalanceByCurrencyTestViewController: TestViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    currencyTextField.delegate = self
     button.setTitle("Run getUserBalanceByCurrency", for: .normal)
     stackView.insertArrangedSubview(currencyTextField, at: 1)
   }

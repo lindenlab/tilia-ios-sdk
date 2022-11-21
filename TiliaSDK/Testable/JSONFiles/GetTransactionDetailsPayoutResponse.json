@@ -1,0 +1,41 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "transaction_id": "dd7ebd41-9eb5-4880-8285-18ac1d0a9df1",
+        "transaction_id_type": "invoicing.payout_status.id",
+        "transaction_type": "payout",
+        "transaction_role": "user",
+        "transaction_status": "processed",
+        "account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+        "transaction_data": {
+            "payout_amount_less_fee": 285,
+            "payout_amount_less_fee_display": "USD 2.85",
+            "payout_fee": 15,
+            "payout_fee_display": "USD 0.15",
+            "payout_total": 300,
+            "payout_total_display": "USD 3.00",
+            "source_payment_method_id": "7a0c79cd-276d-4d83-b2c3-096924e47dee",
+            "source_payment_method_display_string": "Default USD Wallet",
+            "destination_payment_method_id": "b60d9fd4-81c1-4452-b082-7f3fecabc873",
+            "destination_payment_method_display_string": "Paypal Account qa@lindenlab.com",
+            "payout": {
+                "payout_status_key": "24452",
+                "id": "dd7ebd41-9eb5-4880-8285-18ac1d0a9df1",
+                "credit_id": "c5bcc10b-d315-43a2-b38b-2b5afefc002a",
+                "account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+                "escrow_invoice_id": "d3774d01-334b-4c16-b7eb-8bfe3bb8932f",
+                "credit_invoice_id": "16e3272c-5757-4eae-9620-cee26e99b5fd",
+                "reverse_invoice_id": "",
+                "status": "SUCCESS",
+                "token_exchange_invoice_id": "",
+                "balance_transfer_id": "",
+                "created": "2022-09-06T20:55:15Z",
+                "updated": "2022-09-06T20:55:15Z"
+            }
+        },
+        "transaction_date": "2022-09-06T20:55:15Z",
+        "transaction_description": "Line item 1"
+    }
+}

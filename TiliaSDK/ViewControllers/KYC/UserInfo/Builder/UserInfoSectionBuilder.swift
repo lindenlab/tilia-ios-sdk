@@ -51,15 +51,8 @@ struct UserInfoSectionBuilder {
       
       var defaultMode: UserInfoHeaderView.Mode {
         switch self {
-        case .location: return .normal
+        case .location: return .expanded
         default: return .disabled
-        }
-      }
-      
-      var accessibilityIdentifier: String? {
-        switch self {
-        case .location: return "locationHeader"
-        default: return nil
         }
       }
     }
@@ -246,7 +239,6 @@ struct UserInfoSectionBuilder {
     view.configure(title: section.type.headerTitle,
                    delegate: delegate)
     view.configure(mode: mode, animated: false)
-    view.accessibilityIdentifier = section.type.accessibilityIdentifier
     view.isUserInteractionEnabled = !isUploading
     return view
   }
@@ -304,7 +296,7 @@ struct UserInfoSectionBuilder {
       return Section(type: $0,
                      mode: $0.defaultMode,
                      isFilled: false,
-                     items: [])
+                     items: defaultItems(for: $0))
     }
   }
   
@@ -320,7 +312,7 @@ struct UserInfoSectionBuilder {
   
   func failedSection() -> Section {
     return .init(type: .failed,
-                 items: [.init(mode: .image(.emailIcon))])
+                 items: [.init(mode: .image(.openEnvelopeIcon))])
   }
   
   func successSection() -> Section {
@@ -527,12 +519,19 @@ private extension UserInfoSectionBuilder {
                    items: [])
   }
   
-  func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {
+  func defaultItems(for type: Section.SectionType) -> [Section.Item] {
+    switch type {
+    case .location: return itemsForLocationSection(with: nil)
+    default: return []
+    }
+  }
+  
+  func itemsForLocationSection(with model: UserInfoModel?) -> [Section.Item] {
     let countries = CountryModel.countryNames
-    let selectedIndex = countries.firstIndex { $0 == model.countryOfResidence?.name }
+    let selectedIndex = countries.firstIndex { $0 == model?.countryOfResidence?.name }
     let countryOfResidenceField = Section.Item.Mode.Fields(type: .countryOfResidance,
                                                            fields: [.init(placeholder: L.selectCountry,
-                                                                          text: model.countryOfResidence?.name,
+                                                                          text: model?.countryOfResidence?.name,
                                                                           accessibilityIdentifier: "countryOfResidenceTextField")],
                                                            inputMode: .picker(items: countries,
                                                                               selectedIndex: selectedIndex))

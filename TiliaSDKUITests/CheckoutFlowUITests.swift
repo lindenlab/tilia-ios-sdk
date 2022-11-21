@@ -35,7 +35,7 @@ final class CheckoutFlowUITests: XCTestCase {
     invoiceIdTextField.tap()
     invoiceIdTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
@@ -88,7 +88,7 @@ final class CheckoutFlowUITests: XCTestCase {
     invoiceIdTextField.tap()
     invoiceIdTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
@@ -133,7 +133,7 @@ final class CheckoutFlowUITests: XCTestCase {
     invoiceIdTextField.tap()
     invoiceIdTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)
@@ -170,7 +170,7 @@ final class CheckoutFlowUITests: XCTestCase {
     invoiceIdTextField.tap()
     invoiceIdTextField.typeText(UUID().uuidString)
     
-    app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.tap()
+    closeKeyboard(app: app)
     
     let doSmthButton = app.buttons["doSmthButton"]
     XCTAssert(doSmthButton.exists)

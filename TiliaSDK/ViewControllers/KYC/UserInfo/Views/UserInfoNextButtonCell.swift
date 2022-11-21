@@ -15,8 +15,8 @@ final class UserInfoNextButtonCell: UITableViewCell {
   
   private weak var delegate: UserInfoNextButtonCellDelegate?
   
-  private let button: NonPrimaryButtonWithStyle = {
-    let button = NonPrimaryButtonWithStyle(style: .titleAndImageCenter)
+  private let button: NonPrimaryButton = {
+    let button = NonPrimaryButton(style: .titleAndImageCenter)
     button.setTitle(L.next,
                     for: .normal)
     button.setImage(.arrowRightIcon?.withRenderingMode(.alwaysTemplate),
