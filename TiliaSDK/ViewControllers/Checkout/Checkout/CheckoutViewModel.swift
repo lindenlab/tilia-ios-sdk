@@ -75,7 +75,8 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let authorizedInvoiceId: String
   private var invoiceId: String?
-  private var balance: BalanceInfoModel?
+  private var walletBalance: BalanceModel?
+  private var paymentMethods: [CheckoutPaymentMethodModel] = []
   private var invoiceInfo: InvoiceInfoModel?
   private var isEscrow: Bool?
   private var isVirtual: Bool?
@@ -153,6 +154,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   func selectWallet(index: Int, isSelected: Bool) {
     selectedWalletIndex = isSelected ? index : nil
     selectedPaymentMethodIndex = nil
+    // TODO: - Fix me
   }
   
   func selectPaymentMethod(at index: Int) {
@@ -199,7 +201,8 @@ private extension CheckoutViewModel {
       if let balance = balance, let invoiceDetails = invoiceDetails {
         self.isEscrow = invoiceDetails.isEscrow
         self.isVirtual = invoiceDetails.isVirtual
-        self.balance = balance
+        self.walletBalance = balance.balances[invoiceDetails.info.currency]?.spendable
+        self.paymentMethods = balance.paymentMethods
         if invoiceDetails.isVirtual {
           self.createVirtualInvoice()
         } else {
@@ -235,7 +238,17 @@ private extension CheckoutViewModel {
     guard let isEscrow = isEscrow else { return }
     createInvoiceLoading.send(true)
     payButtonIsEnabled.send(false)
-    var paymentMethods: [CheckoutPaymentMethodModel] = [] // TODO: - Fix me
+    var paymentMethods: [CheckoutPaymentMethodModel] = []
+    if let index = selectedWalletIndex, let walletBalance = walletBalance {
+      var model = self.paymentMethods[index]
+      model.amount = walletBalance.balance
+      paymentMethods.append(model)
+    }
+    if let index = selectedPaymentMethodIndex {
+      var model = self.paymentMethods[index]
+      model.amount = selectedWalletIndex == nil ? nil : 0
+      paymentMethods.append(model)
+    }
     manager.createInvoice(withId: authorizedInvoiceId, isEscrow: isEscrow, paymentMethods: paymentMethods) { [weak self] result in
       guard let self = self else { return }
       self.createInvoiceLoading.send(false)
@@ -262,7 +275,7 @@ private extension CheckoutViewModel {
       guard let self = self else { return }
       switch result {
       case .success(let model):
-        self.balance = model
+        self.paymentMethods = model.paymentMethods
         self.setContent()
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
@@ -283,10 +296,9 @@ private extension CheckoutViewModel {
   func setContent() {
     guard
       let invoiceInfo = invoiceInfo,
-      let balance = balance,
       let isVirtual = isVirtual,
-      let walletBalance = balance.balances[invoiceInfo.currency]?.spendable else { return }
-    content.send((invoiceInfo, walletBalance, balance.paymentMethods, isVirtual))
+      let walletBalance = walletBalance else { return }
+    content.send((invoiceInfo, walletBalance, paymentMethods, isVirtual))
   }
   
 }
