@@ -35,6 +35,7 @@ struct CheckoutSectionBuilder {
         let title: String
         let isWallet: Bool
         var isSelected: Bool
+        let isEnabled: Bool
         let icon: UIImage?
         let isDividerHidden: Bool
       }
@@ -43,7 +44,6 @@ struct CheckoutSectionBuilder {
       var isPayButtonEnabled: Bool
       let payButtonTitle: String
       let isCreditCardButtonHidden: Bool
-      let canSelect: Bool
       var isEmpty: Bool { return items.isEmpty }
     }
     
@@ -95,7 +95,7 @@ struct CheckoutSectionBuilder {
       } else {
         let newCell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
         newCell.configure(title: item.title,
-                          canSelect: model.canSelect,
+                          isEnabled: item.isEnabled,
                           isDividerHidden: item.isDividerHidden,
                           icon: item.icon,
                           delegate: delegate)
@@ -177,28 +177,28 @@ struct CheckoutSectionBuilder {
         .init(title: walletBalance.display,
               isWallet: true,
               isSelected: true,
+              isEnabled: false,
               icon: .walletIcon,
               isDividerHidden: true)
       ]
       payment = .init(items: items,
                       isPayButtonEnabled: true,
                       payButtonTitle: L.pay,
-                      isCreditCardButtonHidden: true,
-                      canSelect: false)
+                      isCreditCardButtonHidden: true)
     } else {
       let count = paymentMethods.count
       let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
         return .init(title: value.type.isWallet ? walletBalance.display : value.display,
                      isWallet: value.type.isWallet,
                      isSelected: false,
+                     isEnabled: true,
                      icon: value.type.icon,
                      isDividerHidden: index == count - 1)
       }
       payment = .init(items: items,
                       isPayButtonEnabled: false,
                       payButtonTitle: L.usePaymentMethods,
-                      isCreditCardButtonHidden: false,
-                      canSelect: true)
+                      isCreditCardButtonHidden: false)
     }
     
     return [.summary(summary), .payment(payment)]

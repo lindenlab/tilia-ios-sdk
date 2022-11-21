@@ -49,12 +49,12 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
   }
   
   func configure(title: String,
-                 canSelect: Bool,
+                 isEnabled: Bool,
                  isDividerHidden: Bool,
                  icon: UIImage?,
                  delegate: CheckoutPaymentMethodCellDelegate?) {
     titleLabel.text = title
-    radioButton.isEnabled = canSelect
+    radioButton.isEnabled = isEnabled
     self.delegate = delegate
     divider.isHidden = isDividerHidden
     iconImageView.image = icon

@@ -152,6 +152,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   
   func selectWallet(index: Int, isSelected: Bool) {
     selectedWalletIndex = isSelected ? index : nil
+    selectedPaymentMethodIndex = nil
   }
   
   func selectPaymentMethod(at index: Int) {
