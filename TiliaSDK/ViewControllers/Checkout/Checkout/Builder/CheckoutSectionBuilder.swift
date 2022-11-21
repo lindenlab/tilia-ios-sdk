@@ -87,7 +87,8 @@ struct CheckoutSectionBuilder {
       let cell: UITableViewCell
       if item.isWallet {
         let newCell = tableView.dequeue(CheckoutWalletCell.self, for: indexPath)
-        newCell.configure(value: item.title,
+        newCell.configure(image: item.icon,
+                          title: item.title,
                           isDividerHidden: item.isDividerHidden,
                           delegate: delegate)
         newCell.configure(isOn: item.isSelected)
@@ -189,7 +190,7 @@ struct CheckoutSectionBuilder {
     } else {
       let count = paymentMethods.count
       let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
-        return .init(title: value.type.isWallet ? walletBalance.display : value.display,
+        return .init(title: value.type.isWallet ? L.useYourBalance(with: walletBalance.display) : value.display,
                      isWallet: value.type.isWallet,
                      isSelected: false,
                      isEnabled: true,

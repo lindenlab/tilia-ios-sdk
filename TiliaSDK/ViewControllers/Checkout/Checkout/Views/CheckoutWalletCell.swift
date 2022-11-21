@@ -15,11 +15,16 @@ final class CheckoutWalletCell: UITableViewCell {
   
   private weak var delegate: CheckoutWalletCellDelegate?
   
+  private let iconImageView: UIImageView = {
+    let imageView = UIImageView()
+    return imageView
+  }()
+  
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textColor = .primaryTextColor
-    label.text = "Here will be text"
-    label.font = UIFont.systemFont(ofSize: 16)
+    label.font = .systemFont(ofSize: 16)
+    label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
     return label
   }()
   
@@ -43,9 +48,12 @@ final class CheckoutWalletCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(value: String,
+  func configure(image: UIImage?,
+                 title: String,
                  isDividerHidden: Bool,
                  delegate: CheckoutWalletCellDelegate?) {
+    iconImageView.image = image
+    titleLabel.text = title
     divider.isHidden = isDividerHidden
     self.delegate = delegate
   }
@@ -69,7 +77,11 @@ private extension CheckoutWalletCell {
     backgroundColor = .backgroundColor
     contentView.backgroundColor = .backgroundColor
     
-    let stackView = UIStackView(arrangedSubviews: [titleLabel, uiSwitch])
+    let leadingStackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
+    leadingStackView.alignment = .center
+    leadingStackView.spacing = 16
+    
+    let stackView = UIStackView(arrangedSubviews: [leadingStackView, uiSwitch])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.spacing = 5
     stackView.distribution = .equalSpacing

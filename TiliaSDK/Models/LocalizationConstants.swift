@@ -219,5 +219,8 @@ enum L {
   static func processedBy(with arguments: CVarArg...) -> String {
     return "processedBy".localized(with: arguments)
   }
+  static func useYourBalance(with arguments: CVarArg...) -> String {
+    return "useYourBalance".localized(with: arguments)
+  }
   
 }
