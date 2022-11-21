@@ -79,7 +79,7 @@ private extension CheckoutWalletCell {
     
     let leadingStackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
     leadingStackView.alignment = .center
-    leadingStackView.spacing = 16
+    leadingStackView.spacing = 8
     
     let stackView = UIStackView(arrangedSubviews: [leadingStackView, uiSwitch])
     stackView.translatesAutoresizingMaskIntoConstraints = false

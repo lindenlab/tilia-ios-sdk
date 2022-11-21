@@ -13,12 +13,14 @@ struct InvoiceInfoModel: Decodable {
   let referenceType: String
   let referenceId: String
   let displayAmount: String
+  let amount: Double
   let items: [LineItemModel]
   
   private enum RootCodingKeys: String, CodingKey {
     case referenceType = "reference_type"
     case referenceId = "reference_id"
     case displayAmount = "display_amount"
+    case amount = "line_items_total"
     case currency = "line_items_currency"
     case items = "line_items"
     case summary
@@ -27,6 +29,7 @@ struct InvoiceInfoModel: Decodable {
   private enum SummaryCodingKeys: String, CodingKey {
     case currency
     case displayAmount = "display_amount"
+    case amount = "total_amount"
   }
   
   init(from decoder: Decoder) throws {
@@ -46,9 +49,11 @@ struct InvoiceInfoModel: Decodable {
       let summaryContainer = try container.nestedContainer(keyedBy: SummaryCodingKeys.self, forKey: .summary)
       currency = try summaryContainer.decode(String.self, forKey: .currency)
       displayAmount = try summaryContainer.decode(String.self, forKey: .displayAmount)
+      amount = try summaryContainer.decode(Double.self, forKey: .amount)
     } else {
       currency = try container.decode(String.self, forKey: .currency)
       displayAmount = try container.decode(String.self, forKey: .displayAmount)
+      amount = try container.decode(Double.self, forKey: .amount)
     }
   }
   
