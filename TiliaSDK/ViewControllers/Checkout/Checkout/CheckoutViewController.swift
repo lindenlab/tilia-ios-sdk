@@ -119,7 +119,8 @@ extension CheckoutViewController: TextViewWithLinkDelegate {
 extension CheckoutViewController: CheckoutWalletCellDelegate {
   
   func checkoutWalletCell(_ cell: CheckoutWalletCell, didSelectIsWalletOn isOn: Bool) {
-    
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    viewModel.selectWallet(index: indexPath.row, isSelected: isOn)
   }
   
 }

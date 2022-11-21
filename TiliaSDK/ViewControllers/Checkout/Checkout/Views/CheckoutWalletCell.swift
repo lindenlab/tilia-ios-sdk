@@ -44,12 +44,14 @@ final class CheckoutWalletCell: UITableViewCell {
   }
   
   func configure(value: String,
-                 isOn: Bool,
                  isDividerHidden: Bool,
                  delegate: CheckoutWalletCellDelegate?) {
-    uiSwitch.isOn = isOn
     divider.isHidden = isDividerHidden
     self.delegate = delegate
+  }
+  
+  func configure(isOn: Bool) {
+    uiSwitch.isOn = isOn
   }
   
 }

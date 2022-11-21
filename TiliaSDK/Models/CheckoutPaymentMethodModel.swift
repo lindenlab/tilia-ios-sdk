@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CheckoutPaymentMethodModel: Codable, Equatable {
+struct CheckoutPaymentMethodModel: Codable, Equatable, Hashable {
   
   let id: String
   let display: String

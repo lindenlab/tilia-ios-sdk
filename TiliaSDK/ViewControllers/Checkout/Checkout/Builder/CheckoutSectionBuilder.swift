@@ -88,9 +88,9 @@ struct CheckoutSectionBuilder {
       if item.isWallet {
         let newCell = tableView.dequeue(CheckoutWalletCell.self, for: indexPath)
         newCell.configure(value: item.title,
-                          isOn: item.isSelected,
                           isDividerHidden: item.isDividerHidden,
                           delegate: delegate)
+        newCell.configure(isOn: item.isSelected)
         cell = newCell
       } else {
         let newCell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
@@ -241,8 +241,12 @@ struct CheckoutSectionBuilder {
     switch section[1] {
     case var .payment(model):
       model.items[index].isSelected = isSelected
-      if let cell = tableView.cellForRow(at: .init(row: index, section: 1)) as? CheckoutPaymentMethodCell, !isSelected {
+      let indexPath = IndexPath(row: index, section: 1)
+      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell, !isSelected {
         cell.configure(isSelected: isSelected)
+      }
+      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutWalletCell, !isSelected {
+        cell.configure(isOn: isSelected)
       }
       section[1] = .payment(model)
     default:
