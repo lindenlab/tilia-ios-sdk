@@ -64,7 +64,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     titleLabel.text = title
     subTitleLabel.text = subTitle
     subTitleLabel.isHidden = subTitle == nil
-    radioButton.isUserInteractionEnabled = canSelect
+    radioButton.isEnabled = canSelect
     self.delegate = delegate
     divider.isHidden = isDividerHidden
     iconImageView.image = icon
