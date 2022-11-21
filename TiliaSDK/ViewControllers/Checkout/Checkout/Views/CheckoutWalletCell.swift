@@ -54,6 +54,10 @@ final class CheckoutWalletCell: UITableViewCell {
     uiSwitch.isOn = isOn
   }
   
+  func configure(isEnabled: Bool) {
+    uiSwitch.isEnabled = isEnabled
+  }
+  
 }
 
 private extension CheckoutWalletCell {

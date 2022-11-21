@@ -91,15 +91,16 @@ struct CheckoutSectionBuilder {
                           isDividerHidden: item.isDividerHidden,
                           delegate: delegate)
         newCell.configure(isOn: item.isSelected)
+        newCell.configure(isEnabled: item.isEnabled)
         cell = newCell
       } else {
         let newCell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
         newCell.configure(title: item.title,
-                          isEnabled: item.isEnabled,
                           isDividerHidden: item.isDividerHidden,
                           icon: item.icon,
                           delegate: delegate)
         newCell.configure(isSelected: item.isSelected)
+        newCell.configure(isEnabled: item.isEnabled)
         cell = newCell
       }
       cell.isUserInteractionEnabled = !isLoading
