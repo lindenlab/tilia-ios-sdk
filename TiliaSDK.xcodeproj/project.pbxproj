@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
+		D10E5CB8292B929700ECECD9 /* CheckoutWalletCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E5CB7292B929700ECECD9 /* CheckoutWalletCell.swift */; };
+		D10E5CBA292B93CD00ECECD9 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10E5CB9292B93CD00ECECD9 /* Switch.swift */; };
 		D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */; };
 		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
 		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
@@ -196,6 +198,8 @@
 		17015F9D98A8CC831972F763 /* Pods-TiliaSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.debug.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		67A0E480FF265BAE1A0957EA /* Pods-TiliaSDK.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.cicd.xcconfig"; sourceTree = "<group>"; };
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
+		D10E5CB7292B929700ECECD9 /* CheckoutWalletCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutWalletCell.swift; sourceTree = "<group>"; };
+		D10E5CB9292B93CD00ECECD9 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidator.swift; sourceTree = "<group>"; };
 		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
 		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
@@ -484,6 +488,7 @@
 				D15BA9F0282A9B9500511785 /* ThreeTextFieldsCell.swift */,
 				D1E8F8FA28297AD00037EA8F /* LabelCell.swift */,
 				D126AF1E2875F99C00CAC5F2 /* SVGImage.swift */,
+				D10E5CB9292B93CD00ECECD9 /* Switch.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -816,6 +821,7 @@
 				D1C8A84B27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift */,
 				D1D5B53F27F7654500E04EE1 /* CheckoutPaymentMethodCell.swift */,
 				D124DA1627F7A99600A75DF8 /* CheckoutSuccessfulPaymentCell.swift */,
+				D10E5CB7292B929700ECECD9 /* CheckoutWalletCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1139,6 +1145,7 @@
 				D1B80AA72865A1E500E1C9BD /* RedirectUrlModel.swift in Sources */,
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
+				D10E5CBA292B93CD00ECECD9 /* Switch.swift in Sources */,
 				D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */,
 				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
 				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,
@@ -1148,6 +1155,7 @@
 				D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */,
 				D16D56A7282593D20088FB3D /* PrimaryButtonWithStyle.swift in Sources */,
 				D1CCE8BE27F38BF200FD0E25 /* UIColor+Colors.swift in Sources */,
+				D10E5CB8292B929700ECECD9 /* CheckoutWalletCell.swift in Sources */,
 				D154AD472811E313003976CB /* AddCreditCardRouter.swift in Sources */,
 				D1C8A83827F4F84A00BF2910 /* CheckoutPayloadSummaryFooterView.swift in Sources */,
 				D15BA9F3282AABF900511785 /* Date+Helpers.swift in Sources */,

@@ -9,7 +9,7 @@ import UIKit
 
 struct CheckoutSectionBuilder {
   
-  typealias CellDelegate = CheckoutPaymentMethodCellDelegate
+  typealias CellDelegate = CheckoutWalletCellDelegate & CheckoutPaymentMethodCellDelegate
   typealias FooterDelegate = CheckoutPaymentFooterViewDelegate & TextViewWithLinkDelegate
   
   enum Section {
@@ -33,7 +33,7 @@ struct CheckoutSectionBuilder {
       
       struct Item {
         let title: String
-        let subTitle: String?
+        let isWallet: Bool
         var isSelected: Bool
         let icon: UIImage?
       }
@@ -83,16 +83,24 @@ struct CheckoutSectionBuilder {
       return cell
     case let .payment(model):
       let item = model.items[indexPath.row]
-      let cell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
       let lastItemIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
-      cell.configure(title: item.title,
-                     subTitle: item.subTitle,
-                     canSelect: model.canSelect,
-                     isDividerHidden: lastItemIndex == indexPath.row,
-                     icon: item.icon,
-                     delegate: delegate)
-      cell.configure(isSelected: item.isSelected)
-      return cell
+      if item.isWallet {
+        let cell = tableView.dequeue(CheckoutWalletCell.self, for: indexPath)
+        cell.configure(value: item.title,
+                       isOn: item.isSelected,
+                       isDividerHidden: lastItemIndex == indexPath.row,
+                       delegate: delegate)
+        return cell
+      } else {
+        let cell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
+        cell.configure(title: item.title,
+                       canSelect: model.canSelect,
+                       isDividerHidden: lastItemIndex == indexPath.row,
+                       icon: item.icon,
+                       delegate: delegate)
+        cell.configure(isSelected: item.isSelected)
+        return cell
+      }
     case .successfulPayment:
       return tableView.dequeue(CheckoutSuccessfulPaymentCell.self, for: indexPath)
     }
@@ -158,8 +166,8 @@ struct CheckoutSectionBuilder {
     let payment: Section.Payment
     if model.isVirtual {
       let items: [Section.Payment.Item] = [
-        .init(title: L.walletBalance,
-              subTitle: walletBalance?.display,
+        .init(title: walletBalance.display,
+              isWallet: true,
               isSelected: true,
               icon: .walletIcon)
       ]
@@ -170,8 +178,8 @@ struct CheckoutSectionBuilder {
                       canSelect: false)
     } else {
       let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
-        return .init(title: value.type.isWallet ? L.walletBalance : value.display,
-                     subTitle: value.type.isWallet ? walletBalance?.display : nil,
+        return .init(title: value.type.isWallet ? walletBalance.display : value.display,
+                     isWallet: value.type.isWallet,
                      isSelected: false,
                      icon: value.type.icon)
       }
@@ -223,7 +231,7 @@ struct CheckoutSectionBuilder {
     switch section {
     case var .payment(model):
       model.items[indexPath.row].isSelected = isSelected
-      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell {
+      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell, !isSelected {
         cell.configure(isSelected: isSelected)
       }
       return .payment(model)

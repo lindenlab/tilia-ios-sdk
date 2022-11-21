@@ -112,6 +112,16 @@ extension CheckoutViewController: TextViewWithLinkDelegate {
   
 }
 
+// MARK: - CheckoutWalletCellDelegate
+
+extension CheckoutViewController: CheckoutWalletCellDelegate {
+  
+  func checkoutWalletCell(_ cell: CheckoutWalletCell, didSelectIsWalletOn isOn: Bool) {
+    
+  }
+  
+}
+
 // MARK: - CheckoutPaymentMethodCellDelegate
 
 extension CheckoutViewController: CheckoutPaymentMethodCellDelegate {
@@ -134,6 +144,7 @@ private extension CheckoutViewController {
     tableView.register(CheckoutPaymentFooterView.self)
     tableView.register(CheckoutPaymentMethodCell.self)
     tableView.register(CheckoutSuccessfulPaymentCell.self)
+    tableView.register(CheckoutWalletCell.self)
   }
   
   func bind() {

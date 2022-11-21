@@ -19,7 +19,6 @@ enum L {
   static let transactionSummary = "transactionSummary".localized
   static let total = "total".localized
   static let choosePaymentMethod = "choosePaymentMethod".localized
-  static let walletBalance = "walletBalance".localized
   static let pay = "pay".localized
   static let usePaymentMethods = "usePaymentMethods".localized
   static let done = "done".localized

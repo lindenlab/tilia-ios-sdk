@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-typealias CheckoutContent = (invoiceInfo: InvoiceInfoModel, walletBalance: BalanceModel?, paymentMethods: [PaymentMethodModel], isVirtual: Bool)
+typealias CheckoutContent = (invoiceInfo: InvoiceInfoModel, walletBalance: BalanceModel, paymentMethods: [PaymentMethodModel], isVirtual: Bool)
 typealias CheckoutError = (error: Error, needToShowCancelButton: Bool)
 
 protocol CheckoutViewModelInputProtocol {
@@ -271,8 +271,8 @@ private extension CheckoutViewModel {
     guard
       let invoiceInfo = invoiceInfo,
       let balance = balance,
-      let isVirtual = isVirtual else { return }
-    let walletBalance = balance.balances[invoiceInfo.currency]?.spendable
+      let isVirtual = isVirtual,
+      let walletBalance = balance.balances[invoiceInfo.currency]?.spendable else { return }
     content.send((invoiceInfo, walletBalance, balance.paymentMethods, isVirtual))
   }
   
