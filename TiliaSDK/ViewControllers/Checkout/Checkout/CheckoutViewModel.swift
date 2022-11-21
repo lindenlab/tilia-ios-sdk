@@ -24,7 +24,7 @@ protocol CheckoutViewModelOutputProtocol {
   var content: PassthroughSubject<CheckoutContent, Never> { get }
   var successfulPayment: CurrentValueSubject<Bool, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
-  var createInvoiceLoading: PassthroughSubject<Bool, Never> { get }
+  var createInvoiceLoading: CurrentValueSubject<Bool, Never> { get }
   var payButtonIsEnabled: PassthroughSubject<Bool, Never> { get }
   var deselectIndex: PassthroughSubject<Int, Never> { get }
   var selectIndex: PassthroughSubject<Int, Never> { get }
@@ -48,7 +48,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   let content = PassthroughSubject<CheckoutContent, Never>()
   let successfulPayment = CurrentValueSubject<Bool, Never>(false)
   let dismiss = PassthroughSubject<Void, Never>()
-  let createInvoiceLoading = PassthroughSubject<Bool, Never>()
+  let createInvoiceLoading = CurrentValueSubject<Bool, Never>(false)
   let payButtonIsEnabled = PassthroughSubject<Bool, Never>()
   let deselectIndex = PassthroughSubject<Int, Never>()
   let selectIndex = PassthroughSubject<Int, Never>()

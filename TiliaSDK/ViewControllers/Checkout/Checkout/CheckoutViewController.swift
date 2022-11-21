@@ -64,7 +64,8 @@ final class CheckoutViewController: BaseTableViewController {
     return builder.cell(for: sections[indexPath.section],
                         in: tableView,
                         at: indexPath,
-                        delegate: self)
+                        delegate: self,
+                        isLoading: viewModel.createInvoiceLoading.value)
   }
   
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -75,7 +76,8 @@ final class CheckoutViewController: BaseTableViewController {
   override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections[section],
                           in: tableView,
-                          delegate: self)
+                          delegate: self,
+                          isLoading: viewModel.createInvoiceLoading.value)
   }
   
   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -174,9 +176,9 @@ private extension CheckoutViewController {
     
     viewModel.successfulPayment.sink { [weak self] in
       guard let self = self, $0 else { return }
-      self.sections[1] = self.builder.successfulPaymentSection()
+      let reloadSections = self.builder.updateSectionsWithSuccessfulPayment(&self.sections)
       UIView.performWithoutAnimation {
-        self.tableView.reloadSections([1], with: .none)
+        self.tableView.reloadSections(reloadSections, with: .none)
       }
     }.store(in: &subscriptions)
     
@@ -186,44 +188,40 @@ private extension CheckoutViewController {
     
     viewModel.createInvoiceLoading.sink { [weak self] in
       guard let self = self else { return }
-      self.sections[0] = self.builder.updatedSummarySection(for: self.sections[0],
-                                                            in: self.tableView,
-                                                            at: 0,
-                                                            isLoading: $0)
+      self.builder.updateSections(self.sections,
+                                  in: self.tableView,
+                                  isLoading: $0)
     }.store(in: &subscriptions)
     
     viewModel.payButtonIsEnabled.sink { [weak self] in
       guard let self = self else { return }
-      self.sections[1] = self.builder.updatedPaymentSection(for: self.sections[1],
-                                                            in: self.tableView,
-                                                            at: 1,
-                                                            isPayButtonEnabled: $0)
+      self.builder.updatePaymentSection(for: &self.sections,
+                                        in: self.tableView,
+                                        isPayButtonEnabled: $0)
     }.store(in: &subscriptions)
     
     viewModel.deselectIndex.sink { [weak self] in
       guard let self = self else { return }
-      let indexPath = IndexPath(row: $0, section: 1)
-      self.sections[1] = self.builder.updatedPaymentSection(for: self.sections[1],
-                                                            in: self.tableView,
-                                                            at: indexPath,
-                                                            isSelected: false)
+      self.builder.updatePaymentSection(for: &self.sections,
+                                        in: self.tableView,
+                                        at: $0,
+                                        isSelected: false)
     }.store(in: &subscriptions)
     
     viewModel.selectIndex.sink { [weak self] in
       guard let self = self else { return }
-      let indexPath = IndexPath(row: $0, section: 1)
-      self.sections[1] = self.builder.updatedPaymentSection(for: self.sections[1],
-                                                            in: self.tableView,
-                                                            at: indexPath,
-                                                            isSelected: true)
+      self.builder.updatePaymentSection(for: &self.sections,
+                                        in: self.tableView,
+                                        at: $0,
+                                        isSelected: true)
     }.store(in: &subscriptions)
     
     viewModel.updateSummary.sink { [weak self] in
       guard let self = self else { return }
-      self.sections[0] = self.builder.updatedSummarySection(for: self.sections[0],
-                                                            model: $0)
+      let reloadSections = self.builder.updateSummarySection(for: &self.sections,
+                                                             model: $0)
       UIView.performWithoutAnimation {
-        self.tableView.reloadSections([0], with: .none)
+        self.tableView.reloadSections(reloadSections, with: .none)
       }
     }.store(in: &subscriptions)
   }
