@@ -252,7 +252,7 @@ private extension CheckoutViewModel {
     var paymentMethods: [CheckoutPaymentMethodModel] = []
     if let index = selectedWalletIndex, let walletBalance = walletBalance {
       var model = self.paymentMethods[index]
-      model.amount = walletBalance.balance
+      model.amount = selectedPaymentMethodIndex == nil ? nil : walletBalance.balance
       paymentMethods.append(model)
     }
     if let index = selectedPaymentMethodIndex {
