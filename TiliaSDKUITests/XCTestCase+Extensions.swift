@@ -35,4 +35,8 @@ extension XCTestCase {
     returnButton.tap()
   }
   
+  func wait(duration: TimeInterval) {
+    let _ = XCTWaiter.wait(for: [XCTestExpectation()], timeout: duration)
+  }
+  
 }

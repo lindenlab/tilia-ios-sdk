@@ -49,7 +49,7 @@ final class TransactionDetailsFlowUITests: XCTestCase {
     XCTAssert(acceptButton.waitForExistence(timeout: 2))
     acceptButton.tap()
     
-    let _ = XCTWaiter.wait(for: [XCTestExpectation()], timeout: 2)
+    wait(duration: 2)
     scrollUp(app: app, dy: -400)
     
     let emailReceiptButton = app.buttons["emailReceiptButton"]

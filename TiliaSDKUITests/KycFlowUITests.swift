@@ -248,14 +248,13 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(backSideDocumentImage.waitForExistence(timeout: 5))
     backSideDocumentImage.tap()
     
-    let _ = XCTWaiter.wait(for: [XCTestExpectation()], timeout: 2)
     scrollUp(app: app, dy: -300)
     
     let addDocumentButton = app.tables.cells.buttons["addDocumentButton"]
     XCTAssert(addDocumentButton.exists)
     addDocumentButton.tap()
     
-    let selectDocumentFromGallery = app.sheets.buttons["Select from Gallery"]
+    let selectDocumentFromGallery = app.buttons["Select from Gallery"]
     XCTAssert(selectDocumentFromGallery.exists)
     selectDocumentFromGallery.tap()
     
@@ -263,7 +262,6 @@ final class KycFlowUITests: XCTestCase {
     XCTAssert(additionalDocumentImage.waitForExistence(timeout: 5))
     additionalDocumentImage.tap()
     
-    let _ = XCTWaiter.wait(for: [XCTestExpectation()], timeout: 2)
     scrollUp(app: app, dy: -300)
     
     let uploadButton = app.tables.buttons["uploadButton"]
