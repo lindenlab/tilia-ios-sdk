@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4FEC119D44CD8356A75A0B47 /* Pods_TiliaSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC8E4F68FDB5F1AB6F47904 /* Pods_TiliaSDKTests.framework */; };
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
+		D1137ED8292CDDB700488F70 /* XCUIElement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1137ED7292CDDB700488F70 /* XCUIElement+Extensions.swift */; };
 		D113B022284E1FBE00CFEA18 /* UserDocumentsValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */; };
 		D11A7E5528F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */; };
 		D11A7E5728FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */; };
@@ -259,6 +260,7 @@
 		8BC8E4F68FDB5F1AB6F47904 /* Pods_TiliaSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
 		BB1E529034D47E85C7B88885 /* Pods-TiliaSDKTests.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.cicd.xcconfig"; sourceTree = "<group>"; };
+		D1137ED7292CDDB700488F70 /* XCUIElement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extensions.swift"; sourceTree = "<group>"; };
 		D113B021284E1FBE00CFEA18 /* UserDocumentsValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsValidator.swift; sourceTree = "<group>"; };
 		D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsFullRefundResponse.json; sourceTree = "<group>"; };
 		D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryFlowUITests.swift; sourceTree = "<group>"; };
@@ -1080,6 +1082,7 @@
 			isa = PBXGroup;
 			children = (
 				D167248928C8E80C0033899B /* XCTestCase+Extensions.swift */,
+				D1137ED7292CDDB700488F70 /* XCUIElement+Extensions.swift */,
 				D190A3EC2806052200A25DBD /* TosFlowUITests.swift */,
 				D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */,
 				D1408F59288EB26600CABA3E /* KycFlowUITests.swift */,
@@ -1631,6 +1634,7 @@
 			files = (
 				D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */,
 				D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */,
+				D1137ED8292CDDB700488F70 /* XCUIElement+Extensions.swift in Sources */,
 				D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */,
 				D11A7E5728FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift in Sources */,
 				D167248A28C8E80C0033899B /* XCTestCase+Extensions.swift in Sources */,
