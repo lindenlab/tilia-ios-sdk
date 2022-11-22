@@ -193,7 +193,7 @@ struct CheckoutSectionBuilder {
         return .init(title: value.type.isWallet ? L.useYourBalance(with: walletBalance.display) : value.display,
                      isWallet: value.type.isWallet,
                      isSelected: false,
-                     isEnabled: true,
+                     isEnabled: value.type.isWallet ? walletBalance.balance >= invoiceInfo.amount || paymentMethods.first(where: { !$0.type.isWallet }) != nil : true,
                      icon: value.type.icon,
                      isDividerHidden: index == count - 1)
       }
@@ -261,7 +261,7 @@ struct CheckoutSectionBuilder {
                             isEnabled: Bool) {
     switch section[1] {
     case var .payment(model):
-      for index in 0..<model.items.count {
+      for (index, value) in model.items.enumerated() where !value.isWallet {
         model.items[index].isEnabled = isEnabled
         let indexPath = IndexPath(row: index, section: 1)
         if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell {
