@@ -35,7 +35,7 @@ struct CheckoutSectionBuilder {
         let title: String
         let isWallet: Bool
         var isSelected: Bool
-        let isEnabled: Bool
+        var isEnabled: Bool
         let icon: UIImage?
         let isDividerHidden: Bool
       }
@@ -249,6 +249,24 @@ struct CheckoutSectionBuilder {
       }
       if let cell = tableView.cellForRow(at: indexPath) as? CheckoutWalletCell, !isSelected {
         cell.configure(isOn: isSelected)
+      }
+      section[1] = .payment(model)
+    default:
+      break
+    }
+  }
+  
+  func updatePaymentSection(for section: inout [Section],
+                            in tableView: UITableView,
+                            isEnabled: Bool) {
+    switch section[1] {
+    case var .payment(model):
+      for index in 0..<model.items.count {
+        model.items[index].isEnabled = isEnabled
+        let indexPath = IndexPath(row: index, section: 1)
+        if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell {
+          cell.configure(isEnabled: isEnabled)
+        }
       }
       section[1] = .payment(model)
     default:

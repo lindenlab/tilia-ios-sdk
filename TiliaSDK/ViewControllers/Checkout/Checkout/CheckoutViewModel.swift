@@ -30,6 +30,7 @@ protocol CheckoutViewModelOutputProtocol {
   var deselectIndex: PassthroughSubject<Int, Never> { get }
   var selectIndex: PassthroughSubject<Int, Never> { get }
   var updateSummary: PassthroughSubject<InvoiceInfoModel, Never> { get }
+  var paymentMethodsAreEnabled: PassthroughSubject<Bool, Never> { get }
 }
 
 protocol CheckoutDataStore {
@@ -54,6 +55,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   let deselectIndex = PassthroughSubject<Int, Never>()
   let selectIndex = PassthroughSubject<Int, Never>()
   let updateSummary = PassthroughSubject<InvoiceInfoModel, Never>()
+  let paymentMethodsAreEnabled = PassthroughSubject<Bool, Never>()
   
   let manager: NetworkManager
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
@@ -154,7 +156,16 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   func selectWallet(index: Int, isSelected: Bool) {
     selectedWalletIndex = isSelected ? index : nil
     selectedPaymentMethodIndex = nil
-    // TODO: - Fix me
+    guard
+      let walletBalance = walletBalance,
+      let invoiceInfo = invoiceInfo else { return }
+    if walletBalance.balance >= invoiceInfo.amount && isSelected {
+      paymentMethodsAreEnabled.send(false)
+      createNonVirtualInvoice()
+    } else {
+      paymentMethodsAreEnabled.send(true)
+      payButtonIsEnabled.send(false)
+    }
   }
   
   func selectPaymentMethod(at index: Int) {

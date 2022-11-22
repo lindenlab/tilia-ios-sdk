@@ -146,7 +146,7 @@ final class NetworkManagerTests: XCTestCase {
     let id = "a55ef8ed-174a-4910-b538-77fc0f0e3d90"
     var invoice: InvoiceModel?
     let expectation = XCTestExpectation(description: "testCreateInvoiceSuccess")
-    networkManager.createInvoice(withId: id, isEscrow: false, paymentMethod: nil) { result in
+    networkManager.createInvoice(withId: id, isEscrow: false, paymentMethods: []) { result in
       expectation.fulfill()
       switch result {
       case .success(let model):
@@ -165,7 +165,7 @@ final class NetworkManagerTests: XCTestCase {
     let id = "esc_27eSQr5coZR1vmq5rFJ74RBE4Xm"
     var invoice: InvoiceModel?
     let expectation = XCTestExpectation(description: "testCreateEscrowInvoiceSuccess")
-    networkManager.createInvoice(withId: id, isEscrow: true, paymentMethod: nil) { result in
+    networkManager.createInvoice(withId: id, isEscrow: true, paymentMethods: []) { result in
       expectation.fulfill()
       switch result {
       case .success(let model):
