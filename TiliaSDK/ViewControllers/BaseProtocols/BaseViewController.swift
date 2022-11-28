@@ -25,22 +25,8 @@ class BaseViewController: UIViewController {
     return divider
   }()
   
-  final lazy var closeButton: NonPrimaryButton = {
-    let button = NonPrimaryButton()
-    button.setTitle(L.close, for: .normal)
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.accessibilityIdentifier = "closeButton"
-    
-    view.addSubview(button)
-    NSLayoutConstraint.activate([
-      button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      button.widthAnchor.constraint(equalToConstant: 100)
-    ])
-    return button
-  }()
-  
   private var spinner: UIActivityIndicatorView?
+  private var button: NonPrimaryButton?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -66,6 +52,22 @@ class BaseViewController: UIViewController {
     spinner?.removeFromSuperview()
     spinner = nil
     hideableView.isHidden = false
+  }
+  
+  final func showCloseButton(target: Any, action: Selector) {
+    guard button == nil else { return }
+    let button = NonPrimaryButton()
+    button.setTitle(L.close, for: .normal)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.accessibilityIdentifier = "closeButton"
+    button.addTarget(target, action: action, for: .touchUpInside)
+    view.addSubview(button)
+    NSLayoutConstraint.activate([
+      button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      button.widthAnchor.constraint(equalToConstant: 100)
+    ])
+    self.button = button
   }
   
 }

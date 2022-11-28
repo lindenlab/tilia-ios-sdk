@@ -11,6 +11,14 @@ protocol PossiblyEmpty {
   var isEmpty: Bool { get }
 }
 
+extension PossiblyEmpty {
+  
+  func toNilIfEmpty() -> Self? {
+    return isEmpty ? nil : self
+  }
+  
+}
+
 extension String: PossiblyEmpty { }
 
 extension Int: PossiblyEmpty {
@@ -28,6 +36,8 @@ extension Double: PossiblyEmpty {
 extension Array: PossiblyEmpty { }
 
 extension Set: PossiblyEmpty { }
+
+extension Dictionary: PossiblyEmpty { }
 
 extension Optional where Wrapped: PossiblyEmpty {
   

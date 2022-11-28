@@ -133,7 +133,7 @@ private extension CheckoutViewController {
     tableView.register(CheckoutPayloadCell.self)
     tableView.register(CheckoutPaymentFooterView.self)
     tableView.register(CheckoutPaymentMethodCell.self)
-    tableView.register(CheckoutSuccessfulPaymentCell.self)
+    tableView.register(ToastViewCell.self)
   }
   
   func bind() {
@@ -144,14 +144,14 @@ private extension CheckoutViewController {
     
     viewModel.error.sink { [weak self] in
       guard let self = self else { return }
-      if $0.needToShowCancelButton {
+      if $0.value {
         self.showCancelButton()
       }
       self.router.showToast(title: L.errorPaymentTitle,
                             message: L.errorPaymentMessage)
     }.store(in: &subscriptions)
     
-    viewModel.needToAcceptTos.sink { [weak self] _ in
+    viewModel.needToAcceptTos.sink { [weak self] in
       self?.router.routeToTosView()
     }.store(in: &subscriptions)
     
@@ -222,7 +222,7 @@ private extension CheckoutViewController {
   }
   
   func showCancelButton() {
-    closeButton.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
+    showCloseButton(target: self, action: #selector(closeButtonDidTap))
   }
   
   @objc func closeButtonDidTap() {

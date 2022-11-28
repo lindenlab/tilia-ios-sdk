@@ -24,16 +24,16 @@ final class UserDocumentsPhotoCell: TitleBaseCell {
     return imageView
   }()
   
-  private let primaryButton: PrimaryButtonWithStyle = {
-    let button = PrimaryButtonWithStyle(style: .imageAndTitleCenter)
+  private let primaryButton: PrimaryButton = {
+    let button = PrimaryButton(style: .imageAndTitleCenter)
     button.setImage(.cameraIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.setTitle(L.capture, for: .normal)
     return button
   }()
   
-  private let nonPrimaryButton: NonPrimaryButtonWithStyle = {
-    let button = NonPrimaryButtonWithStyle(style: .imageAndTitleCenter)
+  private let nonPrimaryButton: NonPrimaryButton = {
+    let button = NonPrimaryButton(style: .imageAndTitleCenter)
     button.setImage(.documentIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.setTitle(L.choose, for: .normal)

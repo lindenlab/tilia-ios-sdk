@@ -1,0 +1,53 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "transaction_id": "vtok_2FmgDkaYg5ivsgkeye0mIAysjbz",
+        "transaction_id_type": "invoicing.token_exchange.token_exchange_id",
+        "transaction_type": "token_convert",
+        "transaction_role": "user",
+        "transaction_status": "processed",
+        "account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+        "transaction_data": {
+            "subtotal_amount": 100,
+            "subtotal_amount_display": "TST 100",
+            "tilia_fee_amount": 0,
+            "tilia_fee_amount_display": "",
+            "publisher_fee_amount": 0,
+            "publisher_fee_description": "",
+            "publisher_fee_amount_display": "",
+            "tax_amount": 0,
+            "tax_amount_display": "",
+            "total_amount": 100,
+            "total_amount_display": "TST 100",
+            "user_received_amount_display": "USD 0.01",
+            "source_payment_method_id": "ffd73a4a-05f3-4c02-8be8-01fdb98e0345",
+            "source_payment_method_provider": "wallet",
+            "source_payment_method_class": "convertible",
+            "source_payment_method_display_string": "Convertible TST wallet",
+            "destination_payment_method_id": "7a0c79cd-276d-4d83-b2c3-096924e47dee",
+            "destination_payment_method_display_string": "Default USD Wallet",
+            "token_exchange": {
+                "token_exchange_id": "vtok_2FmgDkaYg5ivsgkeye0mIAysjbz",
+                "account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+                "direction": "token_convert",
+                "invoice_id": "inv_2FmgDnZEBvbZrfo8ymuVa0KiD9M",
+                "user_paid_amount": 100,
+                "user_paid_currency": "TST",
+                "user_received_amount": 1,
+                "user_received_currency": "USD",
+                "exchange_rate": 0.01,
+                "tilia_fee_amount": 0,
+                "integrator_fee_amount": 0,
+                "fee_currency": "",
+                "destination_wallet_id": "0df7252d-7b5d-46c0-b49d-9f7292ae1c17",
+                "status": "SUCCESS",
+                "created": "2022-10-07T00:29:16Z",
+                "updated": "2022-10-07T00:33:28Z"
+            }
+        },
+        "transaction_date": "2022-10-07T00:29:16Z",
+        "transaction_description": "Line item 1"
+    }
+}

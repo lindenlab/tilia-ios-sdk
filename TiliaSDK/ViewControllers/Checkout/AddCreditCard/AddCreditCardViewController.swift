@@ -10,10 +10,6 @@ import Combine
 
 final class AddCreditCardViewController: BaseViewController {
   
-  override var hideableView: UIView {
-    return stackView
-  }
-  
   private let viewModel: AddCreditCardViewModelProtocol
   private let router: AddCreditCardRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
@@ -28,6 +24,7 @@ final class AddCreditCardViewController: BaseViewController {
   private lazy var openBrowserButton: PrimaryButton = {
     let button = PrimaryButton()
     button.setTitle(L.openBrowser, for: .normal)
+    button.setTitleForLoadingState(L.opening)
     button.addTarget(self, action: #selector(openBrowserButtonDidTap), for: .touchUpInside)
     button.accessibilityIdentifier = "openBrowserButton"
     return button
@@ -97,7 +94,7 @@ private extension AddCreditCardViewController {
   func bind() {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
-      $0 ? self.startLoading() : self.stopLoading()
+      self.openBrowserButton.isLoading = $0
     }.store(in: &subscriptions)
     
     viewModel.error.sink { [weak self] _ in

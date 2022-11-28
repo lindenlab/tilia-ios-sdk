@@ -9,4 +9,9 @@ target 'TiliaSDK' do
   pod 'lottie-ios'
   pod 'PocketSVG'
   
+  target 'TiliaSDKTests' do
+    inherit! :search_paths
+    pod 'Alamofire'
+  end
+  
 end

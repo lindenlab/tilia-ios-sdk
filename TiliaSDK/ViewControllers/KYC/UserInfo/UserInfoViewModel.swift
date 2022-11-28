@@ -130,7 +130,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       default: break
       }
     case .dateOfBirth:
-      let date = DateFormatter.defaultFormatter.date(from: text ?? "")
+      let date = DateFormatter.longDateFormatter.date(from: text ?? "")
       isFieldChanged = isFieldUpdated(&userInfoModel.dateOfBirth, with: date)
     case .ssn:
       if userInfoModel.tax?.ssn != text {
@@ -275,7 +275,7 @@ private extension UserInfoViewModel {
   func sendUpdateCallback(with state: SubmittedKycStateModel) {
     let event = TLEvent(flow: .kyc, action: .kycInfoSubmitted)
     let model = TLUpdateCallback(event: event,
-                                 message: L.kycInfoSubmitted.localized(with: state.rawValue))
+                                 message: L.kycInfoSubmitted(with: state.rawValue))
     onUpdate?(model)
   }
   

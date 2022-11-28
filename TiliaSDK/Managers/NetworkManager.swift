@@ -66,7 +66,7 @@ final class NetworkManager {
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   
-  func createInvoice(withId id: String, isEscrow: Bool, paymentMethod: PaymentMethodModel?, completion: @escaping CompletionResultHandler<InvoiceModel>) {
+  func createInvoice(withId id: String, isEscrow: Bool, paymentMethod: CheckoutPaymentMethodModel?, completion: @escaping CompletionResultHandler<InvoiceModel>) {
     let model = CreateInvoiceModel(invoiceId: id, paymentMethods: paymentMethod.map { [$0] })
     let router = InvoiceRouter.createInvoice(isEscrow: isEscrow, model: model)
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
@@ -74,6 +74,22 @@ final class NetworkManager {
   
   func payInvoice(withId id: String, isEscrow: Bool, completion: @escaping CompletionResultHandler<EmptyModel>) {
     let router = InvoiceRouter.payInvoice(id: id, isEscrow: isEscrow)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  func getTransactionDetails(with id: String, completion: @escaping CompletionResultHandler<TransactionDetailsModel>) {
+    let router = InvoiceRouter.getTransactionDetails(id: id)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  func sendTransactionReceipt(withId id: String, email: String, completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = InvoiceRouter.sendTransactionReceipt(id: id, email: email)
+    serverClient.performRequestWithDecodableModel(router: router, completion: completion)
+  }
+  
+  func getTransactionHistory(withLimit limit: Int, offset: Int, sectionType: TransactionHistorySectionTypeModel, completion: @escaping CompletionResultHandler<TransactionHistoryModel>) {
+    let model = GetTransactionHistoryModel(limit: limit, offset: offset, sectionType: sectionType)
+    let router = InvoiceRouter.getTransactionHistory(model: model)
     serverClient.performRequestWithDecodableModel(router: router, completion: completion)
   }
   

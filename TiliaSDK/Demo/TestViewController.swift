@@ -44,7 +44,8 @@ class TestViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .white
+    view.backgroundColor = .backgroundColor
+    accessTokenTextField.delegate = self
     stackView.addArrangedSubview(accessTokenTextField)
     stackView.addArrangedSubview(label)
     view.addSubview(stackView)
@@ -74,22 +75,22 @@ class TestViewController: UIViewController {
   static func attributedString(text: String, message: String) -> NSAttributedString? {
     guard !text.isEmpty && !message.isEmpty else { return nil }
     let date = Date()
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "YY, MMM d, HH:mm:ss"
-    let dateStr = date.string(dateFormatter: dateFormatter)
+    let dateStr = date.string(formatter: .customDateAndTimeFormatter)
     let str = "\(text):\n\(dateStr)\n\(message)"
-    let attributedString = NSMutableAttributedString(string: str)
-    
-    attributedString.addAttribute(.foregroundColor,
-                                  value: UIColor.black,
-                                  range: (str as NSString).range(of: text))
-    attributedString.addAttribute(.foregroundColor,
-                                  value: UIColor.lightGray,
-                                  range: (str as NSString).range(of: dateStr))
-    attributedString.addAttribute(.foregroundColor,
-                                  value: UIColor.lightGray,
-                                  range: (str as NSString).range(of: message))
-    return attributedString
+    return str.attributedString(font: .systemFont(ofSize: 16),
+                                color: .black,
+                                subStrings: (text, .systemFont(ofSize: 16), .black), (dateStr, .systemFont(ofSize: 16), .lightGray), (message, .systemFont(ofSize: 16), .lightGray))
+  }
+  
+}
+
+// MARK: - UITextFieldDelegate
+
+extension TestViewController: UITextFieldDelegate {
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
   }
   
 }

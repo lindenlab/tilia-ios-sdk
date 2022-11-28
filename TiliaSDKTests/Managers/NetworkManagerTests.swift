@@ -196,6 +196,57 @@ final class NetworkManagerTests: XCTestCase {
     XCTAssertTrue(isSuccess)
   }
 
+  func testGetTransactionDetailsSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var model: TransactionDetailsModel?
+    let expectation = XCTestExpectation(description: "testGetTransactionDetailsSuccess")
+    networkManager.getTransactionDetails(with: "") { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let item):
+        model = item
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertEqual(model?.id, "74349cc3-8cea-41b8-a796-3b695035dd40")
+  }
+  
+  func testSendTransactionReceiptSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var isSuccess = false
+    let expectation = XCTestExpectation(description: "testSendTransactionReceiptSuccess")
+    networkManager.sendTransactionReceipt(withId: "", email: "") { result in
+      expectation.fulfill()
+      switch result {
+      case .success:
+        isSuccess = true
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertTrue(isSuccess)
+  }
+  
+  func testGetTransactionHistorySuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var model: TransactionHistoryModel?
+    let expectation = XCTestExpectation(description: "testGetTransactionHistorySuccess")
+    networkManager.getTransactionHistory(withLimit: 20, offset: 0, sectionType: .pending) { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let item):
+        model = item
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertEqual(model?.total, 40)
+  }
+  
   func testGetAddCreditCardRedirectUrlSuccess() {
     TLManager.shared.setToken(UUID().uuidString)
     var url: URL?

@@ -22,13 +22,17 @@ extension RoutingProtocol {
     viewController?.dismiss(animated: animated, completion: completion)
   }
   
-  func showToast(title: String, message: String) {
+  func showToast(title: String, message: String, isSuccess: Bool = false) {
     if let transitionCoordinator = viewController?.transitionCoordinator {
       transitionCoordinator.animate(alongsideTransition: nil) { _ in
-        self.viewController?.view.showToast(title: title, message: message)
+        self.viewController?.view.showToast(title: title,
+                                            message: message,
+                                            isSuccess: isSuccess)
       }
     } else {
-      viewController?.view.showToast(title: title, message: message)
+      viewController?.view.showToast(title: title,
+                                     message: message,
+                                     isSuccess: isSuccess)
     }
   }
   
@@ -43,8 +47,8 @@ extension RoutingProtocol {
 
 private extension UIView {
   
-  func showToast(title: String, message: String) {
-    let toast = ToastView(isSuccess: false)
+  func showToast(title: String, message: String, isSuccess: Bool) {
+    let toast = ToastView(isSuccess: isSuccess)
     toast.configure(title: title, message: message)
     toast.translatesAutoresizingMaskIntoConstraints = false
     addSubview(toast)

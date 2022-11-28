@@ -37,7 +37,7 @@ final class TextFieldCell: TextFieldsCell {
     if let pickerView = textField.inputView as? UIPickerView {
       textField.text = pickerDataSource?.items[pickerView.selectedRow(inComponent: 0)]
     } else if let datePicker = textField.inputView as? UIDatePicker {
-      textField.text = datePicker.date.string()
+      textField.text = datePicker.date.string(formatter: .longDateFormatter)
     }
   }
   
@@ -163,7 +163,7 @@ private extension TextFieldCell {
   }
   
   @objc func datePickerDidChange(_ sender: UIDatePicker) {
-    firstTextField.text = sender.date.string()
+    firstTextField.text = sender.date.string(formatter: .longDateFormatter)
   }
   
   @objc func doneButtonTapped() {

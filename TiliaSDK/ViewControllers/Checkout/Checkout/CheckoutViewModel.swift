@@ -8,8 +8,7 @@
 import Foundation
 import Combine
 
-typealias CheckoutContent = (invoiceInfo: InvoiceInfoModel, walletBalance: BalanceModel?, paymentMethods: [PaymentMethodModel], isVirtual: Bool)
-typealias CheckoutError = (error: Error, needToShowCancelButton: Bool)
+typealias CheckoutContent = (invoiceInfo: InvoiceInfoModel, walletBalance: BalanceModel?, paymentMethods: [CheckoutPaymentMethodModel], isVirtual: Bool)
 
 protocol CheckoutViewModelInputProtocol {
   func checkIsTosRequired()
@@ -20,7 +19,7 @@ protocol CheckoutViewModelInputProtocol {
 
 protocol CheckoutViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
-  var error: PassthroughSubject<CheckoutError, Never> { get }
+  var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var content: PassthroughSubject<CheckoutContent, Never> { get }
   var successfulPayment: CurrentValueSubject<Bool, Never> { get }
@@ -44,7 +43,7 @@ protocol CheckoutViewModelProtocol: CheckoutViewModelInputProtocol, CheckoutView
 final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   
   let loading = PassthroughSubject<Bool, Never>()
-  let error = PassthroughSubject<CheckoutError, Never>()
+  let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<CheckoutContent, Never>()
   let successfulPayment = CurrentValueSubject<Bool, Never>(false)
@@ -77,7 +76,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   private var invoiceId: String?
   private var balance: BalanceInfoModel?
   private var invoiceInfo: InvoiceInfoModel?
-  private var selectedPaymentMethod: PaymentMethodModel?
+  private var selectedPaymentMethod: CheckoutPaymentMethodModel?
   private var isEscrow: Bool?
   private var isVirtual: Bool?
   
@@ -105,7 +104,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
           self.getInvoiceDetails()
         }
       case .failure(let error):
-        self.didFail(with: (error, true))
+        self.didFail(with: .init(error: error, value: true))
         self.loading.send(false)
       }
     }
@@ -124,7 +123,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
         self.onUpdate?(TLUpdateCallback(event: TLEvent(flow: .checkout, action: .paymentProcessed),
                                         message: L.paymentProcessed))
       case .failure(let error):
-        self.didFail(with: (error, false))
+        self.didFail(with: .init(error: error, value: false))
       }
       self.loading.send(false)
     }
@@ -167,7 +166,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
         self.selectedPaymentMethod = nil
         self.invoiceId = nil
         self.deselectIndex.send(index)
-        self.didFail(with: (error, false))
+        self.didFail(with: .init(error: error, value: false))
       }
     }
   }
@@ -219,7 +218,7 @@ private extension CheckoutViewModel {
           self.loading.send(false)
         }
       } else if let error = serverError {
-        self.didFail(with: (error, true))
+        self.didFail(with: .init(error: error, value: true))
         self.loading.send(false)
       }
     }
@@ -236,7 +235,7 @@ private extension CheckoutViewModel {
         self.invoiceInfo = model.info
         self.setContent()
       case .failure(let error):
-        self.didFail(with: (error, true))
+        self.didFail(with: .init(error: error, value: true))
       }
       self.loading.send(false)
     }
@@ -252,13 +251,13 @@ private extension CheckoutViewModel {
         self.balance = model
         self.setContent()
       case .failure(let error):
-        self.didFail(with: (error, true))
+        self.didFail(with: .init(error: error, value: true))
       }
       self.loading.send(false)
     }
   }
   
-  func didFail(with error: CheckoutError) {
+  func didFail(with error: ErrorWithBoolModel) {
     self.error.send(error)
     let event = TLEvent(flow: .checkout, action: .error)
     let model = TLErrorCallback(event: event,

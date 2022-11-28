@@ -28,7 +28,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     let label = UILabel()
     label.text = L.addPaymentMethodTitle.localized
     label.textColor = .primaryTextColor
-    label.font = UIFont.systemFont(ofSize: 16)
+    label.font = .systemFont(ofSize: 16)
     return label
   }()
   
@@ -54,7 +54,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
     textView.textData = (text, links)
     textView.linkColor = .tertiaryTextColor
     textView.textColor = .tertiaryTextColor
-    textView.font = UIFont.systemFont(ofSize: 12)
+    textView.font = .systemFont(ofSize: 12)
     textView.textAlignment = .justified
     return textView
   }()

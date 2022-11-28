@@ -20,6 +20,7 @@ struct CheckoutSectionBuilder {
         let description: String
         let product: String
         let amount: String
+        let isDividerHidden: Bool
       }
       
       let referenceType: String
@@ -36,6 +37,7 @@ struct CheckoutSectionBuilder {
         let subTitle: String?
         var isSelected: Bool
         let icon: UIImage?
+        let isDividerHidden: Bool
       }
       
       var items: [Item]
@@ -75,26 +77,28 @@ struct CheckoutSectionBuilder {
     case let .summary(invoiceModel):
       let item = invoiceModel.items[indexPath.row]
       let cell = tableView.dequeue(CheckoutPayloadCell.self, for: indexPath)
-      let lastItemIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
       cell.configure(description: item.description,
                      product: item.product,
                      amount: item.amount,
-                     isDividerHidden: lastItemIndex == indexPath.row)
+                     isDividerHidden: item.isDividerHidden)
       return cell
     case let .payment(model):
       let item = model.items[indexPath.row]
       let cell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
-      let lastItemIndex = tableView.numberOfRows(inSection: indexPath.section) - 1
       cell.configure(title: item.title,
                      subTitle: item.subTitle,
                      canSelect: model.canSelect,
-                     isDividerHidden: lastItemIndex == indexPath.row,
+                     isDividerHidden: item.isDividerHidden,
                      icon: item.icon,
                      delegate: delegate)
       cell.configure(isSelected: item.isSelected)
       return cell
     case .successfulPayment:
-      return tableView.dequeue(CheckoutSuccessfulPaymentCell.self, for: indexPath)
+      let cell = tableView.dequeue(ToastViewCell.self, for: indexPath)
+      cell.configure(isSuccess: true,
+                     title: L.success,
+                     message: L.paymentProcessed)
+      return cell
     }
   }
   
@@ -161,7 +165,8 @@ struct CheckoutSectionBuilder {
         .init(title: L.walletBalance,
               subTitle: walletBalance?.display,
               isSelected: true,
-              icon: .walletIcon)
+              icon: .walletIcon,
+              isDividerHidden: true)
       ]
       payment = .init(items: items,
                       isPayButtonEnabled: true,
@@ -169,11 +174,13 @@ struct CheckoutSectionBuilder {
                       isCreditCardButtonHidden: true,
                       canSelect: false)
     } else {
+      let count = paymentMethods.count
       let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
         return .init(title: value.type.isWallet ? L.walletBalance : value.display,
                      subTitle: value.type.isWallet ? walletBalance?.display : nil,
                      isSelected: false,
-                     icon: value.type.icon)
+                     icon: value.type.icon,
+                     isDividerHidden: index == count - 1)
       }
       payment = .init(items: items,
                       isPayButtonEnabled: false,
@@ -255,9 +262,13 @@ struct CheckoutSectionBuilder {
 private extension CheckoutSectionBuilder {
   
   func summaryModel(for model: InvoiceInfoModel) -> Section.Summary {
-    let items: [Section.Summary.Item] = model.items.map { .init(description: $0.description,
-                                                                product: $0.productSku,
-                                                                amount: $0.displayAmount) }
+    let count = model.items.count
+    let items: [Section.Summary.Item] = model.items.enumerated().map { index, item in
+      return .init(description: item.description,
+                   product: item.productSku,
+                   amount: item.displayAmount,
+                   isDividerHidden: index == count - 1)
+    }
     return .init(referenceType: model.referenceType,
                  referenceId: model.referenceId,
                  amount: model.displayAmount,
@@ -269,7 +280,7 @@ private extension CheckoutSectionBuilder {
 
 // MARK: - Helpers
 
-private extension PaymentTypeModel {
+private extension CheckoutPaymentTypeModel {
   
   var icon: UIImage? {
     switch self {

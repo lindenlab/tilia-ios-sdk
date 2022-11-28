@@ -13,8 +13,4 @@ extension Data {
     return try? JSONSerialization.jsonObject(with: self, options: [])
   }
   
-  var stringUTF8: String? {
-    return String(data: self, encoding: .utf8)
-  }
-  
 }

@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Colors
+
 extension UIColor {
   
   private static var configuration: ColorsConfiguration { return TLManager.shared.colorsConfiguration }
@@ -18,6 +20,12 @@ extension UIColor {
       } else {
         return configuration.backgroundColor?.lightModeColor ?? .white
       }
+    }
+  }
+  
+  static var backgroundDarkerColor: UIColor {
+    return UIColor { _ in
+      return backgroundColor.modifiedHue(brightness: -0.03)
     }
   }
   
@@ -33,7 +41,7 @@ extension UIColor {
   
   static var primaryButtonTextColor: UIColor {
     return UIColor { _ in
-      return primaryColor.isColorDark() ? .white : .customBlack
+      return primaryColor.isColorDark ? .white : .customBlack
     }
   }
   
@@ -46,7 +54,7 @@ extension UIColor {
           return primaryTextColor.lightModeColor
         }
       } else {
-        return backgroundColor.isColorDark() ? .white : .customBlack
+        return backgroundColor.isColorDark ? .white : .customBlack
       }
     }
     
@@ -66,7 +74,7 @@ extension UIColor {
   
   static var borderColor: UIColor {
     return UIColor { _ in
-      return backgroundColor.isColorDark() ? .customWhite : .customBlack.withAlphaComponent(0.18)
+      return backgroundColor.isColorDark ? .customWhite : .customBlack.withAlphaComponent(0.18)
     }
   }
   
@@ -86,7 +94,7 @@ extension UIColor {
   
   static var successPrimaryColor: UIColor {
     return UIColor { _ in
-      return successBackgroundColor.isColorDark() ? .white : .customBlack
+      return successBackgroundColor.isColorDark ? .white : .customBlack
     }
   }
   
@@ -106,7 +114,7 @@ extension UIColor {
   
   static var failurePrimaryColor: UIColor {
     return UIColor { _ in
-      return failureBackgroundColor.isColorDark() ? .white : .customBlack
+      return failureBackgroundColor.isColorDark ? .white : .customBlack
     }
   }
   
@@ -118,12 +126,14 @@ extension UIColor {
   
 }
 
+// MARK: - Init Helper
+
 extension UIColor {
   
   convenience init(hexString: String, alpha: CGFloat = 1.0) {
     var hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     let scanner = Scanner(string: hexString)
-    if (hexString.hasPrefix("#")) {
+    if hexString.hasPrefix("#") {
       hexString.remove(at: hexString.startIndex)
     }
     var color: UInt64 = 0
@@ -132,13 +142,28 @@ extension UIColor {
     let r = Int(color >> 16) & mask
     let g = Int(color >> 8) & mask
     let b = Int(color) & mask
-    let red   = CGFloat(r) / 255.0
+    let red = CGFloat(r) / 255.0
     let green = CGFloat(g) / 255.0
-    let blue  = CGFloat(b) / 255.0
+    let blue = CGFloat(b) / 255.0
     self.init(red: red, green: green, blue: blue, alpha: alpha)
   }
   
-  func isColorDark() -> Bool {
+  func modifiedHue(_ hue: CGFloat = 0, saturation: CGFloat = 0, brightness: CGFloat = 0) -> UIColor {
+    var currentHue: CGFloat = 0.0
+    var currentSaturation: CGFloat = 0.0
+    var currentBrightness: CGFloat = 0.0
+    var currentAlpha: CGFloat = 0.0
+    if getHue(&currentHue, saturation: &currentSaturation, brightness: &currentBrightness, alpha: &currentAlpha) {
+      return .init(hue: currentHue + hue,
+                   saturation: currentSaturation + saturation,
+                   brightness: currentBrightness + brightness,
+                   alpha: currentAlpha)
+    } else {
+      return self
+    }
+  }
+  
+  var isColorDark: Bool {
     var r: CGFloat = 0.0
     var g: CGFloat = 0.0
     var b: CGFloat = 0.0

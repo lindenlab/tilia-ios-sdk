@@ -22,6 +22,12 @@ public struct TLEvent {
     /// KYC flow
     case kyc
     
+    /// Transaction Details flow
+    case transactionDetails = "txndetails"
+    
+    /// Transaction History flow
+    case transactionHistory = "txnhistory"
+    
   }
   
   /// Tilia action
@@ -50,6 +56,9 @@ public struct TLEvent {
     
     /// KYC info is submitted successfully
     case kycInfoSubmitted = "kyc-info-submitted"
+    
+    /// Receipt is sent successfully
+    case receiptSent = "receipt-sent"
     
   }
   
