@@ -365,7 +365,7 @@ private extension TransactionDetailsSectionBuilder {
   
   func status(for model: TransactionDetailsModel) -> Section.SectionType.Header.Status? {
     guard model.type == .payout else { return nil }
-    let subTitle = model.status == .failed ? L.payoutErrorMessage : nil
+    let subTitle = model.status.isFailed ? L.payoutErrorMessage : nil
     return .init(image: model.status.icon,
                  imageColor: model.status.color,
                  title: model.status.description,
@@ -425,20 +425,20 @@ private extension TransactionStatusModel {
     switch self {
     case .pending: return .pendingIcon
     case .processed: return .successIcon
-    case .failed: return .failureIcon
+    case .payoutFailed, .error: return .failureIcon
     }
   }
   
   var color: UIColor {
     switch self {
     case .pending, .processed: return .primaryColor
-    case .failed: return .failureBackgroundColor
+    case .payoutFailed, .error: return .failureBackgroundColor
     }
   }
   
   var isPrimaryButtonHidden: Bool {
     switch self {
-    case .pending, .failed: return true
+    case .pending, .payoutFailed, .error: return true
     case .processed: return false
     }
   }

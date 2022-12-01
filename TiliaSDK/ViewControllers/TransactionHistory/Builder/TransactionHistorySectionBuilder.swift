@@ -215,7 +215,7 @@ private extension TransactionDetailsModel {
   
   var attributedValue: NSAttributedString {
     var attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 14, weight: .medium)]
-    if status == .failed {
+    if status.isFailed {
       attributes[.foregroundColor] = UIColor.primaryTextColor
       attributes[.strikethroughStyle] = NSUnderlineStyle.single
     } else {
@@ -245,11 +245,11 @@ private extension TransactionDetailsModel {
 private extension TransactionStatusModel {
   
   var subValueImage: UIImage? {
-    return self == .failed ? .failureIcon : nil
+    return self.isFailed ? .failureIcon : nil
   }
   
   var subValueTitle: String? {
-    return self == .failed ? self.description : nil
+    return self.isFailed ? self.description : nil
   }
   
 }
