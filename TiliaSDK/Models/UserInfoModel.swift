@@ -43,19 +43,19 @@ struct UserInfoModel {
   var dateOfBirth: Date?
   var address: Address = Address(region: CountryStateModel())
   var canUseAddressFor1099: BoolModel?
-  var tax: Tax?
+  var tax: Tax = Tax()
   
   var isUsResident: Bool { return countryOfResidence?.isUs == true }
   var dateOfBirthString: String? { return dateOfBirth.map { $0.string(formatter: .longDateFormatter) } }
   var needDocuments: Bool { return !isUsResident || address.region.isArizonaOrFlorida }
   
   mutating func setAddressToDefault() {
-    address.street = nil
-    address.apartment = nil
-    address.city = nil
-    address.region.name = nil
-    address.postalCode = nil
+    address = Address(region: CountryStateModel())
     canUseAddressFor1099 = nil
+  }
+  
+  mutating func setTaxToDefault() {
+    tax = Tax()
   }
   
 }
