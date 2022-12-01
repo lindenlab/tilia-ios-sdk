@@ -32,8 +32,11 @@ struct LineItemModel: Decodable {
     if let displayAmount = try container.decodeIfPresent(String.self, forKey: .displayAmount) {
       self.displayAmount = displayAmount
     } else {
-      let amount = try container.decode(Double.self, forKey: .amount)
+      var amount = try container.decode(Double.self, forKey: .amount)
       let currency = try container.decode(String.self, forKey: .currency)
+      if currency == "USD" {
+        amount = amount / 100.0
+      }
       let formatter = NumberFormatter()
       formatter.maximumFractionDigits = 2
       let amountString = formatter.string(from: NSNumber(value: amount)) ?? ""
