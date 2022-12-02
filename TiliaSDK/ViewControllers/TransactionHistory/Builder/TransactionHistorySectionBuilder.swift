@@ -217,7 +217,7 @@ private extension TransactionDetailsModel {
     var attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 14, weight: .medium)]
     if status.isFailed {
       attributes[.foregroundColor] = UIColor.primaryTextColor
-      attributes[.strikethroughStyle] = NSUnderlineStyle.single
+      attributes[.strikethroughStyle] = NSUnderlineStyle.single.rawValue
     } else {
       switch type {
       case .tokenPurchase where !isPoboSourcePaymentMethodProvider,
