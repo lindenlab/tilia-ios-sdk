@@ -1,19 +1,25 @@
 //
-//  CheckoutWalletCell.swift
+//  CheckoutPaymentMethodRadioCell.swift
 //  TiliaSDK
 //
-//  Created by Serhii.Petrishenko on 21.11.2022.
+//  Created by Serhii.Petrishenko on 01.04.2022.
 //
 
 import UIKit
 
-protocol CheckoutWalletCellDelegate: AnyObject {
-  func checkoutWalletCell(_ cell: CheckoutWalletCell, didSelect isOn: Bool)
+protocol CheckoutPaymentMethodRadioCellDelegate: AnyObject {
+  func checkoutPaymentMethodRadioCellDidSelect(_ cell: CheckoutPaymentMethodRadioCell)
 }
 
-final class CheckoutWalletCell: UITableViewCell {
+final class CheckoutPaymentMethodRadioCell: UITableViewCell {
   
-  private weak var delegate: CheckoutWalletCellDelegate?
+  private weak var delegate: CheckoutPaymentMethodRadioCellDelegate?
+  
+  private let radioButton: RadioButton = {
+    let button = RadioButton()
+    button.accessibilityIdentifier = "choosePaymentMethodButton"
+    return button
+  }()
   
   private let iconImageView: UIImageView = {
     let imageView = UIImageView()
@@ -26,11 +32,6 @@ final class CheckoutWalletCell: UITableViewCell {
     label.font = .systemFont(ofSize: 16)
     label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
     return label
-  }()
-  
-  private let uiSwitch: Switch = {
-    let uiSwitch = Switch()
-    return uiSwitch
   }()
   
   private let divider: DividerView = {
@@ -48,45 +49,47 @@ final class CheckoutWalletCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  func configure(image: UIImage?,
-                 title: String,
+  func configure(title: String,
                  isDividerHidden: Bool,
-                 delegate: CheckoutWalletCellDelegate?) {
-    iconImageView.image = image
+                 icon: UIImage?,
+                 delegate: CheckoutPaymentMethodRadioCellDelegate?) {
     titleLabel.text = title
-    divider.isHidden = isDividerHidden
     self.delegate = delegate
+    divider.isHidden = isDividerHidden
+    iconImageView.image = icon
   }
   
-  func configure(isOn: Bool) {
-    uiSwitch.isOn = isOn
+  func configure(isSelected: Bool) {
+    radioButton.isRadioSelected = isSelected
   }
   
   func configure(isEnabled: Bool) {
-    uiSwitch.isEnabled = isEnabled
+    radioButton.isEnabled = isEnabled
   }
   
 }
 
-private extension CheckoutWalletCell {
+// MARK: - Private Methods
+
+private extension CheckoutPaymentMethodRadioCell {
   
   func setup() {
-    uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
+    radioButton.addTarget(self, action: #selector(radioButtonDidTap), for: .touchUpInside)
     
     selectionStyle = .none
-    backgroundColor = .backgroundColor
-    contentView.backgroundColor = .backgroundColor
-    
-    let leadingStackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
+    accessibilityIdentifier = "checkoutPaymentMethodCell"
+    let leadingStackView = UIStackView(arrangedSubviews: [radioButton, iconImageView])
     leadingStackView.alignment = .center
-    leadingStackView.spacing = 8
+    leadingStackView.spacing = 16
     
-    let stackView = UIStackView(arrangedSubviews: [leadingStackView, uiSwitch])
+    let stackView = UIStackView(arrangedSubviews: [leadingStackView, titleLabel])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.spacing = 5
     stackView.distribution = .equalSpacing
     stackView.alignment = .center
     
+    backgroundColor = .backgroundColor
+    contentView.backgroundColor = .backgroundColor
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
     
@@ -101,8 +104,8 @@ private extension CheckoutWalletCell {
     ])
   }
   
-  @objc func switchDidChange() {
-    delegate?.checkoutWalletCell(self, didSelect: uiSwitch.isOn)
+  @objc func radioButtonDidTap() {
+    delegate?.checkoutPaymentMethodRadioCellDidSelect(self)
   }
   
 }

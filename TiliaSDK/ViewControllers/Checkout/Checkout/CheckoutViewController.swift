@@ -114,22 +114,22 @@ extension CheckoutViewController: TextViewWithLinkDelegate {
   
 }
 
-// MARK: - CheckoutWalletCellDelegate
+// MARK: - CheckoutPaymentMethodSwitchCellDelegate
 
-extension CheckoutViewController: CheckoutWalletCellDelegate {
+extension CheckoutViewController: CheckoutPaymentMethodSwitchCellDelegate {
   
-  func checkoutWalletCell(_ cell: CheckoutWalletCell, didSelect isOn: Bool) {
+  func checkoutPaymentMethodSwitchCell(_ cell: CheckoutPaymentMethodSwitchCell, didSelect isOn: Bool) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
-    viewModel.selectWallet(index: indexPath.row, isSelected: isOn)
+    viewModel.selectPaymentMethod(at: indexPath.row, isSelected: isOn)
   }
   
 }
 
-// MARK: - CheckoutPaymentMethodCellDelegate
+// MARK: - CheckoutPaymentMethodRadioCellDelegate
 
-extension CheckoutViewController: CheckoutPaymentMethodCellDelegate {
+extension CheckoutViewController: CheckoutPaymentMethodRadioCellDelegate {
   
-  func checkoutPaymentMethodCellRadioButtonDidTap(_ cell: CheckoutPaymentMethodCell) {
+  func checkoutPaymentMethodRadioCellDidSelect(_ cell: CheckoutPaymentMethodRadioCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
     viewModel.selectPaymentMethod(at: indexPath.row)
   }
@@ -145,8 +145,8 @@ private extension CheckoutViewController {
     tableView.register(CheckoutPayloadSummaryFooterView.self)
     tableView.register(CheckoutPayloadCell.self)
     tableView.register(CheckoutPaymentFooterView.self)
-    tableView.register(CheckoutPaymentMethodCell.self)
-    tableView.register(CheckoutWalletCell.self)
+    tableView.register(CheckoutPaymentMethodRadioCell.self)
+    tableView.register(CheckoutPaymentMethodSwitchCell.self)
     tableView.register(ToastViewCell.self)
   }
   

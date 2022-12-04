@@ -9,7 +9,7 @@ import UIKit
 
 struct CheckoutSectionBuilder {
   
-  typealias CellDelegate = CheckoutWalletCellDelegate & CheckoutPaymentMethodCellDelegate
+  typealias CellDelegate = CheckoutPaymentMethodSwitchCellDelegate & CheckoutPaymentMethodRadioCellDelegate
   typealias FooterDelegate = CheckoutPaymentFooterViewDelegate & TextViewWithLinkDelegate
   
   enum Section {
@@ -86,7 +86,7 @@ struct CheckoutSectionBuilder {
       let item = model.items[indexPath.row]
       let cell: UITableViewCell
       if item.isSwitch {
-        let newCell = tableView.dequeue(CheckoutWalletCell.self, for: indexPath)
+        let newCell = tableView.dequeue(CheckoutPaymentMethodSwitchCell.self, for: indexPath)
         newCell.configure(image: item.icon,
                           title: item.title,
                           isDividerHidden: item.isDividerHidden,
@@ -95,7 +95,7 @@ struct CheckoutSectionBuilder {
         newCell.configure(isEnabled: item.isEnabled)
         cell = newCell
       } else {
-        let newCell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
+        let newCell = tableView.dequeue(CheckoutPaymentMethodRadioCell.self, for: indexPath)
         newCell.configure(title: item.title,
                           isDividerHidden: item.isDividerHidden,
                           icon: item.icon,
@@ -245,11 +245,8 @@ struct CheckoutSectionBuilder {
     case var .payment(model):
       model.items[index].isSelected = isSelected
       let indexPath = IndexPath(row: index, section: 1)
-      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell, !isSelected {
+      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodRadioCell, !isSelected {
         cell.configure(isSelected: isSelected)
-      }
-      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutWalletCell, !isSelected {
-        cell.configure(isOn: isSelected)
       }
       section[1] = .payment(model)
     default:
@@ -265,7 +262,7 @@ struct CheckoutSectionBuilder {
       for (index, value) in model.items.enumerated() where !value.isSwitch {
         model.items[index].isEnabled = isEnabled
         let indexPath = IndexPath(row: index, section: 1)
-        if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodRadioCell {
           cell.configure(isEnabled: isEnabled)
         }
       }

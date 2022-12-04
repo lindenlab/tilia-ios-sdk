@@ -14,7 +14,7 @@ protocol CheckoutViewModelInputProtocol {
   func checkIsTosRequired()
   func payInvoice()
   func complete(isFromCloseAction: Bool)
-  func selectWallet(index: Int, isSelected: Bool)
+  func selectPaymentMethod(at index: Int, isSelected: Bool)
   func selectPaymentMethod(at index: Int)
 }
 
@@ -153,7 +153,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     onComplete?(model)
   }
   
-  func selectWallet(index: Int, isSelected: Bool) {
+  func selectPaymentMethod(at index: Int, isSelected: Bool) {
     selectedWalletIndex = isSelected ? index : nil
     selectedPaymentMethodIndex = nil
     guard
