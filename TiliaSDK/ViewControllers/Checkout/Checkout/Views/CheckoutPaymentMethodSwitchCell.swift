@@ -1,5 +1,5 @@
 //
-//  CheckoutWalletCell.swift
+//  CheckoutPaymentMethodSwitchCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 21.11.2022.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol CheckoutWalletCellDelegate: AnyObject {
-  func checkoutWalletCell(_ cell: CheckoutWalletCell, didSelectIsWalletOn isOn: Bool)
+protocol CheckoutPaymentMethodSwitchCellDelegate: AnyObject {
+  func checkoutPaymentMethodSwitchCell(_ cell: CheckoutPaymentMethodSwitchCell, didSelect isOn: Bool)
 }
 
-final class CheckoutWalletCell: UITableViewCell {
+final class CheckoutPaymentMethodSwitchCell: UITableViewCell {
   
-  private weak var delegate: CheckoutWalletCellDelegate?
+  private weak var delegate: CheckoutPaymentMethodSwitchCellDelegate?
   
   private let iconImageView: UIImageView = {
     let imageView = UIImageView()
@@ -51,7 +51,7 @@ final class CheckoutWalletCell: UITableViewCell {
   func configure(image: UIImage?,
                  title: String,
                  isDividerHidden: Bool,
-                 delegate: CheckoutWalletCellDelegate?) {
+                 delegate: CheckoutPaymentMethodSwitchCellDelegate?) {
     iconImageView.image = image
     titleLabel.text = title
     divider.isHidden = isDividerHidden
@@ -68,7 +68,7 @@ final class CheckoutWalletCell: UITableViewCell {
   
 }
 
-private extension CheckoutWalletCell {
+private extension CheckoutPaymentMethodSwitchCell {
   
   func setup() {
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
@@ -102,7 +102,7 @@ private extension CheckoutWalletCell {
   }
   
   @objc func switchDidChange() {
-    delegate?.checkoutWalletCell(self, didSelectIsWalletOn: uiSwitch.isOn)
+    delegate?.checkoutPaymentMethodSwitchCell(self, didSelect: uiSwitch.isOn)
   }
   
 }

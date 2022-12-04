@@ -1,5 +1,5 @@
 //
-//  CheckoutPaymentMethodCell.swift
+//  CheckoutPaymentMethodRadioCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 01.04.2022.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol CheckoutPaymentMethodCellDelegate: AnyObject {
-  func checkoutPaymentMethodCellRadioButtonDidTap(_ cell: CheckoutPaymentMethodCell)
+protocol CheckoutPaymentMethodRadioCellDelegate: AnyObject {
+  func checkoutPaymentMethodRadioCellDidSelect(_ cell: CheckoutPaymentMethodRadioCell)
 }
 
-final class CheckoutPaymentMethodCell: UITableViewCell {
+final class CheckoutPaymentMethodRadioCell: UITableViewCell {
   
-  private weak var delegate: CheckoutPaymentMethodCellDelegate?
+  private weak var delegate: CheckoutPaymentMethodRadioCellDelegate?
   
   private let radioButton: RadioButton = {
     let button = RadioButton()
@@ -30,6 +30,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 16)
+    label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
     return label
   }()
   
@@ -51,7 +52,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
   func configure(title: String,
                  isDividerHidden: Bool,
                  icon: UIImage?,
-                 delegate: CheckoutPaymentMethodCellDelegate?) {
+                 delegate: CheckoutPaymentMethodRadioCellDelegate?) {
     titleLabel.text = title
     self.delegate = delegate
     divider.isHidden = isDividerHidden
@@ -70,7 +71,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
 
 // MARK: - Private Methods
 
-private extension CheckoutPaymentMethodCell {
+private extension CheckoutPaymentMethodRadioCell {
   
   func setup() {
     radioButton.addTarget(self, action: #selector(radioButtonDidTap), for: .touchUpInside)
@@ -104,7 +105,7 @@ private extension CheckoutPaymentMethodCell {
   }
   
   @objc func radioButtonDidTap() {
-    delegate?.checkoutPaymentMethodCellRadioButtonDidTap(self)
+    delegate?.checkoutPaymentMethodRadioCellDidSelect(self)
   }
   
 }
