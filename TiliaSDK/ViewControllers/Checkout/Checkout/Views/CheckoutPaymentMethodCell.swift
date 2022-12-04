@@ -30,6 +30,7 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 16)
+    label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
     return label
   }()
   

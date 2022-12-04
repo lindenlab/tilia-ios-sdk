@@ -33,7 +33,7 @@ struct CheckoutSectionBuilder {
       
       struct Item {
         let title: String
-        let isWallet: Bool
+        let isSwitch: Bool
         var isSelected: Bool
         var isEnabled: Bool
         let icon: UIImage?
@@ -85,7 +85,7 @@ struct CheckoutSectionBuilder {
     case let .payment(model):
       let item = model.items[indexPath.row]
       let cell: UITableViewCell
-      if item.isWallet {
+      if item.isSwitch {
         let newCell = tableView.dequeue(CheckoutWalletCell.self, for: indexPath)
         newCell.configure(image: item.icon,
                           title: item.title,
@@ -177,7 +177,7 @@ struct CheckoutSectionBuilder {
     if model.isVirtual {
       let items: [Section.Payment.Item] = [
         .init(title: walletBalance.display,
-              isWallet: true,
+              isSwitch: false,
               isSelected: true,
               isEnabled: false,
               icon: .walletIcon,
@@ -189,17 +189,18 @@ struct CheckoutSectionBuilder {
                       isCreditCardButtonHidden: true)
     } else {
       let count = paymentMethods.count
+      let hasNotOnlyWallet = paymentMethods.first(where: { !$0.type.isWallet }) != nil
       let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
         return .init(title: value.type.isWallet ? L.useYourBalance(with: walletBalance.display) : value.display,
-                     isWallet: value.type.isWallet,
+                     isSwitch: value.type.isWallet && hasNotOnlyWallet,
                      isSelected: false,
-                     isEnabled: value.type.isWallet ? walletBalance.balance >= invoiceInfo.amount || paymentMethods.first(where: { !$0.type.isWallet }) != nil : true,
+                     isEnabled: value.type.isWallet ? walletBalance.balance >= invoiceInfo.amount || hasNotOnlyWallet : true,
                      icon: value.type.icon,
                      isDividerHidden: index == count - 1)
       }
       payment = .init(items: items,
                       isPayButtonEnabled: false,
-                      payButtonTitle: L.usePaymentMethods,
+                      payButtonTitle: hasNotOnlyWallet ? L.usePaymentMethods : L.pay,
                       isCreditCardButtonHidden: false)
     }
     
@@ -261,7 +262,7 @@ struct CheckoutSectionBuilder {
                             isEnabled: Bool) {
     switch section[1] {
     case var .payment(model):
-      for (index, value) in model.items.enumerated() where !value.isWallet {
+      for (index, value) in model.items.enumerated() where !value.isSwitch {
         model.items[index].isEnabled = isEnabled
         let indexPath = IndexPath(row: index, section: 1)
         if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell {

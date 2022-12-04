@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CheckoutWalletCellDelegate: AnyObject {
-  func checkoutWalletCell(_ cell: CheckoutWalletCell, didSelectIsWalletOn isOn: Bool)
+  func checkoutWalletCell(_ cell: CheckoutWalletCell, didSelect isOn: Bool)
 }
 
 final class CheckoutWalletCell: UITableViewCell {
@@ -102,7 +102,7 @@ private extension CheckoutWalletCell {
   }
   
   @objc func switchDidChange() {
-    delegate?.checkoutWalletCell(self, didSelectIsWalletOn: uiSwitch.isOn)
+    delegate?.checkoutWalletCell(self, didSelect: uiSwitch.isOn)
   }
   
 }
