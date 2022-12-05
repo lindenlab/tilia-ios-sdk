@@ -25,9 +25,10 @@ struct UserInfoModel {
     var city: String?
     var region: CountryStateModel
     var postalCode: String?
+    var canUseAddressForTax: BoolModel?
     
     var isEmpty: Bool {
-      return street.isEmpty || city.isEmpty || region.isEmpty || postalCode.isEmpty
+      return street.isEmpty || city.isEmpty || region.isEmpty || postalCode.isEmpty || canUseAddressForTax == nil
     }
   }
   
@@ -42,7 +43,6 @@ struct UserInfoModel {
   var fullName: FullName = FullName()
   var dateOfBirth: Date?
   var address: Address = Address(region: CountryStateModel())
-  var canUseAddressFor1099: BoolModel?
   var tax: Tax = Tax()
   
   var isUsResident: Bool { return countryOfResidence?.isUs == true }
@@ -51,7 +51,6 @@ struct UserInfoModel {
   
   mutating func setAddressToDefault() {
     address = Address(region: CountryStateModel())
-    canUseAddressFor1099 = nil
   }
   
   mutating func setTaxToDefault() {

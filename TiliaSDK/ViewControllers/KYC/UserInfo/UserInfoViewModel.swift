@@ -150,9 +150,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       }
     case .postalCode:
       isFieldChanged = isFieldUpdated(&userInfoModel.address.postalCode, with: text)
-    case .useAddressFor1099:
+    case .useAddressForTax:
       let value = BoolModel(str: text ?? "")
-      isFieldChanged = isFieldUpdated(&userInfoModel.canUseAddressFor1099, with: value)
+      isFieldChanged = isFieldUpdated(&userInfoModel.address.canUseAddressForTax, with: value)
     }
     
     guard isFieldChanged,

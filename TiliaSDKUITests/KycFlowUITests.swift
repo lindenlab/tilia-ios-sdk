@@ -108,14 +108,14 @@ final class KycFlowUITests: XCTestCase {
     postalCodeTextField.tap()
     postalCodeTextField.typeText("12324\n")
     
-    let useAddressFor1099TextField = app.tables.cells.textFields["useAddressFor1099TextField"]
-    XCTAssert(useAddressFor1099TextField.exists)
-    useAddressFor1099TextField.tap()
+    let useAddressForTaxTextField = app.tables.cells.textFields["useAddressForTaxTextField"]
+    XCTAssert(useAddressForTaxTextField.exists)
+    useAddressForTaxTextField.tap()
     
-    let useAddressFor1099Picker = app.pickerWheels.firstMatch
-    XCTAssert(useAddressFor1099Picker.exists)
-    useAddressFor1099Picker.adjust(toPickerWheelValue: "Yes")
-    useAddressFor1099TextField.typeText("\n")
+    let useAddressForTaxPicker = app.pickerWheels.firstMatch
+    XCTAssert(useAddressForTaxPicker.exists)
+    useAddressForTaxPicker.adjust(toPickerWheelValue: "Yes")
+    useAddressForTaxTextField.typeText("\n")
     
     scrollUp(app: app, dy: -200)
     
@@ -374,14 +374,14 @@ final class KycFlowUITests: XCTestCase {
     postalCodeTextField.tap()
     postalCodeTextField.typeText("12324\n")
     
-    let useAddressFor1099TextField = app.tables.cells.textFields["useAddressFor1099TextField"]
-    XCTAssert(useAddressFor1099TextField.exists)
-    useAddressFor1099TextField.tap()
+    let useAddressForTaxTextField = app.tables.cells.textFields["useAddressForTaxTextField"]
+    XCTAssert(useAddressForTaxTextField.exists)
+    useAddressForTaxTextField.tap()
     
-    let useAddressFor1099Picker = app.pickerWheels.firstMatch
-    XCTAssert(useAddressFor1099Picker.exists)
-    useAddressFor1099Picker.adjust(toPickerWheelValue: "Yes")
-    useAddressFor1099TextField.typeText("\n")
+    let useAddressForTaxPicker = app.pickerWheels.firstMatch
+    XCTAssert(useAddressForTaxPicker.exists)
+    useAddressForTaxPicker.adjust(toPickerWheelValue: "Yes")
+    useAddressForTaxTextField.typeText("\n")
     
     scrollUp(app: app, dy: -200)
     
