@@ -585,7 +585,7 @@ private extension UserInfoSectionBuilder {
     
     var items: [Section.Item] = [
       Section.Item(mode: .fields(addressField),
-                   title: L.address),
+                   title: L.permanentResidenceAddress),
       Section.Item(mode: .fields(cityField),
                    title: L.city),
       Section.Item(mode: .fields(regionField),
@@ -597,21 +597,19 @@ private extension UserInfoSectionBuilder {
                    description: model.countryOfResidence?.name)
     ]
     
-    if model.isUsResident {
-      let canUseAddressFor1099Items = BoolModel.allCases
-      let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099 }
-      let pickerItems = [""] + canUseAddressFor1099Items.map { $0.description }
-      
-      let canUseAddressFor1099Field = Section.Item.Mode.Fields(type: .useAddressFor1099,
-                                                               fields: [.init(placeholder: L.selectAnswer,
-                                                                              text: model.canUseAddressFor1099?.description,
-                                                                              accessibilityIdentifier: "useAddressFor1099TextField")],
-                                                               inputMode: .picker(items: pickerItems,
-                                                                                  selectedIndex: canUseAddressFor1099SelectedIndex))
-      items.append(Section.Item(mode: .fields(canUseAddressFor1099Field),
-                                title: L.useAddressFor1099,
-                                description: L.useAddressFor1099Description))
-    }
+    let canUseAddressFor1099Items = BoolModel.allCases
+    let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099 }
+    let pickerItems = [""] + canUseAddressFor1099Items.map { $0.description }
+    
+    let canUseAddressFor1099Field = Section.Item.Mode.Fields(type: .useAddressFor1099,
+                                                             fields: [.init(placeholder: L.selectAnswer,
+                                                                            text: model.canUseAddressFor1099?.description,
+                                                                            accessibilityIdentifier: "useAddressFor1099TextField")],
+                                                             inputMode: .picker(items: pickerItems,
+                                                                                selectedIndex: canUseAddressFor1099SelectedIndex))
+    items.append(Section.Item(mode: .fields(canUseAddressFor1099Field),
+                              title: L.useAddressForTax,
+                              description: L.useAddressFor1099Description))
     
     return items
   }

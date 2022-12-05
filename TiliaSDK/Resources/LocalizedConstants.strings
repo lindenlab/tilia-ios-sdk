@@ -48,7 +48,7 @@
 "dateOfBirth" = "Date of birth";
 "ssn" = "Social security number";
 "fullName" = "Full name";
-"address" = "Address";
+"permanentResidenceAddress" = "Permanent Residence Address";
 "streetAddress" = "Street address";
 "apartment" = "Apt., ste., bldg.";
 "city" = "City";
@@ -56,7 +56,7 @@
 "stateOrRegion" = "State / Region";
 "selectState" = "Select a state";
 "postalCode" = "Postal code";
-"useAddressFor1099" = "Can we use this address for your 1099?";
+"useAddressForTax" = "Can we use this address for tax purposes?";
 "useAddressFor1099Description" = "If you earn more than $600 this year using this platform, you’ll receive a 1099 from us.";
 "selectAnswer" = "Please select an answer";
 "fewMoreThings" = "A few more things";
