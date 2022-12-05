@@ -42,7 +42,6 @@ struct CheckoutSectionBuilder {
       
       var items: [Item]
       var isPayButtonEnabled: Bool
-      let payButtonTitle: String
       let isCreditCardButtonHidden: Bool
       var isEmpty: Bool { return items.isEmpty }
     }
@@ -149,7 +148,7 @@ struct CheckoutSectionBuilder {
       return view
     case let .payment(model):
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)
-      view.configure(payButtonTitle: model.isEmpty ? nil : model.payButtonTitle,
+      view.configure(payButtonTitle: model.isEmpty ? nil : L.payNow,
                      closeButtonTitle: L.cancel,
                      isCreditCardButtonHidden: model.isCreditCardButtonHidden,
                      delegate: delegate,
@@ -185,7 +184,6 @@ struct CheckoutSectionBuilder {
       ]
       payment = .init(items: items,
                       isPayButtonEnabled: true,
-                      payButtonTitle: L.pay,
                       isCreditCardButtonHidden: true)
     } else {
       let count = paymentMethods.count
@@ -200,7 +198,6 @@ struct CheckoutSectionBuilder {
       }
       payment = .init(items: items,
                       isPayButtonEnabled: false,
-                      payButtonTitle: hasNotOnlyWallet ? L.usePaymentMethods : L.pay,
                       isCreditCardButtonHidden: false)
     }
     
