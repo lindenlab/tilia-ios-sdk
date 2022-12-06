@@ -226,6 +226,15 @@ private extension CheckoutViewController {
       }
     }.store(in: &subscriptions)
     
+    viewModel.updatePayment.sink { [weak self] in
+      guard let self = self else { return }
+      let reloadSections = self.builder.updatePaymentSection(for: &self.sections,
+                                                             model: $0)
+      UIView.performWithoutAnimation {
+        self.tableView.reloadSections(reloadSections, with: .none)
+      }
+    }.store(in: &subscriptions)
+    
     viewModel.paymentMethodsAreEnabled.sink { [weak self] in
       guard let self = self else { return }
       self.builder.updatePaymentSection(for: &self.sections,
