@@ -93,6 +93,7 @@ struct UserDocumentsSectionBuilder {
       cell.configure(title: item.title)
       cell.configure(fieldsContent: [model.fieldContent],
                      description: nil,
+                     attributedDescription: nil,
                      delegate: delegate)
       cell.configure(inputMode: .picker(items: model.items,
                                         selectedIndex: model.seletedItemIndex))

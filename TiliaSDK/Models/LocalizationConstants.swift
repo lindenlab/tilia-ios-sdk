@@ -67,7 +67,7 @@ enum L {
   static let selectState = "selectState".localized
   static let postalCode = "postalCode".localized
   static let useAddressForTax = "useAddressForTax".localized
-  static let useAddressFor1099Description = "useAddressFor1099Description".localized
+  static let useAddressForTaxUsDescription = "useAddressForTaxUsDescription".localized
   static let selectAnswer = "selectAnswer".localized
   static let fewMoreThings = "fewMoreThings".localized
   static let userDocumentsMessage = "userDocumentsMessage".localized
@@ -92,10 +92,14 @@ enum L {
   static let uploading = "uploading".localized
   static let yes = "yes".localized
   static let no = "no".localized
-  static let ssnAcceptionTitle = "ssnAcceptionTitle".localized
-  static let ssnAcceptionMessage = "ssnAcceptionMessage".localized
+  static let certificationTitle = "certificationTitle".localized
+  static let certificationUsMessage = "certificationUsMessage".localized
+  static let certificationNonUsMessage = "certificationNonUsMessage".localized
+  static let certificationNonUsAdditionalMessage = "certificationNonUsAdditionalMessage".localized
+  static let taxPurposesMessage = "taxPurposesMessage".localized
   static let taxInfo = "taxInfo".localized
-  static let signatureTitle = "signatureTitle".localized
+  static let signature = "signature".localized
+  static let signatureUs = "signatureUs".localized
   static let signatureDescription = "signatureDescription".localized
   static let yourFullName = "yourFullName".localized
   static let accessToCameraTitle = "accessToCameraTitle".localized

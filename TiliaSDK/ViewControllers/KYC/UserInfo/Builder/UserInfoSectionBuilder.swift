@@ -203,6 +203,7 @@ struct UserInfoSectionBuilder {
       cell.configure(title: item.title)
       cell.configure(fieldsContent: model.fieldsContent,
                      description: item.description,
+                     attributedDescription: item.attributedDescription,
                      delegate: delegate)
       return cell
     case .label:
@@ -520,29 +521,35 @@ private extension UserInfoSectionBuilder {
   }
   
   func itemsForTaxSection(with model: UserInfoModel) -> [Section.Item] {
-    let ssnFieldMask = "xxx-xx-xxxx"
-    let ssnField = Section.Item.Mode.Fields(type: .ssn,
-                                            fields: [.init(placeholder: ssnFieldMask,
-                                                           text: model.tax.ssn,
-                                                           accessibilityIdentifier: "ssnTextField")],
-                                            mask: ssnFieldMask)
-    
+    var items: [Section.Item] = []
+    if model.isUsResident {
+      let ssnFieldMask = "xxx-xx-xxxx"
+      let ssnField = Section.Item.Mode.Fields(type: .ssn,
+                                              fields: [.init(placeholder: ssnFieldMask,
+                                                             text: model.tax.ssn,
+                                                             accessibilityIdentifier: "ssnTextField")],
+                                              mask: ssnFieldMask)
+      items.append(Section.Item(mode: .fields(ssnField),
+                                title: L.ssn))
+    }
+    let certificationMessage = certificationMessage(title: model.isUsResident ? L.certificationUsMessage : L.certificationNonUsMessage,
+                                                    subTitle: model.isUsResident ? nil : L.certificationNonUsAdditionalMessage)
     let signatureField = Section.Item.Mode.Fields(type: .signature,
                                                   fields: [.init(placeholder: L.yourFullName,
                                                                  text: model.tax.signature,
                                                                  accessibilityIdentifier: "signatureTextField")])
-    
-    return [
-      Section.Item(mode: .fields(ssnField),
-                   title: L.ssn),
+    let signatureMessage = signatureMessage(title: L.signatureDescription,
+                                            subTitle: L.taxPurposesMessage)
+    items.append(contentsOf: [
       Section.Item(mode: .label,
-                   title: L.ssnAcceptionTitle,
-                   attributedDescription: attributedNumberList(for: L.ssnAcceptionMessage)),
+                   title: L.certificationTitle,
+                   attributedDescription: certificationMessage),
       Section.Item(mode: .fields(signatureField),
-                   title: L.signatureTitle,
-                   description: L.signatureDescription),
+                   title: model.isUsResident ? L.signatureUs : L.signature,
+                   attributedDescription: signatureMessage),
       Section.Item(mode: .button)
-    ]
+    ])
+    return items
   }
   
   func itemsForContactSection(with model: UserInfoModel) -> [Section.Item] {
@@ -609,7 +616,7 @@ private extension UserInfoSectionBuilder {
                                                                                selectedIndex: canUseAddressForTaxSelectedIndex))
     items.append(Section.Item(mode: .fields(canUseAddressForTaxField),
                               title: L.useAddressForTax,
-                              description: L.useAddressFor1099Description))
+                              description: model.isUsResident ? L.useAddressForTaxUsDescription : nil))
     
     return items
   }
@@ -641,15 +648,34 @@ private extension UserInfoSectionBuilder {
     return indexPaths
   }
   
-  func attributedNumberList(for str: String) -> NSAttributedString {
-    let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.headIndent = 16
+  func certificationMessage(title: String, subTitle: String?) -> NSAttributedString {
+    let newStr = [title, subTitle].compactMap { $0 }.joined(separator: "\n")
     let attributes: [NSAttributedString.Key: Any] = [
       .font: UIFont.systemFont(ofSize: 14),
-      .foregroundColor: UIColor.secondaryTextColor,
-      .paragraphStyle: paragraphStyle
+      .foregroundColor: UIColor.secondaryTextColor
     ]
-    return NSAttributedString(string: str, attributes: attributes)
+    let mutableStr = NSMutableAttributedString(string: newStr,
+                                               attributes: attributes)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.headIndent = 16
+    mutableStr.addAttribute(.paragraphStyle,
+                            value: paragraphStyle,
+                            range: mutableStr.mutableString.range(of: title))
+    return mutableStr
+  }
+  
+  func signatureMessage(title: String, subTitle: String) -> NSAttributedString {
+    let newStr = [title, subTitle].joined(separator: "\n\n")
+    let mutableStr = NSMutableAttributedString(string: newStr,
+                                               attributes: [.font: UIFont.systemFont(ofSize: 14)])
+    mutableStr.addAttribute(.foregroundColor,
+                            value: UIColor.tertiaryTextColor,
+                            range: mutableStr.mutableString.range(of: title))
+    mutableStr.addAttribute(.foregroundColor,
+                            value: UIColor.secondaryTextColor,
+                            range: mutableStr.mutableString.range(of: subTitle))
+    
+    return mutableStr
   }
   
 }
