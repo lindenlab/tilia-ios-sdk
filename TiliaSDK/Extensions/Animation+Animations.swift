@@ -7,8 +7,8 @@
 
 import Lottie
 
-extension Animation {
+extension LottieAnimation {
   
-  static let successAnimation = Animation.named("SuccessAnimation", bundle: BundleToken.bundle, subdirectory: nil)
+  static let successAnimation = LottieAnimation.named("SuccessAnimation", bundle: BundleToken.bundle, subdirectory: nil)
   
 }

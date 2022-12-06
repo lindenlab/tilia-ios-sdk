@@ -10,8 +10,8 @@ import Lottie
 
 final class UserInfoSuccessCell: UITableViewCell {
   
-  private let animationView: AnimationView = {
-    let view = AnimationView(animation: .successAnimation)
+  private let animationView: LottieAnimationView = {
+    let view = LottieAnimationView(animation: .successAnimation)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = .backgroundColor
     return view
