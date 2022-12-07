@@ -167,41 +167,10 @@ struct CheckoutSectionBuilder {
   }
   
   func sections(with model: CheckoutContent) -> [Section] {
-    let invoiceInfo = model.invoiceInfo
-    let walletBalance = model.walletBalance
-    let paymentMethods = model.paymentMethods
-    let summary = summaryModel(for: invoiceInfo)
-    
-    let payment: Section.Payment
-    if model.isVirtual {
-      let items: [Section.Payment.Item] = [
-        .init(title: walletBalance.display,
-              isSwitch: false,
-              isSelected: true,
-              isEnabled: false,
-              icon: .walletIcon,
-              isDividerHidden: true)
-      ]
-      payment = .init(items: items,
-                      isPayButtonEnabled: true,
-                      isCreditCardButtonHidden: true)
-    } else {
-      let count = paymentMethods.count
-      let hasNotOnlyWallet = paymentMethods.first(where: { !$0.type.isWallet }) != nil
-      let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
-        return .init(title: value.type.isWallet ? L.useYourBalance(with: walletBalance.display) : value.display,
-                     isSwitch: value.type.isWallet && hasNotOnlyWallet,
-                     isSelected: false,
-                     isEnabled: value.type.isWallet ? walletBalance.balance >= invoiceInfo.amount || hasNotOnlyWallet : true,
-                     icon: value.type.icon,
-                     isDividerHidden: index == count - 1)
-      }
-      payment = .init(items: items,
-                      isPayButtonEnabled: false,
-                      isCreditCardButtonHidden: false)
-    }
-    
-    return [.summary(summary), .payment(payment)]
+    return [
+      .summary(summaryModel(for: model.invoiceInfo)),
+      .payment(paymentModel(for: model))
+    ]
   }
   
   func updateSections(_ sections: [Section],
@@ -232,6 +201,17 @@ struct CheckoutSectionBuilder {
       break
     }
     return [0]
+  }
+  
+  func updatePaymentSection(for sections: inout [Section],
+                            model: CheckoutContent) -> IndexSet {
+    switch sections[1] {
+    case .payment:
+      sections[1] = .payment(paymentModel(for: model))
+    default:
+      break
+    }
+    return [1]
   }
   
   func updatePaymentSection(for section: inout [Section],
@@ -307,6 +287,41 @@ private extension CheckoutSectionBuilder {
                  referenceId: model.referenceId,
                  amount: model.displayAmount,
                  items: items)
+  }
+  
+  func paymentModel(for model: CheckoutContent) -> Section.Payment {
+    let invoiceInfo = model.invoiceInfo
+    let walletBalance = model.walletBalance
+    let paymentMethods = model.paymentMethods
+    let payment: Section.Payment
+    if model.isVirtual {
+      let items: [Section.Payment.Item] = [
+        .init(title: walletBalance.display,
+              isSwitch: false,
+              isSelected: true,
+              isEnabled: false,
+              icon: .walletIcon,
+              isDividerHidden: true)
+      ]
+      payment = .init(items: items,
+                      isPayButtonEnabled: true,
+                      isCreditCardButtonHidden: true)
+    } else {
+      let count = paymentMethods.count
+      let hasNotOnlyWallet = paymentMethods.first(where: { !$0.type.isWallet }) != nil
+      let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
+        return .init(title: value.type.isWallet ? L.useYourBalance(with: walletBalance.display) : value.display,
+                     isSwitch: value.type.isWallet && hasNotOnlyWallet,
+                     isSelected: false,
+                     isEnabled: value.type.isWallet ? walletBalance.balance >= invoiceInfo.amount || hasNotOnlyWallet : true,
+                     icon: value.type.icon,
+                     isDividerHidden: index == count - 1)
+      }
+      payment = .init(items: items,
+                      isPayButtonEnabled: false,
+                      isCreditCardButtonHidden: false)
+    }
+    return payment
   }
   
 }

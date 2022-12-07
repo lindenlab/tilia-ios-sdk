@@ -30,6 +30,7 @@ protocol CheckoutViewModelOutputProtocol {
   var deselectIndex: PassthroughSubject<Int, Never> { get }
   var selectIndex: PassthroughSubject<Int, Never> { get }
   var updateSummary: PassthroughSubject<InvoiceInfoModel, Never> { get }
+  var updatePayment: PassthroughSubject<CheckoutContent, Never> { get }
   var paymentMethodsAreEnabled: PassthroughSubject<Bool, Never> { get }
 }
 
@@ -55,6 +56,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   let deselectIndex = PassthroughSubject<Int, Never>()
   let selectIndex = PassthroughSubject<Int, Never>()
   let updateSummary = PassthroughSubject<InvoiceInfoModel, Never>()
+  let updatePayment = PassthroughSubject<CheckoutContent, Never>()
   let paymentMethodsAreEnabled = PassthroughSubject<Bool, Never>()
   
   let manager: NetworkManager
@@ -262,7 +264,6 @@ private extension CheckoutViewModel {
     }
     manager.createInvoice(withId: authorizedInvoiceId, isEscrow: isEscrow, paymentMethods: paymentMethods) { [weak self] result in
       guard let self = self else { return }
-      self.createInvoiceLoading.send(false)
       switch result {
       case .success(let model):
         self.invoiceId = model.invoiceId
@@ -275,6 +276,7 @@ private extension CheckoutViewModel {
         self.invoiceId = nil
         self.didFail(with: .init(error: error, value: false))
       }
+      self.createInvoiceLoading.send(false)
     }
   }
   
@@ -287,7 +289,7 @@ private extension CheckoutViewModel {
       switch result {
       case .success(let model):
         self.paymentMethods = model.paymentMethods
-        self.setContent()
+        self.updatePaymentObserver()
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
@@ -310,6 +312,14 @@ private extension CheckoutViewModel {
       let isVirtual = isVirtual,
       let walletBalance = walletBalance else { return }
     content.send((invoiceInfo, walletBalance, paymentMethods, isVirtual))
+  }
+  
+  func updatePaymentObserver() {
+    guard
+      let invoiceInfo = invoiceInfo,
+      let isVirtual = isVirtual,
+      let walletBalance = walletBalance else { return }
+    updatePayment.send((invoiceInfo, walletBalance, paymentMethods, isVirtual))
   }
   
 }
