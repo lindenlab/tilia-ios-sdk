@@ -80,7 +80,7 @@
 		D1632D0B2839562C006BDF19 /* UserInfoNextButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */; };
 		D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */; };
 		D163D9E3284F52D400F478DA /* UserInfoSuccessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E2284F52D400F478DA /* UserInfoSuccessCell.swift */; };
-		D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* Animation+Animations.swift */; };
+		D163D9E5284F53CC00F478DA /* LottieAnimation+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D163D9E4284F53CC00F478DA /* LottieAnimation+Animations.swift */; };
 		D163D9E9284F556000F478DA /* SuccessAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = D163D9E8284F556000F478DA /* SuccessAnimation.json */; };
 		D164A616290083FE00747B42 /* FailableDecodableModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D164A615290083FE00747B42 /* FailableDecodableModel.swift */; };
 		D1653B07290C053300DC2B20 /* ServerClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1653B06290C053300DC2B20 /* ServerClientTests.swift */; };
@@ -336,7 +336,7 @@
 		D1632D0A2839562C006BDF19 /* UserInfoNextButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoNextButtonCell.swift; sourceTree = "<group>"; };
 		D1632D0E283B8157006BDF19 /* UserDocumentsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsFooterView.swift; sourceTree = "<group>"; };
 		D163D9E2284F52D400F478DA /* UserInfoSuccessCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSuccessCell.swift; sourceTree = "<group>"; };
-		D163D9E4284F53CC00F478DA /* Animation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+Animations.swift"; sourceTree = "<group>"; };
+		D163D9E4284F53CC00F478DA /* LottieAnimation+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LottieAnimation+Animations.swift"; sourceTree = "<group>"; };
 		D163D9E8284F556000F478DA /* SuccessAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SuccessAnimation.json; sourceTree = "<group>"; };
 		D164A615290083FE00747B42 /* FailableDecodableModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailableDecodableModel.swift; sourceTree = "<group>"; };
 		D1653B06290C053300DC2B20 /* ServerClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerClientTests.swift; sourceTree = "<group>"; };
@@ -921,7 +921,7 @@
 				D15BA9F2282AABF900511785 /* Date+Helpers.swift */,
 				D15BA9F4282AACE200511785 /* DateFormatter+Helpers.swift */,
 				D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */,
-				D163D9E4284F53CC00F478DA /* Animation+Animations.swift */,
+				D163D9E4284F53CC00F478DA /* LottieAnimation+Animations.swift */,
 				D1E6F59928EB41B8000CDA5E /* Collection+Helpers.swift */,
 			);
 			path = Extensions;
@@ -1550,7 +1550,7 @@
 				D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */,
 				D1CCE8D127F4A9DF00FD0E25 /* UIImage+Images.swift in Sources */,
 				D10E5CBA292B93CD00ECECD9 /* Switch.swift in Sources */,
-				D163D9E5284F53CC00F478DA /* Animation+Animations.swift in Sources */,
+				D163D9E5284F53CC00F478DA /* LottieAnimation+Animations.swift in Sources */,
 				D1CCE8C727F4A41600FD0E25 /* CheckoutViewController.swift in Sources */,
 				D1FF582A28E6208A00B7CB3F /* TransactionHistoryHeaderView.swift in Sources */,
 				D1CCE8D327F4C34F00FD0E25 /* EmptyModel.swift in Sources */,

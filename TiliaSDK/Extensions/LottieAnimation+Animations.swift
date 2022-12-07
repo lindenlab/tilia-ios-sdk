@@ -1,5 +1,5 @@
 //
-//  Animation+Animations.swift
+//  LottieAnimation+Animations.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 07.06.2022.
