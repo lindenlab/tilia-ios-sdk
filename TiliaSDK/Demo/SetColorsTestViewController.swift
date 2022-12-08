@@ -117,7 +117,7 @@ final class SetColorsTestViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .white
+    view.backgroundColor = .backgroundColor
     view.addSubview(stackView)
     view.addSubview(button)
     button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
