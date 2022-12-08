@@ -333,7 +333,7 @@ private extension CheckoutPaymentTypeModel {
   var icon: UIImage? {
     switch self {
     case .wallet: return .walletIcon
-    case .paypal: return nil
+    case .paypal: return .payPalIcon
     case .americanExpress: return .americanExpressIcon
     case .discover: return .discoverIcon
     case .dinersClub: return .dinersClubIcon
@@ -342,7 +342,7 @@ private extension CheckoutPaymentTypeModel {
     case .electron: return nil
     case .masterCard: return .masterCardIcon
     case .visa: return .visaIcon
-    case .chinaUnionpay: return .chinaUnionpayIcon
+    case .chinaUnionPay: return .chinaUnionPayIcon
     }
   }
   
