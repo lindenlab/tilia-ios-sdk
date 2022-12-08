@@ -88,7 +88,6 @@ struct CheckoutSectionBuilder {
         let newCell = tableView.dequeue(CheckoutPaymentMethodSwitchCell.self, for: indexPath)
         newCell.configure(image: item.icon,
                           title: item.title,
-                          isDividerHidden: item.isDividerHidden,
                           delegate: delegate)
         newCell.configure(isOn: item.isSelected)
         newCell.configure(isEnabled: item.isEnabled)
