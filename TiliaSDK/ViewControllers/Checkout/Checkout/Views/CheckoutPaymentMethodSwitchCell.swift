@@ -23,7 +23,7 @@ final class CheckoutPaymentMethodSwitchCell: UITableViewCell {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textColor = .primaryTextColor
-    label.font = .systemFont(ofSize: 16)
+    label.font = .systemFont(ofSize: 14)
     label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
     label.setContentHuggingPriority(.init(249), for: .horizontal)
     label.textAlignment = .right
@@ -33,12 +33,6 @@ final class CheckoutPaymentMethodSwitchCell: UITableViewCell {
   private let uiSwitch: Switch = {
     let uiSwitch = Switch()
     return uiSwitch
-  }()
-  
-  private let divider: DividerView = {
-    let view = DividerView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
   }()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,11 +46,9 @@ final class CheckoutPaymentMethodSwitchCell: UITableViewCell {
   
   func configure(image: UIImage?,
                  title: String,
-                 isDividerHidden: Bool,
                  delegate: CheckoutPaymentMethodSwitchCellDelegate?) {
     iconImageView.image = image
     titleLabel.text = title
-    divider.isHidden = isDividerHidden
     self.delegate = delegate
   }
   
@@ -77,7 +69,9 @@ private extension CheckoutPaymentMethodSwitchCell {
     
     selectionStyle = .none
     backgroundColor = .backgroundColor
-    contentView.backgroundColor = .backgroundColor
+    contentView.clipsToBounds = true
+    contentView.backgroundColor = .backgroundDarkerColor
+    contentView.layer.cornerRadius = 10
     
     let stackView = UIStackView(arrangedSubviews: [iconImageView,
                                                    titleLabel,
@@ -87,16 +81,12 @@ private extension CheckoutPaymentMethodSwitchCell {
     stackView.alignment = .center
     
     contentView.addSubview(stackView)
-    contentView.addSubview(divider)
     
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
       stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-      divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      divider.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-      divider.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
+      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
     ])
   }
   

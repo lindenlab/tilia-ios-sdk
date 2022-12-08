@@ -29,7 +29,7 @@ final class CheckoutPaymentMethodRadioCell: UITableViewCell {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textColor = .primaryTextColor
-    label.font = .systemFont(ofSize: 16)
+    label.font = .systemFont(ofSize: 14)
     label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
     label.setContentHuggingPriority(.init(249), for: .horizontal)
     label.textAlignment = .right
