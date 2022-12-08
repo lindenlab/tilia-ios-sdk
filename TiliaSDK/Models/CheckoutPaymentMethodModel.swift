@@ -62,7 +62,7 @@ enum CheckoutPaymentTypeModel: String, Decodable {
   case electron
   case masterCard = "master-card"
   case visa
-  case chinaUnionpay = "china-unionpay"
+  case chinaUnionPay = "china-unionpay"
   
   var isWallet: Bool { return self == .wallet }
   

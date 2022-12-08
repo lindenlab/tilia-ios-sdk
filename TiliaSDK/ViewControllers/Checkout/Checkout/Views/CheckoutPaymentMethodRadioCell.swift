@@ -31,6 +31,8 @@ final class CheckoutPaymentMethodRadioCell: UITableViewCell {
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 16)
     label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
+    label.setContentHuggingPriority(.init(249), for: .horizontal)
+    label.textAlignment = .right
     return label
   }()
   
@@ -78,15 +80,14 @@ private extension CheckoutPaymentMethodRadioCell {
     
     selectionStyle = .none
     accessibilityIdentifier = "checkoutPaymentMethodCell"
-    let leadingStackView = UIStackView(arrangedSubviews: [radioButton, iconImageView])
-    leadingStackView.alignment = .center
-    leadingStackView.spacing = 16
     
-    let stackView = UIStackView(arrangedSubviews: [leadingStackView, titleLabel])
+    let stackView = UIStackView(arrangedSubviews: [radioButton,
+                                                   iconImageView,
+                                                   titleLabel])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.spacing = 5
-    stackView.distribution = .equalSpacing
     stackView.alignment = .center
+    stackView.setCustomSpacing(16, after: radioButton)
     
     backgroundColor = .backgroundColor
     contentView.backgroundColor = .backgroundColor

@@ -25,6 +25,8 @@ final class CheckoutPaymentMethodSwitchCell: UITableViewCell {
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 16)
     label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
+    label.setContentHuggingPriority(.init(249), for: .horizontal)
+    label.textAlignment = .right
     return label
   }()
   
@@ -77,14 +79,11 @@ private extension CheckoutPaymentMethodSwitchCell {
     backgroundColor = .backgroundColor
     contentView.backgroundColor = .backgroundColor
     
-    let leadingStackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
-    leadingStackView.alignment = .center
-    leadingStackView.spacing = 8
-    
-    let stackView = UIStackView(arrangedSubviews: [leadingStackView, uiSwitch])
+    let stackView = UIStackView(arrangedSubviews: [iconImageView,
+                                                   titleLabel,
+                                                   uiSwitch])
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.spacing = 5
-    stackView.distribution = .equalSpacing
+    stackView.spacing = 8
     stackView.alignment = .center
     
     contentView.addSubview(stackView)
