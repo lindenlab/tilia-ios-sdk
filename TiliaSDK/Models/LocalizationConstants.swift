@@ -92,7 +92,8 @@ enum L {
   static let uploading = "uploading".localized
   static let yes = "yes".localized
   static let no = "no".localized
-  static let certificationTitle = "certificationTitle".localized
+  static let certificationUsTitle = "certificationUsTitle".localized
+  static let certificationNonUsTitle = "certificationNonUsTitle".localized
   static let certificationUsMessage = "certificationUsMessage".localized
   static let certificationNonUsMessage = "certificationNonUsMessage".localized
   static let certificationNonUsAdditionalMessage = "certificationNonUsAdditionalMessage".localized

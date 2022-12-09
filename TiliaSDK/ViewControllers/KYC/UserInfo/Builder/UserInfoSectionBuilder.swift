@@ -542,7 +542,7 @@ private extension UserInfoSectionBuilder {
                                             subTitle: L.taxPurposesMessage)
     items.append(contentsOf: [
       Section.Item(mode: .label,
-                   title: L.certificationTitle,
+                   title: model.isUsResident ? L.certificationUsTitle : L.certificationNonUsTitle,
                    attributedDescription: certificationMessage),
       Section.Item(mode: .fields(signatureField),
                    title: model.isUsResident ? L.signatureUs : L.signature,
