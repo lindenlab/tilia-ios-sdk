@@ -60,6 +60,10 @@ final class CheckoutViewModelTests: XCTestCase {
     var updateCallback: TLUpdateCallback?
     var completeCallback: TLCompleteCallback?
     var selectIndex: Int?
+    var deselectIndex: Int?
+    var paymentMethodsAreEnabled: Bool?
+    var createInvoiceLoading: Bool?
+    var updateSummary: InvoiceInfoModel?
     
     let updateCallbackExpectation = XCTestExpectation(description: "testSuccessPayInvoice_UpdateCallback")
     let completeCallbackExpectation = XCTestExpectation(description: "testSuccessPayInvoice_CompleteCallback")
@@ -76,9 +80,15 @@ final class CheckoutViewModelTests: XCTestCase {
       loadingExpectation.fulfill()
     }.store(in: &subscriptions)
     
+    let createInvoiceLoadingExpectation = XCTestExpectation(description: "testSuccessPayInvoice_CreateInvoiceLoading")
+    viewModel.createInvoiceLoading.sink {
+      createInvoiceLoading = $0
+      createInvoiceLoadingExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
     let contentExpectation = XCTestExpectation(description: "testSuccessPayInvoice_Content")
     viewModel.content.sink { [weak viewModel] _ in
-      viewModel?.selectPaymentMethod(at: 0)
+      viewModel?.selectPaymentMethod(at: 0, isSelected: true)
       contentExpectation.fulfill()
     }.store(in: &subscriptions)
     
@@ -88,9 +98,31 @@ final class CheckoutViewModelTests: XCTestCase {
       selectIndexExpectation.fulfill()
     }.store(in: &subscriptions)
     
+    let deselectIndexExpectation = XCTestExpectation(description: "testSuccessPayInvoice_DeselectIndex")
+    viewModel.deselectIndex.sink {
+      deselectIndex = $0
+      deselectIndexExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let paymentMethodsAreEnabledExpectation = XCTestExpectation(description: "testSuccessPayInvoice_PaymentMethodsAreEnabled")
+    viewModel.paymentMethodsAreEnabled.sink {
+      paymentMethodsAreEnabled = $0
+      paymentMethodsAreEnabledExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let updateSummaryExpectation = XCTestExpectation(description: "testSuccessPayInvoice_UpdateSummary")
+    viewModel.updateSummary.sink {
+      updateSummary = $0
+      updateSummaryExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
     let payButtonIsEnabledExpectation = XCTestExpectation(description: "testSuccessPayInvoice_PayButtonIsEnabled")
     viewModel.payButtonIsEnabled.sink { [weak viewModel] in
-      if $0 {
+      guard $0 else { return }
+      if selectIndex == 0 {
+        viewModel?.selectPaymentMethod(at: 0, isSelected: false)
+        viewModel?.selectPaymentMethod(at: 1)
+      } else if selectIndex == 1 {
         viewModel?.payInvoice()
         payButtonIsEnabledExpectation.fulfill()
       }
@@ -115,14 +147,21 @@ final class CheckoutViewModelTests: XCTestCase {
       successfulPaymentExpectation,
       updateCallbackExpectation,
       selectIndexExpectation,
-      payButtonIsEnabledExpectation
+      payButtonIsEnabledExpectation,
+      paymentMethodsAreEnabledExpectation,
+      createInvoiceLoadingExpectation,
+      updateSummaryExpectation
     ]
     wait(for: expectations, timeout: 6)
     XCTAssertNotNil(loading)
     XCTAssertEqual(successfulPayment, true)
     XCTAssertEqual(updateCallback?.event.action, .paymentProcessed)
     XCTAssertEqual(completeCallback?.state, .completed)
-    XCTAssertEqual(selectIndex, 0)
+    XCTAssertEqual(selectIndex, 1)
+    XCTAssertEqual(deselectIndex, 0)
+    XCTAssertEqual(paymentMethodsAreEnabled, true)
+    XCTAssertNotNil(createInvoiceLoading)
+    XCTAssertNotNil(updateSummary)
   }
   
   func testErrorCheckIsTosRequired() {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CountryModel: PossiblyEmpty {
+struct CountryModel: PossiblyEmpty, Equatable {
   
   let name: String
   let code: String

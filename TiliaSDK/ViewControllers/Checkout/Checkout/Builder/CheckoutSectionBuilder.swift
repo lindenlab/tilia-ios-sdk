@@ -9,7 +9,7 @@ import UIKit
 
 struct CheckoutSectionBuilder {
   
-  typealias CellDelegate = CheckoutPaymentMethodCellDelegate
+  typealias CellDelegate = CheckoutPaymentMethodSwitchCellDelegate & CheckoutPaymentMethodRadioCellDelegate
   typealias FooterDelegate = CheckoutPaymentFooterViewDelegate & TextViewWithLinkDelegate
   
   enum Section {
@@ -27,24 +27,22 @@ struct CheckoutSectionBuilder {
       let referenceId: String
       let amount: String
       let items: [Item]
-      var isLoading: Bool
     }
     
     struct Payment {
       
       struct Item {
         let title: String
-        let subTitle: String?
+        let isSwitch: Bool
         var isSelected: Bool
+        var isEnabled: Bool
         let icon: UIImage?
         let isDividerHidden: Bool
       }
       
       var items: [Item]
       var isPayButtonEnabled: Bool
-      let payButtonTitle: String
       let isCreditCardButtonHidden: Bool
-      let canSelect: Bool
       var isEmpty: Bool { return items.isEmpty }
     }
     
@@ -72,7 +70,8 @@ struct CheckoutSectionBuilder {
   func cell(for section: Section,
             in tableView: UITableView,
             at indexPath: IndexPath,
-            delegate: CellDelegate) -> UITableViewCell {
+            delegate: CellDelegate,
+            isLoading: Bool) -> UITableViewCell {
     switch section {
     case let .summary(invoiceModel):
       let item = invoiceModel.items[indexPath.row]
@@ -84,14 +83,26 @@ struct CheckoutSectionBuilder {
       return cell
     case let .payment(model):
       let item = model.items[indexPath.row]
-      let cell = tableView.dequeue(CheckoutPaymentMethodCell.self, for: indexPath)
-      cell.configure(title: item.title,
-                     subTitle: item.subTitle,
-                     canSelect: model.canSelect,
-                     isDividerHidden: item.isDividerHidden,
-                     icon: item.icon,
-                     delegate: delegate)
-      cell.configure(isSelected: item.isSelected)
+      let cell: UITableViewCell
+      if item.isSwitch {
+        let newCell = tableView.dequeue(CheckoutPaymentMethodSwitchCell.self, for: indexPath)
+        newCell.configure(image: item.icon,
+                          title: item.title,
+                          delegate: delegate)
+        newCell.configure(isOn: item.isSelected)
+        newCell.configure(isEnabled: item.isEnabled)
+        cell = newCell
+      } else {
+        let newCell = tableView.dequeue(CheckoutPaymentMethodRadioCell.self, for: indexPath)
+        newCell.configure(title: item.title,
+                          isDividerHidden: item.isDividerHidden,
+                          icon: item.icon,
+                          delegate: delegate)
+        newCell.configure(isSelected: item.isSelected)
+        newCell.configure(isEnabled: item.isEnabled)
+        cell = newCell
+      }
+      cell.isUserInteractionEnabled = !isLoading
       return cell
     case .successfulPayment:
       let cell = tableView.dequeue(ToastViewCell.self, for: indexPath)
@@ -126,16 +137,17 @@ struct CheckoutSectionBuilder {
   
   func footer(for section: Section,
               in tableView: UITableView,
-              delegate: FooterDelegate) -> UIView {
+              delegate: FooterDelegate,
+              isLoading: Bool) -> UIView {
     switch section {
     case let .summary(model):
       let view = tableView.dequeue(CheckoutPayloadSummaryFooterView.self)
       view.configure(amount: model.amount)
-      view.configure(isLoading: model.isLoading)
+      view.configure(isLoading: isLoading)
       return view
     case let .payment(model):
       let view = tableView.dequeue(CheckoutPaymentFooterView.self)
-      view.configure(payButtonTitle: model.isEmpty ? nil : model.payButtonTitle,
+      view.configure(payButtonTitle: model.isEmpty ? nil : L.payNow,
                      closeButtonTitle: L.cancel,
                      isCreditCardButtonHidden: model.isCreditCardButtonHidden,
                      delegate: delegate,
@@ -154,105 +166,106 @@ struct CheckoutSectionBuilder {
   }
   
   func sections(with model: CheckoutContent) -> [Section] {
-    let invoiceInfo = model.invoiceInfo
-    let walletBalance = model.walletBalance
-    let paymentMethods = model.paymentMethods
-    let summary = summaryModel(for: invoiceInfo)
-    
-    let payment: Section.Payment
-    if model.isVirtual {
-      let items: [Section.Payment.Item] = [
-        .init(title: L.walletBalance,
-              subTitle: walletBalance?.display,
-              isSelected: true,
-              icon: .walletIcon,
-              isDividerHidden: true)
-      ]
-      payment = .init(items: items,
-                      isPayButtonEnabled: true,
-                      payButtonTitle: L.pay,
-                      isCreditCardButtonHidden: true,
-                      canSelect: false)
-    } else {
-      let count = paymentMethods.count
-      let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
-        return .init(title: value.type.isWallet ? L.walletBalance : value.display,
-                     subTitle: value.type.isWallet ? walletBalance?.display : nil,
-                     isSelected: false,
-                     icon: value.type.icon,
-                     isDividerHidden: index == count - 1)
-      }
-      payment = .init(items: items,
-                      isPayButtonEnabled: false,
-                      payButtonTitle: L.usePaymentMethods,
-                      isCreditCardButtonHidden: false,
-                      canSelect: true)
-    }
-    
-    return [.summary(summary), .payment(payment)]
+    return [
+      .summary(summaryModel(for: model.invoiceInfo)),
+      .payment(paymentModel(for: model))
+    ]
   }
   
-  func successfulPaymentSection() -> Section {
-    return .successfulPayment
-  }
-  
-  func updatedSummarySection(for section: Section,
-                             in tableView: UITableView,
-                             at sectionIndex: Int,
-                             isLoading: Bool) -> Section {
-    switch section {
-    case var .summary(model):
-      model.isLoading = isLoading
-      if let footerView = tableView.footerView(forSection: sectionIndex) as? CheckoutPayloadSummaryFooterView {
-        footerView.configure(isLoading: isLoading)
+  func updateSections(_ sections: [Section],
+                      in tableView: UITableView,
+                      isLoading: Bool) {
+    for (index, value) in sections.enumerated() {
+      switch value {
+      case .summary:
+        if let footerView = tableView.footerView(forSection: index) as? CheckoutPayloadSummaryFooterView {
+          footerView.configure(isLoading: isLoading)
+        }
+      case .payment:
+        (0..<tableView.numberOfRows(inSection: index)).forEach {
+          guard let cell = tableView.cellForRow(at: .init(row: $0, section: index)) else { return }
+          cell.isUserInteractionEnabled = !isLoading
+        }
+      default: continue
       }
-      return .summary(model)
-    default:
-      return section
     }
   }
   
-  func updatedSummarySection(for section: Section,
-                             model: InvoiceInfoModel) -> Section {
-    switch section {
+  func updateSummarySection(for sections: inout [Section],
+                            model: InvoiceInfoModel) -> IndexSet {
+    switch sections[0] {
     case .summary:
-      let summary = summaryModel(for: model)
-      return .summary(summary)
+      sections[0] = .summary(summaryModel(for: model))
     default:
-      return section
+      break
     }
+    return [0]
   }
   
-  func updatedPaymentSection(for section: Section,
-                             in tableView: UITableView,
-                             at indexPath: IndexPath,
-                             isSelected: Bool) -> Section {
-    switch section {
+  func updatePaymentSection(for sections: inout [Section],
+                            model: CheckoutContent) -> IndexSet {
+    switch sections[1] {
+    case .payment:
+      sections[1] = .payment(paymentModel(for: model))
+    default:
+      break
+    }
+    return [1]
+  }
+  
+  func updatePaymentSection(for section: inout [Section],
+                            in tableView: UITableView,
+                            at index: Int,
+                            isSelected: Bool) {
+    switch section[1] {
     case var .payment(model):
-      model.items[indexPath.row].isSelected = isSelected
-      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodCell {
+      model.items[index].isSelected = isSelected
+      let indexPath = IndexPath(row: index, section: 1)
+      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodRadioCell, !isSelected {
         cell.configure(isSelected: isSelected)
       }
-      return .payment(model)
+      section[1] = .payment(model)
     default:
-      return section
+      break
     }
   }
   
-  func updatedPaymentSection(for section: Section,
-                             in tableView: UITableView,
-                             at sectionIndex: Int,
-                             isPayButtonEnabled: Bool) -> Section {
-    switch section {
+  func updatePaymentSection(for section: inout [Section],
+                            in tableView: UITableView,
+                            isEnabled: Bool) {
+    switch section[1] {
+    case var .payment(model):
+      for (index, value) in model.items.enumerated() where !value.isSwitch {
+        model.items[index].isEnabled = isEnabled
+        let indexPath = IndexPath(row: index, section: 1)
+        if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodRadioCell {
+          cell.configure(isEnabled: isEnabled)
+        }
+      }
+      section[1] = .payment(model)
+    default:
+      break
+    }
+  }
+  
+  func updatePaymentSection(for sections: inout [Section],
+                            in tableView: UITableView,
+                            isPayButtonEnabled: Bool) {
+    switch sections[1] {
     case var .payment(model):
       model.isPayButtonEnabled = isPayButtonEnabled
-      if let footer = tableView.footerView(forSection: sectionIndex) as? CheckoutPaymentFooterView {
+      if let footer = tableView.footerView(forSection: 1) as? CheckoutPaymentFooterView {
         footer.configure(isPayButtonEnabled: isPayButtonEnabled)
       }
-      return .payment(model)
+      sections[1] = .payment(model)
     default:
-      return section
+      break
     }
+  }
+  
+  func updateSectionsWithSuccessfulPayment(_ sections: inout [Section]) -> IndexSet {
+    sections[1] = .successfulPayment
+    return [1]
   }
   
 }
@@ -272,8 +285,42 @@ private extension CheckoutSectionBuilder {
     return .init(referenceType: model.referenceType,
                  referenceId: model.referenceId,
                  amount: model.displayAmount,
-                 items: items,
-                 isLoading: false)
+                 items: items)
+  }
+  
+  func paymentModel(for model: CheckoutContent) -> Section.Payment {
+    let invoiceInfo = model.invoiceInfo
+    let walletBalance = model.walletBalance
+    let paymentMethods = model.paymentMethods
+    let payment: Section.Payment
+    if model.isVirtual {
+      let items: [Section.Payment.Item] = [
+        .init(title: walletBalance.display,
+              isSwitch: false,
+              isSelected: true,
+              isEnabled: false,
+              icon: .walletIcon,
+              isDividerHidden: true)
+      ]
+      payment = .init(items: items,
+                      isPayButtonEnabled: true,
+                      isCreditCardButtonHidden: true)
+    } else {
+      let count = paymentMethods.count
+      let hasNotOnlyWallet = paymentMethods.first(where: { !$0.type.isWallet }) != nil
+      let items: [Section.Payment.Item] = paymentMethods.enumerated().map { index, value in
+        return .init(title: value.type.isWallet ? L.useYourBalance(with: walletBalance.display) : value.display,
+                     isSwitch: value.type.isWallet && hasNotOnlyWallet,
+                     isSelected: false,
+                     isEnabled: value.type.isWallet ? walletBalance.balance >= invoiceInfo.amount || hasNotOnlyWallet : true,
+                     icon: value.type.icon,
+                     isDividerHidden: index == count - 1)
+      }
+      payment = .init(items: items,
+                      isPayButtonEnabled: false,
+                      isCreditCardButtonHidden: false)
+    }
+    return payment
   }
   
 }
@@ -285,7 +332,7 @@ private extension CheckoutPaymentTypeModel {
   var icon: UIImage? {
     switch self {
     case .wallet: return .walletIcon
-    case .paypal: return nil
+    case .paypal: return .payPalIcon
     case .americanExpress: return .americanExpressIcon
     case .discover: return .discoverIcon
     case .dinersClub: return .dinersClubIcon
@@ -294,7 +341,7 @@ private extension CheckoutPaymentTypeModel {
     case .electron: return nil
     case .masterCard: return .masterCardIcon
     case .visa: return .visaIcon
-    case .chinaUnionpay: return .chinaUnionpayIcon
+    case .chinaUnionPay: return .chinaUnionPayIcon
     }
   }
   

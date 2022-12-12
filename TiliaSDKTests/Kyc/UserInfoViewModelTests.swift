@@ -84,7 +84,7 @@ final class UserInfoViewModelTests: XCTestCase {
   }
   
   func testSuccessSelectCountryOfResidence() {
-    var isUsSelected: Bool?
+    var coutryOfResidenceSelected: Void?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
@@ -94,7 +94,7 @@ final class UserInfoViewModelTests: XCTestCase {
     
     let coutryOfResidenceDidSelectExpectation = XCTestExpectation(description: "testSuccessSelectCountryOfResidence")
     viewModel.coutryOfResidenceDidSelect.sink {
-      isUsSelected = $0.isUsResident
+      coutryOfResidenceSelected = $0
       coutryOfResidenceDidSelectExpectation.fulfill()
     }.store(in: &subscriptions)
     
@@ -112,7 +112,7 @@ final class UserInfoViewModelTests: XCTestCase {
                       indexPath: .init(row: 0, section: 0), fieldIndex: 0)
     
     wait(for: [coutryOfResidenceDidSelectExpectation], timeout: 2)
-    XCTAssertEqual(isUsSelected, true)
+    XCTAssertNotNil(coutryOfResidenceSelected)
   }
   
   func testSuccessChangeCountryOfResidence() {

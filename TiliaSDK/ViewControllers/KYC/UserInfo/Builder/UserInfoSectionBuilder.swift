@@ -12,7 +12,7 @@ struct UserInfoSectionBuilder {
   typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
-  typealias TableUpdate = (insertSection: IndexSet?, deleteSection: IndexSet?, insertRows: [IndexPath]?, deleteRows: [IndexPath]?)
+  typealias TableUpdate = (insertRows: [IndexPath]?, deleteRows: [IndexPath]?)
   
   struct Section {
     
@@ -27,7 +27,7 @@ struct UserInfoSectionBuilder {
       case success
       
       static var defaultItems: [SectionType] {
-        return [.location, .personal, .contact]
+        return [.location, .personal, .tax, .contact]
       }
       
       var headerTitle: String? {
@@ -71,7 +71,7 @@ struct UserInfoSectionBuilder {
           case city
           case state
           case postalCode
-          case useAddressFor1099
+          case useAddressForTax
         }
         
         struct Field {
@@ -172,7 +172,7 @@ struct UserInfoSectionBuilder {
   }
   
   func numberOfRows(in section: Section) -> Int {
-    return section.items.count
+    return section.mode == .expanded ? section.items.count : 0
   }
   
   func heightForFooter(in section: Section) -> CGFloat {
@@ -203,6 +203,7 @@ struct UserInfoSectionBuilder {
       cell.configure(title: item.title)
       cell.configure(fieldsContent: model.fieldsContent,
                      description: item.description,
+                     attributedDescription: item.attributedDescription,
                      delegate: delegate)
       return cell
     case .label:
@@ -326,35 +327,16 @@ struct UserInfoSectionBuilder {
                      at sectionIndex: Int,
                      isExpanded: Bool,
                      isFilled: Bool) -> TableUpdate {
-    let items: [Section.Item]
-    let mode: UserInfoHeaderView.Mode
-    if isExpanded {
-      mode = .expanded
-      switch section.type {
-      case .location:
-        section.items = itemsForLocationSection(with: model)
-      case .personal:
-        section.items = itemsForPersonalSection(with: model)
-      case .tax:
-        section.items = itemsForTaxSection(with: model)
-      case .contact:
-        section.items = itemsForContactSection(with: model)
-      default:
-        break
-      }
-      items = section.items
-    } else {
-      mode = isFilled ? .passed : .normal
-      items = section.items
-      section.items = []
+    let mode: UserInfoHeaderView.Mode = isExpanded ? .expanded : isFilled ? .passed : .normal
+    if section.items.isEmpty {
+      section.items = items(for: section.type, with: model)
     }
-    
     updateSection(&section,
                   in: tableView,
                   at: sectionIndex,
                   mode: mode)
-    let indexPaths = items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) }
-    var tableUpdate: TableUpdate = (nil, nil, nil, nil)
+    let indexPaths = section.items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) }
+    var tableUpdate: TableUpdate = (nil, nil)
     if isExpanded {
       tableUpdate.insertRows = indexPaths
     } else {
@@ -394,26 +376,12 @@ struct UserInfoSectionBuilder {
     }
   }
   
-  func updateSections(_ sections: inout [Section],
-                      in tableView: UITableView,
-                      countryOfResidenceDidSelectWith model: UserInfoModel) -> IndexSet? {
-    var contactSectionIndex: Int?
-    sections.enumerated().forEach {
-      if $1.type == .contact {
-        contactSectionIndex = $0
-      }
-      guard $1.mode == .disabled else { return }
-      updateSection(&sections[$0],
+  func enableSections(_ sections: inout [Section], in tableView: UITableView) {
+    for (index, section) in sections.enumerated() where section.mode == .disabled {
+      updateSection(&sections[index],
                     in: tableView,
-                    at: $0,
+                    at: index,
                     mode: .normal)
-    }
-    
-    if model.isUsResident, let index = contactSectionIndex {
-      sections.insert(taxSection(), at: index)
-      return [index]
-    } else {
-      return nil
     }
   }
   
@@ -421,38 +389,18 @@ struct UserInfoSectionBuilder {
                       in tableView: UITableView,
                       countryOfResidenceDidChangeWith model: UserInfoModel,
                       wasUsResidence: Bool) -> TableUpdate {
-    var tableUpdate: TableUpdate = (nil, nil, nil, nil)
-    
-    var contactSectionIndex: Int?
-    var taxSectionIndex: Int?
-    
+    var indexPaths: [IndexPath] = []
     sections.enumerated().forEach {
       switch $1.type {
-      case .contact: contactSectionIndex = $0
-      case .tax: taxSectionIndex = $0
+      case .tax where model.isUsResident || wasUsResidence, .contact:
+        let deletePaths = setSectionToDefaultIfNeeded(&sections[$0],
+                                                      in: tableView,
+                                                      at: $0)
+        indexPaths.append(contentsOf: deletePaths ?? [])
       default: break
       }
     }
-    
-    guard let contactSectionIndex = contactSectionIndex else { return tableUpdate }
-    
-    sections[contactSectionIndex].isFilled = false
-    tableUpdate.deleteRows = updateSection(&sections[contactSectionIndex],
-                                           with: model,
-                                           in: tableView,
-                                           at: contactSectionIndex,
-                                           isExpanded: false,
-                                           isFilled: false).deleteRows
-    
-    if model.isUsResident, taxSectionIndex == nil {
-      sections.insert(taxSection(), at: contactSectionIndex)
-      tableUpdate.insertSection = [contactSectionIndex]
-    } else if wasUsResidence, let index = taxSectionIndex {
-      sections.remove(at: index)
-      tableUpdate.deleteSection = [index]
-    }
-    
-    return tableUpdate
+    return (nil, indexPaths.toNilIfEmpty())
   }
   
   func updateTableFooter(for sections: [Section],
@@ -512,16 +460,19 @@ struct UserInfoSectionBuilder {
 
 private extension UserInfoSectionBuilder {
   
-  func taxSection() -> Section {
-    return Section(type: .tax,
-                   mode: .normal,
-                   isFilled: false,
-                   items: [])
-  }
-  
   func defaultItems(for type: Section.SectionType) -> [Section.Item] {
     switch type {
     case .location: return itemsForLocationSection(with: nil)
+    default: return []
+    }
+  }
+  
+  func items(for type: Section.SectionType, with model: UserInfoModel) -> [Section.Item] {
+    switch type {
+    case .location: return itemsForLocationSection(with: model)
+    case .personal: return itemsForPersonalSection(with: model)
+    case .tax: return itemsForTaxSection(with: model)
+    case .contact: return itemsForContactSection(with: model)
     default: return []
     }
   }
@@ -570,29 +521,35 @@ private extension UserInfoSectionBuilder {
   }
   
   func itemsForTaxSection(with model: UserInfoModel) -> [Section.Item] {
-    let ssnFieldMask = "xxx-xx-xxxx"
-    let ssnField = Section.Item.Mode.Fields(type: .ssn,
-                                            fields: [.init(placeholder: ssnFieldMask,
-                                                           text: model.tax?.ssn,
-                                                           accessibilityIdentifier: "ssnTextField")],
-                                            mask: ssnFieldMask)
-    
+    var items: [Section.Item] = []
+    if model.isUsResident {
+      let ssnFieldMask = "xxx-xx-xxxx"
+      let ssnField = Section.Item.Mode.Fields(type: .ssn,
+                                              fields: [.init(placeholder: ssnFieldMask,
+                                                             text: model.tax.ssn,
+                                                             accessibilityIdentifier: "ssnTextField")],
+                                              mask: ssnFieldMask)
+      items.append(Section.Item(mode: .fields(ssnField),
+                                title: L.ssn))
+    }
+    let certificationMessage = certificationMessage(title: model.isUsResident ? L.certificationUsMessage : L.certificationNonUsMessage,
+                                                    subTitle: model.isUsResident ? nil : L.certificationNonUsAdditionalMessage)
     let signatureField = Section.Item.Mode.Fields(type: .signature,
                                                   fields: [.init(placeholder: L.yourFullName,
-                                                                 text: model.tax?.signature,
+                                                                 text: model.tax.signature,
                                                                  accessibilityIdentifier: "signatureTextField")])
-    
-    return [
-      Section.Item(mode: .fields(ssnField),
-                   title: L.ssn),
+    let signatureMessage = signatureMessage(title: L.signatureDescription,
+                                            subTitle: L.taxPurposesMessage)
+    items.append(contentsOf: [
       Section.Item(mode: .label,
-                   title: L.ssnAcceptionTitle,
-                   attributedDescription: attributedNumberList(for: L.ssnAcceptionMessage)),
+                   title: model.isUsResident ? L.certificationUsTitle : L.certificationNonUsTitle,
+                   attributedDescription: certificationMessage),
       Section.Item(mode: .fields(signatureField),
-                   title: L.signatureTitle,
-                   description: L.signatureDescription),
+                   title: model.isUsResident ? L.signatureUs : L.signature,
+                   attributedDescription: signatureMessage),
       Section.Item(mode: .button)
-    ]
+    ])
+    return items
   }
   
   func itemsForContactSection(with model: UserInfoModel) -> [Section.Item] {
@@ -635,7 +592,7 @@ private extension UserInfoSectionBuilder {
     
     var items: [Section.Item] = [
       Section.Item(mode: .fields(addressField),
-                   title: L.address),
+                   title: L.permanentResidenceAddress),
       Section.Item(mode: .fields(cityField),
                    title: L.city),
       Section.Item(mode: .fields(regionField),
@@ -647,21 +604,19 @@ private extension UserInfoSectionBuilder {
                    description: model.countryOfResidence?.name)
     ]
     
-    if model.isUsResident {
-      let canUseAddressFor1099Items = BoolModel.allCases
-      let canUseAddressFor1099SelectedIndex = canUseAddressFor1099Items.firstIndex { $0 == model.canUseAddressFor1099 }
-      let pickerItems = [""] + canUseAddressFor1099Items.map { $0.description }
-      
-      let canUseAddressFor1099Field = Section.Item.Mode.Fields(type: .useAddressFor1099,
-                                                               fields: [.init(placeholder: L.selectAnswer,
-                                                                              text: model.canUseAddressFor1099?.description,
-                                                                              accessibilityIdentifier: "useAddressFor1099TextField")],
-                                                               inputMode: .picker(items: pickerItems,
-                                                                                  selectedIndex: canUseAddressFor1099SelectedIndex))
-      items.append(Section.Item(mode: .fields(canUseAddressFor1099Field),
-                                title: L.useAddressFor1099,
-                                description: L.useAddressFor1099Description))
-    }
+    let canUseAddressForTaxItems = BoolModel.allCases
+    let canUseAddressForTaxSelectedIndex = canUseAddressForTaxItems.firstIndex { $0 == model.address.canUseAddressForTax }
+    let pickerItems = [""] + canUseAddressForTaxItems.map { $0.description }
+    
+    let canUseAddressForTaxField = Section.Item.Mode.Fields(type: .useAddressForTax,
+                                                            fields: [.init(placeholder: L.selectAnswer,
+                                                                           text: model.address.canUseAddressForTax?.description,
+                                                                           accessibilityIdentifier: "useAddressForTaxTextField")],
+                                                            inputMode: .picker(items: pickerItems,
+                                                                               selectedIndex: canUseAddressForTaxSelectedIndex))
+    items.append(Section.Item(mode: .fields(canUseAddressForTaxField),
+                              title: L.useAddressForTax,
+                              description: model.isUsResident ? L.useAddressForTaxUsDescription : nil))
     
     return items
   }
@@ -680,15 +635,47 @@ private extension UserInfoSectionBuilder {
     }
   }
   
-  func attributedNumberList(for str: String) -> NSAttributedString {
-    let paragraphStyle = NSMutableParagraphStyle()
-    paragraphStyle.headIndent = 16
+  func setSectionToDefaultIfNeeded(_ section: inout Section,
+                                   in tableView: UITableView,
+                                   at sectionIndex: Int) -> [IndexPath]? {
+    let indexPaths = section.mode == .expanded ? section.items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) } : nil
+    section.isFilled = false
+    section.items = []
+    updateSection(&section,
+                  in: tableView,
+                  at: sectionIndex,
+                  mode: .normal)
+    return indexPaths
+  }
+  
+  func certificationMessage(title: String, subTitle: String?) -> NSAttributedString {
+    let newStr = [title, subTitle].compactMap { $0 }.joined(separator: "\n")
     let attributes: [NSAttributedString.Key: Any] = [
       .font: UIFont.systemFont(ofSize: 14),
-      .foregroundColor: UIColor.secondaryTextColor,
-      .paragraphStyle: paragraphStyle
+      .foregroundColor: UIColor.secondaryTextColor
     ]
-    return NSAttributedString(string: str, attributes: attributes)
+    let mutableStr = NSMutableAttributedString(string: newStr,
+                                               attributes: attributes)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.headIndent = 16
+    mutableStr.addAttribute(.paragraphStyle,
+                            value: paragraphStyle,
+                            range: mutableStr.mutableString.range(of: title))
+    return mutableStr
+  }
+  
+  func signatureMessage(title: String, subTitle: String) -> NSAttributedString {
+    let newStr = [title, subTitle].joined(separator: "\n\n")
+    let mutableStr = NSMutableAttributedString(string: newStr,
+                                               attributes: [.font: UIFont.systemFont(ofSize: 14)])
+    mutableStr.addAttribute(.foregroundColor,
+                            value: UIColor.tertiaryTextColor,
+                            range: mutableStr.mutableString.range(of: title))
+    mutableStr.addAttribute(.foregroundColor,
+                            value: UIColor.secondaryTextColor,
+                            range: mutableStr.mutableString.range(of: subTitle))
+    
+    return mutableStr
   }
   
 }

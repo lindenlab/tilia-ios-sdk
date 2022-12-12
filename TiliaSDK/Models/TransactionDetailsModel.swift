@@ -126,13 +126,21 @@ enum TransactionStatusModel: String, Decodable, CustomStringConvertible {
   
   case pending
   case processed
-  case failed
+  case payoutFailed = "payout-failed"
+  case error
   
   var description: String {
     switch self {
     case .pending: return L.pending
     case .processed: return L.processed
-    case .failed: return L.failed
+    case .payoutFailed, .error: return L.failed
+    }
+  }
+  
+  var isFailed: Bool {
+    switch self {
+    case .payoutFailed, .error: return true
+    default: return false
     }
   }
   

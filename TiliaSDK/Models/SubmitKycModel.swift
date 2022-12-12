@@ -44,7 +44,7 @@ private extension SubmitKycModel {
       case city
       case region = "state"
       case postalCode = "zip"
-      case canUseAddressFor1099 = "use_1099"
+      case canUseAddressForTax = "use_1099"
       case ssn
       case signature
       case document = "document_type"
@@ -63,9 +63,9 @@ private extension SubmitKycModel {
     let city: String
     let region: String
     let postalCode: String
-    let canUseAddressFor1099: Bool?
+    let canUseAddressForTax: Bool
     let ssn: String?
-    let signature: String?
+    let signature: String
     let document: String?
     let documentFront: String?
     let documentBack: String?
@@ -82,9 +82,9 @@ private extension SubmitKycModel {
       self.city = userInfoModel.address.city ?? ""
       self.region = userInfoModel.address.region.region ?? ""
       self.postalCode = userInfoModel.address.postalCode ?? ""
-      self.canUseAddressFor1099 = userInfoModel.canUseAddressFor1099?.boolValue
-      self.ssn = userInfoModel.tax?.ssn
-      self.signature = userInfoModel.tax?.signature
+      self.canUseAddressForTax = userInfoModel.address.canUseAddressForTax?.boolValue ?? false
+      self.ssn = userInfoModel.tax.ssn
+      self.signature = userInfoModel.tax.signature ?? ""
       self.document = userDocumentsModel?.document?.code
       self.documentFront = Self.documentBase64EncodedString(for: userDocumentsModel?.frontImage)
       self.documentBack = Self.documentBase64EncodedString(for: userDocumentsModel?.backImage)

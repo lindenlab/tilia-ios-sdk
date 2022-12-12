@@ -50,25 +50,14 @@ final class UserInfoValidatorTests: XCTestCase {
     XCTAssertFalse(isFilled)
   }
   
-  func testSuccessUserInfoContactValidatorIsUsResident() {
+  func testSuccessUserInfoContactValidator() {
     var model = UserInfoModel()
     model.address = .init(street: "Street",
                           apartment: "Apartment",
                           city: "City",
                           region: .init(name: "Name", code: "Code"),
-                          postalCode: "12321321")
-    model.canUseAddressFor1099 = .yes
-    let isFilled = UserInfoContactValidator().isFilled(for: model)
-    XCTAssertTrue(isFilled)
-  }
-  
-  func testSuccessUserInfoContactValidatorIsNonUsResident() {
-    var model = UserInfoModel()
-    model.address = .init(street: "Street",
-                          apartment: "Apartment",
-                          city: "City",
-                          region: .init(name: "Name", code: "Code"),
-                          postalCode: "12321321")
+                          postalCode: "12321321",
+                          canUseAddressForTax: .yes)
     let isFilled = UserInfoContactValidator().isFilled(for: model)
     XCTAssertTrue(isFilled)
   }

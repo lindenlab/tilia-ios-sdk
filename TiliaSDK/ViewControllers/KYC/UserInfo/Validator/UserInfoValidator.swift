@@ -30,7 +30,7 @@ struct UserInfoPersonalValidator: UserInfoValidator {
 struct UserInfoTaxValidator: UserInfoValidator {
   
   func isFilled(for model: UserInfoModel) -> Bool {
-    return !model.tax.isEmpty
+    return model.isUsResident ? !model.tax.isEmpty : !model.tax.signature.isEmpty
   }
   
 }
@@ -38,7 +38,7 @@ struct UserInfoTaxValidator: UserInfoValidator {
 struct UserInfoContactValidator: UserInfoValidator {
   
   func isFilled(for model: UserInfoModel) -> Bool {
-    return model.isUsResident ? !model.address.isEmpty && model.canUseAddressFor1099 != nil : !model.address.isEmpty
+    return !model.address.isEmpty
   }
   
 }

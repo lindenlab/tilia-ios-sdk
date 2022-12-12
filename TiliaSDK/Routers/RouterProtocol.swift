@@ -46,8 +46,7 @@ extension RouterProtocol {
   
   func asURLRequest() throws -> URLRequest {
     let path = "https://\(service).\(serverConfiguration.environment.description).com\(endpoint)"
-    let escapedPath = path.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed.union(CharacterSet.urlQueryAllowed)) ?? ""
-    let url = try escapedPath.asURL()
+    let url = try path.asURL()
     
     var urlRequest = try URLEncoding.default.encode(URLRequest(url: url), with: queryParameters)
     urlRequest.timeoutInterval = serverConfiguration.timeoutInterval

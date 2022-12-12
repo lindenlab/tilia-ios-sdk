@@ -24,7 +24,7 @@ protocol UserInfoViewModelOutputProtocol {
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
   var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
-  var coutryOfResidenceDidSelect: PassthroughSubject<UserInfoModel, Never> { get }
+  var coutryOfResidenceDidSelect: PassthroughSubject<Void, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
   var uploadDocuments: PassthroughSubject<Void, Never> { get }
   var successfulUploading: PassthroughSubject<Void, Never> { get }
@@ -50,7 +50,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
-  let coutryOfResidenceDidSelect = PassthroughSubject<UserInfoModel, Never>()
+  let coutryOfResidenceDidSelect = PassthroughSubject<Void, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
   let uploadDocuments = PassthroughSubject<Void, Never>()
   let successfulUploading = PassthroughSubject<Void, Never>()
@@ -100,23 +100,16 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     switch field.type {
     case .countryOfResidance:
       let wasNil = userInfoModel.countryOfResidence == nil
+      let wasUsResidence = userInfoModel.isUsResident
+      let foundCountry = CountryModel.countries.first { $0.name == text }
+      isFieldChanged = isFieldUpdated(&userInfoModel.countryOfResidence, with: foundCountry)
       if wasNil {
-        isFieldChanged = true
-        userInfoModel.countryOfResidence = CountryModel.countries.first { $0.name == text }
-        if userInfoModel.isUsResident {
-          userInfoModel.tax = .init()
-        }
-        coutryOfResidenceDidSelect.send(userInfoModel)
-      } else if userInfoModel.countryOfResidence?.name != text {
-        let wasUsResidence = userInfoModel.isUsResident
-        isFieldChanged = true
-        userInfoModel.countryOfResidence = CountryModel.countries.first { $0.name == text }
-        if wasUsResidence {
-          userInfoModel.tax = nil
-        } else if userInfoModel.isUsResident {
-          userInfoModel.tax = .init()
-        }
+        coutryOfResidenceDidSelect.send()
+      } else if isFieldChanged {
         userInfoModel.setAddressToDefault()
+        if wasUsResidence || userInfoModel.isUsResident {
+          userInfoModel.setTaxToDefault()
+        }
         coutryOfResidenceDidChange.send((userInfoModel, wasUsResidence))
       }
     case .fullName:
@@ -133,15 +126,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       let date = DateFormatter.longDateFormatter.date(from: text ?? "")
       isFieldChanged = isFieldUpdated(&userInfoModel.dateOfBirth, with: date)
     case .ssn:
-      if userInfoModel.tax?.ssn != text {
-        isFieldChanged = true
-        userInfoModel.tax?.ssn = text
-      }
+      isFieldChanged = isFieldUpdated(&userInfoModel.tax.ssn, with: text)
     case .signature:
-      if userInfoModel.tax?.signature != text {
-        isFieldChanged = true
-        userInfoModel.tax?.signature = text
-      }
+      isFieldChanged = isFieldUpdated(&userInfoModel.tax.signature, with: text)
     case .address:
       switch fieldIndex {
       case 0:
@@ -163,9 +150,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       }
     case .postalCode:
       isFieldChanged = isFieldUpdated(&userInfoModel.address.postalCode, with: text)
-    case .useAddressFor1099:
+    case .useAddressForTax:
       let value = BoolModel(str: text ?? "")
-      isFieldChanged = isFieldUpdated(&userInfoModel.canUseAddressFor1099, with: value)
+      isFieldChanged = isFieldUpdated(&userInfoModel.address.canUseAddressForTax, with: value)
     }
     
     guard isFieldChanged,

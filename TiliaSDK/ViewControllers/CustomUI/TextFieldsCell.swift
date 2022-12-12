@@ -39,14 +39,24 @@ class TextFieldsCell: TitleBaseCell {
   
   final func configure(fieldsContent: [FieldContent],
                        description: String?,
+                       attributedDescription: NSAttributedString?,
                        delegate: TextFieldsCellDelegate?) {
     zip(fieldsContent, textFields).forEach { content, textField in
       textField.placeholder = content.placeholder
       textField.text = content.text
       textField.accessibilityIdentifier = content.accessibilityIdentifier
     }
-    descriptionLabel.text = description
-    descriptionLabel.isHidden = description == nil
+    if let attributedDescription = attributedDescription {
+      descriptionLabel.isHidden = false
+      descriptionLabel.attributedText = attributedDescription
+    } else if let description = description {
+      descriptionLabel.isHidden = false
+      descriptionLabel.text = description
+    } else {
+      descriptionLabel.isHidden = true
+      descriptionLabel.text = nil
+      descriptionLabel.attributedText = nil
+    }
     self.delegate = delegate
   }
   

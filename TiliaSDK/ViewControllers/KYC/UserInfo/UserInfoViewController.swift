@@ -241,17 +241,13 @@ private extension UserInfoViewController {
                                      in: self.tableView)
       self.tableView.performBatchUpdates {
         tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
-        tableUpdate.insertSection.map { self.tableView.insertSections($0, with: .fade) }
-        tableUpdate.deleteSection.map { self.tableView.deleteSections($0, with: .fade) }
       }
     }.store(in: &subscriptions)
     
     viewModel.coutryOfResidenceDidSelect.sink { [weak self] in
       guard let self = self else { return }
-      let indexSet = self.builder.updateSections(&self.sections,
-                                                 in: self.tableView,
-                                                 countryOfResidenceDidSelectWith: $0)
-      indexSet.map { self.tableView.insertSections($0, with: .fade) }
+      self.builder.enableSections(&self.sections,
+                                  in: self.tableView)
     }.store(in: &subscriptions)
     
     viewModel.uploading.sink { [weak self] in

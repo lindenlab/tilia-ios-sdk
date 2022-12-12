@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct CheckoutPaymentMethodModel: Codable, Equatable {
+struct CheckoutPaymentMethodModel: Codable, Equatable, Hashable {
   
   let id: String
   let display: String
   let type: CheckoutPaymentTypeModel
+  var amount: Double?
   
   private enum DecodingKeys: String, CodingKey {
     case id
@@ -22,6 +23,8 @@ struct CheckoutPaymentMethodModel: Codable, Equatable {
   
   private enum EncodingKeys: String, CodingKey {
     case id = "payment_method_id"
+    case isWallet
+    case amount
   }
   
   init(from decoder: Decoder) throws {
@@ -39,6 +42,10 @@ struct CheckoutPaymentMethodModel: Codable, Equatable {
   func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: EncodingKeys.self)
     try container.encode(id, forKey: .id)
+    if let amount = amount {
+      try container.encode(amount, forKey: .amount)
+      try container.encode(type.isWallet, forKey: .isWallet)
+    }
   }
   
 }
@@ -55,7 +62,7 @@ enum CheckoutPaymentTypeModel: String, Decodable {
   case electron
   case masterCard = "master-card"
   case visa
-  case chinaUnionpay = "china-unionpay"
+  case chinaUnionPay = "china-unionpay"
   
   var isWallet: Bool { return self == .wallet }
   

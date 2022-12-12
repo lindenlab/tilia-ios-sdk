@@ -20,9 +20,7 @@ enum L {
   static let transactionSummary = "transactionSummary".localized
   static let total = "total".localized
   static let choosePaymentMethod = "choosePaymentMethod".localized
-  static let walletBalance = "walletBalance".localized
-  static let pay = "pay".localized
-  static let usePaymentMethods = "usePaymentMethods".localized
+  static let payNow = "payNow".localized
   static let done = "done".localized
   static let payAcceptDescription = "payAcceptDescription".localized
   static let success = "success".localized
@@ -60,7 +58,7 @@ enum L {
   static let dateOfBirth = "dateOfBirth".localized
   static let ssn = "ssn".localized
   static let fullName = "fullName".localized
-  static let address = "address".localized
+  static let permanentResidenceAddress = "permanentResidenceAddress".localized
   static let streetAddress = "streetAddress".localized
   static let apartment = "apartment".localized
   static let city = "city".localized
@@ -68,8 +66,8 @@ enum L {
   static let stateOrRegion = "stateOrRegion".localized
   static let selectState = "selectState".localized
   static let postalCode = "postalCode".localized
-  static let useAddressFor1099 = "useAddressFor1099".localized
-  static let useAddressFor1099Description = "useAddressFor1099Description".localized
+  static let useAddressForTax = "useAddressForTax".localized
+  static let useAddressForTaxUsDescription = "useAddressForTaxUsDescription".localized
   static let selectAnswer = "selectAnswer".localized
   static let fewMoreThings = "fewMoreThings".localized
   static let userDocumentsMessage = "userDocumentsMessage".localized
@@ -94,10 +92,15 @@ enum L {
   static let uploading = "uploading".localized
   static let yes = "yes".localized
   static let no = "no".localized
-  static let ssnAcceptionTitle = "ssnAcceptionTitle".localized
-  static let ssnAcceptionMessage = "ssnAcceptionMessage".localized
+  static let certificationUsTitle = "certificationUsTitle".localized
+  static let certificationNonUsTitle = "certificationNonUsTitle".localized
+  static let certificationUsMessage = "certificationUsMessage".localized
+  static let certificationNonUsMessage = "certificationNonUsMessage".localized
+  static let certificationNonUsAdditionalMessage = "certificationNonUsAdditionalMessage".localized
+  static let taxPurposesMessage = "taxPurposesMessage".localized
   static let taxInfo = "taxInfo".localized
-  static let signatureTitle = "signatureTitle".localized
+  static let signature = "signature".localized
+  static let signatureUs = "signatureUs".localized
   static let signatureDescription = "signatureDescription".localized
   static let yourFullName = "yourFullName".localized
   static let accessToCameraTitle = "accessToCameraTitle".localized
@@ -219,6 +222,9 @@ enum L {
   }
   static func processedBy(with arguments: CVarArg...) -> String {
     return "processedBy".localized(with: arguments)
+  }
+  static func useYourBalance(with arguments: CVarArg...) -> String {
+    return "useYourBalance".localized(with: arguments)
   }
   
 }

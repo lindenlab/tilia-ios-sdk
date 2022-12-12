@@ -1,5 +1,5 @@
 //
-//  CheckoutPaymentMethodCell.swift
+//  CheckoutPaymentMethodRadioCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 01.04.2022.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol CheckoutPaymentMethodCellDelegate: AnyObject {
-  func checkoutPaymentMethodCellRadioButtonDidTap(_ cell: CheckoutPaymentMethodCell)
+protocol CheckoutPaymentMethodRadioCellDelegate: AnyObject {
+  func checkoutPaymentMethodRadioCellDidSelect(_ cell: CheckoutPaymentMethodRadioCell)
 }
 
-final class CheckoutPaymentMethodCell: UITableViewCell {
+final class CheckoutPaymentMethodRadioCell: UITableViewCell {
   
-  private weak var delegate: CheckoutPaymentMethodCellDelegate?
+  private weak var delegate: CheckoutPaymentMethodRadioCellDelegate?
   
   private let radioButton: RadioButton = {
     let button = RadioButton()
@@ -29,14 +29,10 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.textColor = .primaryTextColor
-    label.font = .systemFont(ofSize: 16)
-    return label
-  }()
-  
-  private let subTitleLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .secondaryTextColor
-    label.font = .systemFont(ofSize: 12)
+    label.font = .systemFont(ofSize: 14)
+    label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
+    label.setContentHuggingPriority(.init(249), for: .horizontal)
+    label.textAlignment = .right
     return label
   }()
   
@@ -56,15 +52,10 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
   }
   
   func configure(title: String,
-                 subTitle: String?,
-                 canSelect: Bool,
                  isDividerHidden: Bool,
                  icon: UIImage?,
-                 delegate: CheckoutPaymentMethodCellDelegate?) {
+                 delegate: CheckoutPaymentMethodRadioCellDelegate?) {
     titleLabel.text = title
-    subTitleLabel.text = subTitle
-    subTitleLabel.isHidden = subTitle == nil
-    radioButton.isUserInteractionEnabled = canSelect
     self.delegate = delegate
     divider.isHidden = isDividerHidden
     iconImageView.image = icon
@@ -74,32 +65,29 @@ final class CheckoutPaymentMethodCell: UITableViewCell {
     radioButton.isRadioSelected = isSelected
   }
   
+  func configure(isEnabled: Bool) {
+    radioButton.isEnabled = isEnabled
+  }
+  
 }
 
 // MARK: - Private Methods
 
-private extension CheckoutPaymentMethodCell {
+private extension CheckoutPaymentMethodRadioCell {
   
   func setup() {
     radioButton.addTarget(self, action: #selector(radioButtonDidTap), for: .touchUpInside)
     
     selectionStyle = .none
     accessibilityIdentifier = "checkoutPaymentMethodCell"
-    let leadingStackView = UIStackView(arrangedSubviews: [radioButton, iconImageView])
-    leadingStackView.alignment = .center
-    leadingStackView.spacing = 16
-
-    let trailingStackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
-    trailingStackView.spacing = 2
-    trailingStackView.alignment = .trailing
-    trailingStackView.axis = .vertical
     
-    
-    let stackView = UIStackView(arrangedSubviews: [leadingStackView, trailingStackView])
+    let stackView = UIStackView(arrangedSubviews: [radioButton,
+                                                   iconImageView,
+                                                   titleLabel])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.spacing = 5
-    stackView.distribution = .equalSpacing
     stackView.alignment = .center
+    stackView.setCustomSpacing(16, after: radioButton)
     
     backgroundColor = .backgroundColor
     contentView.backgroundColor = .backgroundColor
@@ -118,7 +106,7 @@ private extension CheckoutPaymentMethodCell {
   }
   
   @objc func radioButtonDidTap() {
-    delegate?.checkoutPaymentMethodCellRadioButtonDidTap(self)
+    delegate?.checkoutPaymentMethodRadioCellDidSelect(self)
   }
   
 }
