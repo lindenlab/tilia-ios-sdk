@@ -12,4 +12,5 @@ Pod::Spec.new do |s|
   s.dependency 'lottie-ios'
   s.dependency 'PocketSVG'
   s.swift_versions = ['5']
+  s.license = 'MIT'
 end
