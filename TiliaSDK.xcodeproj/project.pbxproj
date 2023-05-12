@@ -139,6 +139,10 @@
 		D19A0DA7281FED6600483DDC /* UserInfoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA6281FED6600483DDC /* UserInfoRouter.swift */; };
 		D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */; };
 		D19A0DAB2820004100483DDC /* KycFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */; };
+		D19AA5C02A0E476700F9493B /* GetSettingsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D19AA5BF2A0E476700F9493B /* GetSettingsResponse.json */; };
+		D19AA5C22A0E47C400F9493B /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19AA5C12A0E47C400F9493B /* SettingsRouter.swift */; };
+		D19AA5C42A0E486A00F9493B /* SettingsRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19AA5C32A0E486A00F9493B /* SettingsRouterTests.swift */; };
+		D19AA5C62A0E4A2100F9493B /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19AA5C52A0E4A2100F9493B /* SettingsModel.swift */; };
 		D19C79902837958C0024BB6F /* UserDocumentsPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19C798F2837958C0024BB6F /* UserDocumentsPhotoCell.swift */; };
 		D1A165B0287F5C0C00EFD999 /* UserDocumentsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A165AF287F5C0C00EFD999 /* UserDocumentsModel.swift */; };
 		D1A165B2287F5C3100EFD999 /* BoolModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A165B1287F5C3100EFD999 /* BoolModel.swift */; };
@@ -395,6 +399,10 @@
 		D19A0DA6281FED6600483DDC /* UserInfoRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoRouter.swift; sourceTree = "<group>"; };
 		D19A0DA8281FED7200483DDC /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
 		D19A0DAA2820004100483DDC /* KycFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KycFlowTestViewController.swift; sourceTree = "<group>"; };
+		D19AA5BF2A0E476700F9493B /* GetSettingsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetSettingsResponse.json; sourceTree = "<group>"; };
+		D19AA5C12A0E47C400F9493B /* SettingsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRouter.swift; sourceTree = "<group>"; };
+		D19AA5C32A0E486A00F9493B /* SettingsRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRouterTests.swift; sourceTree = "<group>"; };
+		D19AA5C52A0E4A2100F9493B /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		D19C798F2837958C0024BB6F /* UserDocumentsPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsPhotoCell.swift; sourceTree = "<group>"; };
 		D1A165AF287F5C0C00EFD999 /* UserDocumentsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentsModel.swift; sourceTree = "<group>"; };
 		D1A165B1287F5C3100EFD999 /* BoolModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolModel.swift; sourceTree = "<group>"; };
@@ -722,6 +730,7 @@
 				D11A7E5C28FDDD11005B93D2 /* GetTransactionHistoryModel.swift */,
 				D1E6F59B28ECBCD7000CDA5E /* TransactionHistorySectionModel.swift */,
 				D164A615290083FE00747B42 /* FailableDecodableModel.swift */,
+				D19AA5C52A0E4A2100F9493B /* SettingsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -735,6 +744,7 @@
 				D188165C27E7C0DB0082A85B /* InvoiceRouter.swift */,
 				D1B80AA428659E9700E1C9BD /* AuthRouter.swift */,
 				D1BB6342287F0A40007616DE /* KycRouter.swift */,
+				D19AA5C12A0E47C400F9493B /* SettingsRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1025,6 +1035,7 @@
 				D11A7E5428F5A3C9005B93D2 /* GetTransactionDetailsFullRefundResponse.json */,
 				D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */,
 				D155C7F328E5898400F04BD2 /* GetTransactionHistoryResponse.json */,
+				D19AA5BF2A0E476700F9493B /* GetSettingsResponse.json */,
 			);
 			path = JSONFiles;
 			sourceTree = "<group>";
@@ -1181,6 +1192,7 @@
 				D1E97797290AADDB00FB20AB /* InvoiceRouterTests.swift */,
 				D1E97799290AAE0300FB20AB /* AuthRouterTests.swift */,
 				D1E9779B290AAE1300FB20AB /* KycRouterTests.swift */,
+				D19AA5C32A0E486A00F9493B /* SettingsRouterTests.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1302,6 +1314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D126AF162875872F00CAC5F2 /* IdentityCardFrontImage.svg in Resources */,
+				D19AA5C02A0E476700F9493B /* GetSettingsResponse.json in Resources */,
 				D126AF192875872F00CAC5F2 /* DriversLicenseFrontImage.svg in Resources */,
 				D1BB6347287F2CC0007616DE /* SubmitKycResponse.json in Resources */,
 				D126AF152875872F00CAC5F2 /* IdentityCardBackImage.svg in Resources */,
@@ -1452,6 +1465,7 @@
 				D13759CA28D3557E0046234B /* TransactionHistoryViewController.swift in Sources */,
 				D16E2A9528AFA15D00287C55 /* SendReceiptRouter.swift in Sources */,
 				D13759D028D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift in Sources */,
+				D19AA5C62A0E4A2100F9493B /* SettingsModel.swift in Sources */,
 				D179123D282C3BD00053DB10 /* PossiblyEmpty.swift in Sources */,
 				D18855E1282700D400BAC86F /* UserInfoModel.swift in Sources */,
 				D1CCE8D627F4C5CF00FD0E25 /* TosRequiredForUserTestViewController.swift in Sources */,
@@ -1593,6 +1607,7 @@
 				D11A7E5D28FDDD11005B93D2 /* GetTransactionHistoryModel.swift in Sources */,
 				D16D56A92826F4AA0088FB3D /* UserInfoFooterView.swift in Sources */,
 				D1EFAB3828B94EBC00AB1C31 /* SendReceiptValidator.swift in Sources */,
+				D19AA5C22A0E47C400F9493B /* SettingsRouter.swift in Sources */,
 				D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */,
 				D126AF1F2875F99C00CAC5F2 /* SVGImage.swift in Sources */,
 				D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */,
@@ -1617,6 +1632,7 @@
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
 				D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */,
 				D1E97798290AADDB00FB20AB /* InvoiceRouterTests.swift in Sources */,
+				D19AA5C42A0E486A00F9493B /* SettingsRouterTests.swift in Sources */,
 				D1FC23CE290B032100ECD7AF /* EncodableTests.swift in Sources */,
 				D11A7E5928FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift in Sources */,
 				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,

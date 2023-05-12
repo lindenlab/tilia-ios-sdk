@@ -17,6 +17,28 @@ final class UserDocumentsViewModelTests: XCTestCase {
     subscriptions = []
   }
   
+  func testSuccessLoad() {
+    var loading: Bool?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
+    let viewModel = UserDocumentsViewModel(manager: networkManager,
+                                           userInfoModel: userInfoModel,
+                                           onComplete: { _ in },
+                                           onError: nil)
+    
+    let loadingExpectation = XCTestExpectation(description: "testSuccessLoad")
+    viewModel.loading.sink {
+      loading = $0
+      loadingExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    viewModel.load()
+    
+    wait(for: [loadingExpectation], timeout: 2)
+    XCTAssertNotNil(loading)
+  }
+  
   func testSuccessSetText() {
     var text: String?
     
@@ -43,6 +65,82 @@ final class UserDocumentsViewModelTests: XCTestCase {
     
     wait(for: [setTextExpectation], timeout: 2)
     XCTAssertEqual(text, document.description)
+  }
+  
+  func testSuccessSetDocument() {
+    var documentDidSelect: UserDocumentsModel.Document?
+    var documentDidChange: UserDocumentsModel.Document?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
+    let viewModel = UserDocumentsViewModel(manager: networkManager,
+                                           userInfoModel: userInfoModel,
+                                           onComplete: { _ in },
+                                           onError: nil)
+    
+    let documentDidSelectExpectation = XCTestExpectation(description: "testSuccessSetDocument_DocumentDidSelect")
+    viewModel.documentDidSelect.sink { [weak viewModel] in
+      documentDidSelect = $0.document
+      let document = UserDocumentsModel.Document.identityCard
+      viewModel?.setText(document.description,
+                         for: .init(title: nil,
+                                    mode: .field(.init(type: .document,
+                                                       placeholder: nil,
+                                                       items: []))),
+                         at: 0)
+      documentDidSelectExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let documentDidChangeExpectation = XCTestExpectation(description: "testSuccessSetDocument_DocumentDidChange")
+    viewModel.documentDidChange.sink {
+      documentDidChange = $0
+      documentDidChangeExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let document = UserDocumentsModel.Document.passport
+    viewModel.setText(document.description,
+                      for: .init(title: nil,
+                                 mode: .field(.init(type: .document,
+                                                    placeholder: nil,
+                                                    items: []))),
+                      at: 0)
+    
+    wait(for: [documentDidSelectExpectation, documentDidChangeExpectation], timeout: 2)
+    XCTAssertEqual(documentDidSelect, .passport)
+    XCTAssertEqual(documentDidChange, .identityCard)
+  }
+  
+  func testSuccessShouldAddAdditionalDocuments() {
+    var shouldAddAdditionalDocuments: Bool?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let userInfoModel = UserInfoModel(countryOfResidence: .usa)
+    let viewModel = UserDocumentsViewModel(manager: networkManager,
+                                           userInfoModel: userInfoModel,
+                                           onComplete: { _ in },
+                                           onError: nil)
+    
+    viewModel.loading.sink { [weak viewModel] in
+      if !$0 {
+        viewModel?.setText("France",
+                           for: .init(title: nil,
+                                      mode: .field(.init(type: .documentCountry,
+                                                         placeholder: nil,
+                                                         items: []))),
+                           at: 1)
+      }
+    }.store(in: &subscriptions)
+    
+    let shouldAddAdditionalDocumentsExpectation = XCTestExpectation(description: "testSuccessShouldAddAdditionalDocuments")
+    viewModel.shouldAddAdditionalDocuments.sink {
+      shouldAddAdditionalDocuments = $0
+      shouldAddAdditionalDocumentsExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    viewModel.load()
+    
+    wait(for: [shouldAddAdditionalDocumentsExpectation], timeout: 2)
+    XCTAssertNotNil(shouldAddAdditionalDocuments)
   }
   
   func testSuccessSetImage() {
@@ -171,7 +269,7 @@ final class UserDocumentsViewModelTests: XCTestCase {
     
     let errorExpectation = XCTestExpectation(description: "testErrorSubmit_Error")
     viewModel.error.sink {
-      error = $0
+      error = $0.error
       errorExpectation.fulfill()
     }.store(in: &subscriptions)
     

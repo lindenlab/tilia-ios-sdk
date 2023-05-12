@@ -83,7 +83,6 @@ enum L {
   static let capture = "capture".localized
   static let choose = "choose".localized
   static let documentIssuingCountry = "documentIssuingCountry".localized
-  static let isAddressUpToDateDescription = "isAddressUpToDateDescription".localized
   static let supportingDocuments = "supportingDocuments".localized
   static let supportingDocumentsDescription = "supportingDocumentsDescription".localized
   static let allSet = "allSet".localized

@@ -72,7 +72,6 @@
 "capture" = "Capture";
 "choose" = "Choose";
 "documentIssuingCountry" = "Document issuing country";
-"isAddressUpToDateDescription" = "Is your address on this document and is it up to date?";
 "supportingDocuments" = "Supporting documents";
 "supportingDocumentsDescription" = "Please provide at least one proof of address document issued within the last 90 days that includes your name and current residential address. It can be one of the following:\n\n• Utility bill\n• Bank statement\n• Phone or internet bill\n• Rental agreement\n• Voter registration\n• Insurance statement";
 "allSet" = "You’re all set";

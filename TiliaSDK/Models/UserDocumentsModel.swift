@@ -53,11 +53,8 @@ struct UserDocumentsModel {
   var frontImage: DocumentImage?
   var backImage: DocumentImage?
   var documentCountry: CountryModel?
-  var isAddressOnDocument: BoolModel?
-  var additionalDocuments: [DocumentImage] = []
-  
-  var isUsDocumentCountry: Bool { return documentCountry?.isUs == true }
-  
+  var additionalDocuments: [DocumentImage]?
+    
   mutating func setDocumentImagesToDefault() {
     frontImage = nil
     backImage = nil

@@ -161,7 +161,7 @@ final class KycFlowUITests: XCTestCase {
     
     let countryOfResidencePicker = app.pickerWheels.firstMatch
     XCTAssert(countryOfResidencePicker.exists)
-    countryOfResidencePicker.adjust(toPickerWheelValue: "Canada")
+    countryOfResidencePicker.adjust(toPickerWheelValue: "France")
     countryOfResidenceTextField.typeText("\n")
     
     let locationNextButton = app.tables.cells.buttons["nextButton"]
@@ -219,7 +219,7 @@ final class KycFlowUITests: XCTestCase {
     let stateTextField = app.tables.cells.textFields["stateTextField"]
     XCTAssert(stateTextField.exists)
     stateTextField.tap()
-    stateTextField.typeText("\n")
+    stateTextField.typeText("State\n")
     
     let postalCodeTextField = app.tables.cells.textFields["postalCodeTextField"]
     XCTAssert(postalCodeTextField.exists)
@@ -240,6 +240,8 @@ final class KycFlowUITests: XCTestCase {
     let continueButton = app.tables.buttons["continueButton"]
     XCTAssert(continueButton.exists)
     continueButton.tap()
+    
+    wait(duration: 2)
     
     let documentTextField = app.tables.cells.textFields["documentTextField"]
     XCTAssert(documentTextField.exists)

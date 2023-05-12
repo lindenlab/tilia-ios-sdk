@@ -1,0 +1,175 @@
+{
+    "feature_flags": {
+        "cardProvider": "rebilly",
+        "3DS": true,
+        "fraudnet": true,
+        "kount": true
+    },
+    "3ds": {
+        "3ds_polling_timeout_seconds": "600"
+    },
+    "fraudnet": {
+        "callbackTimeoutMS": 2000
+    },
+    "flows": {
+        "ACH": "ACH",
+        "ADDCARD": "ADDCARD",
+        "ADDPM": "ADDPM",
+        "KYC": [
+            "TOS",
+            "KYC2"
+        ],
+        "KYC2": [
+            "TOS",
+            "KYC2"
+        ],
+        "PAYOUT": [
+            "TOS",
+            "KYC2",
+            "PAYOUT"
+        ],
+        "PURCHASE": [
+            "TOS",
+            "PURCHASE"
+        ],
+        "TOS": "TOS",
+        "PWTL": [
+            "TOS",
+            "PWTL"
+        ],
+        "CHECKOUT": [
+            "TOS",
+            "CHECKOUT"
+        ],
+        "PAYMENT-SELECTION": [
+            "TOS",
+            "PAYMENT-SELECTION"
+        ],
+        "TXNHISTORY": [
+            "TOS",
+            "TXNHISTORY"
+        ],
+        "TXNDETAILS": [
+            "TOS",
+            "TXNDETAILS"
+        ]
+    },
+    "kount": {
+        "lib_url": "/ui/k",
+        "log_success": true,
+        "callbackTimeoutMS": 2000
+    },
+    "KYC": {
+        "countriesNotRequiringAddressDocuments": [
+            "AG",
+            "AI",
+            "AM",
+            "AO",
+            "AR",
+            "AU",
+            "AW",
+            "AZ",
+            "BA",
+            "BD",
+            "BH",
+            "BJ",
+            "BM",
+            "BN",
+            "BO",
+            "BR",
+            "BT",
+            "BW",
+            "BY",
+            "BZ",
+            "CA",
+            "CH",
+            "CK",
+            "CL",
+            "CM",
+            "CN",
+            "CO",
+            "CR",
+            "CV",
+            "DJ",
+            "DK",
+            "DM",
+            "DO",
+            "DZ",
+            "EC",
+            "EG",
+            "ET",
+            "FM",
+            "GB",
+            "GD",
+            "GE",
+            "GH",
+            "GM",
+            "GT",
+            "GY",
+            "HK",
+            "HN",
+            "ID",
+            "IL",
+            "IN",
+            "IS",
+            "JP",
+            "KG",
+            "KN",
+            "KR",
+            "KW",
+            "KZ",
+            "LB",
+            "LC",
+            "LI",
+            "LK",
+            "LR",
+            "MD",
+            "MH",
+            "MK",
+            "MN",
+            "MO",
+            "MU",
+            "MV",
+            "MW",
+            "MX",
+            "MY",
+            "NA",
+            "NE",
+            "NL",
+            "NO",
+            "NR",
+            "NZ",
+            "OM",
+            "PE",
+            "PG",
+            "PR",
+            "PY",
+            "QA",
+            "RS",
+            "RW",
+            "SA",
+            "SB",
+            "SC",
+            "SE",
+            "SG",
+            "SR",
+            "SV",
+            "TG",
+            "TH",
+            "TJ",
+            "TL",
+            "TN",
+            "TO",
+            "TW",
+            "TZ",
+            "US",
+            "UY",
+            "UZ",
+            "VC",
+            "VE",
+            "VG",
+            "XK",
+            "ZM"
+        ]
+    }
+}

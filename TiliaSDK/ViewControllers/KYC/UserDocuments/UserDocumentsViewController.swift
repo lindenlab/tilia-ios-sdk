@@ -10,6 +10,10 @@ import Combine
 
 final class UserDocumentsViewController: BaseTableViewController {
   
+  override var hideableView: UIView {
+    return tableView
+  }
+  
   private let viewModel: UserDocumentsViewModelProtocol
   private let router: UserDocumentsRoutingProtocol
   private let builder = UserDocumentsSectionBuilder()
@@ -51,6 +55,7 @@ final class UserDocumentsViewController: BaseTableViewController {
     super.viewDidLoad()
     setup()
     bind()
+    viewModel.load()
   }
   
   override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
@@ -173,8 +178,16 @@ private extension UserDocumentsViewController {
   }
   
   func bind() {
-    viewModel.error.sink { [weak self] _ in
+    viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
+      $0 ? self.startLoading() : self.stopLoading()
+    }.store(in: &subscriptions)
+    
+    viewModel.error.sink { [weak self] in
+      guard let self = self else { return }
+      if $0.value {
+        self.showCancelButton()
+      }
       self.router.showToast(title: L.errorKycTitle,
                             message: L.errorKycMessage)
     }.store(in: &subscriptions)
@@ -212,21 +225,10 @@ private extension UserDocumentsViewController {
       }
     }.store(in: &subscriptions)
     
-    viewModel.documentCountryDidChange.sink { [weak self] in
+    viewModel.shouldAddAdditionalDocuments.sink { [weak self] in
       guard let self = self else { return }
       let tableUpdate = self.builder.updateSection(&self.section,
-                                                   documentCountryDidChangeWith: $0.model,
-                                                   wasUsDocumentCountry: $0.wasUsDocumentCountry)
-      self.tableView.performBatchUpdates {
-        tableUpdate.reload.map { self.tableView.reloadRows(at: $0, with: .fade) }
-        tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
-      }
-    }.store(in: &subscriptions)
-    
-    viewModel.isAddressOnDocumentDidChange.sink { [weak self] in
-      guard let self = self else { return }
-      let tableUpdate = self.builder.updateSection(&self.section,
-                                                   isAddressOnDocumentDidChangeWith: $0)
+                                                   shouldAddAdditionalDocuments: $0)
       self.tableView.performBatchUpdates {
         tableUpdate.insert.map { self.tableView.insertRows(at: $0, with: .fade) }
         tableUpdate.delete.map { self.tableView.deleteRows(at: $0, with: .fade) }
@@ -292,6 +294,14 @@ private extension UserDocumentsViewController {
   
   @objc func keyboardWillBeHidden() {
     tableView.contentInset.bottom = 0
+  }
+  
+  func showCancelButton() {
+    showCloseButton(target: self, action: #selector(closeButtonDidTap))
+  }
+  
+  @objc func closeButtonDidTap() {
+    router.dismiss()
   }
   
 }

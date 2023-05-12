@@ -21,8 +21,8 @@ struct SubmitKycModel: Encodable {
   init(userInfoModel: UserInfoModel, userDocumentsModel: UserDocumentsModel?) {
     self.userInfo = UserInfo(userInfoModel: userInfoModel,
                              userDocumentsModel: userDocumentsModel)
-    self.files = userDocumentsModel?.additionalDocuments.enumerated().map { File(additionalDocument: $0.element,
-                                                                                 index: $0.offset + 1) }
+    self.files = userDocumentsModel?.additionalDocuments?.enumerated().map { File(additionalDocument: $0.element,
+                                                                                  index: $0.offset + 1) }
   }
   
 }
