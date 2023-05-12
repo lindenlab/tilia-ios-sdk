@@ -16,6 +16,7 @@ typealias UserDocumentsAddAdditionalDocuments = (index: Int, documentImages: [UI
 typealias UserDocumentsDeleteAdditionalDocument = (itemIndex: Int, documentIndex: Int)
 
 protocol UserDocumentsViewModelInputProtocol {
+  func load()
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int)
   func setImage(_ image: UIImage?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int, with url: URL?)
   func setFiles(with urls: [URL], at index: Int)
@@ -25,7 +26,8 @@ protocol UserDocumentsViewModelInputProtocol {
 }
 
 protocol UserDocumentsViewModelOutputProtocol {
-  var error: PassthroughSubject<Error, Never> { get }
+  var loading: PassthroughSubject<Bool, Never> { get }
+  var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var setText: PassthroughSubject<UserDocumentsSetText, Never> { get }
   var setDocumentImage: PassthroughSubject<UserDocumentsSetDocumentImage, Never> { get }
   var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
@@ -44,7 +46,8 @@ protocol UserDocumentsViewModelProtocol: UserDocumentsViewModelInputProtocol, Us
 
 final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   
-  let error = PassthroughSubject<Error, Never>()
+  let loading = PassthroughSubject<Bool, Never>()
+  let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let setText = PassthroughSubject<UserDocumentsSetText, Never>()
   let setDocumentImage = PassthroughSubject<UserDocumentsSetDocumentImage, Never>()
   let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
@@ -65,6 +68,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   private let onError: ((TLErrorCallback) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
   private var submittedKyc: SubmittedKycModel?
+  private var countriesNotRequiringAddressDocuments: [String] = []
   
   init(manager: NetworkManager,
        userInfoModel: UserInfoModel,
@@ -75,6 +79,20 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     self.userDocumentsModel = UserDocumentsModel(model: userInfoModel)
     self.onComplete = onComplete
     self.onError = onError
+  }
+  
+  func load() {
+    loading.send(true)
+    manager.getSettings { [weak self] result in
+      guard let self = self else { return }
+      self.loading.send(false)
+      switch result {
+      case .success(let model):
+        self.countriesNotRequiringAddressDocuments = model.kyc.countriesNotRequiringAddressDocuments
+      case .failure(let error):
+        self.didFail(with: .init(error: error, value: true))
+      }
+    }
   }
   
   func setText(_ text: String?, for item: UserDocumentsSectionBuilder.Section.Item, at index: Int) {
@@ -187,12 +205,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         self.dismiss.send()
       case .failure(let error):
         self.uploading.send(false)
-        self.error.send(error)
-        let event = TLEvent(flow: .kyc, action: .error)
-        let model = TLErrorCallback(event: event,
-                                    error: L.errorKycTitle,
-                                    message: error.localizedDescription)
-        self.onError?(model)
+        self.didFail(with: .init(error: error, value: false))
       }
     }
   }
@@ -279,6 +292,15 @@ private extension UserDocumentsViewModel {
     processQueue.async {
       try? FileManager.default.removeItem(at: url)
     }
+  }
+  
+  func didFail(with error: ErrorWithBoolModel) {
+    self.error.send(error)
+    let event = TLEvent(flow: .kyc, action: .error)
+    let model = TLErrorCallback(event: event,
+                                error: L.errorKycTitle,
+                                message: error.error.localizedDescription)
+    self.onError?(model)
   }
   
 }
