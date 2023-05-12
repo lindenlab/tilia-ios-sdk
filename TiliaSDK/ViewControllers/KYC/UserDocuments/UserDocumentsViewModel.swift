@@ -89,13 +89,13 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
     loading.send(true)
     manager.getSettings { [weak self] result in
       guard let self = self else { return }
-      self.loading.send(false)
       switch result {
       case .success(let model):
         self.countryCodesNotRequiringAddressDocuments = model.kyc.countriesNotRequiringAddressDocuments
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
+      self.loading.send(false)
     }
   }
   

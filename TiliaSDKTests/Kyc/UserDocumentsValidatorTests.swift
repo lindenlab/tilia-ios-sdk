@@ -31,13 +31,23 @@ final class UserDocumentsValidatorTests: XCTestCase {
     XCTAssertTrue(isFilled)
   }
   
-  func testSuccessIsUsDocumentCountry() {
+  func testSuccessHasAdditionalDocuments() {
     var model = UserDocumentsModel()
     model.document = .driversLicense
     model.frontImage = .init(image: .init(), data: .init(), type: .image)
     model.backImage = .init(image: .init(), data: .init(), type: .image)
     model.documentCountry = .usa
-    model.isAddressOnDocument = .yes
+    model.additionalDocuments = [.init(image: .init(), data: .init(), type: .pdf)]
+    let isFilled = UserDocumentsValidator.isFilled(for: model)
+    XCTAssertTrue(isFilled)
+  }
+  
+  func testSuccessDoesNotHaveAdditionalDocuments() {
+    var model = UserDocumentsModel()
+    model.document = .driversLicense
+    model.frontImage = .init(image: .init(), data: .init(), type: .image)
+    model.backImage = .init(image: .init(), data: .init(), type: .image)
+    model.documentCountry = .usa
     let isFilled = UserDocumentsValidator.isFilled(for: model)
     XCTAssertTrue(isFilled)
   }
