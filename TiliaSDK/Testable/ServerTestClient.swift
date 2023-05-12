@@ -9,7 +9,7 @@ import Alamofire
 
 struct ServerTestClient: ServerClientProtocol {
   
-  func performRequestWithDecodableModel<DataType>(router: RouterProtocol, completion: @escaping CompletionResultHandler<DataType>) where DataType : Decodable {
+  func performRequestWithBaseResponseDecodableModel<DataType: Decodable>(router: RouterProtocol, completion: @escaping CompletionResultHandler<DataType>) {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       do {
         let _ = try router.requestHeaders()
@@ -21,6 +21,26 @@ struct ServerTestClient: ServerClientProtocol {
             } else {
               completion(.failure(TLError.decodableDataIsNil))
             }
+          } catch {
+            completion(.failure(error))
+          }
+        } else {
+          completion(.failure(TLError.decodableDataIsNil))
+        }
+      } catch {
+        completion(.failure(error))
+      }
+    }
+  }
+  
+  func performRequestWithOriginalDecodableModel<DataType: Decodable>(router: RouterProtocol, completion: @escaping CompletionResultHandler<DataType>) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      do {
+        let _ = try router.requestHeaders()
+        if let data = router.testData {
+          do {
+            let model = try DataType.decodeObject(from: data)
+            completion(.success(model))
           } catch {
             completion(.failure(error))
           }

@@ -11,13 +11,13 @@ import XCTest
 
 final class ServerClientTests: XCTestCase {
   
-  func testErrorServerClient() {
+  func testErrorServerClientWithBaseResponseDecodableModel() {
     var errorModel: Error?
     let serverClient = ServerClient()
     let router = TestRouter()
-    let expectation = XCTestExpectation(description: "testErrorServerClient")
+    let expectation = XCTestExpectation(description: "testErrorServerClientWithBaseResponseDecodableModel")
     TLManager.shared.setToken("")
-    serverClient.performRequestWithDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
+    serverClient.performRequestWithBaseResponseDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
       switch result {
       case .success:
         break
@@ -30,13 +30,13 @@ final class ServerClientTests: XCTestCase {
     XCTAssertNotNil(errorModel)
   }
   
-  func testSuccessServerTestClient() {
+  func testSuccessServerTestClientWithBaseResponseDecodableModel() {
     var emptyModel: EmptyModel?
     let serverClient = ServerTestClient()
     let router = TestRouter()
-    let expectation = XCTestExpectation(description: "testSuccessServerTestClient")
+    let expectation = XCTestExpectation(description: "testSuccessServerTestClientWithBaseResponseDecodableModel")
     TLManager.shared.setToken(UUID().uuidString)
-    serverClient.performRequestWithDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
+    serverClient.performRequestWithBaseResponseDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
       emptyModel = try? result.get()
       expectation.fulfill()
     }
@@ -44,13 +44,65 @@ final class ServerClientTests: XCTestCase {
     XCTAssertNotNil(emptyModel)
   }
   
-  func testErrorServerTestClient() {
+  func testErrorServerTestClientWithBaseResponseDecodableModel() {
     var errorModel: Error?
     let serverClient = ServerTestClient()
     let router = TestRouter()
-    let expectation = XCTestExpectation(description: "testErrorServerTestClient")
+    let expectation = XCTestExpectation(description: "testErrorServerTestClientWithBaseResponseDecodableModel")
     TLManager.shared.setToken("")
-    serverClient.performRequestWithDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
+    serverClient.performRequestWithBaseResponseDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
+      switch result {
+      case .success:
+        break
+      case .failure(let error):
+        errorModel = error
+        expectation.fulfill()
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(errorModel)
+  }
+  
+  func testErrorServerClientWithOriginalDecodableModel() {
+    var errorModel: Error?
+    let serverClient = ServerClient()
+    let router = TestRouter()
+    let expectation = XCTestExpectation(description: "testErrorServerClientWithOriginalDecodableModel")
+    TLManager.shared.setToken("")
+    serverClient.performRequestWithOriginalDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
+      switch result {
+      case .success:
+        break
+      case .failure(let error):
+        errorModel = error
+        expectation.fulfill()
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(errorModel)
+  }
+  
+  func testSuccessServerTestClientWithOriginalDecodableModel() {
+    var emptyModel: EmptyModel?
+    let serverClient = ServerTestClient()
+    let router = TestRouter()
+    let expectation = XCTestExpectation(description: "testSuccessServerTestClientWithOriginalDecodableModel")
+    TLManager.shared.setToken(UUID().uuidString)
+    serverClient.performRequestWithOriginalDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
+      emptyModel = try? result.get()
+      expectation.fulfill()
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(emptyModel)
+  }
+  
+  func testErrorServerTestClientWithOriginalDecodableModel() {
+    var errorModel: Error?
+    let serverClient = ServerTestClient()
+    let router = TestRouter()
+    let expectation = XCTestExpectation(description: "testErrorServerTestClientWithOriginalDecodableModel")
+    TLManager.shared.setToken("")
+    serverClient.performRequestWithOriginalDecodableModel(router: router) { (result: Result<EmptyModel, Error>) in
       switch result {
       case .success:
         break

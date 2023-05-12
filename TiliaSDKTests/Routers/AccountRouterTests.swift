@@ -25,7 +25,6 @@ final class AccountRouterTests: XCTestCase {
   
   func testGetTosContent() {
     let router = AccountRouter.getTosContent
-    TLManager.shared.setToken(UUID().uuidString)
     XCTAssertEqual(router.method, .get)
     XCTAssertNil(router.queryParameters)
     XCTAssertNil(router.bodyParameters)

@@ -34,7 +34,6 @@ final class NetworkManagerTests: XCTestCase {
   }
   
   func testGetTosContentSuccess() {
-    TLManager.shared.setToken(UUID().uuidString)
     var content: String?
     let expectation = XCTestExpectation(description: "testGetTosContentSuccess")
     networkManager.getTosContent { result in
@@ -297,6 +296,22 @@ final class NetworkManagerTests: XCTestCase {
     }
     wait(for: [expectation], timeout: 2)
     XCTAssertEqual(state, .accepted)
+  }
+  
+  func testGetSettingsSuccess() {
+    var kycSettings: KycSettingsModel?
+    let expectation = XCTestExpectation(description: "testGetSettingsSuccess")
+    networkManager.getSettings { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let model):
+        kycSettings = model.kyc
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(kycSettings)
   }
   
 }
