@@ -11,7 +11,6 @@ import PDFKit
 
 typealias UserDocumentsSetText = (index: Int, text: String?)
 typealias UserDocumentsSetDocumentImage = (index: Int, image: UIImage)
-typealias UserDocumentsDocumentCountryDidChange = (model: UserDocumentsModel, wasUsDocumentCountry: Bool)
 typealias UserDocumentsAddAdditionalDocuments = (index: Int, documentImages: [UIImage])
 typealias UserDocumentsDeleteAdditionalDocument = (itemIndex: Int, documentIndex: Int)
 
@@ -32,8 +31,7 @@ protocol UserDocumentsViewModelOutputProtocol {
   var setDocumentImage: PassthroughSubject<UserDocumentsSetDocumentImage, Never> { get }
   var documentDidSelect: PassthroughSubject<UserDocumentsModel, Never> { get }
   var documentDidChange: PassthroughSubject<UserDocumentsModel.Document, Never> { get }
-  var documentCountryDidChange: PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never> { get }
-  var isAddressOnDocumentDidChange: PassthroughSubject<BoolModel?, Never> { get }
+  var shouldAddAdditionalDocuments: PassthroughSubject<Bool, Never> { get }
   var addAdditionalDocuments: PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never> { get }
   var deleteAdditionalDocument: PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never> { get }
   var chooseFileDidFail: PassthroughSubject<String, Never> { get }
@@ -52,8 +50,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   let setDocumentImage = PassthroughSubject<UserDocumentsSetDocumentImage, Never>()
   let documentDidSelect = PassthroughSubject<UserDocumentsModel, Never>()
   let documentDidChange = PassthroughSubject<UserDocumentsModel.Document, Never>()
-  let documentCountryDidChange = PassthroughSubject<UserDocumentsDocumentCountryDidChange, Never>()
-  let isAddressOnDocumentDidChange = PassthroughSubject<BoolModel?, Never>()
+  let shouldAddAdditionalDocuments = PassthroughSubject<Bool, Never>()
   let addAdditionalDocuments = PassthroughSubject<UserDocumentsAddAdditionalDocuments, Never>()
   let deleteAdditionalDocument = PassthroughSubject<UserDocumentsDeleteAdditionalDocument, Never>()
   let chooseFileDidFail = PassthroughSubject<String, Never>()
@@ -68,7 +65,14 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   private let onError: ((TLErrorCallback) -> Void)?
   private let processQueue = DispatchQueue(label: "io.tilia.ios.sdk.userDocumentsProcessQueue", attributes: .concurrent)
   private var submittedKyc: SubmittedKycModel?
-  private var countriesNotRequiringAddressDocuments: [String] = []
+  private var countryCodesNotRequiringAddressDocuments: [String] = [] {
+    didSet {
+      guard
+        let defaultSelectedCountry = userDocumentsModel.documentCountry,
+        !countryCodesNotRequiringAddressDocuments.contains(where: { $0 == defaultSelectedCountry.code }) else { return }
+      userDocumentsModel.additionalDocuments = []
+    }
+  }
   
   init(manager: NetworkManager,
        userInfoModel: UserInfoModel,
@@ -88,7 +92,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       self.loading.send(false)
       switch result {
       case .success(let model):
-        self.countriesNotRequiringAddressDocuments = model.kyc.countriesNotRequiringAddressDocuments
+        self.countryCodesNotRequiringAddressDocuments = model.kyc.countriesNotRequiringAddressDocuments
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
@@ -111,27 +115,23 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         userDocumentsModel.setDocumentImagesToDefault()
         documentDidChange.send(value)
       }
-    case .documentCountry:
-      if userDocumentsModel.documentCountry?.name != text {
-        let wasUsDocumentCountry = userDocumentsModel.isUsDocumentCountry
-        isFieldChanged = true
-        userDocumentsModel.documentCountry = CountryModel.countries.first { $0.name == text }
-        if wasUsDocumentCountry {
-          userDocumentsModel.isAddressOnDocument = nil
-        } else if userDocumentsModel.isUsDocumentCountry {
-          userDocumentsModel.additionalDocuments.removeAll()
+    case .documentCountry where userDocumentsModel.documentCountry?.name != text:
+      isFieldChanged = true
+      let country = CountryModel.countries.first { $0.name == text }
+      userDocumentsModel.documentCountry = country
+      let wereNilAdditionalDocuments = userDocumentsModel.additionalDocuments == nil
+      let additionalDocumentsNotRequired = countryCodesNotRequiringAddressDocuments.contains(where: { $0 == country?.code })
+      if additionalDocumentsNotRequired {
+        if !wereNilAdditionalDocuments {
+          userDocumentsModel.additionalDocuments = nil
+          shouldAddAdditionalDocuments.send(false)
         }
-        documentCountryDidChange.send((userDocumentsModel, wasUsDocumentCountry))
+      } else if wereNilAdditionalDocuments {
+        userDocumentsModel.additionalDocuments = []
+        shouldAddAdditionalDocuments.send(true)
       }
-    case .isAddressOnDocument:
-      let value = BoolModel(str: text ?? "")
-      isFieldChanged = isFieldUpdated(&userDocumentsModel.isAddressOnDocument, with: value)
-      if isFieldChanged {
-        if value == .yes || value == nil {
-          userDocumentsModel.additionalDocuments.removeAll()
-        }
-        isAddressOnDocumentDidChange.send(value)
-      }
+    default:
+      break
     }
     
     if isFieldChanged {
@@ -161,11 +161,11 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
         }
         self.setDocumentImage.send((index, resizedImage))
       case .additionalDocuments:
-        let initialDocumentsSize = self.getDocumentsSize(self.userDocumentsModel.additionalDocuments)
+        let initialDocumentsSize = self.getDocumentsSize(self.userDocumentsModel.additionalDocuments ?? [])
         if initialDocumentsSize + compressedImage.count > C.maxAdditionalDocumentsSize {
           self.chooseFileDidFail.send(L.failedToSelectReachedMaxSize)
         } else {
-          self.userDocumentsModel.additionalDocuments.append(documentImage)
+          self.userDocumentsModel.additionalDocuments?.append(documentImage)
           self.addAdditionalDocuments.send((index, [resizedImage]))
         }
       default:
@@ -177,10 +177,10 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func setFiles(with urls: [URL], at index: Int) {
-    let initialDocumentsSize = getDocumentsSize(userDocumentsModel.additionalDocuments)
+    let initialDocumentsSize = getDocumentsSize(userDocumentsModel.additionalDocuments ?? [])
     processFiles(with: urls, initialDocumentsSize: initialDocumentsSize) { documents, error in
       if !documents.isEmpty {
-        self.userDocumentsModel.additionalDocuments.append(contentsOf: documents)
+        self.userDocumentsModel.additionalDocuments?.append(contentsOf: documents)
         self.addAdditionalDocuments.send((index, documents.map { $0.image }))
         self.updateFillingSectionObserver()
       }
@@ -190,7 +190,7 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
   }
   
   func deleteDocument(forItemIndex itemIndex: Int, atDocumentIndex documentIndex: Int) {
-    userDocumentsModel.additionalDocuments.remove(at: documentIndex)
+    userDocumentsModel.additionalDocuments?.remove(at: documentIndex)
     deleteAdditionalDocument.send((itemIndex, documentIndex))
     updateFillingSectionObserver()
   }

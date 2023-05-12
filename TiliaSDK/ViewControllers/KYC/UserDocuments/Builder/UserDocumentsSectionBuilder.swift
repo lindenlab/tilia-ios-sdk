@@ -23,13 +23,11 @@ struct UserDocumentsSectionBuilder {
         enum FieldType {
           case document
           case documentCountry
-          case isAddressOnDocument
           
           var accessibilityIdentifier: String {
             switch self {
             case .document: return "documentTextField"
             case .documentCountry: return "documentCountryTextField"
-            case .isAddressOnDocument: return "isAddressOnDocumentTextField"
             }
           }
         }
@@ -184,9 +182,7 @@ struct UserDocumentsSectionBuilder {
     
     section.items.append(documentCountryItem(country: model.documentCountry?.name))
     
-    if model.isUsDocumentCountry {
-      section.items.append(isAddressOnDocumentItem())
-    } else {
+    if model.additionalDocuments != nil {
       section.items.append(additionalDocumentsItem())
     }
     
@@ -227,40 +223,18 @@ struct UserDocumentsSectionBuilder {
   }
   
   func updateSection(_ section: inout Section,
-                     documentCountryDidChangeWith model: UserDocumentsModel,
-                     wasUsDocumentCountry: Bool) -> TableUpdate {
+                     shouldAddAdditionalDocuments shouldAdd: Bool) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
-    
-    if model.isUsDocumentCountry {
-      additionalDocumentsIndex(in: section).map {
-        section.items[$0] = isAddressOnDocumentItem()
-        tableUpdate.reload = [IndexPath(row: $0, section: 0)]
+    if shouldAdd {
+      if additionalDocumentsIndex(in: section) == nil {
+        let index = section.items.count
+        section.items.append(additionalDocumentsItem())
+        tableUpdate.insert = [IndexPath(row: index, section: 0)]
       }
-    } else if wasUsDocumentCountry, let isAddressOnDocumentIndex = isAddressOnDocumentIndex(in: section) {
-      if let _ = additionalDocumentsIndex(in: section) {
-        section.items.remove(at: isAddressOnDocumentIndex)
-        tableUpdate.delete = [IndexPath(row: isAddressOnDocumentIndex, section: 0)]
-      } else {
-        section.items[isAddressOnDocumentIndex] = additionalDocumentsItem()
-        tableUpdate.reload = [IndexPath(row: isAddressOnDocumentIndex, section: 0)]
-      }
-    }
-    
-    return tableUpdate
-  }
-  
-  func updateSection(_ section: inout Section,
-                     isAddressOnDocumentDidChangeWith model: BoolModel?) -> TableUpdate {
-    var tableUpdate: TableUpdate = (nil, nil, nil)
-    
-    if model == .no, additionalDocumentsIndex(in: section) == nil {
-      section.items.append(additionalDocumentsItem())
-      tableUpdate.insert = [IndexPath(row: section.items.endIndex - 1, section: 0)]
     } else if let index = additionalDocumentsIndex(in: section) {
       section.items.remove(at: index)
       tableUpdate.delete = [IndexPath(row: index, section: 0)]
     }
-    
     return tableUpdate
   }
   
@@ -354,16 +328,6 @@ private extension UserDocumentsSectionBuilder {
     return .init(title: L.documentIssuingCountry, mode: .field(field))
   }
   
-  func isAddressOnDocumentItem() -> Section.Item {
-    let items = [""] + BoolModel.allCases.map { $0.description }
-    let field = Section.Item.Mode.Field(type: .isAddressOnDocument,
-                                        placeholder: L.selectAnswer,
-                                        text: nil,
-                                        items: items,
-                                        seletedItemIndex: nil)
-    return .init(title: L.isAddressUpToDateDescription, mode: .field(field))
-  }
-  
   func additionalDocumentsItem() -> Section.Item {
     return .init(title: L.supportingDocuments, mode: .additionalDocuments(.init()))
   }
@@ -389,16 +353,6 @@ private extension UserDocumentsSectionBuilder {
   func additionalDocumentsIndex(in section: Section) -> Int? {
     return section.items.firstIndex {
       if case .additionalDocuments = $0.mode {
-        return true
-      } else {
-        return false
-      }
-    }
-  }
-  
-  func isAddressOnDocumentIndex(in section: Section) -> Int? {
-    return section.items.firstIndex {
-      if case let .field(model) = $0.mode, model.type == .isAddressOnDocument {
         return true
       } else {
         return false
