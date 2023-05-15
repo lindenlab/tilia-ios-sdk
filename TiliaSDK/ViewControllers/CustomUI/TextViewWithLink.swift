@@ -14,6 +14,7 @@ protocol TextViewWithLinkDelegate: AnyObject {
 final class TextViewWithLink: UITextView {
   
   typealias TextData = (text: String, links: [String])
+  typealias AdditionalAttribute = (text: String, color: UIColor, font: UIFont)
   
   private static let hyperlinkTapUrl = URL(string: "hyperlink_tap_url")!
   
@@ -28,6 +29,12 @@ final class TextViewWithLink: UITextView {
   var linkColor: UIColor = .primaryColor {
     didSet {
       updateLinkAttributes()
+    }
+  }
+  
+  var additionalAttributes: [AdditionalAttribute] = [] {
+    didSet {
+      setTextData()
     }
   }
   
@@ -119,6 +126,11 @@ private extension TextViewWithLink {
       let textWithNonBreakingLink = textData.text.replacingOccurrences(of: link, with: nonBreakingLinkText)
       if let range = textWithNonBreakingLink.range(of: nonBreakingLinkText).map({ NSRange($0, in: textWithNonBreakingLink) }) {
         attributedText.addAttributes([.link: Self.hyperlinkTapUrl], range: range)
+      }
+    }
+    additionalAttributes.forEach { attr in
+      if let range = attributedText.string.range(of: attr.text).map({ NSRange($0, in: attributedText.string) }) {
+        attributedText.addAttributes([.foregroundColor: attr.color, .font: attr.font], range: range)
       }
     }
     self.attributedText = attributedText

@@ -9,6 +9,7 @@ import UIKit
 
 protocol UserInfoRoutingProtocol: RoutingProtocol {
   func routeToUserDocumentsView()
+  func routeToTosContentView()
 }
 
 final class UserInfoRouter: UserInfoRoutingProtocol {
@@ -26,6 +27,12 @@ final class UserInfoRouter: UserInfoRoutingProtocol {
                                                                   onComplete: dataStore.onUserDocumentsComplete,
                                                                   onError: dataStore.onError)
     viewController?.present(userDocumentsViewController, animated: true)
+  }
+  
+  func routeToTosContentView() {
+    let tosContentViewController = TosContentViewController(manager: dataStore.manager,
+                                                            onError: dataStore.onError)
+    viewController?.present(tosContentViewController, animated: true)
   }
   
 }

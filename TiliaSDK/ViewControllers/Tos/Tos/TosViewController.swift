@@ -36,7 +36,6 @@ final class TosViewController: BaseViewController {
     textView.linkDelegate = self
     textView.font = .systemFont(ofSize: 16)
     textView.textColor = .primaryTextColor
-    textView.linkColor = .primaryColor
     let text = TosAcceptModel.title
     let links = TosAcceptModel.allCases.map { $0.description }
     textView.textData = (text, links)

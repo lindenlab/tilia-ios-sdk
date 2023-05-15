@@ -7,8 +7,14 @@
 
 import UIKit
 
-protocol TextFieldsCellDelegate: AnyObject {
+protocol TextFieldsCellDelegate: AnyObject, TextViewWithLinkDelegate {
   func textFieldsCell(_ cell: TextFieldsCell, didEndEditingWith text: String?, at index: Int)
+}
+
+extension TextFieldsCellDelegate {
+  
+  func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) { }
+  
 }
 
 class TextFieldsCell: TitleBaseCell {
@@ -19,14 +25,12 @@ class TextFieldsCell: TitleBaseCell {
   
   private weak var delegate: TextFieldsCellDelegate?
   
-  private let descriptionLabel: UILabel = {
-    let label = UILabel()
-    label.font = .systemFont(ofSize: 14)
-    label.textColor = .tertiaryTextColor
-    label.numberOfLines = 0
-    return label
+  private let descriptionTextView: TextViewWithLink = {
+    let textView = TextViewWithLink()
+    textView.font = .systemFont(ofSize: 14)
+    textView.textColor = .tertiaryTextColor
+    return textView
   }()
-
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -38,8 +42,10 @@ class TextFieldsCell: TitleBaseCell {
   }
   
   final func configure(fieldsContent: [FieldContent],
-                       description: String?,
-                       attributedDescription: NSAttributedString?,
+                       description: String? = nil,
+                       attributedDescription: NSAttributedString? = nil,
+                       descriptionTextData: TextViewWithLink.TextData? = nil,
+                       descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]? = nil,
                        delegate: TextFieldsCellDelegate?) {
     zip(fieldsContent, textFields).forEach { content, textField in
       textField.placeholder = content.placeholder
@@ -47,15 +53,20 @@ class TextFieldsCell: TitleBaseCell {
       textField.accessibilityIdentifier = content.accessibilityIdentifier
     }
     if let attributedDescription = attributedDescription {
-      descriptionLabel.isHidden = false
-      descriptionLabel.attributedText = attributedDescription
+      descriptionTextView.isHidden = false
+      descriptionTextView.attributedText = attributedDescription
     } else if let description = description {
-      descriptionLabel.isHidden = false
-      descriptionLabel.text = description
+      descriptionTextView.isHidden = false
+      descriptionTextView.text = description
+    } else if let descriptionTextData = descriptionTextData {
+      descriptionTextView.isHidden = false
+      descriptionTextView.textData = descriptionTextData
+      descriptionTextView.additionalAttributes = descriptionAdditionalAttributes ?? []
+      descriptionTextView.linkDelegate = delegate
     } else {
-      descriptionLabel.isHidden = true
-      descriptionLabel.text = nil
-      descriptionLabel.attributedText = nil
+      descriptionTextView.isHidden = true
+      descriptionTextView.text = nil
+      descriptionTextView.attributedText = nil
     }
     self.delegate = delegate
   }
@@ -90,7 +101,7 @@ private extension TextFieldsCell {
       $0.delegate = self
       $0.returnKeyType = .done
     }
-    addChildView(descriptionLabel)
+    addChildView(descriptionTextView)
   }
   
 }
