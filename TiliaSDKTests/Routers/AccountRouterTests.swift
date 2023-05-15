@@ -48,4 +48,45 @@ final class AccountRouterTests: XCTestCase {
     XCTAssertNotNil(try? router.asURLRequest())
   }
   
+  func testGetUserInfo() {
+    let router = AccountRouter.getUserInfo
+    TLManager.shared.setToken(UUID().uuidString)
+    XCTAssertEqual(router.method, .get)
+    XCTAssertNil(router.queryParameters)
+    XCTAssertNil(router.bodyParameters)
+    XCTAssertEqual(router.service, "accounts")
+    XCTAssertEqual(router.endpoint, "/v1/user-info")
+    XCTAssertEqual(router.testData?.count, router.readJSONFromFile("GetUserInfoResponse")?.count)
+    XCTAssertNotNil(try? router.requestHeaders())
+    XCTAssertNotNil(try? router.asURLRequest())
+  }
+  
+  func testBeginVerifyUserEmail() {
+    let router = AccountRouter.beginVerifyUserEmail("email@gmail.com")
+    TLManager.shared.setToken(UUID().uuidString)
+    XCTAssertEqual(router.method, .post)
+    XCTAssertNil(router.queryParameters)
+    XCTAssertNotNil(router.bodyParameters)
+    XCTAssertEqual(router.service, "accounts")
+    XCTAssertEqual(router.endpoint, "/v1/user-info/email/begin-verify")
+    XCTAssertEqual(router.testData?.count, router.readJSONFromFile("BeginVerifyUserEmailResponse")?.count)
+    XCTAssertNotNil(try? router.requestHeaders())
+    XCTAssertNotNil(try? router.asURLRequest())
+  }
+  
+  func testFinishVerifyUserEmail() {
+    let id = UUID().uuidString
+    let model = FinishVerifyUserEmailModel(code: "1I2I55", nonce: id)
+    let router = AccountRouter.finishVerifyUserEmail(model: model)
+    TLManager.shared.setToken(id)
+    XCTAssertEqual(router.method, .post)
+    XCTAssertNil(router.queryParameters)
+    XCTAssertNotNil(router.bodyParameters)
+    XCTAssertEqual(router.service, "accounts")
+    XCTAssertEqual(router.endpoint, "/v1/user-info/email/finish-verify")
+    XCTAssertEqual(router.testData?.count, router.readJSONFromFile("EmptySuccessResponse")?.count)
+    XCTAssertNotNil(try? router.requestHeaders())
+    XCTAssertNotNil(try? router.asURLRequest())
+  }
+  
 }

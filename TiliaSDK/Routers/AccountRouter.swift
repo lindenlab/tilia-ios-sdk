@@ -12,11 +12,22 @@ enum AccountRouter: RouterProtocol {
   case getTosRequiredForUser
   case getTosContent
   case signTosForUser
+  case getUserInfo
+  case beginVerifyUserEmail(String)
+  case finishVerifyUserEmail(model: FinishVerifyUserEmailModel)
   
   var method: HTTPMethod {
     switch self {
-    case .getTosRequiredForUser, .getTosContent: return .get
-    case .signTosForUser: return .post
+    case .getTosRequiredForUser, .getTosContent, .getUserInfo: return .get
+    case .signTosForUser, .beginVerifyUserEmail, .finishVerifyUserEmail: return .post
+    }
+  }
+  
+  var bodyParameters: Parameters? {
+    switch self {
+    case .beginVerifyUserEmail(let email): return ["email": email]
+    case .finishVerifyUserEmail(let model): return model.encodedParameters
+    default: return nil
     }
   }
   
@@ -25,7 +36,10 @@ enum AccountRouter: RouterProtocol {
   var endpoint: String {
     switch self {
     case .getTosContent: return "/v1/tos"
-    default: return "/v1/user-info/tos/tilia"
+    case .getTosRequiredForUser, .signTosForUser: return "/v1/user-info/tos/tilia"
+    case .getUserInfo: return "/v1/user-info"
+    case .beginVerifyUserEmail: return "/v1/user-info/email/begin-verify"
+    case .finishVerifyUserEmail: return "/v1/user-info/email/finish-verify"
     }
   }
   
@@ -47,6 +61,9 @@ extension AccountRouter {
     case .getTosRequiredForUser: return readJSONFromFile("GetTosRequiredForUserResponse")
     case .getTosContent: return readJSONFromFile("GetTosContentResponse")
     case .signTosForUser: return readJSONFromFile("SignTosForUserResponse")
+    case .getUserInfo: return readJSONFromFile("GetUserInfoResponse")
+    case .beginVerifyUserEmail: return readJSONFromFile("BeginVerifyUserEmailResponse")
+    case .finishVerifyUserEmail: return readJSONFromFile("EmptySuccessResponse")
     }
   }
   
