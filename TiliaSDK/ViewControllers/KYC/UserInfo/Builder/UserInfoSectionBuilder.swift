@@ -153,15 +153,21 @@ struct UserInfoSectionBuilder {
       var mode: Mode
       let description: String?
       let attributedDescription: NSAttributedString?
+      let descriptionTextData: TextViewWithLink.TextData?
+      let descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]?
       
       init(mode: Mode,
            title: String? = nil,
            description: String? = nil,
-           attributedDescription: NSAttributedString? = nil) {
+           attributedDescription: NSAttributedString? = nil,
+           descriptionTextData: TextViewWithLink.TextData? = nil,
+           descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]? = nil) {
         self.title = title
         self.mode = mode
         self.description = description
         self.attributedDescription = attributedDescription
+        self.descriptionTextData = descriptionTextData
+        self.descriptionAdditionalAttributes = descriptionAdditionalAttributes
       }
     }
     
@@ -204,6 +210,8 @@ struct UserInfoSectionBuilder {
       cell.configure(fieldsContent: model.fieldsContent,
                      description: item.description,
                      attributedDescription: item.attributedDescription,
+                     descriptionTextData: item.descriptionTextData,
+                     descriptionAdditionalAttributes: item.descriptionAdditionalAttributes,
                      delegate: delegate)
       return cell
     case .label:
@@ -539,14 +547,16 @@ private extension UserInfoSectionBuilder {
                                                                  text: model.tax.signature,
                                                                  accessibilityIdentifier: "signatureTextField")])
     let signatureMessage = signatureMessage(title: L.signatureDescription,
-                                            subTitle: L.taxPurposesMessage)
+                                            subTitle: L.taxPurposesMessage,
+                                            link: TosAcceptModel.privacyPolicy.description)
     items.append(contentsOf: [
       Section.Item(mode: .label,
                    title: model.isUsResident ? L.certificationUsTitle : L.certificationNonUsTitle,
                    attributedDescription: certificationMessage),
       Section.Item(mode: .fields(signatureField),
                    title: model.isUsResident ? L.signatureUs : L.signature,
-                   attributedDescription: signatureMessage),
+                   descriptionTextData: signatureMessage.0,
+                   descriptionAdditionalAttributes: [signatureMessage.1]),
       Section.Item(mode: .button)
     ])
     return items
@@ -664,18 +674,11 @@ private extension UserInfoSectionBuilder {
     return mutableStr
   }
   
-  func signatureMessage(title: String, subTitle: String) -> NSAttributedString {
+  func signatureMessage(title: String, subTitle: String, link: String) -> (TextViewWithLink.TextData, TextViewWithLink.AdditionalAttribute) {
     let newStr = [title, subTitle].joined(separator: "\n\n")
-    let mutableStr = NSMutableAttributedString(string: newStr,
-                                               attributes: [.font: UIFont.systemFont(ofSize: 14)])
-    mutableStr.addAttribute(.foregroundColor,
-                            value: UIColor.tertiaryTextColor,
-                            range: mutableStr.mutableString.range(of: title))
-    mutableStr.addAttribute(.foregroundColor,
-                            value: UIColor.secondaryTextColor,
-                            range: mutableStr.mutableString.range(of: subTitle))
-    
-    return mutableStr
+    let textData: TextViewWithLink.TextData = (newStr, [link])
+    let additionalAttribute: TextViewWithLink.AdditionalAttribute = (subTitle, .secondaryTextColor, .systemFont(ofSize: 14))
+    return (textData, additionalAttribute)
   }
   
 }
