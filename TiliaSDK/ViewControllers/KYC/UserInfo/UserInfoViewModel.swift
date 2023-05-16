@@ -32,13 +32,16 @@ protocol UserInfoViewModelOutputProtocol {
   var manualReview: PassthroughSubject<Void, Never> { get }
   var failedCompleting: PassthroughSubject<Void, Never> { get }
   var successfulCompleting: PassthroughSubject<Void, Never> { get }
+  var emailVerified: PassthroughSubject<String, Never> { get }
 }
 
 protocol UserInfoDataStore {
   var manager: NetworkManager { get }
   var userInfoModel: UserInfoModel { get }
+  var userEmail: String { get }
   var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onUserDocumentsComplete: (SubmittedKycModel) -> Void { get }
+  var onEmailVerified: (VerifyEmailMode) -> Void { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -58,12 +61,17 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let manualReview = PassthroughSubject<Void, Never>()
   let failedCompleting = PassthroughSubject<Void, Never>()
   let successfulCompleting = PassthroughSubject<Void, Never>()
+  let emailVerified = PassthroughSubject<String, Never>()
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
+  private(set) var userEmail = "bla@gmail.com" // TODO: - Fix me
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onUserDocumentsComplete: (SubmittedKycModel) -> Void = { [weak self] in
     self?.getStatus(for: $0)
+  }
+  private(set) lazy var onEmailVerified: (VerifyEmailMode) -> Void = { [weak self] in
+    self?.didVerifyEmail(with: $0)
   }
   let onError: ((TLErrorCallback) -> Void)?
   
@@ -270,6 +278,14 @@ private extension UserInfoViewModel {
     successfulUploading.send()
     sendUpdateCallback(with: model.state)
     resumeTimer(kycId: model.kycId)
+  }
+  
+  func didVerifyEmail(with mode: VerifyEmailMode) {
+    let event = TLEvent(flow: .kyc, action: .emailVerified)
+    let message = mode.successTitle
+    let model = TLUpdateCallback(event: event, message: message)
+    onUpdate?(model)
+    emailVerified.send(message)
   }
   
 }

@@ -70,6 +70,12 @@ class BaseViewController: UIViewController {
     self.button = button
   }
   
+  final func removeCloseButton() {
+    guard button != nil else { return }
+    button?.removeFromSuperview()
+    button = nil
+  }
+  
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate

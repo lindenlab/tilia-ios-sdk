@@ -109,8 +109,7 @@ extension SendReceiptViewController: UITextFieldDelegate {
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    sendEmail()
+    sendButtonDidTap()
     return true
   }
   
@@ -175,10 +174,6 @@ private extension SendReceiptViewController {
   
   @objc func sendButtonDidTap() {
     textField.resignFirstResponder()
-    sendEmail()
-  }
-  
-  func sendEmail() {
     viewModel.sendEmail(textField.text ?? "")
   }
   

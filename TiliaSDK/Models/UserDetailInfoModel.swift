@@ -9,6 +9,8 @@ import Foundation
 
 struct UserDetailInfoModel: Decodable {
   
-  let email: String
+  let email: String?
+  
+  var needVerifyEmail: Bool { return email == nil }
   
 }

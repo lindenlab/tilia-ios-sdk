@@ -310,6 +310,12 @@ private extension UserInfoViewController {
       self.sections = [self.builder.successSection()]
       self.tableView.reloadData()
     }.store(in: &subscriptions)
+    
+    viewModel.emailVerified.sink { [weak self] in
+      self?.router.showToast(title: L.success,
+                             message: $0,
+                             isSuccess: true)
+    }.store(in: &subscriptions)
   }
   
   func getHeaderIndex(_ header: UITableViewHeaderFooterView) -> Int? {

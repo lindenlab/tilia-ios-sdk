@@ -44,6 +44,7 @@ extension UIImage {
   static let openEnvelopeIcon = UIImage(systemName: "envelope.open.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 100, weight: .heavy))
   static let envelopeIcon = UIImage(systemName: "envelope.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
   static let pendingIcon = UIImage(systemName: "hourglass", withConfiguration: UIImage.SymbolConfiguration(scale: .small))
+  static let paperPlaneIcon = UIImage(systemName: "paperplane", withConfiguration: UIImage.SymbolConfiguration(pointSize: 80, weight: .heavy))
   
   static let driversLicenseBackIcon = SVGImage(name: "DriversLicenseBackImage")
   static let driversLicenseFrontIcon = SVGImage(name: "DriversLicenseFrontImage")

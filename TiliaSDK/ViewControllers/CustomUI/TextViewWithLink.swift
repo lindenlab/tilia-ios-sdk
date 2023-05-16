@@ -38,6 +38,12 @@ final class TextViewWithLink: UITextView {
     }
   }
   
+  var shouldUnderlineLink: Bool = true {
+    didSet {
+      updateLinkAttributes()
+    }
+  }
+  
   override var font: UIFont? {
     didSet {
       setTextData()
@@ -113,7 +119,12 @@ private extension TextViewWithLink {
   }
   
   func updateLinkAttributes() {
-    linkTextAttributes = [.foregroundColor: linkColor, .underlineStyle: NSUnderlineStyle.single.rawValue]
+    linkTextAttributes = [.foregroundColor: linkColor]
+    if shouldUnderlineLink {
+      linkTextAttributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+    } else {
+      linkTextAttributes.removeValue(forKey: .underlineStyle)
+    }
   }
   
   func setTextData() {
