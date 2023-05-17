@@ -45,6 +45,7 @@ protocol VerifyEmailViewModelInputProtocol {
 protocol VerifyEmailViewModelOutputProtocol {
   var mode: VerifyEmailMode { get }
   var email: String { get }
+  var validator: VerifyEmailValidator { get }
   var loading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var emailVerified: PassthroughSubject<Void, Never> { get }
@@ -54,6 +55,7 @@ protocol VerifyEmailViewModelProtocol: VerifyEmailViewModelInputProtocol, Verify
 
 final class VerifyEmailViewModel: VerifyEmailViewModelProtocol {
   
+  let validator = VerifyEmailValidator()
   let loading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let emailVerified = PassthroughSubject<Void, Never>()
@@ -96,7 +98,7 @@ final class VerifyEmailViewModel: VerifyEmailViewModelProtocol {
   }
   
   func verifyCode(_ code: String) {
-    guard let nonce = nonce else { return }
+    guard validator.isCodeValid(code), let nonce = nonce else { return }
     loading.send(true)
     manager.finishVerifyUserEmail(with: .init(code: code, nonce: nonce)) { [weak self] result in
       guard let self = self else { return }

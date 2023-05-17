@@ -63,6 +63,9 @@
 		D13759CA28D3557E0046234B /* TransactionHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13759C928D3557E0046234B /* TransactionHistoryViewController.swift */; };
 		D13759CE28D364100046234B /* TransactionHistorySectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13759CD28D364100046234B /* TransactionHistorySectionBuilder.swift */; };
 		D13759D028D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13759CF28D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift */; };
+		D138A7712A14D0DF004A4CB9 /* VerifyEmailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138A7702A14D0DF004A4CB9 /* VerifyEmailViewModelTests.swift */; };
+		D138A7742A14D1E4004A4CB9 /* VerifyEmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138A7732A14D1E4004A4CB9 /* VerifyEmailValidator.swift */; };
+		D138A7762A14D4C6004A4CB9 /* VerifyEmailValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D138A7752A14D4C6004A4CB9 /* VerifyEmailValidatorTests.swift */; };
 		D13A872628C21DE000444EDB /* SendTransactionReceiptResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */; };
 		D13A872828C2220B00444EDB /* SendReceiptViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */; };
 		D13BDD722822797A00A31F2D /* UserInfoSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */; };
@@ -331,6 +334,9 @@
 		D13759C928D3557E0046234B /* TransactionHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewController.swift; sourceTree = "<group>"; };
 		D13759CD28D364100046234B /* TransactionHistorySectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistorySectionBuilder.swift; sourceTree = "<group>"; };
 		D13759CF28D3AE5D0046234B /* TransactionHistoryFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryFlowTestViewController.swift; sourceTree = "<group>"; };
+		D138A7702A14D0DF004A4CB9 /* VerifyEmailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmailViewModelTests.swift; sourceTree = "<group>"; };
+		D138A7732A14D1E4004A4CB9 /* VerifyEmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmailValidator.swift; sourceTree = "<group>"; };
+		D138A7752A14D4C6004A4CB9 /* VerifyEmailValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyEmailValidatorTests.swift; sourceTree = "<group>"; };
 		D13A872528C21DE000444EDB /* SendTransactionReceiptResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SendTransactionReceiptResponse.json; sourceTree = "<group>"; };
 		D13A872728C2220B00444EDB /* SendReceiptViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceiptViewModelTests.swift; sourceTree = "<group>"; };
 		D13BDD712822797A00A31F2D /* UserInfoSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSectionBuilder.swift; sourceTree = "<group>"; };
@@ -808,6 +814,14 @@
 			path = Builder;
 			sourceTree = "<group>";
 		};
+		D138A7722A14D1D5004A4CB9 /* Validator */ = {
+			isa = PBXGroup;
+			children = (
+				D138A7732A14D1E4004A4CB9 /* VerifyEmailValidator.swift */,
+			);
+			path = Validator;
+			sourceTree = "<group>";
+		};
 		D13BDD6F2822795100A31F2D /* Builder */ = {
 			isa = PBXGroup;
 			children = (
@@ -864,6 +878,7 @@
 		D15CCC092A12B9EC00FBECF4 /* VerifyEmail */ = {
 			isa = PBXGroup;
 			children = (
+				D138A7722A14D1D5004A4CB9 /* Validator */,
 				D15CCC0A2A12BA1700FBECF4 /* VerifyEmailViewModel.swift */,
 				D15CCC0C2A12BA2700FBECF4 /* VerifyEmailRouter.swift */,
 				D15CCC0E2A12BA3600FBECF4 /* VerifyEmailViewController.swift */,
@@ -1193,6 +1208,8 @@
 				D1FECF2028884AD100EEC63B /* UserInfoValidatorTests.swift */,
 				D1FECF2228886BDF00EEC63B /* UserDocumentsViewModelTests.swift */,
 				D1FECF2428886BEC00EEC63B /* UserDocumentsValidatorTests.swift */,
+				D138A7702A14D0DF004A4CB9 /* VerifyEmailViewModelTests.swift */,
+				D138A7752A14D4C6004A4CB9 /* VerifyEmailValidatorTests.swift */,
 			);
 			path = Kyc;
 			sourceTree = "<group>";
@@ -1590,6 +1607,7 @@
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,
 				D1B871F828339B2A00C44441 /* UserDocumentsViewController.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
+				D138A7742A14D1E4004A4CB9 /* VerifyEmailValidator.swift in Sources */,
 				D17EFFA72846466900F4B6DD /* UICollectionViewCell+Helpers.swift in Sources */,
 				D15BA9EF282A9B6500511785 /* TwoTextFieldsCell.swift in Sources */,
 				D13759C628D3556A0046234B /* TransactionHistoryViewModel.swift in Sources */,
@@ -1660,6 +1678,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D138A7762A14D4C6004A4CB9 /* VerifyEmailValidatorTests.swift in Sources */,
 				D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */,
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
 				D1E97794290AADBE00FB20AB /* AccountRouterTests.swift in Sources */,
@@ -1668,6 +1687,7 @@
 				D152CD66290AFEAE00BC515C /* DecodableTests.swift in Sources */,
 				D1FECF2528886BEC00EEC63B /* UserDocumentsValidatorTests.swift in Sources */,
 				D1E97796290AADCC00FB20AB /* PaymentRouterTests.swift in Sources */,
+				D138A7712A14D0DF004A4CB9 /* VerifyEmailViewModelTests.swift in Sources */,
 				D1E9779A290AAE0300FB20AB /* AuthRouterTests.swift in Sources */,
 				D135DC9027E74A540009D888 /* NetworkManagerTests.swift in Sources */,
 				D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */,

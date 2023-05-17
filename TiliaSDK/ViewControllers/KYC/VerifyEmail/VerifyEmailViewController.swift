@@ -129,11 +129,8 @@ extension VerifyEmailViewController: UITextFieldDelegate {
     guard !string.isEmpty else { return true }
     guard !string.trimmingCharacters(in: CharacterSet.decimalDigits.inverted).isEmpty else { return false }
     let newText = textField.text?.newString(forRange: range, withReplacementString: string) ?? ""
-    if newText.count == 6 {
-      textField.resignFirstResponder()
-      viewModel.verifyCode(newText)
-    }
-    return newText.count <= 6
+    viewModel.verifyCode(newText)
+    return viewModel.validator.canEnterMore(newText)
   }
   
 }
@@ -167,7 +164,12 @@ private extension VerifyEmailViewController {
   func bind() {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
-      $0 ? self.startLoading() : self.stopLoading()
+      if $0 {
+        self.textField.resignFirstResponder()
+        self.startLoading()
+      } else {
+        self.stopLoading()
+      }
     }.store(in: &subscriptions)
     
     viewModel.error.sink { [weak self] in
