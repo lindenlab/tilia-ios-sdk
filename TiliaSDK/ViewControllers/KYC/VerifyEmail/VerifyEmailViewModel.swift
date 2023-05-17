@@ -90,10 +90,11 @@ final class VerifyEmailViewModel: VerifyEmailViewModelProtocol {
       switch result {
       case .success(let model):
         self.nonce = model.nonce
+        self.loading.send(false)
       case .failure(let error):
+        self.loading.send(false)
         self.didFail(with: .init(error: error, value: true))
       }
-      self.loading.send(false)
     }
   }
   

@@ -176,6 +176,7 @@ private extension VerifyEmailViewController {
       guard let self = self else { return }
       if $0.value {
         self.showCancelButton()
+        self.hideableView.isHidden = true
       }
       self.router.showToast(title: L.errorVerifyEmailTitle,
                             message: L.errorVerifyEmailMessage)
