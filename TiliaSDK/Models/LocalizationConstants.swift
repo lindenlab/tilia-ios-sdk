@@ -143,8 +143,6 @@ enum L {
   static let transactionDate = "transactionDate".localized
   static let transactionTime = "transactionTime".localized
   static let depositedInto = "depositedInto".localized
-  static let send = "send".localized
-  static let sending = "sending".localized
   static let emailPlaceholder = "emailPlaceholder".localized
   static let errorSendReceiptTitle = "errorSendReceiptTitle".localized
   static let errorSendReceiptMessage = "errorSendReceiptMessage".localized
@@ -188,6 +186,13 @@ enum L {
   static let errorVerifyEmailMessage = "errorVerifyEmailMessage".localized
   static let yourEmailIsUpdated = "yourEmailIsUpdated".localized
   static let yourEmailIsVerified = "yourEmailIsVerified".localized
+  static let emailIsVerifiedForUpdatesMessage = "emailIsVerifiedForUpdatesMessage".localized
+  static let emailIsNotVerifiedForUpdatesMessage = "emailIsNotVerifiedForUpdatesMessage".localized
+  static let emailIsVerifiedForUpdatesWithPrivacyPolicyMessage = "emailIsVerifiedForUpdatesWithPrivacyPolicyMessage".localized
+  static let emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage = "emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage".localized
+  static let verifyEmail = "verifyEmail".localized
+  static let sendToThisEmail = "sendToThisEmail".localized
+  static let updateEmail = "updateEmail".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)

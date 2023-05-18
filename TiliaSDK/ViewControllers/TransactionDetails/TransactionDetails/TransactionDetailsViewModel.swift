@@ -38,6 +38,7 @@ protocol TransactionDetailsDataStore {
   var manager: NetworkManager { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
   var onEmailSent: () -> Void { get }
+  var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -66,9 +67,9 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   private(set) lazy var onEmailSent: () -> Void = { [weak self] in
     self?.didSendEmail()
   }
+  let onUpdate: ((TLUpdateCallback) -> Void)?
   let onError: ((TLErrorCallback) -> Void)?
   
-  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private let mode: TransactionDetailsMode
   private var isLoaded = false

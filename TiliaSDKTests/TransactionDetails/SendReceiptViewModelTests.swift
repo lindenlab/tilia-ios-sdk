@@ -19,7 +19,7 @@ final class SendReceiptViewModelTests: XCTestCase {
   
   func testSuccessSend() {
     var emailSent: Void?
-    var loading: Bool?
+    var sending: Bool?
     var isEmailValid: Bool?
     
     let emailSentExpectation = XCTestExpectation(description: "testSuccessSend_EmailSent")
@@ -29,10 +29,10 @@ final class SendReceiptViewModelTests: XCTestCase {
                                          onEmailSent: { emailSent = (); emailSentExpectation.fulfill() },
                                          onError: nil)
     
-    let loadingExpectation = XCTestExpectation(description: "testSuccessSend_Loading")
-    viewModel.loading.sink {
-      loading = $0
-      loadingExpectation.fulfill()
+    let sendingExpectation = XCTestExpectation(description: "testSuccessSend_Sending")
+    viewModel.sending.sink {
+      sending = $0
+      sendingExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let isEmailValidExpectation = XCTestExpectation(description: "testSuccessSend_IsEmailValid")
@@ -49,12 +49,12 @@ final class SendReceiptViewModelTests: XCTestCase {
     
     let expectations = [
       emailSentExpectation,
-      loadingExpectation,
+      sendingExpectation,
       isEmailValidExpectation
     ]
     
     wait(for: expectations, timeout: 2)
-    XCTAssertNotNil(loading)
+    XCTAssertNotNil(sending)
     XCTAssertEqual(isEmailValid, true)
     XCTAssertNotNil(emailSent)
   }

@@ -9,8 +9,19 @@ import Foundation
 
 struct UserDetailInfoModel: Decodable {
   
+  private enum CodingKeys: String, CodingKey {
+    case email
+  }
+  
   let email: String?
   
-  var needVerifyEmail: Bool { return email == nil }
+  var emailVerificationMode: EmailVerificationModeModel {
+    return email == nil ? .notVerified : .verified
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.email = (try container.decodeIfPresent(String.self, forKey: .email))?.toNilIfEmpty()
+  }
   
 }

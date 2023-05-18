@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NonPrimaryButton: Button {
+class NonPrimaryButton: Button {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: super.intrinsicContentSize.width, height: 44)

@@ -212,6 +212,9 @@
 		D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8D727F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift */; };
 		D1CCE8DA27F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8D927F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift */; };
 		D1CCE8DC27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CCE8DB27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift */; };
+		D1CE65712A1679860056486A /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE65702A1679860056486A /* CloseButton.swift */; };
+		D1CE65732A167EE80056486A /* EmailVerificationModeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE65722A167EE80056486A /* EmailVerificationModeModel.swift */; };
+		D1CE65752A1697B50056486A /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CE65742A1697B50056486A /* EditButton.swift */; };
 		D1D5B53C27F759E000E04EE1 /* CheckoutSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B53B27F759E000E04EE1 /* CheckoutSectionBuilder.swift */; };
 		D1D5B54027F7654500E04EE1 /* CheckoutPaymentMethodRadioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B53F27F7654500E04EE1 /* CheckoutPaymentMethodRadioCell.swift */; };
 		D1D5B54227F7675C00E04EE1 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D5B54127F7675C00E04EE1 /* RadioButton.swift */; };
@@ -483,6 +486,9 @@
 		D1CCE8D727F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBalanceByCurrencyTestViewController.swift; sourceTree = "<group>"; };
 		D1CCE8D927F4C60B00FD0E25 /* TosRequiredForUserFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRequiredForUserFlowTestViewController.swift; sourceTree = "<group>"; };
 		D1CCE8DB27F4C62400FD0E25 /* CheckoutFlowTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowTestViewController.swift; sourceTree = "<group>"; };
+		D1CE65702A1679860056486A /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		D1CE65722A167EE80056486A /* EmailVerificationModeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationModeModel.swift; sourceTree = "<group>"; };
+		D1CE65742A1697B50056486A /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
 		D1D358C92805E5F00043FD86 /* TiliaSDKUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TiliaSDKUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1D5B53B27F759E000E04EE1 /* CheckoutSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutSectionBuilder.swift; sourceTree = "<group>"; };
 		D1D5B53F27F7654500E04EE1 /* CheckoutPaymentMethodRadioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentMethodRadioCell.swift; sourceTree = "<group>"; };
@@ -634,6 +640,8 @@
 				D1BA29E127FCDFFE00F046E8 /* Button.swift */,
 				D120F2D527F21082009B30DD /* PrimaryButton.swift */,
 				D1CCE8BF27F3927F00FD0E25 /* NonPrimaryButton.swift */,
+				D1CE65702A1679860056486A /* CloseButton.swift */,
+				D1CE65742A1697B50056486A /* EditButton.swift */,
 				D16D56A4282560DC0088FB3D /* ButtonsView.swift */,
 				D1C8A83527F4F5D100BF2910 /* DividerView.swift */,
 				D1D5B54127F7675C00E04EE1 /* RadioButton.swift */,
@@ -756,6 +764,7 @@
 				D10C55CC2A12182B00F735B7 /* UserDetailInfoModel.swift */,
 				D10C55CA2A1216A100F735B7 /* BeginVerifyUserEmailModel.swift */,
 				D10C55D02A121A4900F735B7 /* FinishVerifyUserEmailModel.swift */,
+				D1CE65722A167EE80056486A /* EmailVerificationModeModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1538,6 +1547,7 @@
 				D1B80AA528659E9700E1C9BD /* AuthRouter.swift in Sources */,
 				D16EDD442808399B00A1E413 /* TLEvent.swift in Sources */,
 				D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */,
+				D1CE65732A167EE80056486A /* EmailVerificationModeModel.swift in Sources */,
 				D1C8A83A27F4FDA800BF2910 /* UITableView+Helpers.swift in Sources */,
 				D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */,
 				D16E2A9328AFA14B00287C55 /* SendReceiptViewModel.swift in Sources */,
@@ -1587,6 +1597,7 @@
 				D1BA29E027FCA96B00F046E8 /* ColorsConfiguration.swift in Sources */,
 				D1A165B0287F5C0C00EFD999 /* UserDocumentsModel.swift in Sources */,
 				D151A8D028947E050055FF98 /* UserInfoImageCell.swift in Sources */,
+				D1CE65712A1679860056486A /* CloseButton.swift in Sources */,
 				D1BA29E627FD9D5800F046E8 /* SetColorsTestViewController.swift in Sources */,
 				D18855E9282912B400BAC86F /* RoundedTextField.swift in Sources */,
 				D1632D0F283B8157006BDF19 /* UserDocumentsFooterView.swift in Sources */,
@@ -1610,6 +1621,7 @@
 				D138A7742A14D1E4004A4CB9 /* VerifyEmailValidator.swift in Sources */,
 				D17EFFA72846466900F4B6DD /* UICollectionViewCell+Helpers.swift in Sources */,
 				D15BA9EF282A9B6500511785 /* TwoTextFieldsCell.swift in Sources */,
+				D1CE65752A1697B50056486A /* EditButton.swift in Sources */,
 				D13759C628D3556A0046234B /* TransactionHistoryViewModel.swift in Sources */,
 				D1EFAB3C28BD48D600AB1C31 /* InvoiceInfoModel.swift in Sources */,
 				D1C8A84A27F6143E00BF2910 /* InvoiceDetailsModel.swift in Sources */,

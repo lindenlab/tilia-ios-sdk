@@ -78,13 +78,19 @@ private extension PrimaryButton {
   }
   
   func removeSpinner() {
-    guard self.spinner != nil else { return }
+    guard let spinner = self.spinner else { return }
     imageView?.layer.transform = CATransform3DIdentity
     super.isEnabled = true
     title.map { setTitle($0, for: .normal) }
     title = nil
-    spinner?.removeFromSuperview()
-    spinner = nil
+    spinner.removeFromSuperview()
+    self.spinner = nil
+    switch style {
+    case .titleAndImageCenter, .none:
+      contentEdgeInsets.right -= spinner.frame.width
+    case .imageAndTitleCenter:
+      contentEdgeInsets.left -= spinner.frame.width
+    }
   }
   
   func addSpinner() {
@@ -98,6 +104,12 @@ private extension PrimaryButton {
     addSubview(spinner)
     title = title(for: .normal)
     setTitle(titleForLoadingState ?? title, for: .normal)
+    switch style {
+    case .titleAndImageCenter, .none:
+      contentEdgeInsets.right += spinner.frame.width
+    case .imageAndTitleCenter:
+      contentEdgeInsets.left += spinner.frame.width
+    }
   }
   
 }

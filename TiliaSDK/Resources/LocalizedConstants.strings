@@ -139,8 +139,6 @@
 "requestedYesterdayAt" = "requested yesterday at %@";
 "youPaid" = "You paid %@";
 "youReceived" = "You received %@";
-"send" = "Send";
-"sending" = "Sending...";
 "emailPlaceholder" = "john@doe.com";
 "errorSendReceiptTitle" = "Error sending receipt";
 "errorSendReceiptMessage" = "Sorry, we were unable to send receipt to your email. Please try again later.";
@@ -193,3 +191,10 @@
 "errorVerifyEmailMessage" = "Sorry, we were unable to verify your email. Please try again later.";
 "yourEmailIsUpdated" = "Your email is updated";
 "yourEmailIsVerified" = "Your email is verified";
+"emailIsVerifiedForUpdatesMessage" = "We will use this email to send you updates, receipts and tax info. If you wish to receive updates to a different email address, please update your email address bellow.";
+"emailIsNotVerifiedForUpdatesMessage" = "We will use this email to send you updates, receipts and tax info.";
+"emailIsVerifiedForUpdatesWithPrivacyPolicyMessage" = "We will send updates, receipts, tax info and all communication to the email address we have in our system in accordance with our Privacy Policy. If you wish to receive updates to a different email address, please update your email address bellow.";
+"emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage" = "We will use this email to send you updates, receipts and tax forms in accordance with our Privacy Policy.";
+"verifyEmail" = "Verify email";
+"sendToThisEmail" = "Send to this email";
+"updateEmail" = "Update email";

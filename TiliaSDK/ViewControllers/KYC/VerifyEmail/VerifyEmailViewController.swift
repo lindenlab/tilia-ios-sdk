@@ -18,13 +18,6 @@ final class VerifyEmailViewController: BaseViewController {
   private let router: VerifyEmailRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
   
-  private let imageView: UIImageView = {
-    let imageView = UIImageView(image: .paperPlaneIcon?.withRenderingMode(.alwaysTemplate))
-    imageView.tintColor = .primaryColor
-    imageView.contentMode = .center
-    return imageView
-  }()
-  
   private lazy var titleLabel: UILabel = {
     let label = UILabel()
     label.font = .boldSystemFont(ofSize: 20)
@@ -32,6 +25,19 @@ final class VerifyEmailViewController: BaseViewController {
     label.textAlignment = .center
     label.text = viewModel.mode.title
     return label
+  }()
+  
+  private lazy var dismissButton: CloseButton = {
+    let button = CloseButton()
+    button.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
+    return button
+  }()
+  
+  private let imageView: UIImageView = {
+    let imageView = UIImageView(image: .paperPlaneIcon?.withRenderingMode(.alwaysTemplate))
+    imageView.tintColor = .primaryColor
+    imageView.contentMode = .center
+    return imageView
   }()
   
   private lazy var messageLabel: UILabel = {
@@ -74,16 +80,13 @@ final class VerifyEmailViewController: BaseViewController {
   
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [imageView,
-                                                   titleLabel,
                                                    messageLabel,
                                                    textField,
-                                                   cancelButton,
                                                    textView])
     stackView.axis = .vertical
     stackView.spacing = 16
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.setCustomSpacing(24, after: imageView)
-    stackView.setCustomSpacing(32, after: titleLabel)
     stackView.setCustomSpacing(24, after: textField)
     return stackView
   }()
@@ -151,14 +154,26 @@ extension VerifyEmailViewController: TextViewWithLinkDelegate {
 private extension VerifyEmailViewController {
   
   func setup() {
-    view.addClosingKeyboardOnTap()
+    let headerStackView = UIStackView(arrangedSubviews: [titleLabel, dismissButton])
+    headerStackView.alignment = .center
+    headerStackView.distribution = .equalCentering
+    headerStackView.spacing = 4
+    headerStackView.translatesAutoresizingMaskIntoConstraints = false
+    
+    view.addSubview(headerStackView)
     view.addSubview(stackView)
-
+    
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+      headerStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+      headerStackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+      headerStackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+      headerStackView.bottomAnchor.constraint(equalTo: stackView.topAnchor, constant: -16),
       stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
       stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16)
     ])
+    
+    view.addClosingKeyboardOnTap()
+    view.addSubview(stackView)
   }
   
   func bind() {
