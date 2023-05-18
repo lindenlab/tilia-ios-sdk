@@ -54,7 +54,7 @@ class BaseViewController: UIViewController {
     hideableView.isHidden = false
   }
   
-  final func showCloseButton(target: Any, action: Selector) {
+  final func showCloseButton(target: Any, action: Selector, isHideableViewHidden: Bool = true) {
     guard button == nil else { return }
     let button = NonPrimaryButton()
     button.setTitle(L.close, for: .normal)
@@ -68,6 +68,7 @@ class BaseViewController: UIViewController {
       button.widthAnchor.constraint(equalToConstant: 100)
     ])
     self.button = button
+    hideableView.isHidden = isHideableViewHidden
   }
   
   final func removeCloseButton() {

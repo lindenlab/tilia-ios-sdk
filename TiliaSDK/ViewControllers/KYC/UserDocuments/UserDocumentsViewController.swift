@@ -187,7 +187,6 @@ private extension UserDocumentsViewController {
       guard let self = self else { return }
       if $0.value {
         self.showCancelButton()
-        self.hideableView.isHidden = true
       }
       self.router.showToast(title: L.errorKycTitle,
                             message: L.errorKycMessage)

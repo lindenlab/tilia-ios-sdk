@@ -122,8 +122,8 @@ private extension TransactionDetailsViewModel {
           self.getTransactionDetails()
         }
       case .failure(let error):
-        self.didFail(with: error)
         self.loading.send(false)
+        self.didFail(with: error)
       }
     }
   }
@@ -131,6 +131,7 @@ private extension TransactionDetailsViewModel {
   func getTransactionDetails() {
     manager.getTransactionDetails(with: transactionId) { [weak self] result in
       guard let self = self else { return }
+      self.loading.send(false)
       switch result {
       case .success(let model):
         self.isLoaded = true
@@ -138,7 +139,6 @@ private extension TransactionDetailsViewModel {
       case .failure(let error):
         self.didFail(with: error)
       }
-      self.loading.send(false)
     }
   }
   
