@@ -22,7 +22,7 @@ protocol UserInfoViewModelInputProtocol {
 
 protocol UserInfoViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
-  var content: PassthroughSubject<UserDetailInfoModel, Never> { get }
+  var content: PassthroughSubject<UserInfoModel, Never> { get }
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
@@ -55,7 +55,7 @@ protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoView
 final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   let loading = PassthroughSubject<Bool, Never>()
-  let content = PassthroughSubject<UserDetailInfoModel, Never>()
+  let content = PassthroughSubject<UserInfoModel, Never>()
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
@@ -74,7 +74,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
   var userEmail: String { return needToVerifyEmail ?? "" }
-  var verifyEmailMode: VerifyEmailMode { return verifiedEmail == nil ? .verify : .update }
+  var verifyEmailMode: VerifyEmailMode { return userInfoModel.email == nil ? .verify : .update }
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onUserDocumentsComplete: (SubmittedKycModel) -> Void = { [weak self] in
     self?.getStatus(for: $0)
@@ -87,7 +87,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private var isFlowCompleted = false
   private var timer: Timer?
-  private var verifiedEmail: String?
   private var needToVerifyEmail: String? {
     didSet {
       guard needToVerifyEmail != nil else { return }
@@ -112,8 +111,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       self.loading.send(false)
       switch result {
       case .success(let model):
-        self.verifiedEmail = model.email
-        self.content.send(model)
+        self.userInfoModel.email = model.email
+        self.userInfoModel.emailVerificationMode = model.emailVerificationMode
+        self.content.send(self.userInfoModel)
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
@@ -238,6 +238,7 @@ private extension UserInfoViewModel {
   
   func validator(for section: UserInfoSectionBuilder.Section.SectionType) -> UserInfoValidator? {
     switch section {
+    case .email: return UserInfoEmailValidator()
     case .location: return UserInfoLocationValidator()
     case .personal: return UserInfoPersonalValidator()
     case .tax: return UserInfoTaxValidator()

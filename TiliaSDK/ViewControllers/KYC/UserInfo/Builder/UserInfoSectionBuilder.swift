@@ -17,6 +17,7 @@ struct UserInfoSectionBuilder {
   struct Section {
     
     enum SectionType {
+      case email
       case location
       case personal
       case tax
@@ -27,11 +28,12 @@ struct UserInfoSectionBuilder {
       case success
       
       static var defaultItems: [SectionType] {
-        return [.location, .personal, .tax, .contact]
+        return [.email, .location, .personal, .tax, .contact]
       }
       
       var headerTitle: String? {
         switch self {
+        case .email: return L.emailAddress
         case .location: return L.location
         case .personal: return L.personal
         case .tax: return L.taxInfo
@@ -49,12 +51,6 @@ struct UserInfoSectionBuilder {
         }
       }
       
-      var defaultMode: UserInfoHeaderView.Mode {
-        switch self {
-        case .location: return .expanded
-        default: return .disabled
-        }
-      }
     }
     
     struct Item {
@@ -153,6 +149,7 @@ struct UserInfoSectionBuilder {
       var mode: Mode
       let description: String?
       let descriptionTextColor: UIColor?
+      let descriptionTextFont: UIFont?
       let attributedDescription: NSAttributedString?
       let descriptionTextData: TextViewWithLink.TextData?
       let descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]?
@@ -161,6 +158,7 @@ struct UserInfoSectionBuilder {
            title: String? = nil,
            description: String? = nil,
            descriptionTextColor: UIColor? = nil,
+           descriptionTextFont: UIFont? = nil,
            attributedDescription: NSAttributedString? = nil,
            descriptionTextData: TextViewWithLink.TextData? = nil,
            descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]? = nil) {
@@ -168,6 +166,7 @@ struct UserInfoSectionBuilder {
         self.mode = mode
         self.description = description
         self.descriptionTextColor = descriptionTextColor
+        self.descriptionTextFont = descriptionTextFont
         self.attributedDescription = attributedDescription
         self.descriptionTextData = descriptionTextData
         self.descriptionAdditionalAttributes = descriptionAdditionalAttributes
@@ -219,6 +218,7 @@ struct UserInfoSectionBuilder {
       return cell
     case .label:
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
+      cell.configure(titleFont: item.descriptionTextFont ?? .systemFont(ofSize: 16))
       cell.configure(title: item.title)
       cell.configure(description: item.description,
                      attributedDescription: item.attributedDescription,
@@ -306,12 +306,12 @@ struct UserInfoSectionBuilder {
     return view
   }
   
-  func sections(with model: UserDetailInfoModel) -> [Section] {
+  func sections(with model: UserInfoModel) -> [Section] {
     return Section.SectionType.defaultItems.map {
       return Section(type: $0,
-                     mode: $0.defaultMode,
-                     isFilled: false,
-                     items: defaultItems(for: $0))
+                     mode: defaultMode(for: $0, with: model),
+                     isFilled: isSectionFilledByDefault(for: $0, with: model),
+                     items: defaultItems(for: $0, with: model))
     }
   }
   
@@ -474,15 +474,32 @@ struct UserInfoSectionBuilder {
 
 private extension UserInfoSectionBuilder {
   
-  func defaultItems(for type: Section.SectionType) -> [Section.Item] {
+  func defaultMode(for type: Section.SectionType, with model: UserInfoModel) -> UserInfoHeaderView.Mode {
     switch type {
-    case .location: return itemsForLocationSection(with: nil)
+    case .email: return .expanded
+    case .location where model.emailVerificationMode == .verified: return .normal
+    default: return .disabled
+    }
+  }
+  
+  func isSectionFilledByDefault(for type: Section.SectionType, with model: UserInfoModel) -> Bool {
+    switch type {
+    case .email: return model.emailVerificationMode == .verified
+    default: return false
+    }
+  }
+  
+  func defaultItems(for type: Section.SectionType, with model: UserInfoModel) -> [Section.Item] {
+    switch type {
+    case .email: return itemsForEmailSection(with: model)
+    case .location where model.emailVerificationMode == .verified: return itemsForLocationSection(with: model)
     default: return []
     }
   }
   
   func items(for type: Section.SectionType, with model: UserInfoModel) -> [Section.Item] {
     switch type {
+    case .email: return itemsForEmailSection(with: model)
     case .location: return itemsForLocationSection(with: model)
     case .personal: return itemsForPersonalSection(with: model)
     case .tax: return itemsForTaxSection(with: model)
@@ -491,12 +508,23 @@ private extension UserInfoSectionBuilder {
     }
   }
   
-  func itemsForLocationSection(with model: UserInfoModel?) -> [Section.Item] {
+  func itemsForEmailSection(with model: UserInfoModel) -> [Section.Item] {
+    let textData: TextViewWithLink.TextData = (model.emailVerificationMode.message(isUpdated: model.isEmailUpdated), [TosAcceptModel.privacyPolicy.description])
+    return [
+      Section.Item(mode: .label,
+                   title: model.emailVerificationMode.title(isUpdated: model.isEmailUpdated),
+                   descriptionTextColor: .primaryTextColor,
+                   descriptionTextFont: .boldSystemFont(ofSize: 20),
+                   descriptionTextData: textData)
+    ]
+  }
+  
+  func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {
     let countries = CountryModel.countryNames
-    let selectedIndex = countries.firstIndex { $0 == model?.countryOfResidence?.name }
+    let selectedIndex = countries.firstIndex { $0 == model.countryOfResidence?.name }
     let countryOfResidenceField = Section.Item.Mode.Fields(type: .countryOfResidance,
                                                            fields: [.init(placeholder: L.selectCountry,
-                                                                          text: model?.countryOfResidence?.name,
+                                                                          text: model.countryOfResidence?.name,
                                                                           accessibilityIdentifier: "countryOfResidenceTextField")],
                                                            inputMode: .picker(items: countries,
                                                                               selectedIndex: selectedIndex))
@@ -685,6 +713,24 @@ private extension UserInfoSectionBuilder {
     let textData: TextViewWithLink.TextData = (newStr, [link])
     let additionalAttribute: TextViewWithLink.AdditionalAttribute = (subTitle, .secondaryTextColor, .systemFont(ofSize: 14))
     return (textData, additionalAttribute)
+  }
+  
+}
+
+private extension EmailVerificationModeModel {
+  
+  func title(isUpdated: Bool) -> String {
+    switch self {
+    case .notVerified: return L.needToCollectEmailTitle
+    case .verified, .edit: return isUpdated ? L.yourEmailIsUpdated : L.yourEmailIsVerified
+    }
+  }
+  
+  func message(isUpdated: Bool) -> String {
+    switch self {
+    case .notVerified: return L.emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage
+    case .verified, .edit: return isUpdated ? L.emailIsVerifiedForUpdatesMessage : L.emailIsVerifiedForUpdatesWithPrivacyPolicyMessage
+    }
   }
   
 }

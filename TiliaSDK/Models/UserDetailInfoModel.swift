@@ -7,17 +7,13 @@
 
 import Foundation
 
-struct UserDetailInfoModel: Decodable {
+struct UserDetailInfoModel: Decodable, EmailVerifiable {
   
   private enum CodingKeys: String, CodingKey {
     case email
   }
   
   let email: String?
-  
-  var emailVerificationMode: EmailVerificationModeModel {
-    return email == nil ? .notVerified : .verified
-  }
   
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)

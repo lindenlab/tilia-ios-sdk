@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserInfoModel {
+struct UserInfoModel: EmailVerifiable {
   
   struct FullName: PossiblyEmpty {
     var first: String?
@@ -39,6 +39,9 @@ struct UserInfoModel {
     var isEmpty: Bool { return ssn.isEmpty || signature.isEmpty }
   }
   
+  var email: String?
+  var emailVerificationMode: EmailVerificationModeModel = .notVerified
+  var isEmailUpdated: Bool = false
   var countryOfResidence: CountryModel?
   var fullName: FullName = FullName()
   var dateOfBirth: Date?

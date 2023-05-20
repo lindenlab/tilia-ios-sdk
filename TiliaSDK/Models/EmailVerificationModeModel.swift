@@ -7,6 +7,19 @@
 
 import Foundation
 
+protocol EmailVerifiable {
+  var email: String? { get }
+  var emailVerificationMode: EmailVerificationModeModel { get }
+}
+
+extension EmailVerifiable {
+  
+  var emailVerificationMode: EmailVerificationModeModel {
+    return email == nil ? .notVerified : .verified
+  }
+  
+}
+
 enum EmailVerificationModeModel {
   
   case notVerified

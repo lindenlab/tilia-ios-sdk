@@ -198,3 +198,5 @@
 "verifyEmail" = "Verify email";
 "sendToThisEmail" = "Send to this email";
 "updateEmail" = "Update email";
+"emailAddress" = "Email Address";
+"needToCollectEmailTitle" = "To start, we need to collect your email";
