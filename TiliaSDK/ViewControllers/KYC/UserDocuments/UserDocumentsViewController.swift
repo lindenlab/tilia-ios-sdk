@@ -172,9 +172,6 @@ private extension UserDocumentsViewController {
     tableView.register(TextFieldCell.self)
     tableView.register(UserDocumentsSelectDocumentCell.self)
     tableView.estimatedRowHeight = 100
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
   }
   
   func bind() {
@@ -280,20 +277,6 @@ private extension UserDocumentsViewController {
       guard let self = self else { return }
       self.router.dismiss() { self.viewModel.complete() }
     }.store(in: &subscriptions)
-  }
-  
-  @objc func keyboardWasShown(_ notificiation: NSNotification) {
-    guard
-      let value = notificiation.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-      let firstResponder = self.view.firstResponder else { return }
-    let bottomInset = self.view.frame.height - divider.frame.midY
-    tableView.contentInset.bottom = value.cgRectValue.height - bottomInset
-    let rect = firstResponder.convert(firstResponder.frame, to: self.tableView)
-    tableView.scrollRectToVisible(rect, animated: true)
-  }
-  
-  @objc func keyboardWillBeHidden() {
-    tableView.contentInset.bottom = 0
   }
   
   func showCancelButton() {

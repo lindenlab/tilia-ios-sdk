@@ -13,14 +13,17 @@ typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text:
 typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, wasUsResidence: Bool)
 
 protocol UserInfoViewModelInputProtocol {
+  func load()
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSectionIndex: Int?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
   func upload()
-  func complete()
+  func complete(isFromCloseAction: Bool)
 }
 
 protocol UserInfoViewModelOutputProtocol {
-  var error: PassthroughSubject<Error, Never> { get }
+  var loading: PassthroughSubject<Bool, Never> { get }
+  var content: PassthroughSubject<String?, Never> { get }
+  var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
   var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
@@ -32,6 +35,7 @@ protocol UserInfoViewModelOutputProtocol {
   var manualReview: PassthroughSubject<Void, Never> { get }
   var failedCompleting: PassthroughSubject<Void, Never> { get }
   var successfulCompleting: PassthroughSubject<Void, Never> { get }
+  var verifyEmail: PassthroughSubject<Void, Never> { get }
   var emailVerified: PassthroughSubject<String, Never> { get }
 }
 
@@ -39,6 +43,7 @@ protocol UserInfoDataStore {
   var manager: NetworkManager { get }
   var userInfoModel: UserInfoModel { get }
   var userEmail: String { get }
+  var verifyEmailMode: VerifyEmailMode { get }
   var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onUserDocumentsComplete: (SubmittedKycModel) -> Void { get }
   var onEmailVerified: (VerifyEmailMode) -> Void { get }
@@ -49,7 +54,9 @@ protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoView
 
 final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
-  let error = PassthroughSubject<Error, Never>()
+  let loading = PassthroughSubject<Bool, Never>()
+  let content = PassthroughSubject<String?, Never>()
+  let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
@@ -61,11 +68,13 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let manualReview = PassthroughSubject<Void, Never>()
   let failedCompleting = PassthroughSubject<Void, Never>()
   let successfulCompleting = PassthroughSubject<Void, Never>()
+  let verifyEmail = PassthroughSubject<Void, Never>()
   let emailVerified = PassthroughSubject<String, Never>()
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
-  private(set) var userEmail = "bla@gmail.com" // TODO: - Fix me
+  var userEmail: String { return needToVerifyEmail ?? "" }
+  var verifyEmailMode: VerifyEmailMode { return verifiedEmail == nil ? .verify : .update }
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onUserDocumentsComplete: (SubmittedKycModel) -> Void = { [weak self] in
     self?.getStatus(for: $0)
@@ -78,6 +87,13 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private var isFlowCompleted = false
   private var timer: Timer?
+  private var verifiedEmail: String?
+  private var needToVerifyEmail: String? {
+    didSet {
+      guard needToVerifyEmail != nil else { return }
+      verifyEmail.send()
+    }
+  }
   
   init(manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -87,6 +103,29 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
+  }
+  
+  func load() {
+    loading.send(true)
+    manager.getUserInfo { [weak self] result in
+      guard let self = self else { return }
+      self.loading.send(false)
+      switch result {
+      case .success(let model):
+        self.verifiedEmail = model.email
+        self.content.send(model.email)
+//        model.email.map {
+//          self.verifiedEmail = $0
+//          self.defaultEmail.send($0)
+//          self.checkEmail($0)
+//        }
+//        if model.emailVerificationMode != self.emailVerificationMode.value {
+//          self.emailVerificationMode.send(model.emailVerificationMode)
+//        }
+      case .failure(let error):
+        self.didFail(with: .init(error: error, value: true))
+      }
+    }
   }
   
   func updateSection(_ section: UserInfoSectionBuilder.Section,
@@ -181,17 +220,17 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
         case .success(let model):
           self.getStatus(for: model)
         case .failure(let error):
-          self.didFail(with: error)
+          self.didFail(with: .init(error: error, value: false))
         }
       }
     }
   }
   
-  func complete() {
+  func complete(isFromCloseAction: Bool) {
     let event = TLEvent(flow: .kyc,
-                        action: isFlowCompleted ? .completed : .cancelledByUser)
+                        action: isFromCloseAction ? .closedByUser : isFlowCompleted ? .completed : .cancelledByUser)
     let model = TLCompleteCallback(event: event,
-                                   state: isFlowCompleted ? .completed : .cancelled)
+                                   state: isFromCloseAction ? .error : isFlowCompleted ? .completed : .cancelled)
     onComplete?(model)
   }
   
@@ -241,7 +280,7 @@ private extension UserInfoViewModel {
           self.failedCompleting.send()
         }
       case .failure(let error):
-        self.didFail(with: error)
+        self.didFail(with: .init(error: error, value: false))
       }
     }
   }
@@ -258,12 +297,12 @@ private extension UserInfoViewModel {
     timer = nil
   }
   
-  func didFail(with error: Error) {
+  func didFail(with error: ErrorWithBoolModel) {
     self.error.send(error)
     let event = TLEvent(flow: .kyc, action: .error)
     let model = TLErrorCallback(event: event,
                                 error: L.errorKycTitle,
-                                message: error.localizedDescription)
+                                message: error.error.localizedDescription)
     onError?(model)
   }
 

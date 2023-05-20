@@ -39,7 +39,7 @@ final class UserInfoRouter: UserInfoRoutingProtocol {
   func routeToVerifyEmailView() {
     let verifyEmailViewController = VerifyEmailViewController(email: dataStore.userEmail,
                                                               flow: .kyc,
-                                                              mode: .update, // Fix me
+                                                              mode: dataStore.verifyEmailMode,
                                                               manager: dataStore.manager,
                                                               onEmailVerified: dataStore.onEmailVerified,
                                                               onError: dataStore.onError)

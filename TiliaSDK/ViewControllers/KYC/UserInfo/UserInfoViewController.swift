@@ -18,7 +18,7 @@ final class UserInfoViewController: BaseTableViewController {
   private let router: UserInfoRoutingProtocol
   private let builder = UserInfoSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
-  private lazy var sections: [UserInfoSectionBuilder.Section] = builder.sections()
+  private var sections: [UserInfoSectionBuilder.Section] = []
   
   init(manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -43,6 +43,7 @@ final class UserInfoViewController: BaseTableViewController {
     super.viewDidLoad()
     setup()
     bind()
+    viewModel.load()
   }
   
   override func viewDidLayoutSubviews() {
@@ -51,7 +52,7 @@ final class UserInfoViewController: BaseTableViewController {
   }
   
   override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    viewModel.complete()
+    viewModel.complete(isFromCloseAction: false)
   }
   
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -167,7 +168,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
-    router.dismiss() { self.viewModel.complete() }
+    dismiss(isFromCloseAction: false)
   }
   
 }
@@ -191,14 +192,25 @@ private extension UserInfoViewController {
     tableView.tableHeaderView = builder.tableHeader()
     tableView.estimatedRowHeight = 150
     tableView.estimatedSectionHeaderHeight = 50
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
   }
   
   func bind() {
-    viewModel.error.sink { [weak self] _ in
+    viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
+      $0 ? self.startLoading() : self.stopLoading()
+    }.store(in: &subscriptions)
+    
+    viewModel.content.sink { [weak self] in
+      guard let self = self else { return }
+      self.sections = self.builder.sections(email: $0)
+      self.tableView.reloadData()
+    }.store(in: &subscriptions)
+    
+    viewModel.error.sink { [weak self] in
+      guard let self = self else { return }
+      if $0.value {
+        self.showCancelButton()
+      }
       self.router.showToast(title: L.errorKycTitle,
                             message: L.errorKycMessage)
     }.store(in: &subscriptions)
@@ -311,6 +323,10 @@ private extension UserInfoViewController {
       self.tableView.reloadData()
     }.store(in: &subscriptions)
     
+    viewModel.verifyEmail.sink { [weak self] in
+      self?.router.routeToVerifyEmailView()
+    }.store(in: &subscriptions)
+    
     viewModel.emailVerified.sink { [weak self] in
       self?.router.showToast(title: L.success,
                              message: $0,
@@ -324,18 +340,16 @@ private extension UserInfoViewController {
     }
   }
   
-  @objc func keyboardWasShown(_ notificiation: NSNotification) {
-    guard
-      let value = notificiation.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-      let firstResponder = self.view.firstResponder else { return }
-    let bottomInset = self.view.frame.height - divider.frame.midY
-    tableView.contentInset.bottom = value.cgRectValue.height - bottomInset
-    let rect = firstResponder.convert(firstResponder.frame, to: self.tableView)
-    tableView.scrollRectToVisible(rect, animated: true)
+  func dismiss(isFromCloseAction: Bool) {
+    router.dismiss { self.viewModel.complete(isFromCloseAction: isFromCloseAction) }
   }
   
-  @objc func keyboardWillBeHidden() {
-    tableView.contentInset.bottom = 0
+  func showCancelButton() {
+    showCloseButton(target: self, action: #selector(closeButtonDidTap))
+  }
+  
+  @objc func closeButtonDidTap() {
+    dismiss(isFromCloseAction: true)
   }
   
 }

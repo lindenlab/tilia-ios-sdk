@@ -300,7 +300,7 @@ struct UserInfoSectionBuilder {
     return view
   }
   
-  func sections() -> [Section] {
+  func sections(email: String?) -> [Section] {
     return Section.SectionType.defaultItems.map {
       return Section(type: $0,
                      mode: $0.defaultMode,
