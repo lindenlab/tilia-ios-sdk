@@ -317,6 +317,10 @@ private extension UserInfoViewModel {
     let message = mode.successTitle
     let model = TLUpdateCallback(event: event, message: message)
     onUpdate?(model)
+    userInfoModel.email = needToVerifyEmail
+    userInfoModel.emailVerificationMode = .verified
+    // TODO: - Here we need to reload cell after successful verify
+    needToVerifyEmail = nil
     emailVerified.send(message)
   }
   
