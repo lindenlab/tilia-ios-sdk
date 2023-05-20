@@ -40,7 +40,9 @@ struct UserDocumentsSectionBuilder {
           var seletedItemIndex: Int?
           
           var fieldContent: TextFieldsCell.FieldContent {
-            return (placeholder, text, type.accessibilityIdentifier)
+            return .init(placeholder: placeholder,
+                         text: text, accessibilityIdentifier:
+                          type.accessibilityIdentifier)
           }
         }
         

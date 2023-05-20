@@ -24,7 +24,7 @@ protocol SendReceiptViewModelOutputProtocol {
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var emailSent: PassthroughSubject<Void, Never> { get }
   var isEmailValid: PassthroughSubject<Bool, Never> { get }
-  var emailVerificationMode: CurrentValueSubject<EmailVerificationModeModel, Never> { get }
+  var emailVerificationMode: PassthroughSubject<EmailVerificationModeModel, Never> { get }
   var verifyEmail: PassthroughSubject<Void, Never> { get }
   var emailVerified: PassthroughSubject<String, Never> { get }
 }
@@ -47,7 +47,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let emailSent = PassthroughSubject<Void, Never>()
   let isEmailValid = PassthroughSubject<Bool, Never>()
-  let emailVerificationMode = CurrentValueSubject<EmailVerificationModeModel, Never>(.notVerified)
+  let emailVerificationMode = PassthroughSubject<EmailVerificationModeModel, Never>()
   let verifyEmail = PassthroughSubject<Void, Never>()
   let emailVerified = PassthroughSubject<String, Never>()
   
@@ -66,6 +66,11 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
     didSet {
       guard needToVerifyEmail != nil else { return }
       verifyEmail.send()
+    }
+  }
+  private var emailVerificationModeModel: EmailVerificationModeModel = .notVerified {
+    didSet {
+      emailVerificationMode.send(emailVerificationModeModel)
     }
   }
   
@@ -93,9 +98,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
           self.defaultEmail.send($0)
           self.checkEmail($0)
         }
-        if model.emailVerificationMode != self.emailVerificationMode.value {
-          self.emailVerificationMode.send(model.emailVerificationMode)
-        }
+        self.emailVerificationModeModel = model.emailVerificationMode
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
@@ -107,7 +110,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
   }
   
   func sendEmail(_ email: String) {
-    switch emailVerificationMode.value {
+    switch emailVerificationModeModel {
     case .notVerified:
       needToVerifyEmail = email
     case .verified:
@@ -124,7 +127,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
       }
     case .edit:
       if email == verifiedEmail {
-        emailVerificationMode.send(.verified)
+        emailVerificationModeModel = .verified
       } else {
         needToVerifyEmail = email
       }
@@ -133,14 +136,14 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
   }
   
   func editEmail() {
-    emailVerificationMode.send(.edit)
+    emailVerificationModeModel = .edit
   }
   
   func cancelEditEmail(_ email: String) {
     if email != verifiedEmail {
       verifiedEmail.map { defaultEmail.send($0) }
     }
-    emailVerificationMode.send(.verified)
+    emailVerificationModeModel = .verified
   }
   
   func complete() {

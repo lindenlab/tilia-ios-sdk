@@ -142,10 +142,6 @@ extension SendReceiptViewController: UITextFieldDelegate {
     return true
   }
   
-  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-    return viewModel.emailVerificationMode.value != .verified
-  }
-  
 }
 
 // MARK: - Private Methods
@@ -222,6 +218,7 @@ private extension SendReceiptViewController {
                                       for: .touchUpInside)
       self.textField.rightView = rightTextFieldButton
       self.textField.rightViewMode = rightTextFieldButton != nil ? .always : .never
+      self.textField.isUserInteractionEnabled = $0.isTextFieldEditable
     }.store(in: &subscriptions)
     
     viewModel.verifyEmail.sink { [weak self] in
@@ -304,6 +301,13 @@ private extension EmailVerificationModeModel {
     switch self {
     case .notVerified, .verified: return .fill
     case .edit: return .fillEqually
+    }
+  }
+  
+  var isTextFieldEditable: Bool {
+    switch self {
+    case .notVerified, .edit: return true
+    case .verified: return false
     }
   }
   

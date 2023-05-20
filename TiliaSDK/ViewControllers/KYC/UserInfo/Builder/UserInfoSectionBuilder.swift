@@ -76,7 +76,9 @@ struct UserInfoSectionBuilder {
           let accessibilityIdentifier: String?
           
           var fieldContent: TextFieldsCell.FieldContent {
-            return (placeholder, text, accessibilityIdentifier)
+            return .init(placeholder: placeholder,
+                         text: text,
+                         accessibilityIdentifier: accessibilityIdentifier)
           }
           
           init(placeholder: String? = nil,

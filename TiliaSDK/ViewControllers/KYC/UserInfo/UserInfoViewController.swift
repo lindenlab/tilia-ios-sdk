@@ -107,6 +107,10 @@ extension UserInfoViewController: TextFieldsCellDelegate {
                       fieldIndex: index)
   }
   
+  func textFieldsCell(_ cell: TextFieldsCell, didEditAt index: Int) {
+    
+  }
+  
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
     guard TosAcceptModel(str: link) == .privacyPolicy else { return }
     router.routeToTosContentView()

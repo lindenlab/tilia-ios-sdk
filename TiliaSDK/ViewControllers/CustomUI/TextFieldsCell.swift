@@ -9,18 +9,38 @@ import UIKit
 
 protocol TextFieldsCellDelegate: AnyObject, TextViewWithLinkDelegate {
   func textFieldsCell(_ cell: TextFieldsCell, didEndEditingWith text: String?, at index: Int)
+  func textFieldsCell(_ cell: TextFieldsCell, didEditAt index: Int)
 }
 
 extension TextFieldsCellDelegate {
   
+  func textFieldsCell(_ cell: TextFieldsCell, didEditAt index: Int) { }
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) { }
   
 }
 
 class TextFieldsCell: TitleBaseCell {
   
-  typealias FieldContent = (placeholder: String?, text: String?, accessibilityIdentifier: String?)
-  
+  struct FieldContent {
+    let placeholder: String?
+    let text: String?
+    let accessibilityIdentifier: String?
+    let isUserInteractionEnabled: Bool
+    let isEditButtonVisible: Bool
+    
+    init(placeholder: String? = nil,
+         text: String? = nil,
+         accessibilityIdentifier: String? = nil,
+         isUserInteractionEnabled: Bool = true,
+         isEditButtonVisible: Bool = false) {
+      self.placeholder = placeholder
+      self.text = text
+      self.accessibilityIdentifier = accessibilityIdentifier
+      self.isUserInteractionEnabled = isUserInteractionEnabled
+      self.isEditButtonVisible = isEditButtonVisible
+    }
+  }
+    
   var textFields: [RoundedTextField] { return [] } // Need to override in child class, default is empty
   
   private weak var delegate: TextFieldsCellDelegate?
@@ -51,6 +71,9 @@ class TextFieldsCell: TitleBaseCell {
       textField.placeholder = content.placeholder
       textField.text = content.text
       textField.accessibilityIdentifier = content.accessibilityIdentifier
+      textField.isUserInteractionEnabled = content.isUserInteractionEnabled
+      textField.rightView = content.isEditButtonVisible ? editButton() : nil
+      textField.rightViewMode = content.isEditButtonVisible ? .always : .never
     }
     if let attributedDescription = attributedDescription {
       descriptionTextView.isHidden = false
@@ -78,7 +101,7 @@ class TextFieldsCell: TitleBaseCell {
 extension TextFieldsCell: UITextFieldDelegate {
   
   func textFieldDidEndEditing(_ textField: UITextField) {
-    guard let index = textFields.firstIndex(where: { $0 === textField }) else { return }
+    guard let index = self.index(of: textField) else { return }
     delegate?.textFieldsCell(self,
                              didEndEditingWith: textField.text,
                              at: index)
@@ -102,6 +125,23 @@ private extension TextFieldsCell {
       $0.returnKeyType = .done
     }
     addChildView(descriptionTextView)
+  }
+  
+  func index(of textField: UITextField) -> Int? {
+    return textFields.firstIndex(where: { $0 === textField })
+  }
+  
+  func editButton() -> UIButton {
+    let button = EditButton()
+    button.addTarget(self, action: #selector(editButtonDidTap(_:)), for: .touchUpInside)
+    return button
+  }
+  
+  @objc func editButtonDidTap(_ sender: UIButton) {
+    guard
+      let textField = sender.superview as? UITextField,
+      let index = self.index(of: textField) else { return }
+    delegate?.textFieldsCell(self, didEditAt: index)
   }
   
 }

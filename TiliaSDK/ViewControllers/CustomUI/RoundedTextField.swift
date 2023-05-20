@@ -64,6 +64,18 @@ final class RoundedTextField: UITextField {
     setupBorderColor()
   }
   
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    guard !isUserInteractionEnabled, let rightView = rightView else {
+      return super.hitTest(point, with: event)
+    }
+    let pointInSubview = rightView.convert(point, from: self)
+    if rightView.point(inside: pointInSubview, with: event) {
+      return rightView
+    } else {
+      return super.hitTest(point, with: event)
+    }
+  }
+  
 }
 
 // MARK: - Private Methods
