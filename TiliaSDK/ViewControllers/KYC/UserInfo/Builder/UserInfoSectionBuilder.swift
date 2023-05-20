@@ -152,6 +152,7 @@ struct UserInfoSectionBuilder {
       let title: String?
       var mode: Mode
       let description: String?
+      let descriptionTextColor: UIColor?
       let attributedDescription: NSAttributedString?
       let descriptionTextData: TextViewWithLink.TextData?
       let descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]?
@@ -159,12 +160,14 @@ struct UserInfoSectionBuilder {
       init(mode: Mode,
            title: String? = nil,
            description: String? = nil,
+           descriptionTextColor: UIColor? = nil,
            attributedDescription: NSAttributedString? = nil,
            descriptionTextData: TextViewWithLink.TextData? = nil,
            descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]? = nil) {
         self.title = title
         self.mode = mode
         self.description = description
+        self.descriptionTextColor = descriptionTextColor
         self.attributedDescription = attributedDescription
         self.descriptionTextData = descriptionTextData
         self.descriptionAdditionalAttributes = descriptionAdditionalAttributes
@@ -218,7 +221,10 @@ struct UserInfoSectionBuilder {
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
       cell.configure(title: item.title)
       cell.configure(description: item.description,
-                     attributedDescription: item.attributedDescription)
+                     attributedDescription: item.attributedDescription,
+                     textColor: item.descriptionTextColor ?? .secondaryTextColor,
+                     textData: item.descriptionTextData,
+                     delegate: delegate)
       return cell
     case .button:
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)

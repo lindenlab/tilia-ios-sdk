@@ -115,6 +115,7 @@
 		D16EDD4A2808470900A1E413 /* TLCompleteCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD492808470900A1E413 /* TLCompleteCallback.swift */; };
 		D16EDD4C2808481D00A1E413 /* TLUpdateCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */; };
 		D1763CC328A8F27A0057F477 /* TosContentViewModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */; };
+		D17838FB2A191C6D0056EEC3 /* UserInfoEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17838FA2A191C6D0056EEC3 /* UserInfoEmailCell.swift */; };
 		D179123B282C3A2B0053DB10 /* UserInfoValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */; };
 		D179123D282C3BD00053DB10 /* PossiblyEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */; };
 		D17A451028B384F000B0C9AB /* TransactionDetailsSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17A450F28B384F000B0C9AB /* TransactionDetailsSectionBuilder.swift */; };
@@ -389,6 +390,7 @@
 		D16EDD492808470900A1E413 /* TLCompleteCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLCompleteCallback.swift; sourceTree = "<group>"; };
 		D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLUpdateCallback.swift; sourceTree = "<group>"; };
 		D1763CC228A8F27A0057F477 /* TosContentViewModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosContentViewModelsTests.swift; sourceTree = "<group>"; };
+		D17838FA2A191C6D0056EEC3 /* UserInfoEmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoEmailCell.swift; sourceTree = "<group>"; };
 		D179123A282C3A2B0053DB10 /* UserInfoValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoValidator.swift; sourceTree = "<group>"; };
 		D179123C282C3BD00053DB10 /* PossiblyEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossiblyEmpty.swift; sourceTree = "<group>"; };
 		D17A450F28B384F000B0C9AB /* TransactionDetailsSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailsSectionBuilder.swift; sourceTree = "<group>"; };
@@ -848,6 +850,7 @@
 				D126AF202878365300CAC5F2 /* UserInfoProcessingCell.swift */,
 				D151A8CF28947E050055FF98 /* UserInfoImageCell.swift */,
 				D163D9E2284F52D400F478DA /* UserInfoSuccessCell.swift */,
+				D17838FA2A191C6D0056EEC3 /* UserInfoEmailCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1565,6 +1568,7 @@
 				D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */,
 				D1C8A84C27F63F7A00BF2910 /* CheckoutPaymentFooterView.swift in Sources */,
 				D123208B28A6D5890039990A /* TosContentViewModel.swift in Sources */,
+				D17838FB2A191C6D0056EEC3 /* UserInfoEmailCell.swift in Sources */,
 				D1B872D12804A22F00DD1F7B /* NetworkManager.swift in Sources */,
 				D16EDD3C280833B400A1E413 /* TLErrorCallback.swift in Sources */,
 				D192AD8427E8DF3D00E3DC2A /* Data+Serialization.swift in Sources */,
