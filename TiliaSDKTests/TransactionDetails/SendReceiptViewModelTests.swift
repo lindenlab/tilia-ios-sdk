@@ -18,16 +18,38 @@ final class SendReceiptViewModelTests: XCTestCase {
   }
   
   func testSuccessSend() {
+    var loading: Bool?
+    var defaultEmail: String?
     var emailSent: Void?
     var sending: Bool?
     var isEmailValid: Bool?
+    var emailVerificationMode: EmailVerificationModeModel?
     
-    let emailSentExpectation = XCTestExpectation(description: "testSuccessSend_EmailSent")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = SendReceiptViewModel(transactionId: "",
                                          manager: networkManager,
-                                         onEmailSent: { emailSent = (); emailSentExpectation.fulfill() },
+                                         onEmailSent: { },
+                                         onUpdate: nil,
                                          onError: nil)
+    
+    let loadingExpectation = XCTestExpectation(description: "testSuccessSend_Loading")
+    viewModel.loading.sink {
+      loading = $0
+      loadingExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let defaultEmailExpectation = XCTestExpectation(description: "testSuccessSend_DefaultEmail")
+    viewModel.defaultEmail.sink {
+      defaultEmail = $0
+      defaultEmailExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let emailVerificationModeExpectation = XCTestExpectation(description: "testSuccessSend_EmailVerificationMode")
+    viewModel.emailVerificationMode.sink { [weak viewModel] in
+      emailVerificationMode = $0
+      viewModel?.sendEmail(defaultEmail ?? "")
+      emailVerificationModeExpectation.fulfill()
+    }.store(in: &subscriptions)
     
     let sendingExpectation = XCTestExpectation(description: "testSuccessSend_Sending")
     viewModel.sending.sink {
@@ -41,19 +63,28 @@ final class SendReceiptViewModelTests: XCTestCase {
       isEmailValidExpectation.fulfill()
     }.store(in: &subscriptions)
     
+    let emailSentExpectation = XCTestExpectation(description: "testSuccessSend_EmailSent")
+    viewModel.emailSent.sink {
+      emailSent = ()
+      emailSentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
     TLManager.shared.setToken(UUID().uuidString)
-    let email = "test@gmail.com"
-    viewModel.checkEmail(email)
-    viewModel.sendEmail(email)
-    viewModel.complete()
+    viewModel.load()
     
     let expectations = [
+      loadingExpectation,
+      defaultEmailExpectation,
+      emailVerificationModeExpectation,
       emailSentExpectation,
       sendingExpectation,
       isEmailValidExpectation
     ]
     
     wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(loading)
+    XCTAssertNotNil(defaultEmail)
+    XCTAssertEqual(emailVerificationMode, .verified)
     XCTAssertNotNil(sending)
     XCTAssertEqual(isEmailValid, true)
     XCTAssertNotNil(emailSent)
@@ -69,16 +100,17 @@ final class SendReceiptViewModelTests: XCTestCase {
     let viewModel = SendReceiptViewModel(transactionId: "",
                                          manager: networkManager,
                                          onEmailSent: { },
+                                         onUpdate: nil,
                                          onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     
     let errorExpectation = XCTestExpectation(description: "testFailureSend_Error")
     viewModel.error.sink {
-      error = $0
+      error = $0.error
       errorExpectation.fulfill()
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken("")
-    viewModel.sendEmail("test@gmail.com")
+    viewModel.load()
     
     let expectations = [
       errorExpectation,
