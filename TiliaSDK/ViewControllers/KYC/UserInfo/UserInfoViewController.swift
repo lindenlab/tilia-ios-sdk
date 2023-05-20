@@ -202,7 +202,7 @@ private extension UserInfoViewController {
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      self.sections = self.builder.sections(email: $0)
+      self.sections = self.builder.sections(with: $0)
       self.tableView.reloadData()
     }.store(in: &subscriptions)
     

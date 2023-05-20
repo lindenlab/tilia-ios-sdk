@@ -22,7 +22,7 @@ protocol UserInfoViewModelInputProtocol {
 
 protocol UserInfoViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
-  var content: PassthroughSubject<String?, Never> { get }
+  var content: PassthroughSubject<UserDetailInfoModel, Never> { get }
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
@@ -55,7 +55,7 @@ protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoView
 final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   let loading = PassthroughSubject<Bool, Never>()
-  let content = PassthroughSubject<String?, Never>()
+  let content = PassthroughSubject<UserDetailInfoModel, Never>()
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
@@ -113,15 +113,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       switch result {
       case .success(let model):
         self.verifiedEmail = model.email
-        self.content.send(model.email)
-//        model.email.map {
-//          self.verifiedEmail = $0
-//          self.defaultEmail.send($0)
-//          self.checkEmail($0)
-//        }
-//        if model.emailVerificationMode != self.emailVerificationMode.value {
-//          self.emailVerificationMode.send(model.emailVerificationMode)
-//        }
+        self.content.send(model)
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
