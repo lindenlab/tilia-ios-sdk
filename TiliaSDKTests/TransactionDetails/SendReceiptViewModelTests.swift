@@ -23,7 +23,7 @@ final class SendReceiptViewModelTests: XCTestCase {
     var emailSent: Void?
     var sending: Bool?
     var isEmailValid: Bool?
-    var emailVerificationMode: EmailVerificationModeModel?
+    var emailVerificationMode: SendReceiptMode?
     
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = SendReceiptViewModel(transactionId: "",
