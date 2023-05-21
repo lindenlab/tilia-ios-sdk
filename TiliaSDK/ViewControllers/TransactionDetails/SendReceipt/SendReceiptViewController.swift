@@ -265,12 +265,28 @@ private extension SendReceiptViewController {
 
 // MARK: - Private Helpers
 
-private extension EmailVerificationModeModel {
+private extension SendReceiptMode {
   
   var message: String {
     switch self {
     case .notVerified: return L.emailIsNotVerifiedForUpdatesMessage
     case .verified, .edit: return L.emailIsVerifiedForUpdatesMessage
+    }
+  }
+  
+  var isTextFieldEditable: Bool {
+    switch self {
+    case .notVerified, .edit: return true
+    case .verified: return false
+    }
+  }
+  
+  var isEditButtonHidden: Bool {
+    switch self {
+    case .verified:
+      return false
+    case .notVerified, .edit:
+      return true
     }
   }
   

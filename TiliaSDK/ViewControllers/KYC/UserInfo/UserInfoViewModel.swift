@@ -80,7 +80,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
   var userEmail: String { return userInfoModel.needToVerifyEmail ?? "" }
-  var verifyEmailMode: VerifyEmailMode { return userInfoModel.email == nil ? .verify : .update }
+  var verifyEmailMode: VerifyEmailMode { return userInfoModel.isEmailVerified ? .update : .verify }
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onUserDocumentsComplete: (SubmittedKycModel) -> Void = { [weak self] in
     self?.getStatus(for: $0)
@@ -112,7 +112,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
       switch result {
       case .success(let model):
         self.userInfoModel.email = model.email
-        self.userInfoModel.emailVerificationMode = model.emailVerificationMode
         self.content.send(self.userInfoModel)
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
@@ -344,7 +343,6 @@ private extension UserInfoViewModel {
       userInfoModel.isEmailUpdated = true
     }
     userInfoModel.email = userInfoModel.needToVerifyEmail
-    userInfoModel.emailVerificationMode = .verified
     // TODO: - Here we need to reload cell after successful verify
     userInfoModel.needToVerifyEmail = nil
     emailVerified.send(message)

@@ -41,7 +41,6 @@ struct UserInfoModel: EmailVerifiable {
   
   var email: String?
   var needToVerifyEmail: String?
-  var emailVerificationMode: EmailVerificationModeModel = .notVerified
   var isEmailUpdated: Bool = false
   var countryOfResidence: CountryModel?
   var fullName: FullName = FullName()

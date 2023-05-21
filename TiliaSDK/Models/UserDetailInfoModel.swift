@@ -7,6 +7,16 @@
 
 import Foundation
 
+protocol EmailVerifiable {
+  var email: String? { get }
+}
+
+extension EmailVerifiable {
+  
+  var isEmailVerified: Bool { return !email.isEmpty }
+  
+}
+
 struct UserDetailInfoModel: Decodable, EmailVerifiable {
   
   private enum CodingKeys: String, CodingKey {

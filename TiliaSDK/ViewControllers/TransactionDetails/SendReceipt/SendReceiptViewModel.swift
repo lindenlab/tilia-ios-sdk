@@ -8,6 +8,14 @@
 import Foundation
 import Combine
 
+enum SendReceiptMode {
+  
+  case verified
+  case notVerified
+  case edit
+  
+}
+
 protocol SendReceiptViewModelInputProtocol {
   func load()
   func checkEmail(_ email: String)
@@ -24,7 +32,7 @@ protocol SendReceiptViewModelOutputProtocol {
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var emailSent: PassthroughSubject<Void, Never> { get }
   var isEmailValid: PassthroughSubject<Bool, Never> { get }
-  var emailVerificationMode: PassthroughSubject<EmailVerificationModeModel, Never> { get }
+  var emailVerificationMode: PassthroughSubject<SendReceiptMode, Never> { get }
   var verifyEmail: PassthroughSubject<Void, Never> { get }
   var emailVerified: PassthroughSubject<String, Never> { get }
 }
@@ -47,7 +55,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let emailSent = PassthroughSubject<Void, Never>()
   let isEmailValid = PassthroughSubject<Bool, Never>()
-  let emailVerificationMode = PassthroughSubject<EmailVerificationModeModel, Never>()
+  let emailVerificationMode = PassthroughSubject<SendReceiptMode, Never>()
   let verifyEmail = PassthroughSubject<Void, Never>()
   let emailVerified = PassthroughSubject<String, Never>()
   
@@ -68,7 +76,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
       verifyEmail.send()
     }
   }
-  private var emailVerificationModeModel: EmailVerificationModeModel = .notVerified {
+  private var emailVerificationModeModel: SendReceiptMode = .notVerified {
     didSet {
       emailVerificationMode.send(emailVerificationModeModel)
     }
@@ -98,7 +106,7 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
           self.defaultEmail.send($0)
           self.checkEmail($0)
         }
-        self.emailVerificationModeModel = model.emailVerificationMode
+        self.emailVerificationModeModel = model.isEmailVerified ? .verified : .notVerified
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }

@@ -495,14 +495,14 @@ private extension UserInfoSectionBuilder {
   func defaultMode(for type: Section.SectionType, with model: UserInfoModel) -> UserInfoHeaderView.Mode {
     switch type {
     case .email: return .expanded
-    case .location where model.emailVerificationMode == .verified: return .normal
+    case .location where model.isEmailVerified: return .normal
     default: return .disabled
     }
   }
   
   func isSectionFilledByDefault(for type: Section.SectionType, with model: UserInfoModel) -> Bool {
     switch type {
-    case .email: return model.emailVerificationMode == .verified
+    case .email: return model.isEmailVerified
     default: return false
     }
   }
@@ -510,7 +510,7 @@ private extension UserInfoSectionBuilder {
   func defaultItems(for type: Section.SectionType, with model: UserInfoModel) -> [Section.Item] {
     switch type {
     case .email: return itemsForEmailSection(with: model)
-    case .location where model.emailVerificationMode == .verified: return itemsForLocationSection(with: model)
+    case .location where model.isEmailVerified: return itemsForLocationSection(with: model)
     default: return []
     }
   }
@@ -527,23 +527,23 @@ private extension UserInfoSectionBuilder {
   }
   
   func itemsForEmailSection(with model: UserInfoModel) -> [Section.Item] {
-    let textData: TextViewWithLink.TextData = (model.emailVerificationMode.message(isUpdated: model.isEmailUpdated), [TosAcceptModel.privacyPolicy.description])
+    let textData: TextViewWithLink.TextData = (model.emailVerificationMessage, [TosAcceptModel.privacyPolicy.description])
     let emailField = Section.Item.Mode.Fields(type: .email,
                                               fields: [.init(placeholder: L.email,
                                                              text: model.email,
                                                              accessibilityIdentifier: "emailTextField",
-                                                             isUserInteractionEnabled: model.emailVerificationMode.isTextFieldEditable,
-                                                             isEditButtonHidden: model.emailVerificationMode.isEditButtonHidden)])
+                                                             isUserInteractionEnabled: !model.isEmailVerified,
+                                                             isEditButtonHidden: !model.isEmailVerified)])
     var items = [
       Section.Item(mode: .label,
-                   title: model.emailVerificationMode.title(isUpdated: model.isEmailUpdated),
+                   title: model.emailVerificationTitle,
                    titleTextFont: .boldSystemFont(ofSize: 20),
                    descriptionTextColor: .primaryTextColor,
                    descriptionTextData: textData),
       Section.Item(mode: .fields(emailField),
                    title: L.email)
     ]
-    if model.emailVerificationMode == .notVerified {
+    if !model.isEmailVerified {
       items.append(Section.Item(mode: .nextButton(L.verifyEmail)))
     }
     return items
@@ -747,19 +747,21 @@ private extension UserInfoSectionBuilder {
   
 }
 
-private extension EmailVerificationModeModel {
+private extension UserInfoModel {
   
-  func title(isUpdated: Bool) -> String {
-    switch self {
-    case .notVerified: return L.needToCollectEmailTitle
-    case .verified, .edit: return isUpdated ? L.yourEmailIsUpdated : L.yourEmailIsVerified
+  var emailVerificationTitle: String {
+    if isEmailVerified {
+      return isEmailUpdated ? L.yourEmailIsUpdated : L.yourEmailIsVerified
+    } else {
+      return L.needToCollectEmailTitle
     }
   }
   
-  func message(isUpdated: Bool) -> String {
-    switch self {
-    case .notVerified: return L.emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage
-    case .verified, .edit: return isUpdated ? L.emailIsVerifiedForUpdatesMessage : L.emailIsVerifiedForUpdatesWithPrivacyPolicyMessage
+  var emailVerificationMessage: String {
+    if isEmailVerified {
+      return isEmailUpdated ? L.emailIsVerifiedForUpdatesMessage : L.emailIsVerifiedForUpdatesWithPrivacyPolicyMessage
+    } else {
+      return L.emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage
     }
   }
   
