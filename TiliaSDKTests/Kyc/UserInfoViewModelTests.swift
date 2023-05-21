@@ -174,7 +174,7 @@ final class UserInfoViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     viewModel.successfulCompleting.sink { [weak viewModel] in
-      viewModel?.complete()
+      viewModel?.complete(isFromCloseAction: false)
     }.store(in: &subscriptions)
     
     let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
@@ -218,7 +218,7 @@ final class UserInfoViewModelTests: XCTestCase {
     
     let errorExpectation = XCTestExpectation(description: "testFailureSubmit_Error")
     viewModel.error.sink {
-      error = $0
+      error = $0.error
       errorExpectation.fulfill()
     }.store(in: &subscriptions)
     

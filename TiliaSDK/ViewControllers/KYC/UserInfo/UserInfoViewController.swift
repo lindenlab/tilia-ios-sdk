@@ -123,21 +123,8 @@ extension UserInfoViewController: TextFieldsCellDelegate {
 extension UserInfoViewController: UserInfoNextButtonCellDelegate {
   
   func userInfoNextButtonCellButtonDidTap(_ cell: UserInfoNextButtonCell) {
-    guard let indexPath = tableView.indexPath(for: cell) else { return }
-    let index = indexPath.section
-    var nextSectionIndex: Int?
-    for i in index + 1..<sections.count {
-      if sections[i].mode == .expanded {
-        break
-      } else if sections[i].mode == .normal {
-        nextSectionIndex = i
-        break
-      }
-    }
-    viewModel.updateSection(sections[index],
-                            at: index,
-                            isExpanded: false,
-                            nextSectionIndex: nextSectionIndex)
+    guard let index = tableView.indexPath(for: cell)?.section else { return }
+    viewModel.onNext(for: sections[index], at: index)
   }
   
 }
@@ -269,6 +256,23 @@ private extension UserInfoViewController {
       guard let self = self else { return }
       self.builder.enableSections(&self.sections,
                                   in: self.tableView)
+    }.store(in: &subscriptions)
+    
+    viewModel.nextSection.sink { [weak self] in
+      guard let self = self else { return }
+      var nextSectionIndex: Int?
+      for i in $0 + 1..<self.sections.count {
+        if self.sections[i].mode == .expanded {
+          break
+        } else if self.sections[i].mode == .normal {
+          nextSectionIndex = i
+          break
+        }
+      }
+      self.viewModel.updateSection(self.sections[$0],
+                                   at: $0,
+                                   isExpanded: false,
+                                   nextSectionIndex: nextSectionIndex)
     }.store(in: &subscriptions)
     
     viewModel.uploading.sink { [weak self] in

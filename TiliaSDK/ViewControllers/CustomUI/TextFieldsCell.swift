@@ -26,18 +26,18 @@ class TextFieldsCell: TitleBaseCell {
     let text: String?
     let accessibilityIdentifier: String?
     let isUserInteractionEnabled: Bool
-    let isEditButtonVisible: Bool
+    let isEditButtonHidden: Bool
     
     init(placeholder: String? = nil,
          text: String? = nil,
          accessibilityIdentifier: String? = nil,
          isUserInteractionEnabled: Bool = true,
-         isEditButtonVisible: Bool = false) {
+         isEditButtonHidden: Bool = true) {
       self.placeholder = placeholder
       self.text = text
       self.accessibilityIdentifier = accessibilityIdentifier
       self.isUserInteractionEnabled = isUserInteractionEnabled
-      self.isEditButtonVisible = isEditButtonVisible
+      self.isEditButtonHidden = isEditButtonHidden
     }
   }
     
@@ -72,8 +72,8 @@ class TextFieldsCell: TitleBaseCell {
       textField.text = content.text
       textField.accessibilityIdentifier = content.accessibilityIdentifier
       textField.isUserInteractionEnabled = content.isUserInteractionEnabled
-      textField.rightView = content.isEditButtonVisible ? editButton() : nil
-      textField.rightViewMode = content.isEditButtonVisible ? .always : .never
+      textField.rightView = content.isEditButtonHidden ? nil : editButton()
+      textField.rightViewMode = content.isEditButtonHidden ? .never : .always
     }
     if let attributedDescription = attributedDescription {
       descriptionTextView.isHidden = false

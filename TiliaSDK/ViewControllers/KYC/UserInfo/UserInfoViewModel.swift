@@ -16,6 +16,9 @@ protocol UserInfoViewModelInputProtocol {
   func load()
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSectionIndex: Int?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
+  func onNext(for section: UserInfoSectionBuilder.Section, at index: Int)
+  func primaryButtonDidTap(for section: UserInfoSectionBuilder.Section, at index: Int)
+  func nonPrimaryButtonDidTap(for section: UserInfoSectionBuilder.Section, at index: Int)
   func upload()
   func complete(isFromCloseAction: Bool)
 }
@@ -28,6 +31,7 @@ protocol UserInfoViewModelOutputProtocol {
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
   var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
   var coutryOfResidenceDidSelect: PassthroughSubject<Void, Never> { get }
+  var nextSection: PassthroughSubject<Int, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
   var uploadDocuments: PassthroughSubject<Void, Never> { get }
   var successfulUploading: PassthroughSubject<Void, Never> { get }
@@ -61,6 +65,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
   let coutryOfResidenceDidSelect = PassthroughSubject<Void, Never>()
+  let nextSection = PassthroughSubject<Int, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
   let uploadDocuments = PassthroughSubject<Void, Never>()
   let successfulUploading = PassthroughSubject<Void, Never>()
@@ -137,6 +142,8 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     var isFieldChanged = false
     
     switch field.type {
+    case .email:
+      isFieldChanged = isFieldUpdated(&userInfoModel.email, with: text)
     case .countryOfResidance:
       let wasNil = userInfoModel.countryOfResidence == nil
       let wasUsResidence = userInfoModel.isUsResident
@@ -197,6 +204,18 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     guard isFieldChanged,
           let isSectionFilled = validator(for: section.type)?.isFilled(for: userInfoModel) else { return }
     setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
+  }
+  
+  func onNext(for section: UserInfoSectionBuilder.Section, at index: Int) {
+    nextSection.send(index)
+  }
+  
+  func primaryButtonDidTap(for section: UserInfoSectionBuilder.Section, at index: Int) {
+    
+  }
+  
+  func nonPrimaryButtonDidTap(for section: UserInfoSectionBuilder.Section, at index: Int) {
+    
   }
   
   func upload() {

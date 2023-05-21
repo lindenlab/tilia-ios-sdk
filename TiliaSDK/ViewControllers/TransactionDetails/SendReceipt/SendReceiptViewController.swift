@@ -212,12 +212,12 @@ private extension SendReceiptViewController {
       self.buttonsStackView.axis = $0.stackViewAxis
       self.buttonsStackView.alignment = $0.stackViewAlignment
       self.buttonsStackView.distribution = $0.stackViewDistribution
-      let rightTextFieldButton = $0.rightTextFieldButton
+      let rightTextFieldButton = $0.isEditButtonHidden ? nil : EditButton()
       rightTextFieldButton?.addTarget(self,
                                       action: #selector(self.editButtonDidTap),
                                       for: .touchUpInside)
       self.textField.rightView = rightTextFieldButton
-      self.textField.rightViewMode = rightTextFieldButton != nil ? .always : .never
+      self.textField.rightViewMode = $0.isEditButtonHidden ? .never : .always
       self.textField.isUserInteractionEnabled = $0.isTextFieldEditable
     }.store(in: &subscriptions)
     
@@ -301,23 +301,6 @@ private extension EmailVerificationModeModel {
     switch self {
     case .notVerified, .verified: return .fill
     case .edit: return .fillEqually
-    }
-  }
-  
-  var isTextFieldEditable: Bool {
-    switch self {
-    case .notVerified, .edit: return true
-    case .verified: return false
-    }
-  }
-  
-  var rightTextFieldButton: UIButton? {
-    switch self {
-    case .verified:
-      let button = EditButton()
-      return button
-    case .notVerified, .edit:
-      return nil
     }
   }
   

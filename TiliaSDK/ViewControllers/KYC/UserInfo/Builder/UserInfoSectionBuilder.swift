@@ -58,6 +58,7 @@ struct UserInfoSectionBuilder {
       enum Mode {
         
         enum FieldType {
+          case email
           case countryOfResidance
           case fullName
           case dateOfBirth
@@ -74,19 +75,27 @@ struct UserInfoSectionBuilder {
           let placeholder: String?
           var text: String?
           let accessibilityIdentifier: String?
+          let isUserInteractionEnabled: Bool
+          let isEditButtonHidden: Bool
           
           var fieldContent: TextFieldsCell.FieldContent {
             return .init(placeholder: placeholder,
                          text: text,
-                         accessibilityIdentifier: accessibilityIdentifier)
+                         accessibilityIdentifier: accessibilityIdentifier,
+                         isUserInteractionEnabled: isUserInteractionEnabled,
+                         isEditButtonHidden: isEditButtonHidden)
           }
           
           init(placeholder: String? = nil,
                text: String? = nil,
-               accessibilityIdentifier: String?) {
+               accessibilityIdentifier: String?,
+               isUserInteractionEnabled: Bool = true,
+               isEditButtonHidden: Bool = true) {
             self.placeholder = placeholder
             self.text = text
             self.accessibilityIdentifier = accessibilityIdentifier
+            self.isUserInteractionEnabled = isUserInteractionEnabled
+            self.isEditButtonHidden = isEditButtonHidden
           }
         }
         
@@ -141,34 +150,34 @@ struct UserInfoSectionBuilder {
         
         case fields(Fields)
         case label
-        case button
+        case nextButton(String)
         case processing(Processing)
         case image(UIImage?)
         case success
       }
       
       let title: String?
+      let titleTextFont: UIFont?
       var mode: Mode
       let description: String?
       let descriptionTextColor: UIColor?
-      let descriptionTextFont: UIFont?
       let attributedDescription: NSAttributedString?
       let descriptionTextData: TextViewWithLink.TextData?
       let descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]?
       
       init(mode: Mode,
            title: String? = nil,
+           titleTextFont: UIFont? = nil,
            description: String? = nil,
            descriptionTextColor: UIColor? = nil,
-           descriptionTextFont: UIFont? = nil,
            attributedDescription: NSAttributedString? = nil,
            descriptionTextData: TextViewWithLink.TextData? = nil,
            descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]? = nil) {
-        self.title = title
         self.mode = mode
+        self.title = title
+        self.titleTextFont = titleTextFont
         self.description = description
         self.descriptionTextColor = descriptionTextColor
-        self.descriptionTextFont = descriptionTextFont
         self.attributedDescription = attributedDescription
         self.descriptionTextData = descriptionTextData
         self.descriptionAdditionalAttributes = descriptionAdditionalAttributes
@@ -220,7 +229,7 @@ struct UserInfoSectionBuilder {
       return cell
     case .label:
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
-      cell.configure(titleFont: item.descriptionTextFont ?? .systemFont(ofSize: 16))
+      cell.configure(titleFont: item.titleTextFont ?? .systemFont(ofSize: 16))
       cell.configure(title: item.title)
       cell.configure(description: item.description,
                      attributedDescription: item.attributedDescription,
@@ -228,9 +237,10 @@ struct UserInfoSectionBuilder {
                      textData: item.descriptionTextData,
                      delegate: delegate)
       return cell
-    case .button:
+    case let .nextButton(title):
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
       cell.configure(delegate: delegate)
+      cell.configure(buttonTitle: title)
       cell.configure(isButtonEnabled: section.isFilled ?? false)
       return cell
     case let .processing(model):
@@ -378,7 +388,7 @@ struct UserInfoSectionBuilder {
     section.isFilled = isFilled
     
     section.items.firstIndex {
-      if case .button = $0.mode {
+      if case .nextButton = $0.mode {
         return true
       } else {
         return false
@@ -512,12 +522,20 @@ private extension UserInfoSectionBuilder {
   
   func itemsForEmailSection(with model: UserInfoModel) -> [Section.Item] {
     let textData: TextViewWithLink.TextData = (model.emailVerificationMode.message(isUpdated: model.isEmailUpdated), [TosAcceptModel.privacyPolicy.description])
+    let emailField = Section.Item.Mode.Fields(type: .email,
+                                              fields: [.init(placeholder: L.email,
+                                                             text: model.email,
+                                                             accessibilityIdentifier: "emailTextField",
+                                                             isUserInteractionEnabled: model.emailVerificationMode.isTextFieldEditable,
+                                                             isEditButtonHidden: model.emailVerificationMode.isEditButtonHidden)])
     return [
       Section.Item(mode: .label,
                    title: model.emailVerificationMode.title(isUpdated: model.isEmailUpdated),
+                   titleTextFont: .boldSystemFont(ofSize: 20),
                    descriptionTextColor: .primaryTextColor,
-                   descriptionTextFont: .boldSystemFont(ofSize: 20),
-                   descriptionTextData: textData)
+                   descriptionTextData: textData),
+      Section.Item(mode: .fields(emailField),
+                   title: L.email)
     ]
   }
   
@@ -533,7 +551,7 @@ private extension UserInfoSectionBuilder {
     return [
       Section.Item(mode: .fields(countryOfResidenceField),
                    title: L.countryOfResidence),
-      Section.Item(mode: .button)
+      Section.Item(mode: .nextButton(L.next))
     ]
   }
   
@@ -560,7 +578,7 @@ private extension UserInfoSectionBuilder {
                    title: L.fullName),
       Section.Item(mode: .fields(dateOfBirthField),
                    title: L.dateOfBirth),
-      Section.Item(mode: .button)
+      Section.Item(mode: .nextButton(L.next))
     ]
   }
   
@@ -593,7 +611,7 @@ private extension UserInfoSectionBuilder {
                    title: model.isUsResident ? L.signatureUs : L.signature,
                    descriptionTextData: signatureMessage.0,
                    descriptionAdditionalAttributes: [signatureMessage.1]),
-      Section.Item(mode: .button)
+      Section.Item(mode: .nextButton(L.next))
     ])
     return items
   }
