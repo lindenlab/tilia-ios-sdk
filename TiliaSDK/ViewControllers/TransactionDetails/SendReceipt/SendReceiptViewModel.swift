@@ -172,7 +172,7 @@ private extension SendReceiptViewModel {
     onUpdate?(model)
     verifiedEmail = needToVerifyEmail
     needToVerifyEmail = nil
-    emailVerificationMode.send(.verified)
+    emailVerificationModeModel = .verified
     emailVerified.send(message)
   }
   

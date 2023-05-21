@@ -56,6 +56,7 @@ final class VerifyEmailViewController: BaseViewController {
     textField.isReturnKeyEnabled = false
     textField.keyboardType = .numberPad
     textField.delegate = self
+    textField.accessibilityIdentifier = "enterCodeTextField"
     return textField
   }()
   

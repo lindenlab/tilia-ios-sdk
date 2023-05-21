@@ -212,11 +212,7 @@ private extension SendReceiptViewController {
       self.buttonsStackView.axis = $0.stackViewAxis
       self.buttonsStackView.alignment = $0.stackViewAlignment
       self.buttonsStackView.distribution = $0.stackViewDistribution
-      let rightTextFieldButton = $0.isEditButtonHidden ? nil : EditButton()
-      rightTextFieldButton?.addTarget(self,
-                                      action: #selector(self.editButtonDidTap),
-                                      for: .touchUpInside)
-      self.textField.rightView = rightTextFieldButton
+      self.textField.rightView = self.editButton(isHidden: $0.isEditButtonHidden)
       self.textField.rightViewMode = $0.isEditButtonHidden ? .never : .always
       self.textField.isUserInteractionEnabled = $0.isTextFieldEditable
     }.store(in: &subscriptions)
@@ -253,6 +249,16 @@ private extension SendReceiptViewController {
   
   func showCancelButton() {
     showCloseButton(target: self, action: #selector(closeButtonDidTap))
+  }
+  
+  func editButton(isHidden: Bool) -> UIButton? {
+    guard !isHidden else { return nil }
+    let button = EditButton()
+    button.accessibilityIdentifier = "editButton"
+    button.addTarget(self,
+                     action: #selector(editButtonDidTap),
+                     for: .touchUpInside)
+    return button
   }
   
 }
