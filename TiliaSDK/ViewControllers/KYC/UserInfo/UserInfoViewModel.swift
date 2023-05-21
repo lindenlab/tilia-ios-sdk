@@ -17,8 +17,9 @@ protocol UserInfoViewModelInputProtocol {
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSectionIndex: Int?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
   func onNext(for section: UserInfoSectionBuilder.Section, at index: Int)
-  func primaryButtonDidTap(for section: UserInfoSectionBuilder.Section, at index: Int)
-  func nonPrimaryButtonDidTap(for section: UserInfoSectionBuilder.Section, at index: Int)
+  func editEmail()
+  func cancelEditEmail()
+  func updateEmail()
   func upload()
   func complete(isFromCloseAction: Bool)
 }
@@ -78,7 +79,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
-  var userEmail: String { return needToVerifyEmail ?? "" }
+  var userEmail: String { return userInfoModel.needToVerifyEmail ?? "" }
   var verifyEmailMode: VerifyEmailMode { return userInfoModel.email == nil ? .verify : .update }
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onUserDocumentsComplete: (SubmittedKycModel) -> Void = { [weak self] in
@@ -92,12 +93,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private var isFlowCompleted = false
   private var timer: Timer?
-  private var needToVerifyEmail: String? {
-    didSet {
-      guard needToVerifyEmail != nil else { return }
-      verifyEmail.send()
-    }
-  }
   
   init(manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -207,14 +202,23 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   }
   
   func onNext(for section: UserInfoSectionBuilder.Section, at index: Int) {
-    nextSection.send(index)
+    switch section.type {
+    case .email:
+      verifyEmail.send()
+    default:
+      nextSection.send(index)
+    }
   }
   
-  func primaryButtonDidTap(for section: UserInfoSectionBuilder.Section, at index: Int) {
+  func editEmail() {
     
   }
   
-  func nonPrimaryButtonDidTap(for section: UserInfoSectionBuilder.Section, at index: Int) {
+  func cancelEditEmail() {
+    
+  }
+  
+  func updateEmail() {
     
   }
   
@@ -336,10 +340,13 @@ private extension UserInfoViewModel {
     let message = mode.successTitle
     let model = TLUpdateCallback(event: event, message: message)
     onUpdate?(model)
-    userInfoModel.email = needToVerifyEmail
+    if userInfoModel.email != nil {
+      userInfoModel.isEmailUpdated = true
+    }
+    userInfoModel.email = userInfoModel.needToVerifyEmail
     userInfoModel.emailVerificationMode = .verified
     // TODO: - Here we need to reload cell after successful verify
-    needToVerifyEmail = nil
+    userInfoModel.needToVerifyEmail = nil
     emailVerified.send(message)
   }
   

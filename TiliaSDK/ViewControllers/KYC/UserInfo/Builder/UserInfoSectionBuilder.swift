@@ -9,7 +9,7 @@ import UIKit
 
 struct UserInfoSectionBuilder {
   
-  typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate
+  typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate & UserInfoUpdateEmailCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
   typealias TableUpdate = (insertRows: [IndexPath]?, deleteRows: [IndexPath]?)
@@ -151,6 +151,7 @@ struct UserInfoSectionBuilder {
         case fields(Fields)
         case label
         case nextButton(String)
+        case updateEmailButtons
         case processing(Processing)
         case image(UIImage?)
         case success
@@ -242,6 +243,11 @@ struct UserInfoSectionBuilder {
       cell.configure(delegate: delegate)
       cell.configure(buttonTitle: title)
       cell.configure(isButtonEnabled: section.isFilled ?? false)
+      return cell
+    case .updateEmailButtons:
+      let cell = tableView.dequeue(UserInfoUpdateEmailCell.self, for: indexPath)
+      cell.configure(delegate: delegate)
+      cell.configure(isUpdateButtonEnabled: section.isFilled ?? false)
       return cell
     case let .processing(model):
       let cell = tableView.dequeue(UserInfoProcessingCell.self, for: indexPath)
@@ -528,7 +534,7 @@ private extension UserInfoSectionBuilder {
                                                              accessibilityIdentifier: "emailTextField",
                                                              isUserInteractionEnabled: model.emailVerificationMode.isTextFieldEditable,
                                                              isEditButtonHidden: model.emailVerificationMode.isEditButtonHidden)])
-    return [
+    var items = [
       Section.Item(mode: .label,
                    title: model.emailVerificationMode.title(isUpdated: model.isEmailUpdated),
                    titleTextFont: .boldSystemFont(ofSize: 20),
@@ -537,6 +543,10 @@ private extension UserInfoSectionBuilder {
       Section.Item(mode: .fields(emailField),
                    title: L.email)
     ]
+    if model.emailVerificationMode == .notVerified {
+      items.append(Section.Item(mode: .nextButton(L.verifyEmail)))
+    }
+    return items
   }
   
   func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {

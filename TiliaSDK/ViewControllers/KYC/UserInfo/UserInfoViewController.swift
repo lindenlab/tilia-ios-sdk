@@ -108,7 +108,7 @@ extension UserInfoViewController: TextFieldsCellDelegate {
   }
   
   func textFieldsCell(_ cell: TextFieldsCell, didEditAt index: Int) {
-    
+    viewModel.editEmail()
   }
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
@@ -125,6 +125,20 @@ extension UserInfoViewController: UserInfoNextButtonCellDelegate {
   func userInfoNextButtonCellButtonDidTap(_ cell: UserInfoNextButtonCell) {
     guard let index = tableView.indexPath(for: cell)?.section else { return }
     viewModel.onNext(for: sections[index], at: index)
+  }
+  
+}
+
+// MARK: - UserInfoUpdateEmailCellDelegate
+
+extension UserInfoViewController: UserInfoUpdateEmailCellDelegate {
+  
+  func userInfoUpdateEmailCellUpdateButtonDidTap(_ cell: UserInfoUpdateEmailCell) {
+    viewModel.updateEmail()
+  }
+  
+  func userInfoUpdateEmailCellCancelButtonDidTap(_ cell: UserInfoUpdateEmailCell) {
+    viewModel.cancelEditEmail()
   }
   
 }
@@ -180,6 +194,7 @@ private extension UserInfoViewController {
     tableView.register(UserInfoSuccessCell.self)
     tableView.register(UserInfoProcessingCell.self)
     tableView.register(UserInfoImageCell.self)
+    tableView.register(UserInfoUpdateEmailCell.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.estimatedRowHeight = 150
     tableView.estimatedSectionHeaderHeight = 50
