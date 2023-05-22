@@ -390,6 +390,8 @@ private extension UserInfoViewController {
     viewModel.isSectionFilled.sink { [weak self] in
       guard let self = self else { return }
       self.builder.updateSection(&self.sections[$0.index],
+                                 in: self.tableView,
+                                 at: $0.index,
                                  isFilled: $0.isFilled)
     }.store(in: &subscriptions)
   }

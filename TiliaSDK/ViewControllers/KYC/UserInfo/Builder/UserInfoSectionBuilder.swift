@@ -390,34 +390,10 @@ struct UserInfoSectionBuilder {
       field.inputMode = .picker(items: items, selectedIndex: selectedIndex)
     }
     section.items[indexPath.row].mode = .fields(field)
-    
-    section.isFilled = isFilled
-    
-    section.items.firstIndex {
-      if case .nextButton = $0.mode {
-        return true
-      } else {
-        return false
-      }
-    }.map {
-      let nextButtonCellIndexPath = IndexPath(row: $0, section: indexPath.section)
-      if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
-        nextButtonCell.configure(isButtonEnabled: isFilled)
-      }
-    }
-    
-    section.items.firstIndex {
-      if case .updateEmailButtons = $0.mode {
-        return true
-      } else {
-        return false
-      }
-    }.map {
-      let updateEmailCellIndexPath = IndexPath(row: $0, section: indexPath.section)
-      if let updateEmailCell = tableView.cellForRow(at: updateEmailCellIndexPath) as? UserInfoUpdateEmailCell {
-        updateEmailCell.configure(isUpdateButtonEnabled: isFilled)
-      }
-    }
+    updateSection(&section,
+                  in: tableView,
+                  at: indexPath.section,
+                  isFilled: isFilled)
   }
   
   func enableSections(_ sections: inout [Section], in tableView: UITableView) {
@@ -547,8 +523,37 @@ struct UserInfoSectionBuilder {
     return [index]
   }
   
-  func updateSection(_ section: inout Section, isFilled: Bool) {
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at index: Int,
+                     isFilled: Bool) {
     section.isFilled = isFilled
+    
+    section.items.firstIndex {
+      if case .nextButton = $0.mode {
+        return true
+      } else {
+        return false
+      }
+    }.map {
+      let nextButtonCellIndexPath = IndexPath(row: $0, section: index)
+      if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
+        nextButtonCell.configure(isButtonEnabled: isFilled)
+      }
+    }
+    
+    section.items.firstIndex {
+      if case .updateEmailButtons = $0.mode {
+        return true
+      } else {
+        return false
+      }
+    }.map {
+      let updateEmailCellIndexPath = IndexPath(row: $0, section: index)
+      if let updateEmailCell = tableView.cellForRow(at: updateEmailCellIndexPath) as? UserInfoUpdateEmailCell {
+        updateEmailCell.configure(isUpdateButtonEnabled: isFilled)
+      }
+    }
   }
   
 }
