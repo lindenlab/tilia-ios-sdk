@@ -108,7 +108,7 @@ extension UserInfoViewController: TextFieldsCellDelegate {
   }
   
   func textFieldsCell(_ cell: TextFieldsCell, didEditAt index: Int) {
-    viewModel.editEmail()
+    viewModel.startEditingEmail()
   }
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
@@ -138,7 +138,7 @@ extension UserInfoViewController: UserInfoUpdateEmailCellDelegate {
   }
   
   func userInfoUpdateEmailCellCancelButtonDidTap(_ cell: UserInfoUpdateEmailCell) {
-    viewModel.cancelEditEmail()
+    viewModel.endEditingEmail()
   }
   
 }
@@ -354,6 +354,26 @@ private extension UserInfoViewController {
       self?.router.showToast(title: L.success,
                              message: $0,
                              isSuccess: true)
+    }.store(in: &subscriptions)
+    
+    viewModel.didStartEditingEmail.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updatesSections(&self.sections,
+                                                     didStartEditingEmailFor: $0)
+      self.tableView.performBatchUpdates {
+        tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .none) }
+        tableUpdate.reloadRows.map { self.tableView.reloadRows(at: $0, with: .none) }
+      }
+    }.store(in: &subscriptions)
+    
+    viewModel.didEndEditingEmail.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updatesSections(&self.sections,
+                                                     didEndEditingEmailFor: $0)
+      self.tableView.performBatchUpdates {
+        tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .none) }
+        tableUpdate.reloadRows.map { self.tableView.reloadRows(at: $0, with: .none) }
+      }
     }.store(in: &subscriptions)
   }
   

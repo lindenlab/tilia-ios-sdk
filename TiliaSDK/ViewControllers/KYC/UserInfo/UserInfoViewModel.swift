@@ -17,8 +17,8 @@ protocol UserInfoViewModelInputProtocol {
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSectionIndex: Int?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
   func onNext(for section: UserInfoSectionBuilder.Section, at index: Int)
-  func editEmail()
-  func cancelEditEmail()
+  func startEditingEmail()
+  func endEditingEmail()
   func updateEmail()
   func upload()
   func complete(isFromCloseAction: Bool)
@@ -42,6 +42,8 @@ protocol UserInfoViewModelOutputProtocol {
   var successfulCompleting: PassthroughSubject<Void, Never> { get }
   var verifyEmail: PassthroughSubject<Void, Never> { get }
   var emailVerified: PassthroughSubject<String, Never> { get }
+  var didStartEditingEmail: PassthroughSubject<UserInfoModel, Never> { get }
+  var didEndEditingEmail: PassthroughSubject<UserInfoModel, Never> { get }
 }
 
 protocol UserInfoDataStore {
@@ -76,6 +78,8 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let successfulCompleting = PassthroughSubject<Void, Never>()
   let verifyEmail = PassthroughSubject<Void, Never>()
   let emailVerified = PassthroughSubject<String, Never>()
+  let didStartEditingEmail = PassthroughSubject<UserInfoModel, Never>()
+  let didEndEditingEmail = PassthroughSubject<UserInfoModel, Never>()
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
@@ -137,7 +141,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     
     switch field.type {
     case .email:
-      isFieldChanged = isFieldUpdated(&userInfoModel.email, with: text)
+      isFieldChanged = isFieldUpdated(&userInfoModel.needToVerifyEmail, with: text)
     case .countryOfResidance:
       let wasNil = userInfoModel.countryOfResidence == nil
       let wasUsResidence = userInfoModel.isUsResident
@@ -209,16 +213,16 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     }
   }
   
-  func editEmail() {
-    
+  func startEditingEmail() {
+    didStartEditingEmail.send(userInfoModel)
   }
   
-  func cancelEditEmail() {
-    
+  func endEditingEmail() {
+    didEndEditingEmail.send(userInfoModel)
   }
   
   func updateEmail() {
-    
+    verifyEmail.send()
   }
   
   func upload() {

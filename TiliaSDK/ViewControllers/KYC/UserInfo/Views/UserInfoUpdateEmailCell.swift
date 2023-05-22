@@ -61,6 +61,7 @@ private extension UserInfoUpdateEmailCell {
     let stackView = UIStackView(arrangedSubviews: [cancelButton, updateButton])
     stackView.spacing = 8
     stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.distribution = .fillEqually
     contentView.addSubview(stackView)
     
     cancelButton.addTarget(self, action: #selector(cancelButtonDidTap), for: .touchUpInside)
