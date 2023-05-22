@@ -547,6 +547,10 @@ struct UserInfoSectionBuilder {
     return [index]
   }
   
+  func updateSection(_ section: inout Section, isFilled: Bool) {
+    section.isFilled = isFilled
+  }
+  
 }
 
 // MARK: - Private Methods

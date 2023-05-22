@@ -13,6 +13,7 @@ typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text:
 typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, wasUsResidence: Bool)
 typealias UserInfoEmailVerified = (model: UserInfoModel, message: String)
 typealias UserInfoEditEmail = (model: UserInfoModel, index: Int)
+typealias UserInfoIsSectionFilled = (isFilled: Bool, index: Int)
 
 protocol UserInfoViewModelInputProtocol {
   func load()
@@ -20,7 +21,7 @@ protocol UserInfoViewModelInputProtocol {
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
   func onNext(for section: UserInfoSectionBuilder.Section, at index: Int)
   func startEditingEmail(at index: Int)
-  func cancelEditingEmail(at index: Int)
+  func cancelEditingEmail(for section: UserInfoSectionBuilder.Section, at index: Int)
   func updateEmail(at index: Int)
   func upload()
   func complete(isFromCloseAction: Bool)
@@ -46,6 +47,7 @@ protocol UserInfoViewModelOutputProtocol {
   var emailVerified: PassthroughSubject<UserInfoEmailVerified, Never> { get }
   var didStartEditingEmail: PassthroughSubject<UserInfoEditEmail, Never> { get }
   var didEndEditingEmail: PassthroughSubject<UserInfoEditEmail, Never> { get }
+  var isSectionFilled: PassthroughSubject<UserInfoIsSectionFilled, Never> { get }
 }
 
 protocol UserInfoDataStore {
@@ -82,6 +84,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let emailVerified = PassthroughSubject<UserInfoEmailVerified, Never>()
   let didStartEditingEmail = PassthroughSubject<UserInfoEditEmail, Never>()
   let didEndEditingEmail = PassthroughSubject<UserInfoEditEmail, Never>()
+  let isSectionFilled = PassthroughSubject<UserInfoIsSectionFilled, Never>()
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
@@ -220,8 +223,10 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     didStartEditingEmail.send((userInfoModel, index))
   }
   
-  func cancelEditingEmail(at index: Int) {
+  func cancelEditingEmail(for section: UserInfoSectionBuilder.Section, at index: Int) {
     userInfoModel.needToVerifyEmail = nil
+    let isFilled = validator(for: section.type)?.isFilled(for: userInfoModel) == true
+    isSectionFilled.send((isFilled, index))
     didEndEditingEmail.send((userInfoModel, index))
   }
   

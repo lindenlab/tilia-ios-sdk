@@ -141,7 +141,8 @@ extension UserInfoViewController: UserInfoUpdateEmailCellDelegate {
   
   func userInfoUpdateEmailCellCancelButtonDidTap(_ cell: UserInfoUpdateEmailCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
-    viewModel.cancelEditingEmail(at: indexPath.section)
+    viewModel.cancelEditingEmail(for: sections[indexPath.section],
+                                 at: indexPath.section)
   }
   
 }
@@ -384,6 +385,12 @@ private extension UserInfoViewController {
         tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .none) }
         tableUpdate.reloadRows.map { self.tableView.reloadRows(at: $0, with: .none) }
       }
+    }.store(in: &subscriptions)
+    
+    viewModel.isSectionFilled.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.sections[$0.index],
+                                 isFilled: $0.isFilled)
     }.store(in: &subscriptions)
   }
   
