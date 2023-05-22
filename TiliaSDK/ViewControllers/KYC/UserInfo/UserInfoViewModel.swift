@@ -11,15 +11,17 @@ import Foundation
 typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool, nextIndex: Int?)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
 typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, wasUsResidence: Bool)
+typealias UserInfoEmailVerified = (model: UserInfoModel, message: String)
+typealias UserInfoEditEmail = (model: UserInfoModel, index: Int)
 
 protocol UserInfoViewModelInputProtocol {
   func load()
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSectionIndex: Int?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
   func onNext(for section: UserInfoSectionBuilder.Section, at index: Int)
-  func startEditingEmail()
-  func endEditingEmail()
-  func updateEmail()
+  func startEditingEmail(at index: Int)
+  func cancelEditingEmail(at index: Int)
+  func updateEmail(at index: Int)
   func upload()
   func complete(isFromCloseAction: Bool)
 }
@@ -41,9 +43,9 @@ protocol UserInfoViewModelOutputProtocol {
   var failedCompleting: PassthroughSubject<Void, Never> { get }
   var successfulCompleting: PassthroughSubject<Void, Never> { get }
   var verifyEmail: PassthroughSubject<Void, Never> { get }
-  var emailVerified: PassthroughSubject<String, Never> { get }
-  var didStartEditingEmail: PassthroughSubject<UserInfoModel, Never> { get }
-  var didEndEditingEmail: PassthroughSubject<UserInfoModel, Never> { get }
+  var emailVerified: PassthroughSubject<UserInfoEmailVerified, Never> { get }
+  var didStartEditingEmail: PassthroughSubject<UserInfoEditEmail, Never> { get }
+  var didEndEditingEmail: PassthroughSubject<UserInfoEditEmail, Never> { get }
 }
 
 protocol UserInfoDataStore {
@@ -77,9 +79,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let failedCompleting = PassthroughSubject<Void, Never>()
   let successfulCompleting = PassthroughSubject<Void, Never>()
   let verifyEmail = PassthroughSubject<Void, Never>()
-  let emailVerified = PassthroughSubject<String, Never>()
-  let didStartEditingEmail = PassthroughSubject<UserInfoModel, Never>()
-  let didEndEditingEmail = PassthroughSubject<UserInfoModel, Never>()
+  let emailVerified = PassthroughSubject<UserInfoEmailVerified, Never>()
+  let didStartEditingEmail = PassthroughSubject<UserInfoEditEmail, Never>()
+  let didEndEditingEmail = PassthroughSubject<UserInfoEditEmail, Never>()
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
@@ -213,16 +215,22 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     }
   }
   
-  func startEditingEmail() {
-    didStartEditingEmail.send(userInfoModel)
+  func startEditingEmail(at index: Int) {
+    userInfoModel.needToVerifyEmail = userInfoModel.email
+    didStartEditingEmail.send((userInfoModel, index))
   }
   
-  func endEditingEmail() {
-    didEndEditingEmail.send(userInfoModel)
+  func cancelEditingEmail(at index: Int) {
+    userInfoModel.needToVerifyEmail = nil
+    didEndEditingEmail.send((userInfoModel, index))
   }
   
-  func updateEmail() {
-    verifyEmail.send()
+  func updateEmail(at index: Int) {
+    if userInfoModel.email == userInfoModel.needToVerifyEmail {
+      didEndEditingEmail.send((userInfoModel, index))
+    } else {
+      verifyEmail.send()
+    }
   }
   
   func upload() {
@@ -347,9 +355,8 @@ private extension UserInfoViewModel {
       userInfoModel.isEmailUpdated = true
     }
     userInfoModel.email = userInfoModel.needToVerifyEmail
-    // TODO: - Here we need to reload cell after successful verify
     userInfoModel.needToVerifyEmail = nil
-    emailVerified.send(message)
+    emailVerified.send((userInfoModel, message))
   }
   
 }

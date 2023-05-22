@@ -108,7 +108,8 @@ extension UserInfoViewController: TextFieldsCellDelegate {
   }
   
   func textFieldsCell(_ cell: TextFieldsCell, didEditAt index: Int) {
-    viewModel.startEditingEmail()
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    viewModel.startEditingEmail(at: indexPath.section)
   }
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
@@ -134,11 +135,13 @@ extension UserInfoViewController: UserInfoNextButtonCellDelegate {
 extension UserInfoViewController: UserInfoUpdateEmailCellDelegate {
   
   func userInfoUpdateEmailCellUpdateButtonDidTap(_ cell: UserInfoUpdateEmailCell) {
-    viewModel.updateEmail()
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    viewModel.updateEmail(at: indexPath.section)
   }
   
   func userInfoUpdateEmailCellCancelButtonDidTap(_ cell: UserInfoUpdateEmailCell) {
-    viewModel.endEditingEmail()
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    viewModel.cancelEditingEmail(at: indexPath.section)
   }
   
 }
@@ -262,9 +265,7 @@ private extension UserInfoViewController {
                                                     wasUsResidence: $0.wasUsResidence)
       self.builder.updateTableFooter(for: self.sections,
                                      in: self.tableView)
-      self.tableView.performBatchUpdates {
-        tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
-      }
+      tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
     }.store(in: &subscriptions)
     
     viewModel.coutryOfResidenceDidSelect.sink { [weak self] in
@@ -351,15 +352,23 @@ private extension UserInfoViewController {
     }.store(in: &subscriptions)
     
     viewModel.emailVerified.sink { [weak self] in
-      self?.router.showToast(title: L.success,
-                             message: $0,
-                             isSuccess: true)
+      guard let self = self else { return }
+      let tableUpdate = self.builder.reloadEmailSection(for: &self.sections,
+                                                        in: self.tableView,
+                                                        with: $0.model)
+      UIView.performWithoutAnimation {
+        tableUpdate.map { self.tableView.reloadSections($0, with: .none) }
+      }
+      self.router.showToast(title: L.success,
+                            message: $0.message,
+                            isSuccess: true)
     }.store(in: &subscriptions)
     
     viewModel.didStartEditingEmail.sink { [weak self] in
       guard let self = self else { return }
-      let tableUpdate = self.builder.updatesSections(&self.sections,
-                                                     didStartEditingEmailFor: $0)
+      let tableUpdate = self.builder.updatesSection(&self.sections[$0.index],
+                                                    at: $0.index,
+                                                    didStartEditingEmailFor: $0.model)
       self.tableView.performBatchUpdates {
         tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .none) }
         tableUpdate.reloadRows.map { self.tableView.reloadRows(at: $0, with: .none) }
@@ -368,8 +377,9 @@ private extension UserInfoViewController {
     
     viewModel.didEndEditingEmail.sink { [weak self] in
       guard let self = self else { return }
-      let tableUpdate = self.builder.updatesSections(&self.sections,
-                                                     didEndEditingEmailFor: $0)
+      let tableUpdate = self.builder.updatesSection(&self.sections[$0.index],
+                                                    at: $0.index,
+                                                    didEndEditingEmailFor: $0.model)
       self.tableView.performBatchUpdates {
         tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .none) }
         tableUpdate.reloadRows.map { self.tableView.reloadRows(at: $0, with: .none) }

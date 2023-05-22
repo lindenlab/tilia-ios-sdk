@@ -498,13 +498,13 @@ struct UserInfoSectionBuilder {
     tableView.updateTableHeaderHeightIfNeeded()
   }
   
-  func updatesSections(_ sections: inout [Section],
-                       didStartEditingEmailFor model: UserInfoModel) -> TableUpdate {
+  func updatesSection(_ section: inout Section,
+                      at index: Int,
+                      didStartEditingEmailFor model: UserInfoModel) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
-    guard let index = sections.firstIndex(where: { $0.type == .email }) else { return tableUpdate }
-    tableUpdate.insertRows = [IndexPath(row: sections[index].items.count, section: index)]
-    sections[index].items.append(Section.Item(mode: .updateEmailButtons))
-    updateEmailSectionTextField(&sections[index],
+    tableUpdate.insertRows = [IndexPath(row: section.items.count, section: index)]
+    section.items.append(Section.Item(mode: .updateEmailButtons))
+    updateEmailSectionTextField(&section,
                                 with: model,
                                 isEditing: true).map {
       tableUpdate.reloadRows = [IndexPath(row: $0, section: index)]
@@ -512,26 +512,39 @@ struct UserInfoSectionBuilder {
     return tableUpdate
   }
   
-  func updatesSections(_ sections: inout [Section],
-                       didEndEditingEmailFor model: UserInfoModel) -> TableUpdate {
+  func updatesSection(_ section: inout Section,
+                      at index: Int,
+                      didEndEditingEmailFor model: UserInfoModel) -> TableUpdate {
     var tableUpdate: TableUpdate = (nil, nil, nil)
-    guard let index = sections.firstIndex(where: { $0.type == .email }) else { return tableUpdate }
-    sections[index].items.firstIndex {
-      if case .updateEmailButtons = $0.mode {
-        return true
-      } else {
-        return false
+    updateEmailSectionTextField(&section,
+                                with: model,
+                                isEditing: false).map {
+      tableUpdate.reloadRows = [IndexPath(row: $0, section: index)]
+    }
+    section.items.firstIndex {
+      switch $0.mode {
+      case .nextButton, .updateEmailButtons: return true
+      default: return false
       }
     }.map { buttonsIndex in
-      sections[index].items.remove(at: buttonsIndex)
+      section.items.remove(at: buttonsIndex)
       tableUpdate.deleteRows = [IndexPath(row: buttonsIndex, section: index)]
-      updateEmailSectionTextField(&sections[index],
-                                  with: model,
-                                  isEditing: false).map {
-        tableUpdate.reloadRows = [IndexPath(row: $0, section: index)]
-      }
     }
     return tableUpdate
+  }
+  
+  func reloadEmailSection(for sections: inout [Section],
+                          in tableView: UITableView,
+                          with model: UserInfoModel) -> IndexSet? {
+    guard let index = sections.firstIndex(where: { $0.type == .email }) else { return nil }
+    if let locationIndex = sections.firstIndex(where: { $0.type == .location }), sections[locationIndex].mode == .disabled {
+      updateSection(&sections[locationIndex],
+                    in: tableView,
+                    at: locationIndex,
+                    mode: .normal)
+    }
+    sections[index].items = itemsForEmailSection(with: model)
+    return [index]
   }
   
 }
