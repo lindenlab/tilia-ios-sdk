@@ -33,18 +33,17 @@ final class PaymentSelectionFlowTestViewController: TestViewController {
   
   override func buttonTapped() {
     manager.setToken(accessTokenTextField.text ?? "")
-//    manager.presentCheckoutViewController(on: self,
-//                                          withInvoiceId: invoiceIdTextField.text ?? "",
-//                                          animated: true) {
-//      self.label.attributedText = Self.attributedString(text: "onUpdate callback",
-//                                                        message: $0.description)
-//    } onComplete: {
-//      self.onCompleteLabel.attributedText = Self.attributedString(text: "onComplete callback",
-//                                                                  message: $0.description)
-//    } onError: {
-//      self.onErrorLabel.attributedText = Self.attributedString(text: "onError callback",
-//                                                               message: $0.description)
-//    }
+    manager.presentPaymentSelectionViewController(on: self,
+                                                  animated: true) {
+      self.label.attributedText = Self.attributedString(text: "onUpdate callback",
+                                                        message: $0.description)
+    } onComplete: {
+      self.onCompleteLabel.attributedText = Self.attributedString(text: "onComplete callback",
+                                                                  message: $0.description)
+    } onError: {
+      self.onErrorLabel.attributedText = Self.attributedString(text: "onError callback",
+                                                               message: $0.description)
+    }
   }
   
 }

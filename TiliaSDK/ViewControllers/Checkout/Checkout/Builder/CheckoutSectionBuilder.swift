@@ -9,8 +9,8 @@ import UIKit
 
 struct CheckoutSectionBuilder {
   
-  typealias CellDelegate = CheckoutPaymentMethodSwitchCellDelegate & CheckoutPaymentMethodRadioCellDelegate
-  typealias FooterDelegate = CheckoutPaymentFooterViewDelegate & TextViewWithLinkDelegate
+  typealias CellDelegate = PaymentMethodSwitchCellDelegate & PaymentMethodRadioCellDelegate
+  typealias FooterDelegate = PaymentFooterViewDelegate & TextViewWithLinkDelegate
   
   enum Section {
     
@@ -85,7 +85,7 @@ struct CheckoutSectionBuilder {
       let item = model.items[indexPath.row]
       let cell: UITableViewCell
       if item.isSwitch {
-        let newCell = tableView.dequeue(CheckoutPaymentMethodSwitchCell.self, for: indexPath)
+        let newCell = tableView.dequeue(PaymentMethodSwitchCell.self, for: indexPath)
         newCell.configure(image: item.icon,
                           title: item.title,
                           delegate: delegate)
@@ -93,7 +93,7 @@ struct CheckoutSectionBuilder {
         newCell.configure(isEnabled: item.isEnabled)
         cell = newCell
       } else {
-        let newCell = tableView.dequeue(CheckoutPaymentMethodRadioCell.self, for: indexPath)
+        let newCell = tableView.dequeue(PaymentMethodRadioCell.self, for: indexPath)
         newCell.configure(title: item.title,
                           isDividerHidden: item.isDividerHidden,
                           icon: item.icon,
@@ -146,7 +146,7 @@ struct CheckoutSectionBuilder {
       view.configure(isLoading: isLoading)
       return view
     case let .payment(model):
-      let view = tableView.dequeue(CheckoutPaymentFooterView.self)
+      let view = tableView.dequeue(PaymentFooterView.self)
       view.configure(payButtonTitle: model.isEmpty ? nil : L.payNow,
                      closeButtonTitle: L.cancel,
                      isCreditCardButtonHidden: model.isCreditCardButtonHidden,
@@ -155,7 +155,7 @@ struct CheckoutSectionBuilder {
       view.configure(isPayButtonEnabled: model.isPayButtonEnabled)
       return view
     case .successfulPayment:
-      let view = tableView.dequeue(CheckoutPaymentFooterView.self)
+      let view = tableView.dequeue(PaymentFooterView.self)
       view.configure(payButtonTitle: nil,
                      closeButtonTitle: L.done,
                      isCreditCardButtonHidden: true,
@@ -221,7 +221,7 @@ struct CheckoutSectionBuilder {
     case var .payment(model):
       model.items[index].isSelected = isSelected
       let indexPath = IndexPath(row: index, section: 1)
-      if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodRadioCell, !isSelected {
+      if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell, !isSelected {
         cell.configure(isSelected: isSelected)
       }
       section[1] = .payment(model)
@@ -238,7 +238,7 @@ struct CheckoutSectionBuilder {
       for (index, value) in model.items.enumerated() where !value.isSwitch {
         model.items[index].isEnabled = isEnabled
         let indexPath = IndexPath(row: index, section: 1)
-        if let cell = tableView.cellForRow(at: indexPath) as? CheckoutPaymentMethodRadioCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell {
           cell.configure(isEnabled: isEnabled)
         }
       }
@@ -254,7 +254,7 @@ struct CheckoutSectionBuilder {
     switch sections[1] {
     case var .payment(model):
       model.isPayButtonEnabled = isPayButtonEnabled
-      if let footer = tableView.footerView(forSection: 1) as? CheckoutPaymentFooterView {
+      if let footer = tableView.footerView(forSection: 1) as? PaymentFooterView {
         footer.configure(isPayButtonEnabled: isPayButtonEnabled)
       }
       sections[1] = .payment(model)

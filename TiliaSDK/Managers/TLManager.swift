@@ -261,6 +261,33 @@ public extension TLManager {
     viewController.present(transactionDetailsViewController, animated: animated)
   }
   
+  /// Show Payment Selection flow, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting Payment Selection flow
+  ///   - animated: animated flag
+  ///   - onUpdate: completion that returns payment methods info - id and amount
+  ///   - onComplete: completion that returns Payment Selection flow state
+  ///   - onError: completion that returns Payment Selection flow error
+  func presentPaymentSelectionViewController(on viewController: UIViewController,
+                                             animated: Bool,
+                                             onUpdate: ((TLUpdateCallback) -> Void)? = nil,
+                                             onComplete: ((TLCompleteCallback) -> Void)? = nil,
+                                             onError: ((TLErrorCallback) -> Void)? = nil) {
+    guard !isTokenEmpty else {
+      let errorCallback = TLErrorCallback(event: TLEvent(flow: .paymentSelection, action: .missingRequiredData),
+                                          error: L.errorPaymentSelectionTitle,
+                                          message: L.missedRequiredData)
+      onError?(errorCallback)
+      return
+    }
+    
+    let paymentSelectionViewController = PaymentSelectionViewController(manager: networkManager,
+                                                                        onUpdate: onUpdate,
+                                                                        onComplete: onComplete,
+                                                                        onError: onError)
+    viewController.present(paymentSelectionViewController, animated: animated)
+  }
+  
 }
 
 // MARK: - Private Methods

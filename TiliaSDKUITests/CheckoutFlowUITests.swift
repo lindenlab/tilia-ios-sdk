@@ -49,7 +49,7 @@ final class CheckoutFlowUITests: XCTestCase {
     XCTAssert(acceptButton.waitForExistence(timeout: 2))
     acceptButton.tap()
     
-    let choosePaymentMethodButton = app.tables.cells["checkoutPaymentMethodCell"].buttons["choosePaymentMethodButton"].firstMatch
+    let choosePaymentMethodButton = app.tables.cells["paymentMethodCell"].buttons["choosePaymentMethodButton"].firstMatch
     XCTAssert(choosePaymentMethodButton.waitForExistence(timeout: 2))
     choosePaymentMethodButton.tap()
     
@@ -200,7 +200,7 @@ final class CheckoutFlowUITests: XCTestCase {
     XCTAssert(closeAddCreditCardFlowButton.waitForExistence(timeout: 2))
     closeAddCreditCardFlowButton.tap()
       
-    let choosePaymentMethodButton = app.tables.cells["checkoutPaymentMethodCell"].buttons["choosePaymentMethodButton"].firstMatch
+    let choosePaymentMethodButton = app.tables.cells["paymentMethodCell"].buttons["choosePaymentMethodButton"].firstMatch
     XCTAssert(choosePaymentMethodButton.waitForExistence(timeout: 2))
     choosePaymentMethodButton.tap()
 

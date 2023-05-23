@@ -86,19 +86,19 @@ final class CheckoutViewController: BaseTableViewController {
   
 }
 
-// MARK: - CheckoutPaymentFooterViewDelegate
+// MARK: - PaymentFooterViewDelegate
 
-extension CheckoutViewController: CheckoutPaymentFooterViewDelegate {
+extension CheckoutViewController: PaymentFooterViewDelegate {
   
-  func checkoutPaymentFooterViewPayButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+  func paymentFooterViewPayButtonDidTap(_ footerView: PaymentFooterView) {
     viewModel.payInvoice()
   }
   
-  func checkoutPaymentFooterViewAddCreditCardButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+  func paymentFooterViewAddCreditCardButtonDidTap(_ footerView: PaymentFooterView) {
     router.routeToAddCreditCardView()
   }
   
-  func checkoutPaymentFooterViewCloseButtonDidTap(_ footerView: CheckoutPaymentFooterView) {
+  func paymentFooterViewCloseButtonDidTap(_ footerView: PaymentFooterView) {
     dismiss(isFromCloseAction: false)
   }
   
@@ -114,22 +114,22 @@ extension CheckoutViewController: TextViewWithLinkDelegate {
   
 }
 
-// MARK: - CheckoutPaymentMethodSwitchCellDelegate
+// MARK: - PaymentMethodSwitchCellDelegate
 
-extension CheckoutViewController: CheckoutPaymentMethodSwitchCellDelegate {
+extension CheckoutViewController: PaymentMethodSwitchCellDelegate {
   
-  func checkoutPaymentMethodSwitchCell(_ cell: CheckoutPaymentMethodSwitchCell, didSelect isOn: Bool) {
+  func paymentMethodSwitchCell(_ cell: PaymentMethodSwitchCell, didSelect isOn: Bool) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
     viewModel.selectPaymentMethod(at: indexPath.row, isSelected: isOn)
   }
   
 }
 
-// MARK: - CheckoutPaymentMethodRadioCellDelegate
+// MARK: - PaymentMethodRadioCellDelegate
 
-extension CheckoutViewController: CheckoutPaymentMethodRadioCellDelegate {
+extension CheckoutViewController: PaymentMethodRadioCellDelegate {
   
-  func checkoutPaymentMethodRadioCellDidSelect(_ cell: CheckoutPaymentMethodRadioCell) {
+  func paymentMethodRadioCellDidSelect(_ cell: PaymentMethodRadioCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
     viewModel.selectPaymentMethod(at: indexPath.row)
   }
@@ -144,9 +144,9 @@ private extension CheckoutViewController {
     tableView.register(TitleInfoHeaderFooterView.self)
     tableView.register(CheckoutPayloadSummaryFooterView.self)
     tableView.register(CheckoutPayloadCell.self)
-    tableView.register(CheckoutPaymentFooterView.self)
-    tableView.register(CheckoutPaymentMethodRadioCell.self)
-    tableView.register(CheckoutPaymentMethodSwitchCell.self)
+    tableView.register(PaymentFooterView.self)
+    tableView.register(PaymentMethodRadioCell.self)
+    tableView.register(PaymentMethodSwitchCell.self)
     tableView.register(ToastViewCell.self)
   }
   
@@ -183,7 +183,7 @@ private extension CheckoutViewController {
       }
     }.store(in: &subscriptions)
     
-    viewModel.dismiss.sink { [weak self] _ in
+    viewModel.dismiss.sink { [weak self] in
       self?.dismiss(isFromCloseAction: false)
     }.store(in: &subscriptions)
     

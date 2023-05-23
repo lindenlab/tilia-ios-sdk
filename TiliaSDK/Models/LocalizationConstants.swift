@@ -196,6 +196,8 @@ enum L {
   static let emailAddress = "emailAddress".localized
   static let needToCollectEmailTitle = "needToCollectEmailTitle".localized
   static let email = "email".localized
+  static let errorPaymentSelectionTitle = "errorPaymentSelectionTitle".localized
+  static let errorPaymentSelectionMessage = "errorPaymentSelectionMessage".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)
