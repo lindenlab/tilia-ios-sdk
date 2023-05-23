@@ -564,8 +564,8 @@ private extension UserInfoSectionBuilder {
   
   func defaultMode(for type: Section.SectionType, with model: UserInfoModel) -> UserInfoHeaderView.Mode {
     switch type {
-    case .email: return .expanded
-    case .location where model.isEmailVerified: return .normal
+    case .email: return model.isEmailVerified ? .passed : .expanded
+    case .location where model.isEmailVerified: return .expanded
     default: return .disabled
     }
   }
@@ -579,7 +579,7 @@ private extension UserInfoSectionBuilder {
   
   func defaultItems(for type: Section.SectionType, with model: UserInfoModel) -> [Section.Item] {
     switch type {
-    case .email: return itemsForEmailSection(with: model)
+    case .email: return model.isEmailVerified ? [] : itemsForEmailSection(with: model)
     case .location where model.isEmailVerified: return itemsForLocationSection(with: model)
     default: return []
     }
