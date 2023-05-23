@@ -24,7 +24,7 @@ protocol PaymentSelectionViewModelOutputProtocol {
 protocol PaymentSelectionDataStore {
   var manager: NetworkManager { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
-  var onReload: (Bool) -> Void { get }
+  var onReload: () -> Void { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -48,8 +48,7 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
     }
     self.onComplete?($0)
   }
-  private(set) lazy var onReload: (Bool) -> Void = { [weak self] in
-    guard $0 else { return }
+  private(set) lazy var onReload: () -> Void = { [weak self] in
     self?.getPaymentMethods()
   }
   let onError: ((TLErrorCallback) -> Void)?
@@ -86,9 +85,8 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   }
   
   func complete(isFromCloseAction: Bool) {
-    // MARK: - TODO: - Fix me
 //    let isCompleted = successfulPayment.value
-//    let event = TLEvent(flow: .checkout,
+//    let event = TLEvent(flow: .paymentSelection,
 //                        action: isFromCloseAction ? .closedByUser : isCompleted ? .completed : .cancelledByUser)
 //    let model = TLCompleteCallback(event: event,
 //                                   state: isFromCloseAction ? .error : isCompleted ? .completed : .cancelled)

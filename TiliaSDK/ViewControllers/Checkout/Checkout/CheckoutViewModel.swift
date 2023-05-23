@@ -37,7 +37,7 @@ protocol CheckoutViewModelOutputProtocol {
 protocol CheckoutDataStore {
   var manager: NetworkManager { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
-  var onReload: (Bool) -> Void { get }
+  var onReload: () -> Void { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -69,8 +69,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     }
     self.onComplete?($0)
   }
-  private(set) lazy var onReload: (Bool) -> Void = { [weak self] in
-    guard $0 else { return }
+  private(set) lazy var onReload: () -> Void = { [weak self] in
     self?.getUserBalance()
   }
   let onError: ((TLErrorCallback) -> Void)?
