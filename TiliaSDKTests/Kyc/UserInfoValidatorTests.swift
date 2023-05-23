@@ -10,6 +10,19 @@ import XCTest
 
 final class UserInfoValidatorTests: XCTestCase {
   
+  func testSuccessUserInfoEmailValidator() {
+    var model = UserInfoModel()
+    model.email = "test@gmail.com"
+    let isFilled = UserInfoEmailValidator().isFilled(for: model)
+    XCTAssertTrue(isFilled)
+  }
+  
+  func testFailureUserInfoEmailValidator() {
+    var model = UserInfoModel()
+    let isFilled = UserInfoEmailValidator().isFilled(for: model)
+    XCTAssertFalse(isFilled)
+  }
+  
   func testSuccessUserInfoLocationValidator() {
     var model = UserInfoModel()
     model.countryOfResidence = .usa
