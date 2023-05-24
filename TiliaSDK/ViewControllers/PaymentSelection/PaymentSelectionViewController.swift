@@ -169,6 +169,36 @@ private extension PaymentSelectionViewController {
     viewModel.dismiss.sink { [weak self] in
       self?.dismiss(isFromCloseAction: false)
     }.store(in: &subscriptions)
+    
+    viewModel.paymentButtonIsEnabled.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSections(&self.sections,
+                                  in: self.tableView,
+                                  isPayButtonEnabled: $0)
+    }.store(in: &subscriptions)
+    
+    viewModel.deselectIndex.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSections(&self.sections,
+                                  in: self.tableView,
+                                  at: $0,
+                                  isSelected: false)
+    }.store(in: &subscriptions)
+    
+    viewModel.selectIndex.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSections(&self.sections,
+                                  in: self.tableView,
+                                  at: $0,
+                                  isSelected: true)
+    }.store(in: &subscriptions)
+    
+    viewModel.paymentMethodsAreEnabled.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSections(&self.sections,
+                                  in: self.tableView,
+                                  isEnabled: $0)
+    }.store(in: &subscriptions)
   }
   
   func dismiss(isFromCloseAction: Bool) {

@@ -215,27 +215,27 @@ struct CheckoutSectionBuilder {
     return [1]
   }
   
-  func updatePaymentSection(for section: inout [Section],
+  func updatePaymentSection(for sections: inout [Section],
                             in tableView: UITableView,
                             at index: Int,
                             isSelected: Bool) {
-    switch section[1] {
+    switch sections[1] {
     case var .payment(model):
       model.items[index].isSelected = isSelected
       let indexPath = IndexPath(row: index, section: 1)
       if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell, !isSelected {
         cell.configure(isSelected: isSelected)
       }
-      section[1] = .payment(model)
+      sections[1] = .payment(model)
     default:
       break
     }
   }
   
-  func updatePaymentSection(for section: inout [Section],
+  func updatePaymentSection(for sections: inout [Section],
                             in tableView: UITableView,
                             isEnabled: Bool) {
-    switch section[1] {
+    switch sections[1] {
     case var .payment(model):
       for (index, value) in model.items.enumerated() where !value.isSwitch {
         model.items[index].isEnabled = isEnabled
@@ -244,7 +244,7 @@ struct CheckoutSectionBuilder {
           cell.configure(isEnabled: isEnabled)
         }
       }
-      section[1] = .payment(model)
+      sections[1] = .payment(model)
     default:
       break
     }

@@ -101,4 +101,37 @@ struct PaymentSelectionSectionBuilder {
                   isPayButtonEnabled: false)]
   }
   
+  
+  func updateSections(_ sections: inout [Section],
+                      in tableView: UITableView,
+                      isPayButtonEnabled: Bool) {
+    sections[0].isPayButtonEnabled = isPayButtonEnabled
+    if let footer = tableView.footerView(forSection: 0) as? PaymentFooterView {
+      footer.configure(isPayButtonEnabled: isPayButtonEnabled)
+    }
+  }
+  
+  func updateSections(_ sections: inout [Section],
+                      in tableView: UITableView,
+                      at index: Int,
+                      isSelected: Bool) {
+    sections[0].items[index].isSelected = isSelected
+    let indexPath = IndexPath(row: index, section: 0)
+    if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell, !isSelected {
+      cell.configure(isSelected: isSelected)
+    }
+  }
+  
+  func updateSections(_ sections: inout [Section],
+                      in tableView: UITableView,
+                      isEnabled: Bool) {
+    for (index, value) in sections[0].items.enumerated() where !value.isSwitch {
+      sections[0].items[index].isEnabled = isEnabled
+      let indexPath = IndexPath(row: index, section: 0)
+      if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell {
+        cell.configure(isEnabled: isEnabled)
+      }
+    }
+  }
+  
 }
