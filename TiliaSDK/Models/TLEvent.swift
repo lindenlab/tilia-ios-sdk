@@ -29,7 +29,7 @@ public struct TLEvent {
     case transactionHistory = "txnhistory"
     
     /// Payment Selection flow
-    case paymentSelection
+    case paymentSelection = "payment-selection"
     
   }
   

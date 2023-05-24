@@ -85,7 +85,7 @@ final class PaymentSelectionViewController: BaseTableViewController {
 extension PaymentSelectionViewController: PaymentFooterViewDelegate {
   
   func paymentFooterViewPayButtonDidTap(_ footerView: PaymentFooterView) {
-//    viewModel.payInvoice()
+    viewModel.useSelectedPaymentMethod()
   }
   
   func paymentFooterViewAddCreditCardButtonDidTap(_ footerView: PaymentFooterView) {

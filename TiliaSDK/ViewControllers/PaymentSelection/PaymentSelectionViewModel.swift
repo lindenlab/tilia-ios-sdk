@@ -14,6 +14,7 @@ protocol PaymentSelectionViewModelInputProtocol {
   func checkIsTosRequired()
   func selectPaymentMethod(at index: Int, isSelected: Bool)
   func selectPaymentMethod(at index: Int)
+  func useSelectedPaymentMethod()
   func complete(isFromCloseAction: Bool)
 }
 
@@ -69,6 +70,7 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private let onUpdate: ((TLUpdateCallback) -> Void)?
   private var paymentMethods: [PaymentMethodModel] = []
+  private var isPaymentMethodUpdated = false
   private var selectedWalletIndex: Int? {
     didSet {
       oldValue.map { deselectIndex.send($0) }
@@ -122,13 +124,16 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
     selectedPaymentMethodIndex = index
   }
   
+  func useSelectedPaymentMethod() {
+    
+  }
+  
   func complete(isFromCloseAction: Bool) {
-//    let isCompleted = successfulPayment.value
-//    let event = TLEvent(flow: .paymentSelection,
-//                        action: isFromCloseAction ? .closedByUser : isCompleted ? .completed : .cancelledByUser)
-//    let model = TLCompleteCallback(event: event,
-//                                   state: isFromCloseAction ? .error : isCompleted ? .completed : .cancelled)
-//    onComplete?(model)
+    let event = TLEvent(flow: .paymentSelection,
+                        action: isFromCloseAction ? .closedByUser : isPaymentMethodUpdated ? .completed : .cancelledByUser)
+    let model = TLCompleteCallback(event: event,
+                                   state: isFromCloseAction ? .error : isPaymentMethodUpdated ? .completed : .cancelled)
+    onComplete?(model)
   }
   
 }
@@ -145,7 +150,7 @@ private extension PaymentSelectionViewModel {
       switch result {
       case .success(let model):
         var walletBalance: BalanceModel?
-        let paymentMethods = model.paymentMethods.filter {
+        self.paymentMethods = model.paymentMethods.filter {
           if $0.type.isWallet {
             if let balance = model.balances[self.currencyCode] {
               walletBalance = balance.spendable
@@ -157,8 +162,7 @@ private extension PaymentSelectionViewModel {
             return true
           }
         }
-        self.paymentMethods = paymentMethods
-        self.content.send((self.currencyCode, walletBalance, paymentMethods))
+        self.content.send((self.currencyCode, walletBalance, self.paymentMethods))
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
