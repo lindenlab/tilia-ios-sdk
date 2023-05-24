@@ -264,18 +264,20 @@ public extension TLManager {
   /// Show Payment Selection flow, user access token is required
   /// - Parameters:
   ///   - viewController: view controller that is used for presenting Payment Selection flow
-  ///   - currencyCode: currency code, for example USD
+  ///   - amount: amount of transaction details, for example 1000, is not required
+  ///   - currencyCode: currency code, for example USD, is not required
   ///   - animated: animated flag
   ///   - onUpdate: completion that returns payment methods info - id and amount
   ///   - onComplete: completion that returns Payment Selection flow state
   ///   - onError: completion that returns Payment Selection flow error
   func presentPaymentSelectionViewController(on viewController: UIViewController,
-                                             withCurrencyCode currencyCode: String,
+                                             withAmount amount: Double?,
+                                             andCurrencyCode currencyCode: String?,
                                              animated: Bool,
                                              onUpdate: ((TLUpdateCallback) -> Void)? = nil,
                                              onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                              onError: ((TLErrorCallback) -> Void)? = nil) {
-    guard !isTokenEmpty, !currencyCode.isEmpty else {
+    guard !isTokenEmpty else {
       let errorCallback = TLErrorCallback(event: TLEvent(flow: .paymentSelection, action: .missingRequiredData),
                                           error: L.errorPaymentSelectionTitle,
                                           message: L.missedRequiredData)
@@ -284,6 +286,7 @@ public extension TLManager {
     }
     
     let paymentSelectionViewController = PaymentSelectionViewController(manager: networkManager,
+                                                                        amount: amount,
                                                                         currencyCode: currencyCode,
                                                                         onUpdate: onUpdate,
                                                                         onComplete: onComplete,

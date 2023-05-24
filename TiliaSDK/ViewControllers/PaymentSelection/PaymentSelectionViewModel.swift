@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-typealias PaymentSelectionContent = (currencyCode: String, walletBalance: BalanceModel?, paymentMethods: [PaymentMethodModel])
+typealias PaymentSelectionContent = (walletBalance: BalanceModel?, amount: Double?, paymentMethods: [PaymentMethodModel])
 
 protocol PaymentSelectionViewModelInputProtocol {
   func checkIsTosRequired()
@@ -66,11 +66,13 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   }
   let onError: ((TLErrorCallback) -> Void)?
   
-  private let currencyCode: String
+  private let amount: Double?
+  private let currencyCode: String?
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private let onUpdate: ((TLUpdateCallback) -> Void)?
+  private var walletBalance: BalanceModel?
   private var paymentMethods: [PaymentMethodModel] = []
-  private var isPaymentMethodUpdated = false
+  private var isPaymentMethodsUpdated = false
   private var selectedWalletIndex: Int? {
     didSet {
       oldValue.map { deselectIndex.send($0) }
@@ -85,12 +87,14 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   }
   
   init(manager: NetworkManager,
-       currencyCode: String,
+       amount: Double?,
+       currencyCode: String?,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
-    self.currencyCode = currencyCode
+    self.amount = amount?.toNilIfEmpty()
+    self.currencyCode = currencyCode?.toNilIfEmpty()
     self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
@@ -117,22 +121,45 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   func selectPaymentMethod(at index: Int, isSelected: Bool) {
     selectedWalletIndex = isSelected ? index : nil
     selectedPaymentMethodIndex = nil
+    guard
+      let walletBalance = walletBalance,
+      let amount = amount else { return }
+    if walletBalance.balance >= amount && isSelected {
+      paymentMethodsAreEnabled.send(false)
+      paymentButtonIsEnabled.send(true)
+    } else {
+      paymentMethodsAreEnabled.send(true)
+      paymentButtonIsEnabled.send(false)
+    }
   }
   
   func selectPaymentMethod(at index: Int) {
     guard selectedPaymentMethodIndex != index else { return }
     selectedPaymentMethodIndex = index
+    paymentButtonIsEnabled.send(true)
   }
   
   func useSelectedPaymentMethod() {
-    
+    isPaymentMethodsUpdated = true
+    dismiss.send()
   }
   
   func complete(isFromCloseAction: Bool) {
+    var paymentMethods: [PaymentMethodModel] = []
+    if let index = selectedWalletIndex {
+      var model = self.paymentMethods[index]
+      model.amount = walletBalance?.balance
+      paymentMethods.append(model)
+    }
+    if let index = selectedPaymentMethodIndex {
+      var model = self.paymentMethods[index]
+      model.amount = model.type.isWallet ? walletBalance?.balance : 0
+      paymentMethods.append(model)
+    }
     let event = TLEvent(flow: .paymentSelection,
-                        action: isFromCloseAction ? .closedByUser : isPaymentMethodUpdated ? .completed : .cancelledByUser)
+                        action: isFromCloseAction ? .closedByUser : isPaymentMethodsUpdated ? .completed : .cancelledByUser)
     let model = TLCompleteCallback(event: event,
-                                   state: isFromCloseAction ? .error : isPaymentMethodUpdated ? .completed : .cancelled)
+                                   state: isFromCloseAction ? .error : isPaymentMethodsUpdated ? .completed : .cancelled)
     onComplete?(model)
   }
   
@@ -143,17 +170,18 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
 private extension PaymentSelectionViewModel {
   
   func getPaymentMethods() {
+    selectedWalletIndex = nil
+    selectedPaymentMethodIndex = nil
     loading.send(true)
     manager.getUserBalance { [weak self] result in
       guard let self = self else { return }
       self.loading.send(false)
       switch result {
       case .success(let model):
-        var walletBalance: BalanceModel?
         self.paymentMethods = model.paymentMethods.filter {
           if $0.type.isWallet {
-            if let balance = model.balances[self.currencyCode] {
-              walletBalance = balance.spendable
+            if let balance = model.balances[self.currencyCode ?? "USD"] {
+              self.walletBalance = balance.spendable
               return true
             } else {
               return false
@@ -162,7 +190,7 @@ private extension PaymentSelectionViewModel {
             return true
           }
         }
-        self.content.send((self.currencyCode, walletBalance, self.paymentMethods))
+        self.content.send((self.walletBalance, self.amount, self.paymentMethods))
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }

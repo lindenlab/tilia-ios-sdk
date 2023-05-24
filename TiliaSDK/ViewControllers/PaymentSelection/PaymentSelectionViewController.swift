@@ -21,11 +21,13 @@ final class PaymentSelectionViewController: BaseTableViewController {
   private let builder = PaymentSelectionSectionBuilder()
   
   init(manager: NetworkManager,
-       currencyCode: String,
+       amount: Double?,
+       currencyCode: String?,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = PaymentSelectionViewModel(manager: manager,
+                                              amount: amount,
                                               currencyCode: currencyCode,
                                               onUpdate: onUpdate,
                                               onComplete: onComplete,

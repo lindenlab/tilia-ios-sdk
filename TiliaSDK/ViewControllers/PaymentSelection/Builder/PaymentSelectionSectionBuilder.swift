@@ -16,6 +16,7 @@ struct PaymentSelectionSectionBuilder {
     
     struct Item {
       let title: String
+      let subTitle: String?
       let isSwitch: Bool
       var isSelected: Bool
       var isEnabled: Bool
@@ -80,20 +81,31 @@ struct PaymentSelectionSectionBuilder {
   }
   
   func sections(for model: PaymentSelectionContent) -> [Section] {
-    let paymentMethods = model.paymentMethods
+    let amount = model.amount
     let walletBalance = model.walletBalance
+    let paymentMethods = model.paymentMethods
+    let hasNotOnlyWallet = paymentMethods.first(where: { !$0.type.isWallet }) != nil
     let items: [Section.Item] = paymentMethods.enumerated().map { index, value in
+      let isSwitch = value.type.isWallet && hasNotOnlyWallet && !amount.isEmpty
       let title: String = {
-        if value.type.isWallet, let balance = walletBalance {
+        if isSwitch, let balance = walletBalance {
           return L.useYourBalance(with: balance.display)
         } else {
           return value.display
         }
       }()
+      let isEnabled: Bool = {
+        if value.type.isWallet, let balance = walletBalance?.balance, let amount = amount {
+          return balance >= amount || hasNotOnlyWallet
+        } else {
+          return true
+        }
+      }()
       return .init(title: title,
-                   isSwitch: value.type.isWallet,
+                   subTitle: isSwitch ? nil : walletBalance?.display,
+                   isSwitch: isSwitch,
                    isSelected: false,
-                   isEnabled: true,
+                   isEnabled: isEnabled,
                    icon: value.type.icon,
                    isDividerHidden: index == paymentMethods.count - 1)
     }
