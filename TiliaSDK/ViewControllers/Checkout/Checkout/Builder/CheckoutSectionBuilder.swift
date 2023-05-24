@@ -151,7 +151,8 @@ struct CheckoutSectionBuilder {
                      closeButtonTitle: L.cancel,
                      isCreditCardButtonHidden: model.isCreditCardButtonHidden,
                      delegate: delegate,
-                     textViewDelegate: model.isEmpty ? nil : delegate)
+                     textViewSubTitle: model.isEmpty ? nil : L.payNow,
+                     textViewDelegate: delegate)
       view.configure(isPayButtonEnabled: model.isPayButtonEnabled)
       return view
     case .successfulPayment:
@@ -160,7 +161,8 @@ struct CheckoutSectionBuilder {
                      closeButtonTitle: L.done,
                      isCreditCardButtonHidden: true,
                      delegate: delegate,
-                     textViewDelegate: nil)
+                     textViewSubTitle: nil,
+                     textViewDelegate: delegate)
       return view
     }
   }
@@ -321,28 +323,6 @@ private extension CheckoutSectionBuilder {
                       isCreditCardButtonHidden: false)
     }
     return payment
-  }
-  
-}
-
-// MARK: - Helpers
-
-private extension CheckoutPaymentTypeModel {
-  
-  var icon: UIImage? {
-    switch self {
-    case .wallet: return .walletIcon
-    case .paypal: return .payPalIcon
-    case .americanExpress: return .americanExpressIcon
-    case .discover: return .discoverIcon
-    case .dinersClub: return .dinersClubIcon
-    case .jcb: return .jcbIcon
-    case .maestro: return .maestroIcon
-    case .electron: return nil
-    case .masterCard: return .masterCardIcon
-    case .visa: return .visaIcon
-    case .chinaUnionPay: return .chinaUnionPayIcon
-    }
   }
   
 }

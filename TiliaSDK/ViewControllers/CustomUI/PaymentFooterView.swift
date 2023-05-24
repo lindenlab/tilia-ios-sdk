@@ -49,9 +49,6 @@ final class PaymentFooterView: UITableViewHeaderFooterView {
   
   private let textView: TextViewWithLink = {
     let textView = TextViewWithLink()
-    let text = TosAcceptModel.payTitle
-    let links = [TosAcceptModel.termsOfService.description]
-    textView.textData = (text, links)
     textView.linkColor = .tertiaryTextColor
     textView.textColor = .tertiaryTextColor
     textView.font = .systemFont(ofSize: 12)
@@ -86,13 +83,22 @@ final class PaymentFooterView: UITableViewHeaderFooterView {
                  closeButtonTitle: String,
                  isCreditCardButtonHidden: Bool,
                  delegate: PaymentFooterViewDelegate?,
+                 textViewSubTitle: String?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
     payButton.setTitle(payButtonTitle, for: .normal)
     payButton.isHidden = payButtonTitle == nil
     closeButton.setTitle(closeButtonTitle, for: .normal)
     addCreditCardButton.isHidden = isCreditCardButtonHidden
     addPaymentMethodLabel.isHidden = isCreditCardButtonHidden
-    textView.isHidden = textViewDelegate == nil
+    if let textViewSubTitle = textViewSubTitle {
+      textView.isHidden = false
+      let text = L.paymentAcceptDescription(with: textViewSubTitle)
+      let links = [TosAcceptModel.termsOfService.description]
+      textView.textData = (text, links)
+    } else {
+      textView.isHidden = true
+      textView.attributedText = nil
+    }
     textView.linkDelegate = textViewDelegate
     stackView.setCustomSpacing(isCreditCardButtonHidden ? 16 : 32, after: payButton)
     self.delegate = delegate

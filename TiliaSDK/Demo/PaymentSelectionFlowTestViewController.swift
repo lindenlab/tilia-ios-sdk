@@ -9,6 +9,13 @@ import UIKit
 
 final class PaymentSelectionFlowTestViewController: TestViewController {
   
+  let currencyTextField: UITextField = {
+    let textField = UITextField()
+    textField.borderStyle = .roundedRect
+    textField.placeholder = "Currency code"
+    return textField
+  }()
+  
   let onCompleteLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
@@ -27,6 +34,7 @@ final class PaymentSelectionFlowTestViewController: TestViewController {
     super.viewDidLoad()
     label.text = "onUpdate callback will be here"
     button.setTitle("Run Payment Selection flow", for: .normal)
+    stackView.insertArrangedSubview(currencyTextField, at: 1)
     stackView.addArrangedSubview(onCompleteLabel)
     stackView.addArrangedSubview(onErrorLabel)
   }
@@ -34,6 +42,7 @@ final class PaymentSelectionFlowTestViewController: TestViewController {
   override func buttonTapped() {
     manager.setToken(accessTokenTextField.text ?? "")
     manager.presentPaymentSelectionViewController(on: self,
+                                                  withCurrencyCode: currencyTextField.text ?? "",
                                                   animated: true) {
       self.label.attributedText = Self.attributedString(text: "onUpdate callback",
                                                         message: $0.description)

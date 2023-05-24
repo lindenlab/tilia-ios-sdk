@@ -10,7 +10,7 @@ import Foundation
 struct BalanceInfoModel: Decodable {
   
   let balances: [String: SpendableModel]
-  let paymentMethods: [CheckoutPaymentMethodModel]
+  let paymentMethods: [PaymentMethodModel]
   
   private enum CodingKeys: String, CodingKey {
     case balances
@@ -20,7 +20,7 @@ struct BalanceInfoModel: Decodable {
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.balances = try container.decode([String: SpendableModel].self, forKey: .balances)
-    let paymentMethods = try container.decode([String: CheckoutPaymentMethodModel].self, forKey: .paymentMethods)
+    let paymentMethods = try container.decode([String: PaymentMethodModel].self, forKey: .paymentMethods)
     self.paymentMethods = paymentMethods.values.sorted { $0.type.isWallet && !$1.type.isWallet }
   }
   

@@ -1,17 +1,17 @@
 //
-//  CheckoutPaymentMethodModel.swift
+//  PaymentMethodModel.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 25.08.2022.
 //
 
-import Foundation
+import UIKit
 
-struct CheckoutPaymentMethodModel: Codable, Equatable, Hashable {
+struct PaymentMethodModel: Codable, Equatable, Hashable {
   
   let id: String
   let display: String
-  let type: CheckoutPaymentTypeModel
+  let type: PaymentTypeModel
   var amount: Double?
   
   private enum DecodingKeys: String, CodingKey {
@@ -32,10 +32,10 @@ struct CheckoutPaymentMethodModel: Codable, Equatable, Hashable {
     self.id = try container.decode(String.self, forKey: .id)
     self.display = try container.decode(String.self, forKey: .display)
     // Check if this is a wallet
-    if let type = try? container.decode(CheckoutPaymentTypeModel.self, forKey: .provider) {
+    if let type = try? container.decode(PaymentTypeModel.self, forKey: .provider) {
       self.type = type
     } else {
-      self.type = try container.decode(CheckoutPaymentTypeModel.self, forKey: .methodClass)
+      self.type = try container.decode(PaymentTypeModel.self, forKey: .methodClass)
     }
   }
   
@@ -50,7 +50,7 @@ struct CheckoutPaymentMethodModel: Codable, Equatable, Hashable {
   
 }
 
-enum CheckoutPaymentTypeModel: String, Decodable {
+enum PaymentTypeModel: String, Decodable {
   
   case wallet
   case paypal
@@ -65,5 +65,21 @@ enum CheckoutPaymentTypeModel: String, Decodable {
   case chinaUnionPay = "china-unionpay"
   
   var isWallet: Bool { return self == .wallet }
+  
+  var icon: UIImage? {
+    switch self {
+    case .wallet: return .walletIcon
+    case .paypal: return .payPalIcon
+    case .americanExpress: return .americanExpressIcon
+    case .discover: return .discoverIcon
+    case .dinersClub: return .dinersClubIcon
+    case .jcb: return .jcbIcon
+    case .maestro: return .maestroIcon
+    case .electron: return nil
+    case .masterCard: return .masterCardIcon
+    case .visa: return .visaIcon
+    case .chinaUnionPay: return .chinaUnionPayIcon
+    }
+  }
   
 }

@@ -22,7 +22,6 @@ enum L {
   static let choosePaymentMethod = "choosePaymentMethod".localized
   static let payNow = "payNow".localized
   static let done = "done".localized
-  static let payAcceptDescription = "payAcceptDescription".localized
   static let success = "success".localized
   static let paymentProcessed = "paymentProcessed".localized
   static let reload = "reload".localized
@@ -198,6 +197,7 @@ enum L {
   static let email = "email".localized
   static let errorPaymentSelectionTitle = "errorPaymentSelectionTitle".localized
   static let errorPaymentSelectionMessage = "errorPaymentSelectionMessage".localized
+  static let usePaymentMethod = "usePaymentMethod".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)
@@ -249,6 +249,9 @@ enum L {
   }
   static func verifyYourEmailMessage(with arguments: CVarArg...) -> String {
     return "verifyYourEmailMessage".localized(with: arguments)
+  }
+  static func paymentAcceptDescription(with arguments: CVarArg...) -> String {
+    return "paymentAcceptDescription".localized(with: arguments)
   }
   
 }

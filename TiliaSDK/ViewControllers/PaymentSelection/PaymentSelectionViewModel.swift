@@ -8,8 +8,12 @@
 import Foundation
 import Combine
 
+typealias PaymentSelectionContent = (currencyCode: String, walletBalance: BalanceModel?, paymentMethods: [PaymentMethodModel])
+
 protocol PaymentSelectionViewModelInputProtocol {
   func checkIsTosRequired()
+  func selectPaymentMethod(at index: Int, isSelected: Bool)
+  func selectPaymentMethod(at index: Int)
   func complete(isFromCloseAction: Bool)
 }
 
@@ -17,8 +21,12 @@ protocol PaymentSelectionViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
-  var content: PassthroughSubject<Void, Never> { get }
+  var content: PassthroughSubject<PaymentSelectionContent, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
+  var paymentButtonIsEnabled: PassthroughSubject<Bool, Never> { get }
+  var deselectIndex: PassthroughSubject<Int, Never> { get }
+  var selectIndex: PassthroughSubject<Int, Never> { get }
+  var paymentMethodsAreEnabled: PassthroughSubject<Bool, Never> { get }
 }
 
 protocol PaymentSelectionDataStore {
@@ -35,8 +43,12 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   let loading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
-  let content = PassthroughSubject<Void, Never>()
+  let content = PassthroughSubject<PaymentSelectionContent, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
+  let paymentButtonIsEnabled = PassthroughSubject<Bool, Never>()
+  let deselectIndex = PassthroughSubject<Int, Never>()
+  let selectIndex = PassthroughSubject<Int, Never>()
+  let paymentMethodsAreEnabled = PassthroughSubject<Bool, Never>()
   
   let manager: NetworkManager
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
@@ -53,14 +65,30 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   }
   let onError: ((TLErrorCallback) -> Void)?
   
+  private let currencyCode: String
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private let onUpdate: ((TLUpdateCallback) -> Void)?
+  private var paymentMethods: [PaymentMethodModel] = []
+  private var selectedWalletIndex: Int? {
+    didSet {
+      oldValue.map { deselectIndex.send($0) }
+      selectedWalletIndex.map { selectIndex.send($0) }
+    }
+  }
+  private var selectedPaymentMethodIndex: Int? {
+    didSet {
+      oldValue.map { deselectIndex.send($0) }
+      selectedPaymentMethodIndex.map { selectIndex.send($0) }
+    }
+  }
   
   init(manager: NetworkManager,
+       currencyCode: String,
        onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
+    self.currencyCode = currencyCode
     self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
@@ -82,6 +110,16 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
         self.didFail(with: .init(error: error, value: true))
       }
     }
+  }
+  
+  func selectPaymentMethod(at index: Int, isSelected: Bool) {
+    selectedWalletIndex = isSelected ? index : nil
+    selectedPaymentMethodIndex = nil
+  }
+  
+  func selectPaymentMethod(at index: Int) {
+    guard selectedPaymentMethodIndex != index else { return }
+    selectedPaymentMethodIndex = index
   }
   
   func complete(isFromCloseAction: Bool) {
@@ -106,7 +144,21 @@ private extension PaymentSelectionViewModel {
       self.loading.send(false)
       switch result {
       case .success(let model):
-        print(model)
+        var walletBalance: BalanceModel?
+        let paymentMethods = model.paymentMethods.filter {
+          if $0.type.isWallet {
+            if let balance = model.balances[self.currencyCode] {
+              walletBalance = balance.spendable
+              return true
+            } else {
+              return false
+            }
+          } else {
+            return true
+          }
+        }
+        self.paymentMethods = paymentMethods
+        self.content.send((self.currencyCode, walletBalance, paymentMethods))
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
