@@ -17,8 +17,6 @@ final class UserInfoNextButtonCell: UITableViewCell {
   
   private let button: NonPrimaryButton = {
     let button = NonPrimaryButton(style: .titleAndImageCenter)
-    button.setTitle(L.next,
-                    for: .normal)
     button.setImage(.arrowRightIcon?.withRenderingMode(.alwaysTemplate),
                     for: .normal)
     button.setBackgroundColor(.backgroundColor, for: .disabled)
@@ -31,6 +29,10 @@ final class UserInfoNextButtonCell: UITableViewCell {
   
   func configure(delegate: UserInfoNextButtonCellDelegate?) {
     self.delegate = delegate
+  }
+  
+  func configure(buttonTitle: String) {
+    button.setTitle(buttonTitle, for: .normal)
   }
   
   func configure(isButtonEnabled: Bool) {

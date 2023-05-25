@@ -12,7 +12,7 @@ struct UserDocumentsSectionBuilder {
   
   typealias CellDelegate = TextFieldsCellDelegate & UserDocumentsPhotoCellDelegate & UserDocumentsSelectDocumentCellDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
-  typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?, reload: [IndexPath]?)
+  typealias TableUpdate = (insert: [IndexPath]?, delete: [IndexPath]?)
   
   struct Section {
     
@@ -40,7 +40,9 @@ struct UserDocumentsSectionBuilder {
           var seletedItemIndex: Int?
           
           var fieldContent: TextFieldsCell.FieldContent {
-            return (placeholder, text, type.accessibilityIdentifier)
+            return .init(placeholder: placeholder,
+                         text: text, accessibilityIdentifier:
+                          type.accessibilityIdentifier)
           }
         }
         
@@ -192,7 +194,7 @@ struct UserDocumentsSectionBuilder {
   func updateSection(_ section: inout Section,
                      in tableView: UITableView,
                      documentDidChange document: UserDocumentsModel.Document) -> TableUpdate {
-    var tableUpdate: TableUpdate = (nil, nil, nil)
+    var tableUpdate: TableUpdate = (nil, nil)
     
     guard let documentFrontSideIndex = documentSideIndex(in: section, for: .frontSide) else { return tableUpdate }
     
@@ -224,7 +226,7 @@ struct UserDocumentsSectionBuilder {
   
   func updateSection(_ section: inout Section,
                      shouldAddAdditionalDocuments shouldAdd: Bool) -> TableUpdate {
-    var tableUpdate: TableUpdate = (nil, nil, nil)
+    var tableUpdate: TableUpdate = (nil, nil)
     if shouldAdd {
       if additionalDocumentsIndex(in: section) == nil {
         let index = section.items.count

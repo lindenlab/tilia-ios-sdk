@@ -11,20 +11,31 @@ import Foundation
 typealias UserInfoExpandSection = (index: Int, model: UserInfoModel, isExpanded: Bool, isFilled: Bool, nextIndex: Int?)
 typealias UserInfoSetSectionText = (indexPath: IndexPath, fieldIndex: Int, text: String?, isFilled: Bool)
 typealias UserInfoCoutryOfResidenceDidChange = (model: UserInfoModel, wasUsResidence: Bool)
+typealias UserInfoEmailVerified = (model: UserInfoModel, message: String)
+typealias UserInfoEditEmail = (model: UserInfoModel, index: Int)
+typealias UserInfoIsSectionFilled = (isFilled: Bool, index: Int)
 
 protocol UserInfoViewModelInputProtocol {
+  func load()
   func updateSection(_ section: UserInfoSectionBuilder.Section, at index: Int, isExpanded: Bool, nextSectionIndex: Int?)
   func setText(_ text: String?, for section: UserInfoSectionBuilder.Section, indexPath: IndexPath, fieldIndex: Int)
+  func onNext(for section: UserInfoSectionBuilder.Section, at index: Int)
+  func startEditingEmail(at index: Int)
+  func cancelEditingEmail(for section: UserInfoSectionBuilder.Section, at index: Int)
+  func updateEmail(at index: Int)
   func upload()
-  func complete()
+  func complete(isFromCloseAction: Bool)
 }
 
 protocol UserInfoViewModelOutputProtocol {
-  var error: PassthroughSubject<Error, Never> { get }
+  var loading: PassthroughSubject<Bool, Never> { get }
+  var content: PassthroughSubject<UserInfoModel, Never> { get }
+  var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var expandSection: PassthroughSubject<UserInfoExpandSection, Never> { get }
   var setSectionText: PassthroughSubject<UserInfoSetSectionText, Never> { get }
   var coutryOfResidenceDidChange: PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never> { get }
   var coutryOfResidenceDidSelect: PassthroughSubject<Void, Never> { get }
+  var nextSection: PassthroughSubject<Int, Never> { get }
   var uploading: CurrentValueSubject<Bool, Never> { get }
   var uploadDocuments: PassthroughSubject<Void, Never> { get }
   var successfulUploading: PassthroughSubject<Void, Never> { get }
@@ -32,13 +43,21 @@ protocol UserInfoViewModelOutputProtocol {
   var manualReview: PassthroughSubject<Void, Never> { get }
   var failedCompleting: PassthroughSubject<Void, Never> { get }
   var successfulCompleting: PassthroughSubject<Void, Never> { get }
+  var verifyEmail: PassthroughSubject<Void, Never> { get }
+  var emailVerified: PassthroughSubject<UserInfoEmailVerified, Never> { get }
+  var didStartEditingEmail: PassthroughSubject<UserInfoEditEmail, Never> { get }
+  var didEndEditingEmail: PassthroughSubject<UserInfoEditEmail, Never> { get }
+  var isSectionFilled: PassthroughSubject<UserInfoIsSectionFilled, Never> { get }
 }
 
 protocol UserInfoDataStore {
   var manager: NetworkManager { get }
   var userInfoModel: UserInfoModel { get }
+  var userEmail: String { get }
+  var verifyEmailMode: VerifyEmailMode { get }
   var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onUserDocumentsComplete: (SubmittedKycModel) -> Void { get }
+  var onEmailVerified: (VerifyEmailMode) -> Void { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -46,11 +65,14 @@ protocol UserInfoViewModelProtocol: UserInfoViewModelInputProtocol, UserInfoView
 
 final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
-  let error = PassthroughSubject<Error, Never>()
+  let loading = PassthroughSubject<Bool, Never>()
+  let content = PassthroughSubject<UserInfoModel, Never>()
+  let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let expandSection = PassthroughSubject<UserInfoExpandSection, Never>()
   let setSectionText = PassthroughSubject<UserInfoSetSectionText, Never>()
   let coutryOfResidenceDidChange = PassthroughSubject<UserInfoCoutryOfResidenceDidChange, Never>()
   let coutryOfResidenceDidSelect = PassthroughSubject<Void, Never>()
+  let nextSection = PassthroughSubject<Int, Never>()
   let uploading = CurrentValueSubject<Bool, Never>(false)
   let uploadDocuments = PassthroughSubject<Void, Never>()
   let successfulUploading = PassthroughSubject<Void, Never>()
@@ -58,12 +80,22 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   let manualReview = PassthroughSubject<Void, Never>()
   let failedCompleting = PassthroughSubject<Void, Never>()
   let successfulCompleting = PassthroughSubject<Void, Never>()
+  let verifyEmail = PassthroughSubject<Void, Never>()
+  let emailVerified = PassthroughSubject<UserInfoEmailVerified, Never>()
+  let didStartEditingEmail = PassthroughSubject<UserInfoEditEmail, Never>()
+  let didEndEditingEmail = PassthroughSubject<UserInfoEditEmail, Never>()
+  let isSectionFilled = PassthroughSubject<UserInfoIsSectionFilled, Never>()
   
   let manager: NetworkManager
   private(set) var userInfoModel = UserInfoModel()
+  var userEmail: String { return userInfoModel.needToVerifyEmail ?? "" }
+  var verifyEmailMode: VerifyEmailMode { return userInfoModel.isEmailVerified ? .update : .verify }
   let onUpdate: ((TLUpdateCallback) -> Void)?
   private(set) lazy var onUserDocumentsComplete: (SubmittedKycModel) -> Void = { [weak self] in
     self?.getStatus(for: $0)
+  }
+  private(set) lazy var onEmailVerified: (VerifyEmailMode) -> Void = { [weak self] in
+    self?.didVerifyEmail(with: $0)
   }
   let onError: ((TLErrorCallback) -> Void)?
   
@@ -79,6 +111,21 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
+  }
+  
+  func load() {
+    loading.send(true)
+    manager.getUserInfo { [weak self] result in
+      guard let self = self else { return }
+      self.loading.send(false)
+      switch result {
+      case .success(let model):
+        self.userInfoModel.email = model.email
+        self.content.send(self.userInfoModel)
+      case .failure(let error):
+        self.didFail(with: .init(error: error, value: true))
+      }
+    }
   }
   
   func updateSection(_ section: UserInfoSectionBuilder.Section,
@@ -98,6 +145,8 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     var isFieldChanged = false
     
     switch field.type {
+    case .email:
+      isFieldChanged = isFieldUpdated(&userInfoModel.needToVerifyEmail, with: text)
     case .countryOfResidance:
       let wasNil = userInfoModel.countryOfResidence == nil
       let wasUsResidence = userInfoModel.isUsResident
@@ -160,6 +209,35 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
   }
   
+  func onNext(for section: UserInfoSectionBuilder.Section, at index: Int) {
+    switch section.type {
+    case .email:
+      verifyEmail.send()
+    default:
+      nextSection.send(index)
+    }
+  }
+  
+  func startEditingEmail(at index: Int) {
+    userInfoModel.needToVerifyEmail = userInfoModel.email
+    didStartEditingEmail.send((userInfoModel, index))
+  }
+  
+  func cancelEditingEmail(for section: UserInfoSectionBuilder.Section, at index: Int) {
+    userInfoModel.needToVerifyEmail = nil
+    let isFilled = validator(for: section.type)?.isFilled(for: userInfoModel) == true
+    isSectionFilled.send((isFilled, index))
+    didEndEditingEmail.send((userInfoModel, index))
+  }
+  
+  func updateEmail(at index: Int) {
+    if userInfoModel.email == userInfoModel.needToVerifyEmail {
+      didEndEditingEmail.send((userInfoModel, index))
+    } else {
+      verifyEmail.send()
+    }
+  }
+  
   func upload() {
     if userInfoModel.needDocuments {
       uploadDocuments.send()
@@ -173,17 +251,17 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
         case .success(let model):
           self.getStatus(for: model)
         case .failure(let error):
-          self.didFail(with: error)
+          self.didFail(with: .init(error: error, value: false))
         }
       }
     }
   }
   
-  func complete() {
+  func complete(isFromCloseAction: Bool) {
     let event = TLEvent(flow: .kyc,
-                        action: isFlowCompleted ? .completed : .cancelledByUser)
+                        action: isFromCloseAction ? .closedByUser : isFlowCompleted ? .completed : .cancelledByUser)
     let model = TLCompleteCallback(event: event,
-                                   state: isFlowCompleted ? .completed : .cancelled)
+                                   state: isFromCloseAction ? .error : isFlowCompleted ? .completed : .cancelled)
     onComplete?(model)
   }
   
@@ -199,6 +277,7 @@ private extension UserInfoViewModel {
   
   func validator(for section: UserInfoSectionBuilder.Section.SectionType) -> UserInfoValidator? {
     switch section {
+    case .email: return UserInfoEmailValidator()
     case .location: return UserInfoLocationValidator()
     case .personal: return UserInfoPersonalValidator()
     case .tax: return UserInfoTaxValidator()
@@ -233,7 +312,7 @@ private extension UserInfoViewModel {
           self.failedCompleting.send()
         }
       case .failure(let error):
-        self.didFail(with: error)
+        self.didFail(with: .init(error: error, value: false))
       }
     }
   }
@@ -250,12 +329,12 @@ private extension UserInfoViewModel {
     timer = nil
   }
   
-  func didFail(with error: Error) {
+  func didFail(with error: ErrorWithBoolModel) {
     self.error.send(error)
     let event = TLEvent(flow: .kyc, action: .error)
     let model = TLErrorCallback(event: event,
                                 error: L.errorKycTitle,
-                                message: error.localizedDescription)
+                                message: error.error.localizedDescription)
     onError?(model)
   }
 
@@ -270,6 +349,19 @@ private extension UserInfoViewModel {
     successfulUploading.send()
     sendUpdateCallback(with: model.state)
     resumeTimer(kycId: model.kycId)
+  }
+  
+  func didVerifyEmail(with mode: VerifyEmailMode) {
+    let event = TLEvent(flow: .kyc, action: .emailVerified)
+    let message = mode.successTitle
+    let model = TLUpdateCallback(event: event, message: message)
+    onUpdate?(model)
+    if userInfoModel.email != nil {
+      userInfoModel.isEmailUpdated = true
+    }
+    userInfoModel.email = userInfoModel.needToVerifyEmail
+    userInfoModel.needToVerifyEmail = nil
+    emailVerified.send((userInfoModel, message))
   }
   
 }

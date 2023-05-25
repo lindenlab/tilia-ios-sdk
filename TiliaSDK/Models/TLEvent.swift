@@ -60,6 +60,9 @@ public struct TLEvent {
     /// Receipt is sent successfully
     case receiptSent = "receipt-sent"
     
+    /// Email is verified successfully
+    case emailVerified = "email-verified"
+    
   }
   
   public let flow: Flow

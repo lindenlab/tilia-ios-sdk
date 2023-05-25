@@ -1,0 +1,15 @@
+{
+    "status": "Success",
+    "message": [],
+    "codes": [],
+    "payload": {
+        "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "username": "janesmith@fakeemail.com",
+        "email": "bmac@lindenlab.com",
+        "is_blocked": false,
+        "blocked_capabilities": {},
+        "integrator": "tilia-sdks",
+        "tags": [],
+        "created": "2022-03-01T01:00:49.407666Z"
+    }
+}

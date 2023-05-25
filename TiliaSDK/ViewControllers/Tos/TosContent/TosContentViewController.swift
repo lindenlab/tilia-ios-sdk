@@ -27,11 +27,8 @@ final class TosContentViewController: BaseViewController {
     return label
   }()
   
-  private lazy var dismissButton: NonPrimaryButton = {
-    let button = NonPrimaryButton()
-    button.setImage(.closeIcon?.withRenderingMode(.alwaysTemplate),
-                    for: .normal)
-    button.imageView?.tintColor = .primaryTextColor
+  private lazy var dismissButton: CloseButton = {
+    let button = CloseButton()
     button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
     button.accessibilityIdentifier = "closeButton"
     return button
@@ -95,9 +92,7 @@ private extension TosContentViewController {
       stackView.bottomAnchor.constraint(equalTo: textView.topAnchor, constant: -8),
       textView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
       textView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-      textView.bottomAnchor.constraint(equalTo: divider.topAnchor),
-      dismissButton.heightAnchor.constraint(equalToConstant: 30),
-      dismissButton.widthAnchor.constraint(equalToConstant: 30)
+      textView.bottomAnchor.constraint(equalTo: divider.topAnchor)
     ])
   }
   

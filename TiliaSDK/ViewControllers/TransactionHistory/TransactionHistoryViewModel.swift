@@ -80,8 +80,8 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
           self.didLoad()
         }
       case .failure(let error):
-        self.didFail(with: .init(error: error, value: true))
         self.loading.send(false)
+        self.didFail(with: .init(error: error, value: true))
       }
     }
   }

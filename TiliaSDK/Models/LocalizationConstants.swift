@@ -143,8 +143,6 @@ enum L {
   static let transactionDate = "transactionDate".localized
   static let transactionTime = "transactionTime".localized
   static let depositedInto = "depositedInto".localized
-  static let send = "send".localized
-  static let sending = "sending".localized
   static let emailPlaceholder = "emailPlaceholder".localized
   static let errorSendReceiptTitle = "errorSendReceiptTitle".localized
   static let errorSendReceiptMessage = "errorSendReceiptMessage".localized
@@ -179,6 +177,25 @@ enum L {
   static let fees = "fees".localized
   static let tax = "tax".localized
   static let tokenPurchase = "tokenPurchase".localized
+  static let updateYourEmailTitle = "updateYourEmailTitle".localized
+  static let verifyYourEmailTitle = "verifyYourEmailTitle".localized
+  static let enterSixDigitCode = "enterSixDigitCode".localized
+  static let clickToResendTitle = "clickToResendTitle".localized
+  static let clickToResendMessage = "clickToResendMessage".localized
+  static let errorVerifyEmailTitle = "errorVerifyEmailTitle".localized
+  static let errorVerifyEmailMessage = "errorVerifyEmailMessage".localized
+  static let yourEmailIsUpdated = "yourEmailIsUpdated".localized
+  static let yourEmailIsVerified = "yourEmailIsVerified".localized
+  static let emailIsVerifiedForUpdatesMessage = "emailIsVerifiedForUpdatesMessage".localized
+  static let emailIsNotVerifiedForUpdatesMessage = "emailIsNotVerifiedForUpdatesMessage".localized
+  static let emailIsVerifiedForUpdatesWithPrivacyPolicyMessage = "emailIsVerifiedForUpdatesWithPrivacyPolicyMessage".localized
+  static let emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage = "emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage".localized
+  static let verifyEmail = "verifyEmail".localized
+  static let sendToThisEmail = "sendToThisEmail".localized
+  static let updateEmail = "updateEmail".localized
+  static let emailAddress = "emailAddress".localized
+  static let needToCollectEmailTitle = "needToCollectEmailTitle".localized
+  static let email = "email".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)
@@ -224,6 +241,12 @@ enum L {
   }
   static func useYourBalance(with arguments: CVarArg...) -> String {
     return "useYourBalance".localized(with: arguments)
+  }
+  static func updateYourEmailMessage(with arguments: CVarArg...) -> String {
+    return "updateYourEmailMessage".localized(with: arguments)
+  }
+  static func verifyYourEmailMessage(with arguments: CVarArg...) -> String {
+    return "verifyYourEmailMessage".localized(with: arguments)
   }
   
 }

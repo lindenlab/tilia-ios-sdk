@@ -66,6 +66,59 @@ final class NetworkManagerTests: XCTestCase {
     XCTAssertTrue(isSuccess)
   }
   
+  func testGetUserInfoSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var userInfo: UserDetailInfoModel?
+    let expectation = XCTestExpectation(description: "testGetUserInfoSuccess")
+    networkManager.getUserInfo { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let model):
+        userInfo = model
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(userInfo)
+    XCTAssertEqual(userInfo?.email, "bmac@lindenlab.com")
+  }
+  
+  func testBeginVerifyUserEmailSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var verifyModel: BeginVerifyUserEmailModel?
+    let expectation = XCTestExpectation(description: "testBeginVerifyUserEmailSuccess")
+    networkManager.beginVerifyUserEmail("bmac@lindenlab.com") { result in
+      expectation.fulfill()
+      switch result {
+      case .success(let model):
+        verifyModel = model
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertNotNil(verifyModel)
+    XCTAssertEqual(verifyModel?.nonce, "616511ed-311d-47d9-a4bc-a6783c9c1621")
+  }
+  
+  func testFinishVerifyUserEmailSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var isSuccess = false
+    let expectation = XCTestExpectation(description: "testFinishVerifyUserEmailSuccess")
+    networkManager.finishVerifyUserEmail(with: .init(code: "123456", nonce: UUID().uuidString)) { result in
+      expectation.fulfill()
+      switch result {
+      case .success:
+        isSuccess = true
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertTrue(isSuccess)
+  }
+  
   func testGetUserBalanceByCurrencyCodeSuccess() {
     TLManager.shared.setToken(UUID().uuidString)
     let currency = "TST"

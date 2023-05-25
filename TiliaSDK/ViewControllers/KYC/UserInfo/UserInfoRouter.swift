@@ -10,6 +10,7 @@ import UIKit
 protocol UserInfoRoutingProtocol: RoutingProtocol {
   func routeToUserDocumentsView()
   func routeToTosContentView()
+  func routeToVerifyEmailView()
 }
 
 final class UserInfoRouter: UserInfoRoutingProtocol {
@@ -33,6 +34,16 @@ final class UserInfoRouter: UserInfoRoutingProtocol {
     let tosContentViewController = TosContentViewController(manager: dataStore.manager,
                                                             onError: dataStore.onError)
     viewController?.present(tosContentViewController, animated: true)
+  }
+  
+  func routeToVerifyEmailView() {
+    let verifyEmailViewController = VerifyEmailViewController(email: dataStore.userEmail,
+                                                              flow: .kyc,
+                                                              mode: dataStore.verifyEmailMode,
+                                                              manager: dataStore.manager,
+                                                              onEmailVerified: dataStore.onEmailVerified,
+                                                              onError: dataStore.onError)
+    viewController?.present(verifyEmailViewController, animated: true)
   }
   
 }

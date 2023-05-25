@@ -35,11 +35,13 @@ final class RoundedTextField: UITextField {
   }
   
   override func textRect(forBounds bounds: CGRect) -> CGRect {
-    return bounds.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+    let rightInset = rightView.map { $0.frame.width + 8 } ?? 16
+    return bounds.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: rightInset))
   }
   
   override func editingRect(forBounds bounds: CGRect) -> CGRect {
-    return bounds.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+    let rightInset = rightView.map { $0.frame.width + 8 } ?? 16
+    return bounds.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: rightInset))
   }
   
   override func caretRect(for position: UITextPosition) -> CGRect {
@@ -50,10 +52,28 @@ final class RoundedTextField: UITextField {
     return inputView == nil ? super.selectionRects(for: range) : []
   }
   
+  override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+    let rect = super.rightViewRect(forBounds: bounds)
+    let x = bounds.width - rect.width - 8
+    return CGRect(x: x, y: rect.minY, width: rect.width, height: rect.height)
+  }
+  
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
     setupBorderColor()
+  }
+  
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    guard !isUserInteractionEnabled, let rightView = rightView else {
+      return super.hitTest(point, with: event)
+    }
+    let pointInSubview = rightView.convert(point, from: self)
+    if rightView.point(inside: pointInSubview, with: event) {
+      return rightView
+    } else {
+      return super.hitTest(point, with: event)
+    }
   }
   
 }

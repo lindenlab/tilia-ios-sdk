@@ -121,8 +121,8 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
           self.getInvoiceDetails()
         }
       case .failure(let error):
-        self.didFail(with: .init(error: error, value: true))
         self.loading.send(false)
+        self.didFail(with: .init(error: error, value: true))
       }
     }
   }
@@ -134,6 +134,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     loading.send(true)
     manager.payInvoice(withId: id, isEscrow: isEscrow) { [weak self] result in
       guard let self = self else { return }
+      self.loading.send(false)
       switch result {
       case .success:
         self.successfulPayment.send(true)
@@ -142,7 +143,6 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
       case .failure(let error):
         self.didFail(with: .init(error: error, value: false))
       }
-      self.loading.send(false)
     }
   }
   
@@ -224,8 +224,8 @@ private extension CheckoutViewModel {
           self.loading.send(false)
         }
       } else if let error = serverError {
-        self.didFail(with: .init(error: error, value: true))
         self.loading.send(false)
+        self.didFail(with: .init(error: error, value: true))
       }
     }
     
@@ -235,6 +235,7 @@ private extension CheckoutViewModel {
     guard let isEscrow = isEscrow else { return }
     manager.createInvoice(withId: authorizedInvoiceId, isEscrow: isEscrow, paymentMethods: []) { [weak self] result in
       guard let self = self else { return }
+      self.loading.send(false)
       switch result {
       case .success(let model):
         self.invoiceId = model.invoiceId
@@ -243,7 +244,6 @@ private extension CheckoutViewModel {
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
-      self.loading.send(false)
     }
   }
   
@@ -286,6 +286,7 @@ private extension CheckoutViewModel {
     loading.send(true)
     manager.getUserBalance { [weak self] result in
       guard let self = self else { return }
+      self.loading.send(false)
       switch result {
       case .success(let model):
         self.paymentMethods = model.paymentMethods
@@ -293,7 +294,6 @@ private extension CheckoutViewModel {
       case .failure(let error):
         self.didFail(with: .init(error: error, value: true))
       }
-      self.loading.send(false)
     }
   }
   

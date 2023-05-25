@@ -92,10 +92,11 @@ final class UserDocumentsViewModel: UserDocumentsViewModelProtocol {
       switch result {
       case .success(let model):
         self.countryCodesNotRequiringAddressDocuments = model.kyc.countriesNotRequiringAddressDocuments
+        self.loading.send(false)
       case .failure(let error):
+        self.loading.send(false)
         self.didFail(with: .init(error: error, value: true))
       }
-      self.loading.send(false)
     }
   }
   

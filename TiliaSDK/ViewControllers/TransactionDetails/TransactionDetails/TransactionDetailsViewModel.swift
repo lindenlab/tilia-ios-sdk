@@ -38,6 +38,7 @@ protocol TransactionDetailsDataStore {
   var manager: NetworkManager { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
   var onEmailSent: () -> Void { get }
+  var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -66,9 +67,9 @@ final class TransactionDetailsViewModel: TransactionDetailsViewModelProtocol, Tr
   private(set) lazy var onEmailSent: () -> Void = { [weak self] in
     self?.didSendEmail()
   }
+  let onUpdate: ((TLUpdateCallback) -> Void)?
   let onError: ((TLErrorCallback) -> Void)?
   
-  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private let mode: TransactionDetailsMode
   private var isLoaded = false
@@ -122,8 +123,8 @@ private extension TransactionDetailsViewModel {
           self.getTransactionDetails()
         }
       case .failure(let error):
-        self.didFail(with: error)
         self.loading.send(false)
+        self.didFail(with: error)
       }
     }
   }
@@ -131,6 +132,7 @@ private extension TransactionDetailsViewModel {
   func getTransactionDetails() {
     manager.getTransactionDetails(with: transactionId) { [weak self] result in
       guard let self = self else { return }
+      self.loading.send(false)
       switch result {
       case .success(let model):
         self.isLoaded = true
@@ -138,7 +140,6 @@ private extension TransactionDetailsViewModel {
       case .failure(let error):
         self.didFail(with: error)
       }
-      self.loading.send(false)
     }
   }
   

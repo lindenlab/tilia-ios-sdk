@@ -89,6 +89,23 @@ private extension BaseTableViewController {
       tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       tableView.bottomAnchor.constraint(equalTo: divider.topAnchor),
     ])
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
+  }
+  
+  @objc func keyboardWasShown(_ notificiation: NSNotification) {
+    guard
+      let value = notificiation.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+      let firstResponder = self.view.firstResponder else { return }
+    let bottomInset = self.view.frame.height - divider.frame.midY
+    tableView.contentInset.bottom = value.cgRectValue.height - bottomInset
+    let rect = firstResponder.convert(firstResponder.frame, to: self.tableView)
+    tableView.scrollRectToVisible(rect, animated: true)
+  }
+  
+  @objc func keyboardWillBeHidden() {
+    tableView.contentInset.bottom = 0
   }
   
 }

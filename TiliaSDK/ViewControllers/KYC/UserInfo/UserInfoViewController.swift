@@ -18,7 +18,7 @@ final class UserInfoViewController: BaseTableViewController {
   private let router: UserInfoRoutingProtocol
   private let builder = UserInfoSectionBuilder()
   private var subscriptions: Set<AnyCancellable> = []
-  private lazy var sections: [UserInfoSectionBuilder.Section] = builder.sections()
+  private var sections: [UserInfoSectionBuilder.Section] = []
   
   init(manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -43,6 +43,7 @@ final class UserInfoViewController: BaseTableViewController {
     super.viewDidLoad()
     setup()
     bind()
+    viewModel.load()
   }
   
   override func viewDidLayoutSubviews() {
@@ -51,7 +52,7 @@ final class UserInfoViewController: BaseTableViewController {
   }
   
   override func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    viewModel.complete()
+    viewModel.complete(isFromCloseAction: false)
   }
   
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -106,6 +107,11 @@ extension UserInfoViewController: TextFieldsCellDelegate {
                       fieldIndex: index)
   }
   
+  func textFieldsCell(_ cell: TextFieldsCell, didEditAt index: Int) {
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    viewModel.startEditingEmail(at: indexPath.section)
+  }
+  
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
     guard TosAcceptModel(str: link) == .privacyPolicy else { return }
     router.routeToTosContentView()
@@ -118,21 +124,25 @@ extension UserInfoViewController: TextFieldsCellDelegate {
 extension UserInfoViewController: UserInfoNextButtonCellDelegate {
   
   func userInfoNextButtonCellButtonDidTap(_ cell: UserInfoNextButtonCell) {
+    guard let index = tableView.indexPath(for: cell)?.section else { return }
+    viewModel.onNext(for: sections[index], at: index)
+  }
+  
+}
+
+// MARK: - UserInfoUpdateEmailCellDelegate
+
+extension UserInfoViewController: UserInfoUpdateEmailCellDelegate {
+  
+  func userInfoUpdateEmailCellUpdateButtonDidTap(_ cell: UserInfoUpdateEmailCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
-    let index = indexPath.section
-    var nextSectionIndex: Int?
-    for i in index + 1..<sections.count {
-      if sections[i].mode == .expanded {
-        break
-      } else if sections[i].mode == .normal {
-        nextSectionIndex = i
-        break
-      }
-    }
-    viewModel.updateSection(sections[index],
-                            at: index,
-                            isExpanded: false,
-                            nextSectionIndex: nextSectionIndex)
+    viewModel.updateEmail(at: indexPath.section)
+  }
+  
+  func userInfoUpdateEmailCellCancelButtonDidTap(_ cell: UserInfoUpdateEmailCell) {
+    guard let indexPath = tableView.indexPath(for: cell) else { return }
+    viewModel.cancelEditingEmail(for: sections[indexPath.section],
+                                 at: indexPath.section)
   }
   
 }
@@ -167,7 +177,7 @@ extension UserInfoViewController: ButtonsViewDelegate {
   }
   
   func buttonsViewPrimaryNonButtonDidTap() {
-    router.dismiss() { self.viewModel.complete() }
+    dismiss(isFromCloseAction: false)
   }
   
 }
@@ -188,17 +198,29 @@ private extension UserInfoViewController {
     tableView.register(UserInfoSuccessCell.self)
     tableView.register(UserInfoProcessingCell.self)
     tableView.register(UserInfoImageCell.self)
+    tableView.register(UserInfoUpdateEmailCell.self)
     tableView.tableHeaderView = builder.tableHeader()
     tableView.estimatedRowHeight = 150
     tableView.estimatedSectionHeaderHeight = 50
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown), name: UIResponder.keyboardDidShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
   }
   
   func bind() {
-    viewModel.error.sink { [weak self] _ in
+    viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
+      $0 ? self.startLoading() : self.stopLoading()
+    }.store(in: &subscriptions)
+    
+    viewModel.content.sink { [weak self] in
+      guard let self = self else { return }
+      self.sections = self.builder.sections(with: $0)
+      self.tableView.reloadData()
+    }.store(in: &subscriptions)
+    
+    viewModel.error.sink { [weak self] in
+      guard let self = self else { return }
+      if $0.value {
+        self.showCancelButton()
+      }
       self.router.showToast(title: L.errorKycTitle,
                             message: L.errorKycMessage)
     }.store(in: &subscriptions)
@@ -244,15 +266,30 @@ private extension UserInfoViewController {
                                                     wasUsResidence: $0.wasUsResidence)
       self.builder.updateTableFooter(for: self.sections,
                                      in: self.tableView)
-      self.tableView.performBatchUpdates {
-        tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
-      }
+      tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .fade) }
     }.store(in: &subscriptions)
     
     viewModel.coutryOfResidenceDidSelect.sink { [weak self] in
       guard let self = self else { return }
       self.builder.enableSections(&self.sections,
                                   in: self.tableView)
+    }.store(in: &subscriptions)
+    
+    viewModel.nextSection.sink { [weak self] in
+      guard let self = self else { return }
+      var nextSectionIndex: Int?
+      for i in $0 + 1..<self.sections.count {
+        if self.sections[i].mode == .expanded {
+          break
+        } else if self.sections[i].mode == .normal {
+          nextSectionIndex = i
+          break
+        }
+      }
+      self.viewModel.updateSection(self.sections[$0],
+                                   at: $0,
+                                   isExpanded: false,
+                                   nextSectionIndex: nextSectionIndex)
     }.store(in: &subscriptions)
     
     viewModel.uploading.sink { [weak self] in
@@ -310,6 +347,53 @@ private extension UserInfoViewController {
       self.sections = [self.builder.successSection()]
       self.tableView.reloadData()
     }.store(in: &subscriptions)
+    
+    viewModel.verifyEmail.sink { [weak self] in
+      self?.router.routeToVerifyEmailView()
+    }.store(in: &subscriptions)
+    
+    viewModel.emailVerified.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.reloadEmailSection(for: &self.sections,
+                                                        in: self.tableView,
+                                                        with: $0.model)
+      UIView.performWithoutAnimation {
+        tableUpdate.map { self.tableView.reloadSections($0, with: .none) }
+      }
+      self.router.showToast(title: L.success,
+                            message: $0.message,
+                            isSuccess: true)
+    }.store(in: &subscriptions)
+    
+    viewModel.didStartEditingEmail.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updatesSection(&self.sections[$0.index],
+                                                    at: $0.index,
+                                                    didStartEditingEmailFor: $0.model)
+      self.tableView.performBatchUpdates {
+        tableUpdate.insertRows.map { self.tableView.insertRows(at: $0, with: .none) }
+        tableUpdate.reloadRows.map { self.tableView.reloadRows(at: $0, with: .none) }
+      }
+    }.store(in: &subscriptions)
+    
+    viewModel.didEndEditingEmail.sink { [weak self] in
+      guard let self = self else { return }
+      let tableUpdate = self.builder.updatesSection(&self.sections[$0.index],
+                                                    at: $0.index,
+                                                    didEndEditingEmailFor: $0.model)
+      self.tableView.performBatchUpdates {
+        tableUpdate.deleteRows.map { self.tableView.deleteRows(at: $0, with: .none) }
+        tableUpdate.reloadRows.map { self.tableView.reloadRows(at: $0, with: .none) }
+      }
+    }.store(in: &subscriptions)
+    
+    viewModel.isSectionFilled.sink { [weak self] in
+      guard let self = self else { return }
+      self.builder.updateSection(&self.sections[$0.index],
+                                 in: self.tableView,
+                                 at: $0.index,
+                                 isFilled: $0.isFilled)
+    }.store(in: &subscriptions)
   }
   
   func getHeaderIndex(_ header: UITableViewHeaderFooterView) -> Int? {
@@ -318,18 +402,16 @@ private extension UserInfoViewController {
     }
   }
   
-  @objc func keyboardWasShown(_ notificiation: NSNotification) {
-    guard
-      let value = notificiation.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-      let firstResponder = self.view.firstResponder else { return }
-    let bottomInset = self.view.frame.height - divider.frame.midY
-    tableView.contentInset.bottom = value.cgRectValue.height - bottomInset
-    let rect = firstResponder.convert(firstResponder.frame, to: self.tableView)
-    tableView.scrollRectToVisible(rect, animated: true)
+  func dismiss(isFromCloseAction: Bool) {
+    router.dismiss { self.viewModel.complete(isFromCloseAction: isFromCloseAction) }
   }
   
-  @objc func keyboardWillBeHidden() {
-    tableView.contentInset.bottom = 0
+  func showCancelButton() {
+    showCloseButton(target: self, action: #selector(closeButtonDidTap))
+  }
+  
+  @objc func closeButtonDidTap() {
+    dismiss(isFromCloseAction: true)
   }
   
 }

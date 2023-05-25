@@ -37,6 +37,21 @@ final class NetworkManager {
     serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
   }
   
+  func getUserInfo(completion: @escaping CompletionResultHandler<UserDetailInfoModel>) {
+    let router = AccountRouter.getUserInfo
+    serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
+  }
+  
+  func beginVerifyUserEmail(_ email: String, completion: @escaping CompletionResultHandler<BeginVerifyUserEmailModel>) {
+    let router = AccountRouter.beginVerifyUserEmail(email)
+    serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
+  }
+  
+  func finishVerifyUserEmail(with model: FinishVerifyUserEmailModel, completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = AccountRouter.finishVerifyUserEmail(model: model)
+    serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
+  }
+  
   func getUserBalanceByCurrencyCode(_ currencyCode: String, completion: @escaping CompletionResultHandler<BalanceModel>) {
     guard !currencyCode.isEmpty else {
       completion(.failure(TLError.invalidCurrencyCode))

@@ -10,6 +10,10 @@ import Combine
 
 final class SendReceiptViewController: BaseViewController {
   
+  override var hideableView: UIView {
+    return stackView
+  }
+  
   private let viewModel: SendReceiptViewModelProtocol
   private let router: SendReceiptRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
@@ -23,13 +27,18 @@ final class SendReceiptViewController: BaseViewController {
     return label
   }()
   
-  private lazy var dismissButton: NonPrimaryButton = {
-    let button = NonPrimaryButton()
-    button.setImage(.closeIcon?.withRenderingMode(.alwaysTemplate),
-                    for: .normal)
-    button.imageView?.tintColor = .primaryTextColor
+  private lazy var dismissButton: CloseButton = {
+    let button = CloseButton()
     button.addTarget(self, action: #selector(closeButtonDidTap), for: .touchUpInside)
     return button
+  }()
+  
+  private let messageLabel: UILabel = {
+    let label = UILabel()
+    label.font = .systemFont(ofSize: 16)
+    label.textColor = .primaryTextColor
+    label.numberOfLines = 0
+    return label
   }()
   
   private lazy var textField: RoundedTextField = {
@@ -53,28 +62,47 @@ final class SendReceiptViewController: BaseViewController {
     return textField
   }()
   
+  private lazy var cancelEditingButton: NonPrimaryButton = {
+    let button = NonPrimaryButton()
+    button.setTitle(L.cancel, for: .normal)
+    button.addTarget(self, action: #selector(cancelEditingButtonDidTap), for: .touchUpInside)
+    return button
+  }()
+  
   private lazy var sendButton: PrimaryButton = {
-    let button = PrimaryButton(style: .titleAndImageCenter)
-    button.setImage(.sendIcon, for: .normal)
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = PrimaryButton()
     button.addTarget(self, action: #selector(sendButtonDidTap), for: .touchUpInside)
     button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-    button.setTitle(L.send, for: .normal)
-    button.setTitleForLoadingState(L.sending)
     button.isEnabled = false
     button.accessibilityIdentifier = "sendButton"
     return button
   }()
   
+  private lazy var buttonsStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [cancelEditingButton, sendButton])
+    stackView.spacing = 8
+    return stackView
+  }()
+  
+  private lazy var stackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [messageLabel, textField, buttonsStackView])
+    stackView.axis = .vertical
+    stackView.spacing = 16
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    return stackView
+  }()
+  
   init(transactionId: String,
        manager: NetworkManager,
        onEmailSent: @escaping () -> Void,
+       onUpdate: ((TLUpdateCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = SendReceiptViewModel(transactionId: transactionId,
                                          manager: manager,
                                          onEmailSent: onEmailSent,
+                                         onUpdate: onUpdate,
                                          onError: onError)
-    let router = SendReceiptRouter()
+    let router = SendReceiptRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
     super.init(nibName: nil, bundle: nil)
@@ -89,6 +117,7 @@ final class SendReceiptViewController: BaseViewController {
     super.viewDidLoad()
     setup()
     bind()
+    viewModel.load()
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -109,8 +138,7 @@ extension SendReceiptViewController: UITextFieldDelegate {
   }
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    sendEmail()
+    sendButtonDidTap()
     return true
   }
   
@@ -125,36 +153,44 @@ private extension SendReceiptViewController {
     headerStackView.alignment = .center
     headerStackView.distribution = .equalCentering
     headerStackView.spacing = 4
+    headerStackView.translatesAutoresizingMaskIntoConstraints = false
     
-    let stackView = UIStackView(arrangedSubviews: [headerStackView, textField])
-    stackView.axis = .vertical
-    stackView.spacing = 16
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    
+    view.addSubview(headerStackView)
     view.addSubview(stackView)
-    view.addSubview(sendButton)
     
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+      headerStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+      headerStackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+      headerStackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+      headerStackView.bottomAnchor.constraint(equalTo: stackView.topAnchor, constant: -16),
       stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
-      stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-      stackView.bottomAnchor.constraint(equalTo: sendButton.topAnchor, constant: -16),
-      sendButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-      dismissButton.heightAnchor.constraint(equalToConstant: 30),
-      dismissButton.widthAnchor.constraint(equalToConstant: 30)
+      stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16)
     ])
   }
   
   func bind() {
     viewModel.loading.sink { [weak self] in
       guard let self = self else { return }
+      $0 ? self.startLoading() : self.stopLoading()
+    }.store(in: &subscriptions)
+    
+    viewModel.sending.sink { [weak self] in
+      guard let self = self else { return }
       self.textField.isUserInteractionEnabled = !$0
       self.sendButton.isLoading = $0
     }.store(in: &subscriptions)
     
-    viewModel.error.sink { [weak self] _ in
-      self?.router.showToast(title: L.errorSendReceiptTitle,
-                             message: L.errorSendReceiptMessage)
+    viewModel.error.sink { [weak self] in
+      guard let self = self else { return }
+      if $0.value {
+        self.showCancelButton()
+      }
+      self.router.showToast(title: L.errorSendReceiptTitle,
+                            message: L.errorSendReceiptMessage)
+    }.store(in: &subscriptions)
+    
+    viewModel.defaultEmail.sink { [weak self] in
+      self?.textField.text = $0
     }.store(in: &subscriptions)
     
     viewModel.emailSent.sink { [weak self] in
@@ -167,19 +203,127 @@ private extension SendReceiptViewController {
       self.sendButton.isEnabled = $0
       self.textField.isReturnKeyEnabled = $0
     }.store(in: &subscriptions)
+    
+    viewModel.emailVerificationMode.sink { [weak self] in
+      guard let self = self else { return }
+      self.messageLabel.text = $0.message
+      self.cancelEditingButton.isHidden = $0.isCancelEditingButtonHidden
+      self.sendButton.setTitle($0.sendButtonTitle, for: .normal)
+      self.buttonsStackView.axis = $0.stackViewAxis
+      self.buttonsStackView.alignment = $0.stackViewAlignment
+      self.buttonsStackView.distribution = $0.stackViewDistribution
+      self.textField.rightView = self.editButton(isHidden: $0.isEditButtonHidden)
+      self.textField.rightViewMode = $0.isEditButtonHidden ? .never : .always
+      self.textField.isUserInteractionEnabled = $0.isTextFieldEditable
+    }.store(in: &subscriptions)
+    
+    viewModel.verifyEmail.sink { [weak self] in
+      self?.router.routeToVerifyEmailView()
+    }.store(in: &subscriptions)
+    
+    viewModel.emailVerified.sink { [weak self] in
+      self?.router.showToast(title: L.success,
+                             message: $0,
+                             isSuccess: true)
+    }.store(in: &subscriptions)
   }
   
   @objc func closeButtonDidTap() {
     router.dismiss()
   }
   
-  @objc func sendButtonDidTap() {
+  @objc func cancelEditingButtonDidTap() {
+    viewModel.cancelEditEmail(textField.text ?? "")
     textField.resignFirstResponder()
-    sendEmail()
   }
   
-  func sendEmail() {
+  @objc func sendButtonDidTap() {
+    textField.resignFirstResponder()
     viewModel.sendEmail(textField.text ?? "")
+  }
+  
+  @objc func editButtonDidTap() {
+    viewModel.editEmail()
+    textField.becomeFirstResponder()
+  }
+  
+  func showCancelButton() {
+    showCloseButton(target: self, action: #selector(closeButtonDidTap))
+  }
+  
+  func editButton(isHidden: Bool) -> UIButton? {
+    guard !isHidden else { return nil }
+    let button = EditButton()
+    button.accessibilityIdentifier = "editButton"
+    button.addTarget(self,
+                     action: #selector(editButtonDidTap),
+                     for: .touchUpInside)
+    return button
+  }
+  
+}
+
+// MARK: - Private Helpers
+
+private extension SendReceiptMode {
+  
+  var message: String {
+    switch self {
+    case .notVerified: return L.emailIsNotVerifiedForUpdatesMessage
+    case .verified, .edit: return L.emailIsVerifiedForUpdatesMessage
+    }
+  }
+  
+  var isTextFieldEditable: Bool {
+    switch self {
+    case .notVerified, .edit: return true
+    case .verified: return false
+    }
+  }
+  
+  var isEditButtonHidden: Bool {
+    switch self {
+    case .verified:
+      return false
+    case .notVerified, .edit:
+      return true
+    }
+  }
+  
+  var isCancelEditingButtonHidden: Bool {
+    switch self {
+    case .notVerified, .verified: return true
+    case .edit: return false
+    }
+  }
+  
+  var sendButtonTitle: String {
+    switch self {
+    case .notVerified: return L.verifyEmail
+    case .verified: return L.sendToThisEmail
+    case .edit: return L.updateEmail
+    }
+  }
+  
+  var stackViewAxis: NSLayoutConstraint.Axis {
+    switch self {
+    case .notVerified, .verified: return .vertical
+    case .edit: return .horizontal
+    }
+  }
+  
+  var stackViewAlignment: UIStackView.Alignment {
+    switch self {
+    case .notVerified, .verified: return .trailing
+    case .edit: return .fill
+    }
+  }
+  
+  var stackViewDistribution: UIStackView.Distribution {
+    switch self {
+    case .notVerified, .verified: return .fill
+    case .edit: return .fillEqually
+    }
   }
   
 }

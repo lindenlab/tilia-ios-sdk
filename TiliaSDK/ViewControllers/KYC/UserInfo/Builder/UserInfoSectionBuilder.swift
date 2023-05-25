@@ -9,14 +9,15 @@ import UIKit
 
 struct UserInfoSectionBuilder {
   
-  typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate
+  typealias CellDelegate = TextFieldsCellDelegate & UserInfoNextButtonCellDelegate & UserInfoUpdateEmailCellDelegate
   typealias SectionHeaderDelegate = UserInfoHeaderViewDelegate
   typealias SectionFooterDelegate = ButtonsViewDelegate
-  typealias TableUpdate = (insertRows: [IndexPath]?, deleteRows: [IndexPath]?)
+  typealias TableUpdate = (insertRows: [IndexPath]?, deleteRows: [IndexPath]?, reloadRows: [IndexPath]?)
   
   struct Section {
     
     enum SectionType {
+      case email
       case location
       case personal
       case tax
@@ -27,11 +28,12 @@ struct UserInfoSectionBuilder {
       case success
       
       static var defaultItems: [SectionType] {
-        return [.location, .personal, .tax, .contact]
+        return [.email, .location, .personal, .tax, .contact]
       }
       
       var headerTitle: String? {
         switch self {
+        case .email: return L.emailAddress
         case .location: return L.location
         case .personal: return L.personal
         case .tax: return L.taxInfo
@@ -49,12 +51,6 @@ struct UserInfoSectionBuilder {
         }
       }
       
-      var defaultMode: UserInfoHeaderView.Mode {
-        switch self {
-        case .location: return .expanded
-        default: return .disabled
-        }
-      }
     }
     
     struct Item {
@@ -62,6 +58,7 @@ struct UserInfoSectionBuilder {
       enum Mode {
         
         enum FieldType {
+          case email
           case countryOfResidance
           case fullName
           case dateOfBirth
@@ -78,17 +75,27 @@ struct UserInfoSectionBuilder {
           let placeholder: String?
           var text: String?
           let accessibilityIdentifier: String?
+          var isUserInteractionEnabled: Bool
+          var isEditButtonHidden: Bool
           
           var fieldContent: TextFieldsCell.FieldContent {
-            return (placeholder, text, accessibilityIdentifier)
+            return .init(placeholder: placeholder,
+                         text: text,
+                         accessibilityIdentifier: accessibilityIdentifier,
+                         isUserInteractionEnabled: isUserInteractionEnabled,
+                         isEditButtonHidden: isEditButtonHidden)
           }
           
           init(placeholder: String? = nil,
                text: String? = nil,
-               accessibilityIdentifier: String?) {
+               accessibilityIdentifier: String?,
+               isUserInteractionEnabled: Bool = true,
+               isEditButtonHidden: Bool = true) {
             self.placeholder = placeholder
             self.text = text
             self.accessibilityIdentifier = accessibilityIdentifier
+            self.isUserInteractionEnabled = isUserInteractionEnabled
+            self.isEditButtonHidden = isEditButtonHidden
           }
         }
         
@@ -143,28 +150,35 @@ struct UserInfoSectionBuilder {
         
         case fields(Fields)
         case label
-        case button
+        case nextButton(String)
+        case updateEmailButtons
         case processing(Processing)
         case image(UIImage?)
         case success
       }
       
       let title: String?
+      let titleTextFont: UIFont?
       var mode: Mode
       let description: String?
+      let descriptionTextColor: UIColor?
       let attributedDescription: NSAttributedString?
       let descriptionTextData: TextViewWithLink.TextData?
       let descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]?
       
       init(mode: Mode,
            title: String? = nil,
+           titleTextFont: UIFont? = nil,
            description: String? = nil,
+           descriptionTextColor: UIColor? = nil,
            attributedDescription: NSAttributedString? = nil,
            descriptionTextData: TextViewWithLink.TextData? = nil,
            descriptionAdditionalAttributes: [TextViewWithLink.AdditionalAttribute]? = nil) {
-        self.title = title
         self.mode = mode
+        self.title = title
+        self.titleTextFont = titleTextFont
         self.description = description
+        self.descriptionTextColor = descriptionTextColor
         self.attributedDescription = attributedDescription
         self.descriptionTextData = descriptionTextData
         self.descriptionAdditionalAttributes = descriptionAdditionalAttributes
@@ -216,14 +230,24 @@ struct UserInfoSectionBuilder {
       return cell
     case .label:
       let cell = tableView.dequeue(LabelCell.self, for: indexPath)
+      cell.configure(titleFont: item.titleTextFont ?? .systemFont(ofSize: 16))
       cell.configure(title: item.title)
       cell.configure(description: item.description,
-                     attributedDescription: item.attributedDescription)
+                     attributedDescription: item.attributedDescription,
+                     textColor: item.descriptionTextColor ?? .secondaryTextColor,
+                     textData: item.descriptionTextData,
+                     delegate: delegate)
       return cell
-    case .button:
+    case let .nextButton(title):
       let cell = tableView.dequeue(UserInfoNextButtonCell.self, for: indexPath)
       cell.configure(delegate: delegate)
+      cell.configure(buttonTitle: title)
       cell.configure(isButtonEnabled: section.isFilled ?? false)
+      return cell
+    case .updateEmailButtons:
+      let cell = tableView.dequeue(UserInfoUpdateEmailCell.self, for: indexPath)
+      cell.configure(delegate: delegate)
+      cell.configure(isUpdateButtonEnabled: section.isFilled ?? false)
       return cell
     case let .processing(model):
       let cell = tableView.dequeue(UserInfoProcessingCell.self, for: indexPath)
@@ -300,12 +324,12 @@ struct UserInfoSectionBuilder {
     return view
   }
   
-  func sections() -> [Section] {
+  func sections(with model: UserInfoModel) -> [Section] {
     return Section.SectionType.defaultItems.map {
       return Section(type: $0,
-                     mode: $0.defaultMode,
-                     isFilled: false,
-                     items: defaultItems(for: $0))
+                     mode: defaultMode(for: $0, with: model),
+                     isFilled: isSectionFilledByDefault(for: $0, with: model),
+                     items: defaultItems(for: $0, with: model))
     }
   }
   
@@ -344,7 +368,7 @@ struct UserInfoSectionBuilder {
                   at: sectionIndex,
                   mode: mode)
     let indexPaths = section.items.enumerated().map { IndexPath(row: $0.offset, section: sectionIndex) }
-    var tableUpdate: TableUpdate = (nil, nil)
+    var tableUpdate: TableUpdate = (nil, nil, nil)
     if isExpanded {
       tableUpdate.insertRows = indexPaths
     } else {
@@ -366,22 +390,10 @@ struct UserInfoSectionBuilder {
       field.inputMode = .picker(items: items, selectedIndex: selectedIndex)
     }
     section.items[indexPath.row].mode = .fields(field)
-    
-    section.isFilled = isFilled
-    
-    section.items.firstIndex {
-      if case .button = $0.mode {
-        return true
-      } else {
-        return false
-      }
-    }.map {
-      let nextButtonCellIndexPath = IndexPath(row: $0,
-                                              section: indexPath.section)
-      if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
-        nextButtonCell.configure(isButtonEnabled: isFilled)
-      }
-    }
+    updateSection(&section,
+                  in: tableView,
+                  at: indexPath.section,
+                  isFilled: isFilled)
   }
   
   func enableSections(_ sections: inout [Section], in tableView: UITableView) {
@@ -408,7 +420,7 @@ struct UserInfoSectionBuilder {
       default: break
       }
     }
-    return (nil, indexPaths.toNilIfEmpty())
+    return (nil, indexPaths.toNilIfEmpty(), nil)
   }
   
   func updateTableFooter(for sections: [Section],
@@ -462,21 +474,120 @@ struct UserInfoSectionBuilder {
     tableView.updateTableHeaderHeightIfNeeded()
   }
   
+  func updatesSection(_ section: inout Section,
+                      at index: Int,
+                      didStartEditingEmailFor model: UserInfoModel) -> TableUpdate {
+    var tableUpdate: TableUpdate = (nil, nil, nil)
+    tableUpdate.insertRows = [IndexPath(row: section.items.count, section: index)]
+    section.items.append(Section.Item(mode: .updateEmailButtons))
+    updateEmailSectionTextField(&section,
+                                with: model,
+                                isEditing: true).map {
+      tableUpdate.reloadRows = [IndexPath(row: $0, section: index)]
+    }
+    return tableUpdate
+  }
+  
+  func updatesSection(_ section: inout Section,
+                      at index: Int,
+                      didEndEditingEmailFor model: UserInfoModel) -> TableUpdate {
+    var tableUpdate: TableUpdate = (nil, nil, nil)
+    updateEmailSectionTextField(&section,
+                                with: model,
+                                isEditing: false).map {
+      tableUpdate.reloadRows = [IndexPath(row: $0, section: index)]
+    }
+    section.items.firstIndex {
+      switch $0.mode {
+      case .nextButton, .updateEmailButtons: return true
+      default: return false
+      }
+    }.map { buttonsIndex in
+      section.items.remove(at: buttonsIndex)
+      tableUpdate.deleteRows = [IndexPath(row: buttonsIndex, section: index)]
+    }
+    return tableUpdate
+  }
+  
+  func reloadEmailSection(for sections: inout [Section],
+                          in tableView: UITableView,
+                          with model: UserInfoModel) -> IndexSet? {
+    guard let index = sections.firstIndex(where: { $0.type == .email }) else { return nil }
+    if let locationIndex = sections.firstIndex(where: { $0.type == .location }), sections[locationIndex].mode == .disabled {
+      updateSection(&sections[locationIndex],
+                    in: tableView,
+                    at: locationIndex,
+                    mode: .normal)
+    }
+    sections[index].items = itemsForEmailSection(with: model)
+    return [index]
+  }
+  
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at index: Int,
+                     isFilled: Bool) {
+    section.isFilled = isFilled
+    
+    section.items.firstIndex {
+      if case .nextButton = $0.mode {
+        return true
+      } else {
+        return false
+      }
+    }.map {
+      let nextButtonCellIndexPath = IndexPath(row: $0, section: index)
+      if let nextButtonCell = tableView.cellForRow(at: nextButtonCellIndexPath) as? UserInfoNextButtonCell {
+        nextButtonCell.configure(isButtonEnabled: isFilled)
+      }
+    }
+    
+    section.items.firstIndex {
+      if case .updateEmailButtons = $0.mode {
+        return true
+      } else {
+        return false
+      }
+    }.map {
+      let updateEmailCellIndexPath = IndexPath(row: $0, section: index)
+      if let updateEmailCell = tableView.cellForRow(at: updateEmailCellIndexPath) as? UserInfoUpdateEmailCell {
+        updateEmailCell.configure(isUpdateButtonEnabled: isFilled)
+      }
+    }
+  }
+  
 }
 
 // MARK: - Private Methods
 
 private extension UserInfoSectionBuilder {
   
-  func defaultItems(for type: Section.SectionType) -> [Section.Item] {
+  func defaultMode(for type: Section.SectionType, with model: UserInfoModel) -> UserInfoHeaderView.Mode {
     switch type {
-    case .location: return itemsForLocationSection(with: nil)
+    case .email: return model.isEmailVerified ? .passed : .expanded
+    case .location where model.isEmailVerified: return .expanded
+    default: return .disabled
+    }
+  }
+  
+  func isSectionFilledByDefault(for type: Section.SectionType, with model: UserInfoModel) -> Bool {
+    switch type {
+    case .email: return model.isEmailVerified
+    default: return false
+    }
+  }
+  
+  func defaultItems(for type: Section.SectionType, with model: UserInfoModel) -> [Section.Item] {
+    switch type {
+    case .email: return model.isEmailVerified ? [] : itemsForEmailSection(with: model)
+    case .location where model.isEmailVerified: return itemsForLocationSection(with: model)
     default: return []
     }
   }
   
   func items(for type: Section.SectionType, with model: UserInfoModel) -> [Section.Item] {
     switch type {
+    case .email: return itemsForEmailSection(with: model)
     case .location: return itemsForLocationSection(with: model)
     case .personal: return itemsForPersonalSection(with: model)
     case .tax: return itemsForTaxSection(with: model)
@@ -485,19 +596,42 @@ private extension UserInfoSectionBuilder {
     }
   }
   
-  func itemsForLocationSection(with model: UserInfoModel?) -> [Section.Item] {
+  func itemsForEmailSection(with model: UserInfoModel) -> [Section.Item] {
+    let textData: TextViewWithLink.TextData = (model.emailVerificationMessage, [TosAcceptModel.privacyPolicy.description])
+    let emailField = Section.Item.Mode.Fields(type: .email,
+                                              fields: [.init(placeholder: L.email,
+                                                             text: model.email,
+                                                             accessibilityIdentifier: "emailTextField",
+                                                             isUserInteractionEnabled: !model.isEmailVerified,
+                                                             isEditButtonHidden: !model.isEmailVerified)])
+    var items = [
+      Section.Item(mode: .label,
+                   title: model.emailVerificationTitle,
+                   titleTextFont: .boldSystemFont(ofSize: 20),
+                   descriptionTextColor: .primaryTextColor,
+                   descriptionTextData: textData),
+      Section.Item(mode: .fields(emailField),
+                   title: L.email)
+    ]
+    if !model.isEmailVerified {
+      items.append(Section.Item(mode: .nextButton(L.verifyEmail)))
+    }
+    return items
+  }
+  
+  func itemsForLocationSection(with model: UserInfoModel) -> [Section.Item] {
     let countries = CountryModel.countryNames
-    let selectedIndex = countries.firstIndex { $0 == model?.countryOfResidence?.name }
+    let selectedIndex = countries.firstIndex { $0 == model.countryOfResidence?.name }
     let countryOfResidenceField = Section.Item.Mode.Fields(type: .countryOfResidance,
                                                            fields: [.init(placeholder: L.selectCountry,
-                                                                          text: model?.countryOfResidence?.name,
+                                                                          text: model.countryOfResidence?.name,
                                                                           accessibilityIdentifier: "countryOfResidenceTextField")],
                                                            inputMode: .picker(items: countries,
                                                                               selectedIndex: selectedIndex))
     return [
       Section.Item(mode: .fields(countryOfResidenceField),
                    title: L.countryOfResidence),
-      Section.Item(mode: .button)
+      Section.Item(mode: .nextButton(L.next))
     ]
   }
   
@@ -524,7 +658,7 @@ private extension UserInfoSectionBuilder {
                    title: L.fullName),
       Section.Item(mode: .fields(dateOfBirthField),
                    title: L.dateOfBirth),
-      Section.Item(mode: .button)
+      Section.Item(mode: .nextButton(L.next))
     ]
   }
   
@@ -557,7 +691,7 @@ private extension UserInfoSectionBuilder {
                    title: model.isUsResident ? L.signatureUs : L.signature,
                    descriptionTextData: signatureMessage.0,
                    descriptionAdditionalAttributes: [signatureMessage.1]),
-      Section.Item(mode: .button)
+      Section.Item(mode: .nextButton(L.next))
     ])
     return items
   }
@@ -679,6 +813,51 @@ private extension UserInfoSectionBuilder {
     let textData: TextViewWithLink.TextData = (newStr, [link])
     let additionalAttribute: TextViewWithLink.AdditionalAttribute = (subTitle, .secondaryTextColor, .systemFont(ofSize: 14))
     return (textData, additionalAttribute)
+  }
+  
+  func updateEmailSectionTextField(_ section: inout Section,
+                                   with model: UserInfoModel,
+                                   isEditing: Bool) -> Int? {
+    return section.items.firstIndex {
+      if case .fields(let field) = $0.mode {
+        if case .email = field.type {
+          return true
+        } else {
+          return true
+        }
+      } else {
+        return false
+      }
+    }.flatMap { index -> Int? in
+      guard case .fields(var field) = section.items[index].mode else { return nil }
+      field.fields[0].isEditButtonHidden = isEditing
+      field.fields[0].isUserInteractionEnabled = isEditing
+      if !isEditing && model.email != model.needToVerifyEmail {
+        field.fields[0].text = model.email
+      }
+      section.items[index].mode = .fields(field)
+      return index
+    }
+  }
+  
+}
+
+private extension UserInfoModel {
+  
+  var emailVerificationTitle: String {
+    if isEmailVerified {
+      return isEmailUpdated ? L.yourEmailIsUpdated : L.yourEmailIsVerified
+    } else {
+      return L.needToCollectEmailTitle
+    }
+  }
+  
+  var emailVerificationMessage: String {
+    if isEmailVerified {
+      return isEmailUpdated ? L.emailIsVerifiedForUpdatesMessage : L.emailIsVerifiedForUpdatesWithPrivacyPolicyMessage
+    } else {
+      return L.emailIsNotVerifiedForUpdatesWithPrivacyPolicyMessage
+    }
   }
   
 }

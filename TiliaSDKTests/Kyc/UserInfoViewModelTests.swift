@@ -174,7 +174,7 @@ final class UserInfoViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     viewModel.successfulCompleting.sink { [weak viewModel] in
-      viewModel?.complete()
+      viewModel?.complete(isFromCloseAction: false)
     }.store(in: &subscriptions)
     
     let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .countryOfResidance,
@@ -218,7 +218,7 @@ final class UserInfoViewModelTests: XCTestCase {
     
     let errorExpectation = XCTestExpectation(description: "testFailureSubmit_Error")
     viewModel.error.sink {
-      error = $0
+      error = $0.error
       errorExpectation.fulfill()
     }.store(in: &subscriptions)
     
@@ -246,6 +246,76 @@ final class UserInfoViewModelTests: XCTestCase {
     wait(for: expectations, timeout: 2)
     XCTAssertNotNil(error)
     XCTAssertNotNil(errorCallback)
+  }
+  
+  func testSuccessLoadContentAndUpdateEmail() {
+    var updateCallback: TLUpdateCallback?
+    var content: Void?
+    var didStartEditingEmail: UserInfoEditEmail?
+    var verifyEmail: Void?
+    var emailVerified: UserInfoEmailVerified?
+    
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessLoadContentAndUpdateEmail_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = UserInfoViewModel(manager: networkManager,
+                                      onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                      onComplete: nil,
+                                      onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessLoadContentAndUpdateEmail_ContentExpectation")
+    viewModel.content.sink { [weak viewModel] _ in
+      content = ()
+      viewModel?.startEditingEmail(at: 0)
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let didStartEditingEmailExpectation = XCTestExpectation(description: "testSuccessLoadContentAndUpdateEmail_DidStartEditingEmail")
+    viewModel.didStartEditingEmail.sink { [weak viewModel] in
+      didStartEditingEmail = $0
+      let item = UserInfoSectionBuilder.Section.Item(mode: .fields(.init(type: .email,
+                                                                         fields: [.init(accessibilityIdentifier: nil)])),
+                                                     title: nil,
+                                                     description: nil)
+      let section = UserInfoSectionBuilder.Section(type: .email,
+                                                   mode: .normal,
+                                                   isFilled: false,
+                                                   items: [item])
+      viewModel?.setText("test@gmail.com", for: section, indexPath: .init(row: 0, section: 0), fieldIndex: 0)
+      viewModel?.updateEmail(at: $0.index)
+      didStartEditingEmailExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let verifyEmailExpectation = XCTestExpectation(description: "testSuccessLoadContentAndUpdateEmail_VerifyEmail")
+    viewModel.verifyEmail.sink { [weak viewModel] in
+      verifyEmail = ()
+      viewModel?.onEmailVerified(viewModel?.verifyEmailMode ?? .update)
+      verifyEmailExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let emailVerifiedExpectation = XCTestExpectation(description: "testSuccessLoadContentAndUpdateEmail_EmailVerified")
+    viewModel.emailVerified.sink {
+      emailVerified = $0
+      emailVerifiedExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let expectations = [
+      updateCallbackExpectation,
+      contentExpectation,
+      didStartEditingEmailExpectation,
+      verifyEmailExpectation,
+      emailVerifiedExpectation
+    ]
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    viewModel.load()
+    
+    wait(for: expectations, timeout: 2)
+    
+    XCTAssertEqual(updateCallback?.event.action, .emailVerified)
+    XCTAssertNotNil(content)
+    XCTAssertEqual(didStartEditingEmail?.index, 0)
+    XCTAssertNotNil(verifyEmail)
+    XCTAssertNotNil(emailVerified)
   }
   
 }
