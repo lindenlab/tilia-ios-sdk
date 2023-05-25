@@ -161,7 +161,7 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
                         action: isFromCloseAction ? .closedByUser : isPaymentMethodsUpdated ? .completed : .cancelledByUser)
     let model = TLCompleteCallback(event: event,
                                    state: isFromCloseAction ? .error : isPaymentMethodsUpdated ? .completed : .cancelled,
-                                   data: data)
+                                   data: isPaymentMethodsUpdated ? data : nil)
     onComplete?(model)
   }
   

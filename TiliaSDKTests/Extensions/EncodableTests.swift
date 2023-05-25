@@ -14,6 +14,7 @@ final class EncodableTests: XCTestCase {
     let model = Model(property: "Property")
     XCTAssertNotNil(model.encodedData)
     XCTAssertNotNil(model.encodedParameters)
+    XCTAssertNotNil(model.jsonStr)
   }
   
 }
