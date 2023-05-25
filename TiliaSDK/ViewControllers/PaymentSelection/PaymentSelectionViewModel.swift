@@ -69,7 +69,6 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   private let amount: Double?
   private let currencyCode: String?
   private let onComplete: ((TLCompleteCallback) -> Void)?
-  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private var walletBalance: BalanceModel?
   private var paymentMethods: [PaymentMethodModel] = []
   private var isPaymentMethodsUpdated = false
@@ -89,13 +88,11 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   init(manager: NetworkManager,
        amount: Double?,
        currencyCode: String?,
-       onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
     self.amount = amount?.toNilIfEmpty()
     self.currencyCode = currencyCode?.toNilIfEmpty()
-    self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
   }

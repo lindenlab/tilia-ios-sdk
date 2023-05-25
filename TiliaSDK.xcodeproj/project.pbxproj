@@ -151,6 +151,8 @@
 		D198E1312A1D1B3C00007D3E /* PaymentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1302A1D1B3C00007D3E /* PaymentSelectionViewController.swift */; };
 		D198E1342A1D633F00007D3E /* PaymentSelectionSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1332A1D633F00007D3E /* PaymentSelectionSectionBuilder.swift */; };
 		D198E1362A1ECC0000007D3E /* TLPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1352A1ECC0000007D3E /* TLPaymentMethods.swift */; };
+		D198E1392A1F854C00007D3E /* PaymentSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1382A1F854C00007D3E /* PaymentSelectionViewModelTests.swift */; };
+		D198E13B2A1FAB7300007D3E /* PaymentSelectionFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E13A2A1FAB7300007D3E /* PaymentSelectionFlowUITests.swift */; };
 		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
 		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
 		D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */; };
@@ -431,6 +433,8 @@
 		D198E1302A1D1B3C00007D3E /* PaymentSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionViewController.swift; sourceTree = "<group>"; };
 		D198E1332A1D633F00007D3E /* PaymentSelectionSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionSectionBuilder.swift; sourceTree = "<group>"; };
 		D198E1352A1ECC0000007D3E /* TLPaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLPaymentMethods.swift; sourceTree = "<group>"; };
+		D198E1382A1F854C00007D3E /* PaymentSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionViewModelTests.swift; sourceTree = "<group>"; };
+		D198E13A2A1FAB7300007D3E /* PaymentSelectionFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionFlowUITests.swift; sourceTree = "<group>"; };
 		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
 		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
 		D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
@@ -730,6 +734,7 @@
 				D1E977A1290AAEB100FB20AB /* Kyc */,
 				D1E977A2290AAEC100FB20AB /* TransactionDetails */,
 				D1E977A3290AAED500FB20AB /* TransactionHistory */,
+				D198E1372A1F84FF00007D3E /* PaymentSelection */,
 				D1E977A4290AAEE700FB20AB /* Routers */,
 				D152CD64290AFD4200BC515C /* Extensions */,
 			);
@@ -1026,6 +1031,14 @@
 			path = Builder;
 			sourceTree = "<group>";
 		};
+		D198E1372A1F84FF00007D3E /* PaymentSelection */ = {
+			isa = PBXGroup;
+			children = (
+				D198E1382A1F854C00007D3E /* PaymentSelectionViewModelTests.swift */,
+			);
+			path = PaymentSelection;
+			sourceTree = "<group>";
+		};
 		D19A0DA1281FED0500483DDC /* Checkout */ = {
 			isa = PBXGroup;
 			children = (
@@ -1195,6 +1208,7 @@
 				D1408F59288EB26600CABA3E /* KycFlowUITests.swift */,
 				D167248728C8E6590033899B /* TransactionDetailsFlowUITests.swift */,
 				D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */,
+				D198E13A2A1FAB7300007D3E /* PaymentSelectionFlowUITests.swift */,
 			);
 			path = TiliaSDKUITests;
 			sourceTree = "<group>";
@@ -1732,6 +1746,7 @@
 			files = (
 				D138A7762A14D4C6004A4CB9 /* VerifyEmailValidatorTests.swift in Sources */,
 				D1EFAB3A28B9501F00AB1C31 /* SendReceiptValidatorTests.swift in Sources */,
+				D198E1392A1F854C00007D3E /* PaymentSelectionViewModelTests.swift in Sources */,
 				D1B872D92805A1C200DD1F7B /* TosViewModelTests.swift in Sources */,
 				D1E97794290AADBE00FB20AB /* AccountRouterTests.swift in Sources */,
 				D1B872D72805A1B200DD1F7B /* CheckoutViewModelTests.swift in Sources */,
@@ -1771,6 +1786,7 @@
 				D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */,
 				D1408F5A288EB26600CABA3E /* KycFlowUITests.swift in Sources */,
 				D1137ED8292CDDB700488F70 /* XCUIElement+Extensions.swift in Sources */,
+				D198E13B2A1FAB7300007D3E /* PaymentSelectionFlowUITests.swift in Sources */,
 				D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */,
 				D11A7E5728FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift in Sources */,
 				D167248A28C8E80C0033899B /* XCTestCase+Extensions.swift in Sources */,

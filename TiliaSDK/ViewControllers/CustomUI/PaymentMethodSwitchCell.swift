@@ -32,6 +32,7 @@ final class PaymentMethodSwitchCell: UITableViewCell {
   
   private let uiSwitch: Switch = {
     let uiSwitch = Switch()
+    uiSwitch.accessibilityIdentifier = "selectPaymentMethodSwitch"
     return uiSwitch
   }()
   
@@ -66,6 +67,8 @@ private extension PaymentMethodSwitchCell {
   
   func setup() {
     uiSwitch.addTarget(self, action: #selector(switchDidChange), for: .valueChanged)
+    
+    accessibilityIdentifier = "paymentMethodSwitchCell"
     
     selectionStyle = .none
     backgroundColor = .backgroundColor

@@ -1,19 +1,19 @@
 //
-//  CheckoutFlowUITests.swift
+//  PaymentSelectionFlowUITests.swift
 //  TiliaSDKUITests
 //
-//  Created by Serhii.Petrishenko on 12.04.2022.
+//  Created by Serhii.Petrishenko on 25.05.2023.
 //
 
 import XCTest
 
-final class CheckoutFlowUITests: XCTestCase {
+final class PaymentSelectionFlowUITests: XCTestCase {
   
   override func setUpWithError() throws {
     continueAfterFailure = false
   }
   
-  func testCheckout() {
+  func testWithOnePaymentMethodSelection() {
     let app = XCUIApplication()
     app.launch()
         
@@ -21,7 +21,7 @@ final class CheckoutFlowUITests: XCTestCase {
     XCTAssert(useMocksSwitch.exists)
     useMocksSwitch.tap()
     
-    let cell = app.tables.staticTexts["Checkout flow"]
+    let cell = app.tables.staticTexts["Payment Selection flow"]
     XCTAssert(cell.exists)
     cell.tap()
     
@@ -29,11 +29,6 @@ final class CheckoutFlowUITests: XCTestCase {
     XCTAssert(accessTokenTextField.exists)
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
-    
-    let invoiceIdTextField = app.textFields["invoiceIdTextField"]
-    XCTAssert(invoiceIdTextField.exists)
-    invoiceIdTextField.tap()
-    invoiceIdTextField.typeText(UUID().uuidString)
     
     closeKeyboard(app: app)
     
@@ -54,19 +49,15 @@ final class CheckoutFlowUITests: XCTestCase {
     choosePaymentMethodButton.tap()
     
     let payButton = app.tables.otherElements.buttons["payButton"]
-    XCTAssert(payButton.waitForExistence(timeout: 2))
+    XCTAssert(payButton.exists)
     payButton.tap()
-    
-    let doneButton = app.tables.otherElements.buttons["closeButton"]
-    XCTAssert(doneButton.waitForExistence(timeout: 2))
-    doneButton.tap()
 
-    let backButton = app.navigationBars["Checkout flow"].buttons["Demo App"]
+    let backButton = app.navigationBars["Payment Selection flow"].buttons["Demo App"]
     XCTAssert(backButton.exists)
     backButton.tap()
   }
   
-  func testCancelCheckout() {
+  func testWithTwoPaymentMethodsSelection() {
     let app = XCUIApplication()
     app.launch()
         
@@ -74,7 +65,7 @@ final class CheckoutFlowUITests: XCTestCase {
     XCTAssert(useMocksSwitch.exists)
     useMocksSwitch.tap()
     
-    let cell = app.tables.staticTexts["Checkout flow"]
+    let cell = app.tables.staticTexts["Payment Selection flow"]
     XCTAssert(cell.exists)
     cell.tap()
     
@@ -83,10 +74,15 @@ final class CheckoutFlowUITests: XCTestCase {
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
     
-    let invoiceIdTextField = app.textFields["invoiceIdTextField"]
-    XCTAssert(invoiceIdTextField.exists)
-    invoiceIdTextField.tap()
-    invoiceIdTextField.typeText(UUID().uuidString)
+    let amountTextField = app.textFields["amountTextField"]
+    XCTAssert(amountTextField.exists)
+    amountTextField.tap()
+    amountTextField.typeText("1000000")
+    
+    let currencyTextField = app.textFields["currencyTextField"]
+    XCTAssert(currencyTextField.exists)
+    currencyTextField.tap()
+    currencyTextField.typeText("USD")
     
     closeKeyboard(app: app)
     
@@ -102,16 +98,24 @@ final class CheckoutFlowUITests: XCTestCase {
     XCTAssert(acceptButton.waitForExistence(timeout: 2))
     acceptButton.tap()
     
-    let cancelButton = app.tables.otherElements.buttons["closeButton"]
-    XCTAssert(cancelButton.waitForExistence(timeout: 3))
-    cancelButton.tap()
+    let choosePaymentMethodSwithch = app.tables.cells["paymentMethodSwitchCell"].switches["selectPaymentMethodSwitch"].firstMatch
+    XCTAssert(choosePaymentMethodSwithch.waitForExistence(timeout: 2))
+    choosePaymentMethodSwithch.tap()
+    
+    let choosePaymentMethodButton = app.tables.cells["paymentMethodRadioCell"].buttons["choosePaymentMethodButton"].firstMatch
+    XCTAssert(choosePaymentMethodButton.exists)
+    choosePaymentMethodButton.tap()
+    
+    let payButton = app.tables.otherElements.buttons["payButton"]
+    XCTAssert(payButton.exists)
+    payButton.tap()
 
-    let backButton = app.navigationBars["Checkout flow"].buttons["Demo App"]
+    let backButton = app.navigationBars["Payment Selection flow"].buttons["Demo App"]
     XCTAssert(backButton.exists)
     backButton.tap()
   }
   
-  func testCancelCheckoutFromTos() {
+  func testPaymentSelectionWithAddingCard() {
     let app = XCUIApplication()
     app.launch()
         
@@ -119,7 +123,7 @@ final class CheckoutFlowUITests: XCTestCase {
     XCTAssert(useMocksSwitch.exists)
     useMocksSwitch.tap()
     
-    let cell = app.tables.staticTexts["Checkout flow"]
+    let cell = app.tables.staticTexts["Payment Selection flow"]
     XCTAssert(cell.exists)
     cell.tap()
     
@@ -127,48 +131,6 @@ final class CheckoutFlowUITests: XCTestCase {
     XCTAssert(accessTokenTextField.exists)
     accessTokenTextField.tap()
     accessTokenTextField.typeText(UUID().uuidString)
-    
-    let invoiceIdTextField = app.textFields["invoiceIdTextField"]
-    XCTAssert(invoiceIdTextField.exists)
-    invoiceIdTextField.tap()
-    invoiceIdTextField.typeText(UUID().uuidString)
-    
-    closeKeyboard(app: app)
-    
-    let doSmthButton = app.buttons["doSmthButton"]
-    XCTAssert(doSmthButton.exists)
-    doSmthButton.tap()
-    
-    let cancelButton = app.buttons["cancelButton"]
-    XCTAssert(cancelButton.waitForExistence(timeout: 2))
-    cancelButton.tap()
-
-    let backButton = app.navigationBars["Checkout flow"].buttons["Demo App"]
-    XCTAssert(backButton.exists)
-    backButton.tap()
-  }
-  
-  func testCheckoutWithAddingCard() {
-    let app = XCUIApplication()
-    app.launch()
-        
-    let useMocksSwitch = app.switches["useMocksSwitch"]
-    XCTAssert(useMocksSwitch.exists)
-    useMocksSwitch.tap()
-    
-    let cell = app.tables.staticTexts["Checkout flow"]
-    XCTAssert(cell.exists)
-    cell.tap()
-    
-    let accessTokenTextField = app.textFields["accessTokenTextField"]
-    XCTAssert(accessTokenTextField.exists)
-    accessTokenTextField.tap()
-    accessTokenTextField.typeText(UUID().uuidString)
-    
-    let invoiceIdTextField = app.textFields["invoiceIdTextField"]
-    XCTAssert(invoiceIdTextField.exists)
-    invoiceIdTextField.tap()
-    invoiceIdTextField.typeText(UUID().uuidString)
     
     closeKeyboard(app: app)
     
@@ -205,14 +167,10 @@ final class CheckoutFlowUITests: XCTestCase {
     choosePaymentMethodButton.tap()
 
     let payButton = app.tables.otherElements.buttons["payButton"]
-    XCTAssert(payButton.waitForExistence(timeout: 2))
+    XCTAssert(payButton.exists)
     payButton.tap()
 
-    let doneButton = app.tables.otherElements.buttons["closeButton"]
-    XCTAssert(doneButton.waitForExistence(timeout: 2))
-    doneButton.tap()
-
-    let backButton = app.navigationBars["Checkout flow"].buttons["Demo App"]
+    let backButton = app.navigationBars["Payment Selection flow"].buttons["Demo App"]
     XCTAssert(backButton.exists)
     backButton.tap()
   }

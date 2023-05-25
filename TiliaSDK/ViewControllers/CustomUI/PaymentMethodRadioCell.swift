@@ -79,7 +79,7 @@ private extension PaymentMethodRadioCell {
     radioButton.addTarget(self, action: #selector(radioButtonDidTap), for: .touchUpInside)
     
     selectionStyle = .none
-    accessibilityIdentifier = "paymentMethodCell"
+    accessibilityIdentifier = "paymentMethodRadioCell"
     
     let stackView = UIStackView(arrangedSubviews: [radioButton,
                                                    iconImageView,

@@ -267,14 +267,12 @@ public extension TLManager {
   ///   - amount: amount of transaction details, for example 1000, is not required
   ///   - currencyCode: currency code, for example USD, is not required
   ///   - animated: animated flag
-  ///   - onUpdate: completion that returns payment methods info - id and amount
-  ///   - onComplete: completion that returns Payment Selection flow state
+  ///   - onComplete: completion that returns Payment Selection flow state and selected payment methods info - id and amount
   ///   - onError: completion that returns Payment Selection flow error
   func presentPaymentSelectionViewController(on viewController: UIViewController,
                                              withAmount amount: Double?,
                                              andCurrencyCode currencyCode: String?,
                                              animated: Bool,
-                                             onUpdate: ((TLUpdateCallback) -> Void)? = nil,
                                              onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                              onError: ((TLErrorCallback) -> Void)? = nil) {
     guard !isTokenEmpty else {
@@ -288,7 +286,6 @@ public extension TLManager {
     let paymentSelectionViewController = PaymentSelectionViewController(manager: networkManager,
                                                                         amount: amount,
                                                                         currencyCode: currencyCode,
-                                                                        onUpdate: onUpdate,
                                                                         onComplete: onComplete,
                                                                         onError: onError)
     viewController.present(paymentSelectionViewController, animated: animated)
