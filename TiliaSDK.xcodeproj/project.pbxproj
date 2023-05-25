@@ -150,6 +150,7 @@
 		D198E12F2A1D1B2D00007D3E /* PaymentSelectionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E12E2A1D1B2D00007D3E /* PaymentSelectionRouter.swift */; };
 		D198E1312A1D1B3C00007D3E /* PaymentSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1302A1D1B3C00007D3E /* PaymentSelectionViewController.swift */; };
 		D198E1342A1D633F00007D3E /* PaymentSelectionSectionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1332A1D633F00007D3E /* PaymentSelectionSectionBuilder.swift */; };
+		D198E1362A1ECC0000007D3E /* TLPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1352A1ECC0000007D3E /* TLPaymentMethods.swift */; };
 		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
 		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
 		D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */; };
@@ -429,6 +430,7 @@
 		D198E12E2A1D1B2D00007D3E /* PaymentSelectionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionRouter.swift; sourceTree = "<group>"; };
 		D198E1302A1D1B3C00007D3E /* PaymentSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionViewController.swift; sourceTree = "<group>"; };
 		D198E1332A1D633F00007D3E /* PaymentSelectionSectionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionSectionBuilder.swift; sourceTree = "<group>"; };
+		D198E1352A1ECC0000007D3E /* TLPaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLPaymentMethods.swift; sourceTree = "<group>"; };
 		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
 		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
 		D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
@@ -743,6 +745,7 @@
 				D16EDD3B280833B400A1E413 /* TLErrorCallback.swift */,
 				D16EDD492808470900A1E413 /* TLCompleteCallback.swift */,
 				D16EDD4B2808481D00A1E413 /* TLUpdateCallback.swift */,
+				D198E1352A1ECC0000007D3E /* TLPaymentMethods.swift */,
 				D192AD8727E8F53900E3DC2A /* IsTosSignedModel.swift */,
 				D123208728A669800039990A /* TosContentModel.swift */,
 				D192AD8927EA2D2B00E3DC2A /* BalanceInfoModel.swift */,
@@ -1696,6 +1699,7 @@
 				D10C55CD2A12182B00F735B7 /* UserDetailInfoModel.swift in Sources */,
 				D135DCAF27E763130009D888 /* TLEnvironment.swift in Sources */,
 				D15BA9F1282A9B9500511785 /* ThreeTextFieldsCell.swift in Sources */,
+				D198E1362A1ECC0000007D3E /* TLPaymentMethods.swift in Sources */,
 				D1BA29E227FCDFFE00F046E8 /* Button.swift in Sources */,
 				D135DCB327E76E090009D888 /* TLError.swift in Sources */,
 				D1EFAB3528B7FE4400AB1C31 /* TransactionDetailsModel.swift in Sources */,

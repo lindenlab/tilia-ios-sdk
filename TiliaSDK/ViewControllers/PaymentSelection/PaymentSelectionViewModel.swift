@@ -156,10 +156,12 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
       model.amount = model.type.isWallet ? walletBalance?.balance : 0
       paymentMethods.append(model)
     }
+    let data = TLPaymentMethods(paymentMethods: paymentMethods.map { .init(id: $0.id, amount: $0.amount ?? 0) })
     let event = TLEvent(flow: .paymentSelection,
                         action: isFromCloseAction ? .closedByUser : isPaymentMethodsUpdated ? .completed : .cancelledByUser)
     let model = TLCompleteCallback(event: event,
-                                   state: isFromCloseAction ? .error : isPaymentMethodsUpdated ? .completed : .cancelled)
+                                   state: isFromCloseAction ? .error : isPaymentMethodsUpdated ? .completed : .cancelled,
+                                   data: data)
     onComplete?(model)
   }
   
