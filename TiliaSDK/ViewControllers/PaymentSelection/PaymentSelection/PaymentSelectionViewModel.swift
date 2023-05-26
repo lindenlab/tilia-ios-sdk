@@ -34,6 +34,7 @@ protocol PaymentSelectionDataStore {
   var manager: NetworkManager { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
   var onReload: () -> Void { get }
+  var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -64,6 +65,7 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   private(set) lazy var onReload: () -> Void = { [weak self] in
     self?.getPaymentMethods()
   }
+  let onUpdate: ((TLUpdateCallback) -> Void)?
   let onError: ((TLErrorCallback) -> Void)?
   
   private let amount: Double?
@@ -88,11 +90,13 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   init(manager: NetworkManager,
        amount: Double?,
        currencyCode: String?,
+       onUpdate: ((TLUpdateCallback) -> Void)? = nil,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
     self.amount = amount?.toNilIfEmpty()
     self.currencyCode = currencyCode?.toNilIfEmpty()
+    self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
   }

@@ -26,6 +26,7 @@ final class SendReceiptRouter: SendReceiptRoutingProtocol {
                                                               mode: dataStore.verifyEmailMode,
                                                               manager: dataStore.manager,
                                                               onEmailVerified: dataStore.onEmailVerified,
+                                                              onUpdate: dataStore.onUpdate,
                                                               onError: dataStore.onError)
     viewController?.present(verifyEmailViewController, animated: true)
   }

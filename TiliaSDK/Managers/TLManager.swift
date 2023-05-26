@@ -267,12 +267,14 @@ public extension TLManager {
   ///   - amount: amount of transaction details, for example 1000, is not required
   ///   - currencyCode: currency code, for example USD, is not required
   ///   - animated: animated flag
+  ///   - onUpdate: completion that returns payment method is deleted or payment method's name is updated
   ///   - onComplete: completion that returns Payment Selection flow state and selected payment methods info - id and amount
   ///   - onError: completion that returns Payment Selection flow error
   func presentPaymentSelectionViewController(on viewController: UIViewController,
                                              withAmount amount: Double?,
                                              andCurrencyCode currencyCode: String?,
                                              animated: Bool,
+                                             onUpdate: ((TLUpdateCallback) -> Void)? = nil,
                                              onComplete: ((TLCompleteCallback) -> Void)? = nil,
                                              onError: ((TLErrorCallback) -> Void)? = nil) {
     guard !isTokenEmpty else {

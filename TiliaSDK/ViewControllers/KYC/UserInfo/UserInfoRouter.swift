@@ -42,6 +42,7 @@ final class UserInfoRouter: UserInfoRoutingProtocol {
                                                               mode: dataStore.verifyEmailMode,
                                                               manager: dataStore.manager,
                                                               onEmailVerified: dataStore.onEmailVerified,
+                                                              onUpdate: dataStore.onUpdate,
                                                               onError: dataStore.onError)
     viewController?.present(verifyEmailViewController, animated: true)
   }

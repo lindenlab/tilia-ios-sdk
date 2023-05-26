@@ -198,6 +198,9 @@ enum L {
   static let errorPaymentSelectionTitle = "errorPaymentSelectionTitle".localized
   static let errorPaymentSelectionMessage = "errorPaymentSelectionMessage".localized
   static let usePaymentMethod = "usePaymentMethod".localized
+  static let removePaymentMethodTitle = "removePaymentMethodTitle".localized
+  static let removePaymentMethodMessage = "removePaymentMethodMessage".localized
+  static let remove = "remove".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)

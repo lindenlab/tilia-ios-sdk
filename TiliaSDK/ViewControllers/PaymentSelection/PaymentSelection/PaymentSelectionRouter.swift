@@ -11,6 +11,8 @@ protocol PaymentSelectionRoutingProtocol: RoutingProtocol {
   func routeToTosView()
   func routeToTosContentView()
   func routeToAddCreditCardView()
+  func routeToDeletePaymentMethodView()
+  func routeToRenamePaymentMethodView()
 }
 
 final class PaymentSelectionRouter: PaymentSelectionRoutingProtocol {
@@ -46,6 +48,19 @@ final class PaymentSelectionRouter: PaymentSelectionRoutingProtocol {
                                                                   onReload: dataStore.onReload,
                                                                   onError: dataStore.onError)
     viewController?.present(addCreditCardViewController, animated: true)
+  }
+  
+  func routeToDeletePaymentMethodView() {
+    let deletePaymentMethodViewController = DeletePaymentMethodViewController(manager: dataStore.manager,
+                                                                              paymentMethodId: "",
+                                                                              onDelete: {},
+                                                                              onUpdate: dataStore.onUpdate,
+                                                                              onError: dataStore.onError)
+    viewController?.present(deletePaymentMethodViewController, animated: true)
+  }
+  
+  func routeToRenamePaymentMethodView() {
+    
   }
   
 }

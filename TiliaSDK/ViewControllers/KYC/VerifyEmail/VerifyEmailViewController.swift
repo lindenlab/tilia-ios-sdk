@@ -97,12 +97,14 @@ final class VerifyEmailViewController: BaseViewController {
        mode: VerifyEmailMode,
        manager: NetworkManager,
        onEmailVerified: @escaping (VerifyEmailMode) -> Void,
+       onUpdate: ((TLUpdateCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = VerifyEmailViewModel(email: email,
                                          flow: flow,
                                          mode: mode,
                                          manager: manager,
                                          onEmailVerified: onEmailVerified,
+                                         onUpdate: onUpdate,
                                          onError: onError)
     let router = VerifyEmailRouter()
     self.viewModel = viewModel
