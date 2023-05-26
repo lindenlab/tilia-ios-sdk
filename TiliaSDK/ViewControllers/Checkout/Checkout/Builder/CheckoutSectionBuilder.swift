@@ -147,11 +147,12 @@ struct CheckoutSectionBuilder {
       return view
     case let .payment(model):
       let view = tableView.dequeue(PaymentFooterView.self)
-      view.configure(payButtonTitle: model.isEmpty ? nil : L.payNow,
+      let title = model.isEmpty ? nil : L.payNow
+      view.configure(payButtonTitle: title,
                      closeButtonTitle: L.cancel,
                      isCreditCardButtonHidden: model.isCreditCardButtonHidden,
                      delegate: delegate,
-                     textViewSubTitle: model.isEmpty ? nil : L.payNow,
+                     textViewSubTitle: title,
                      textViewDelegate: delegate)
       view.configure(isPayButtonEnabled: model.isPayButtonEnabled)
       return view

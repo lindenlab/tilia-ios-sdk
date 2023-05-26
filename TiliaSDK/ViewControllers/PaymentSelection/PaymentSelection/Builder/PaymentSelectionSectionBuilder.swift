@@ -26,6 +26,7 @@ struct PaymentSelectionSectionBuilder {
     
     var items: [Item]
     var isPayButtonEnabled: Bool
+    var isEmpty: Bool { return items.isEmpty }
   }
   
   func numberOfRows(in section: Section) -> Int {
@@ -71,11 +72,12 @@ struct PaymentSelectionSectionBuilder {
               in tableView: UITableView,
               delegate: FooterDelegate) -> UIView {
     let view = tableView.dequeue(PaymentFooterView.self)
-    view.configure(payButtonTitle: L.usePaymentMethod,
+    let title = section.isEmpty ? nil : L.usePaymentMethod
+    view.configure(payButtonTitle: title,
                    closeButtonTitle: L.cancel,
                    isCreditCardButtonHidden: false,
                    delegate: delegate,
-                   textViewSubTitle: L.usePaymentMethod,
+                   textViewSubTitle: title,
                    textViewDelegate: delegate)
     view.configure(isPayButtonEnabled: section.isPayButtonEnabled)
     return view
