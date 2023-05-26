@@ -22,6 +22,7 @@ struct PaymentSelectionSectionBuilder {
       var isEnabled: Bool
       let icon: UIImage?
       let isDividerHidden: Bool
+      let areSwipeActionsEnabled: Bool
     }
     
     var items: [Item]
@@ -83,8 +84,11 @@ struct PaymentSelectionSectionBuilder {
     return view
   }
   
-  func swipeActionsConfiguration(withDeleteAction deleteAction: @escaping () -> Void,
-                                 andRenameAction renameAction: @escaping () -> Void) -> UISwipeActionsConfiguration {
+  func swipeActionsConfiguration(for section: Section,
+                                 at index: Int,
+                                 withDeleteAction deleteAction: @escaping () -> Void,
+                                 andRenameAction renameAction: @escaping () -> Void) -> UISwipeActionsConfiguration? {
+    guard section.items[index].areSwipeActionsEnabled else { return nil }
     let deleteAction = UIContextualAction(style: .destructive,
                                           title: L.remove) { _, _, handler in
       deleteAction()
@@ -125,7 +129,8 @@ struct PaymentSelectionSectionBuilder {
                    isSelected: false,
                    isEnabled: isEnabled,
                    icon: value.type.icon,
-                   isDividerHidden: index == paymentMethods.count - 1)
+                   isDividerHidden: index == paymentMethods.count - 1,
+                   areSwipeActionsEnabled: !value.type.isWallet)
     }
     return [.init(items: items,
                   isPayButtonEnabled: false)]

@@ -81,7 +81,8 @@ final class PaymentSelectionViewController: BaseTableViewController {
   }
   
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    return builder.swipeActionsConfiguration {
+    return builder.swipeActionsConfiguration(for: sections[indexPath.section],
+                                             at: indexPath.row) {
       self.router.routeToDeletePaymentMethodView {
         self.viewModel.removePaymentMethod(at: indexPath.row)
       }
