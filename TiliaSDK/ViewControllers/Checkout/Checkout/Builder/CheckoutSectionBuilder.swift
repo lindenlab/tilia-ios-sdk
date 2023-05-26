@@ -168,6 +168,27 @@ struct CheckoutSectionBuilder {
     }
   }
   
+  func swipeActionsConfiguration(for section: Section,
+                                 withDeleteAction deleteAction: @escaping () -> Void,
+                                 andRenameAction renameAction: @escaping () -> Void) -> UISwipeActionsConfiguration? {
+    switch section {
+    case .payment:
+      let deleteAction = UIContextualAction(style: .destructive,
+                                            title: L.remove) { _, _, handler in
+        deleteAction()
+        handler(true)
+      }
+      let renameAction = UIContextualAction(style: .normal,
+                                            title: L.rename) { _, _, handler in
+        renameAction()
+        handler(true)
+      }
+      return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
+    default:
+      return nil
+    }
+  }
+  
   func sections(with model: CheckoutContent) -> [Section] {
     return [
       .summary(summaryModel(for: model.invoiceInfo)),

@@ -84,6 +84,18 @@ final class CheckoutViewController: BaseTableViewController {
     return builder.heightForHeader(in: sections[section])
   }
   
+  override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    return builder.swipeActionsConfiguration(for: sections[indexPath.section]) {
+      self.router.routeToDeletePaymentMethodView {
+        self.viewModel.removePaymentMethod(at: indexPath.row)
+      }
+    } andRenameAction: {
+      self.router.routeToRenamePaymentMethodView {
+        self.viewModel.renamePaymentMethod(at: indexPath.row, with: $0)
+      }
+    }
+  }
+  
 }
 
 // MARK: - PaymentFooterViewDelegate

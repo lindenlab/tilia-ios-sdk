@@ -16,6 +16,8 @@ protocol CheckoutViewModelInputProtocol {
   func complete(isFromCloseAction: Bool)
   func selectPaymentMethod(at index: Int, isSelected: Bool)
   func selectPaymentMethod(at index: Int)
+  func removePaymentMethod(at index: Int)
+  func renamePaymentMethod(at index: Int, with text: String)
 }
 
 protocol CheckoutViewModelOutputProtocol {
@@ -173,6 +175,21 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     guard selectedPaymentMethodIndex != index else { return }
     selectedPaymentMethodIndex = index
     createNonVirtualInvoice()
+  }
+  
+  func removePaymentMethod(at index: Int) {
+    // Here will be a request
+    let event = TLEvent(flow: .checkout, action: .paymentMethodDeleted)
+    let model = TLUpdateCallback(event: event, message: L.paymentMethodDeleted)
+    onUpdate?(model)
+  }
+  
+  func renamePaymentMethod(at index: Int, with text: String) {
+    guard !text.isEmpty else { return }
+    // Here will be a request
+    let event = TLEvent(flow: .checkout, action: .paymentMethodRenamed)
+    let model = TLUpdateCallback(event: event, message: L.paymentMethodRenamed)
+    onUpdate?(model)
   }
   
 }
