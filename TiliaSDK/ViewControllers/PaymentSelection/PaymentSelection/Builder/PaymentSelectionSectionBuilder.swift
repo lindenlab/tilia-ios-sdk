@@ -81,6 +81,21 @@ struct PaymentSelectionSectionBuilder {
     return view
   }
   
+  func swipeActionsConfiguration(withDeleteAction deleteAction: @escaping () -> Void,
+                                 andRenameAction renameAction: @escaping () -> Void) -> UISwipeActionsConfiguration {
+    let deleteAction = UIContextualAction(style: .destructive,
+                                          title: L.remove) { _, _, handler in
+      deleteAction()
+      handler(true)
+    }
+    let renameAction = UIContextualAction(style: .normal,
+                                          title: L.rename) { _, _, handler in
+      renameAction()
+      handler(true)
+    }
+    return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
+  }
+  
   func sections(for model: PaymentSelectionContent) -> [Section] {
     let amount = model.amount
     let walletBalance = model.walletBalance

@@ -81,21 +81,15 @@ final class PaymentSelectionViewController: BaseTableViewController {
   }
   
   override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-    let deleteAction = UIContextualAction(style: .destructive,
-                                          title: L.remove) { _, _, handler in
+    return builder.swipeActionsConfiguration {
       self.router.routeToDeletePaymentMethodView {
         self.viewModel.removePaymentMethod(at: indexPath.row)
       }
-      handler(true)
-    }
-    let renameAction = UIContextualAction(style: .normal,
-                                          title: L.rename) { _, _, handler in
+    } andRenameAction: {
       self.router.routeToRenamePaymentMethodView {
         self.viewModel.renamePaymentMethod(at: indexPath.row, with: $0)
       }
-      handler(true)
     }
-    return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
   }
   
 }
