@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 typealias PaymentSelectionContent = (walletBalance: BalanceModel?, amount: Double?, paymentMethods: [PaymentMethodModel])
-typealias PaymentSelectionPaymentIsEnabledBySectionIndex = (sectionIndex: Int, isEnabled: Bool)
+typealias PaymentSelectionIsEnabledBySectionIndex = (sectionIndex: Int, isEnabled: Bool)
 
 protocol PaymentSelectionViewModelInputProtocol {
   func checkIsTosRequired()
@@ -27,10 +27,10 @@ protocol PaymentSelectionViewModelOutputProtocol {
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var content: PassthroughSubject<PaymentSelectionContent, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
-  var paymentButtonIsEnabled: PassthroughSubject<PaymentSelectionPaymentIsEnabledBySectionIndex, Never> { get }
+  var paymentButtonIsEnabled: PassthroughSubject<PaymentSelectionIsEnabledBySectionIndex, Never> { get }
   var deselectIndex: PassthroughSubject<IndexPath, Never> { get }
   var selectIndex: PassthroughSubject<IndexPath, Never> { get }
-  var paymentMethodsAreEnabled: PassthroughSubject<PaymentSelectionPaymentIsEnabledBySectionIndex, Never> { get }
+  var paymentMethodsAreEnabled: PassthroughSubject<PaymentSelectionIsEnabledBySectionIndex, Never> { get }
 }
 
 protocol PaymentSelectionDataStore {
@@ -49,10 +49,10 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<PaymentSelectionContent, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
-  let paymentButtonIsEnabled = PassthroughSubject<PaymentSelectionPaymentIsEnabledBySectionIndex, Never>()
+  let paymentButtonIsEnabled = PassthroughSubject<PaymentSelectionIsEnabledBySectionIndex, Never>()
   let deselectIndex = PassthroughSubject<IndexPath, Never>()
   let selectIndex = PassthroughSubject<IndexPath, Never>()
-  let paymentMethodsAreEnabled = PassthroughSubject<PaymentSelectionPaymentIsEnabledBySectionIndex, Never>()
+  let paymentMethodsAreEnabled = PassthroughSubject<PaymentSelectionIsEnabledBySectionIndex, Never>()
   
   let manager: NetworkManager
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in

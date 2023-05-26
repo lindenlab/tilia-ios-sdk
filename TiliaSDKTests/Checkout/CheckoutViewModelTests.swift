@@ -88,25 +88,25 @@ final class CheckoutViewModelTests: XCTestCase {
     
     let contentExpectation = XCTestExpectation(description: "testSuccessPayInvoice_Content")
     viewModel.content.sink { [weak viewModel] _ in
-      viewModel?.selectPaymentMethod(at: 0, isSelected: true)
+      viewModel?.selectPaymentMethod(at: .init(row: 0, section: 0), isSelected: true)
       contentExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let selectIndexExpectation = XCTestExpectation(description: "testSuccessPayInvoice_SelectIndex")
     viewModel.selectIndex.sink {
-      selectIndex = $0
+      selectIndex = $0.row
       selectIndexExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let deselectIndexExpectation = XCTestExpectation(description: "testSuccessPayInvoice_DeselectIndex")
     viewModel.deselectIndex.sink {
-      deselectIndex = $0
+      deselectIndex = $0.row
       deselectIndexExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let paymentMethodsAreEnabledExpectation = XCTestExpectation(description: "testSuccessPayInvoice_PaymentMethodsAreEnabled")
     viewModel.paymentMethodsAreEnabled.sink {
-      paymentMethodsAreEnabled = $0
+      paymentMethodsAreEnabled = $0.isEnabled
       paymentMethodsAreEnabledExpectation.fulfill()
     }.store(in: &subscriptions)
     
@@ -118,10 +118,10 @@ final class CheckoutViewModelTests: XCTestCase {
     
     let payButtonIsEnabledExpectation = XCTestExpectation(description: "testSuccessPayInvoice_PayButtonIsEnabled")
     viewModel.payButtonIsEnabled.sink { [weak viewModel] in
-      guard $0 else { return }
+      guard $0.isEnabled else { return }
       if selectIndex == 0 {
-        viewModel?.selectPaymentMethod(at: 0, isSelected: false)
-        viewModel?.selectPaymentMethod(at: 1)
+        viewModel?.selectPaymentMethod(at: .init(row: 0, section: 0), isSelected: false)
+        viewModel?.selectPaymentMethod(at: .init(row: 1, section: 0))
       } else if selectIndex == 1 {
         viewModel?.payInvoice()
         payButtonIsEnabledExpectation.fulfill()
@@ -210,13 +210,13 @@ final class CheckoutViewModelTests: XCTestCase {
     
     let contentExpectation = XCTestExpectation(description: "testErrorPayInvoice_Content")
     viewModel.content.sink { [weak viewModel] _ in
-      viewModel?.selectPaymentMethod(at: 0)
+      viewModel?.selectPaymentMethod(at: .init(row: 0, section: 0))
       contentExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let payButtonIsEnabledExpectation = XCTestExpectation(description: "testSuccessPayInvoice_PayButtonIsEnabled")
     viewModel.payButtonIsEnabled.sink { [weak viewModel] in
-      if $0 {
+      if $0.isEnabled {
         TLManager.shared.setToken("")
         viewModel?.payInvoice()
         payButtonIsEnabledExpectation.fulfill()
