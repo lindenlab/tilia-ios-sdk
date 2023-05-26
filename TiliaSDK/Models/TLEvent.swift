@@ -66,6 +66,12 @@ public struct TLEvent {
     /// Email is verified successfully
     case emailVerified = "email-verified"
     
+    /// Payment method is deleted successfully
+    case paymentMethodDeleted = "payment-method-deleted"
+    
+    /// Payment method is renamed successfully
+    case paymentMethodRenamed = "payment-method-renamed"
+    
   }
   
   public let flow: Flow

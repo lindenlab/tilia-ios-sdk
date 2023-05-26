@@ -288,6 +288,7 @@ public extension TLManager {
     let paymentSelectionViewController = PaymentSelectionViewController(manager: networkManager,
                                                                         amount: amount,
                                                                         currencyCode: currencyCode,
+                                                                        onUpdate: onUpdate,
                                                                         onComplete: onComplete,
                                                                         onError: onError)
     viewController.present(paymentSelectionViewController, animated: animated)

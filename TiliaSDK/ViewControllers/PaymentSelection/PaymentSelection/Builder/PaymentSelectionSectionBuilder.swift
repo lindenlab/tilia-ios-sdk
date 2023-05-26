@@ -49,6 +49,7 @@ struct PaymentSelectionSectionBuilder {
     } else {
       let newCell = tableView.dequeue(PaymentMethodRadioCell.self, for: indexPath)
       newCell.configure(title: item.title,
+                        subTitle: item.subTitle,
                         isDividerHidden: item.isDividerHidden,
                         icon: item.icon,
                         delegate: delegate)
@@ -102,7 +103,7 @@ struct PaymentSelectionSectionBuilder {
         }
       }()
       return .init(title: title,
-                   subTitle: isSwitch ? nil : walletBalance?.display,
+                   subTitle: !isSwitch && value.type.isWallet ? walletBalance?.display : nil,
                    isSwitch: isSwitch,
                    isSelected: false,
                    isEnabled: isEnabled,

@@ -23,7 +23,7 @@ final class PaymentSelectionViewController: BaseTableViewController {
   init(manager: NetworkManager,
        amount: Double?,
        currencyCode: String?,
-       onUpdate: ((TLUpdateCallback) -> Void)? = nil,
+       onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     let viewModel = PaymentSelectionViewModel(manager: manager,
@@ -78,6 +78,24 @@ final class PaymentSelectionViewController: BaseTableViewController {
     return builder.footer(for: sections[section],
                           in: tableView,
                           delegate: self)
+  }
+  
+  override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    let deleteAction = UIContextualAction(style: .destructive,
+                                          title: L.remove) { _, _, handler in
+      self.router.routeToDeletePaymentMethodView {
+        self.viewModel.removePaymentMethod(at: indexPath.row)
+      }
+      handler(true)
+    }
+    let renameAction = UIContextualAction(style: .normal,
+                                          title: L.rename) { _, _, handler in
+      self.router.routeToRenamePaymentMethodView {
+        self.viewModel.renamePaymentMethod(at: indexPath.row, with: $0)
+      }
+      handler(true)
+    }
+    return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
   }
   
 }

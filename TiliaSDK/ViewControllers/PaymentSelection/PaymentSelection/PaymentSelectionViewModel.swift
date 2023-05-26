@@ -14,6 +14,8 @@ protocol PaymentSelectionViewModelInputProtocol {
   func checkIsTosRequired()
   func selectPaymentMethod(at index: Int, isSelected: Bool)
   func selectPaymentMethod(at index: Int)
+  func removePaymentMethod(at index: Int)
+  func renamePaymentMethod(at index: Int, with text: String)
   func useSelectedPaymentMethod()
   func complete(isFromCloseAction: Bool)
 }
@@ -34,7 +36,6 @@ protocol PaymentSelectionDataStore {
   var manager: NetworkManager { get }
   var onTosComplete: (TLCompleteCallback) -> Void { get }
   var onReload: () -> Void { get }
-  var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -65,11 +66,11 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   private(set) lazy var onReload: () -> Void = { [weak self] in
     self?.getPaymentMethods()
   }
-  let onUpdate: ((TLUpdateCallback) -> Void)?
   let onError: ((TLErrorCallback) -> Void)?
   
   private let amount: Double?
   private let currencyCode: String?
+  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private var walletBalance: BalanceModel?
   private var paymentMethods: [PaymentMethodModel] = []
@@ -138,6 +139,21 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
     guard selectedPaymentMethodIndex != index else { return }
     selectedPaymentMethodIndex = index
     paymentButtonIsEnabled.send(true)
+  }
+  
+  func removePaymentMethod(at index: Int) {
+    // Here will be a request
+    let event = TLEvent(flow: .paymentSelection, action: .paymentMethodDeleted)
+    let model = TLUpdateCallback(event: event, message: L.paymentMethodDeleted)
+    onUpdate?(model)
+  }
+  
+  func renamePaymentMethod(at index: Int, with text: String) {
+    guard !text.isEmpty else { return }
+    // Here will be a request
+    let event = TLEvent(flow: .paymentSelection, action: .paymentMethodRenamed)
+    let model = TLUpdateCallback(event: event, message: L.paymentMethodRenamed)
+    onUpdate?(model)
   }
   
   func useSelectedPaymentMethod() {

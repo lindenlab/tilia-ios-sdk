@@ -32,7 +32,15 @@ final class PaymentMethodRadioCell: UITableViewCell {
     label.font = .systemFont(ofSize: 14)
     label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
     label.setContentHuggingPriority(.init(249), for: .horizontal)
-    label.textAlignment = .right
+    return label
+  }()
+  
+  private let subTitleLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .tertiaryTextColor
+    label.font = .systemFont(ofSize: 14)
+    label.setContentCompressionResistancePriority(.init(749), for: .horizontal)
+    label.setContentHuggingPriority(.init(249), for: .horizontal)
     return label
   }()
   
@@ -52,10 +60,13 @@ final class PaymentMethodRadioCell: UITableViewCell {
   }
   
   func configure(title: String,
+                 subTitle: String? = nil,
                  isDividerHidden: Bool,
                  icon: UIImage?,
                  delegate: PaymentMethodRadioCellDelegate?) {
     titleLabel.text = title
+    subTitleLabel.text = subTitle
+    subTitleLabel.isHidden = subTitle == nil
     self.delegate = delegate
     divider.isHidden = isDividerHidden
     iconImageView.image = icon
@@ -81,9 +92,13 @@ private extension PaymentMethodRadioCell {
     selectionStyle = .none
     accessibilityIdentifier = "paymentMethodRadioCell"
     
+    let trailingStackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
+    trailingStackView.axis = .vertical
+    trailingStackView.alignment = .trailing
+    
     let stackView = UIStackView(arrangedSubviews: [radioButton,
                                                    iconImageView,
-                                                   titleLabel])
+                                                   trailingStackView])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.spacing = 5
     stackView.alignment = .center

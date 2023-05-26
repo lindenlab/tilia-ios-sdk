@@ -67,6 +67,10 @@ extension BaseTableViewController: UITableViewDelegate {
     return nil
   }
   
+  func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    return nil
+  }
+  
 }
 
 // MARK: - Private Methods

@@ -153,8 +153,6 @@
 		D198E1362A1ECC0000007D3E /* TLPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1352A1ECC0000007D3E /* TLPaymentMethods.swift */; };
 		D198E1392A1F854C00007D3E /* PaymentSelectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1382A1F854C00007D3E /* PaymentSelectionViewModelTests.swift */; };
 		D198E13B2A1FAB7300007D3E /* PaymentSelectionFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E13A2A1FAB7300007D3E /* PaymentSelectionFlowUITests.swift */; };
-		D198E1402A1FF9D600007D3E /* DeletePaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E13F2A1FF9D600007D3E /* DeletePaymentMethodViewModel.swift */; };
-		D198E1422A1FFA4000007D3E /* DeletePaymentMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198E1412A1FFA4000007D3E /* DeletePaymentMethodViewController.swift */; };
 		D19A0D96281FD9F700483DDC /* TitleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D95281FD9F700483DDC /* TitleInfoView.swift */; };
 		D19A0D98281FDFA300483DDC /* TitleInfoHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */; };
 		D19A0DA5281FED5900483DDC /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */; };
@@ -437,8 +435,6 @@
 		D198E1352A1ECC0000007D3E /* TLPaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLPaymentMethods.swift; sourceTree = "<group>"; };
 		D198E1382A1F854C00007D3E /* PaymentSelectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionViewModelTests.swift; sourceTree = "<group>"; };
 		D198E13A2A1FAB7300007D3E /* PaymentSelectionFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSelectionFlowUITests.swift; sourceTree = "<group>"; };
-		D198E13F2A1FF9D600007D3E /* DeletePaymentMethodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentMethodViewModel.swift; sourceTree = "<group>"; };
-		D198E1412A1FFA4000007D3E /* DeletePaymentMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePaymentMethodViewController.swift; sourceTree = "<group>"; };
 		D19A0D95281FD9F700483DDC /* TitleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoView.swift; sourceTree = "<group>"; };
 		D19A0D97281FDFA300483DDC /* TitleInfoHeaderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoHeaderFooterView.swift; sourceTree = "<group>"; };
 		D19A0DA4281FED5900483DDC /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
@@ -1020,7 +1016,6 @@
 			isa = PBXGroup;
 			children = (
 				D198E13C2A1FF98E00007D3E /* PaymentSelection */,
-				D198E13E2A1FF9B200007D3E /* DeletePaymentMethod */,
 				D198E13D2A1FF99F00007D3E /* RenamePaymentMethod */,
 			);
 			path = PaymentSelection;
@@ -1058,15 +1053,6 @@
 			children = (
 			);
 			path = RenamePaymentMethod;
-			sourceTree = "<group>";
-		};
-		D198E13E2A1FF9B200007D3E /* DeletePaymentMethod */ = {
-			isa = PBXGroup;
-			children = (
-				D198E13F2A1FF9D600007D3E /* DeletePaymentMethodViewModel.swift */,
-				D198E1412A1FFA4000007D3E /* DeletePaymentMethodViewController.swift */,
-			);
-			path = DeletePaymentMethod;
 			sourceTree = "<group>";
 		};
 		D19A0DA1281FED0500483DDC /* Checkout */ = {
@@ -1627,7 +1613,6 @@
 				D12443DF27EB9C7100C68811 /* TosViewModel.swift in Sources */,
 				D1C8A83A27F4FDA800BF2910 /* UITableView+Helpers.swift in Sources */,
 				D188165B27E7C0C50082A85B /* PaymentRouter.swift in Sources */,
-				D198E1422A1FFA4000007D3E /* DeletePaymentMethodViewController.swift in Sources */,
 				D16E2A9328AFA14B00287C55 /* SendReceiptViewModel.swift in Sources */,
 				D135DC7927E74A4A0009D888 /* AppDelegate.swift in Sources */,
 				D1E6F5A728ECD2FF000CDA5E /* UIViewController+Childs.swift in Sources */,
@@ -1697,7 +1682,6 @@
 				D10C55D12A121A4900F735B7 /* FinishVerifyUserEmailModel.swift in Sources */,
 				D15BA9ED282A9B2C00511785 /* TextFieldCell.swift in Sources */,
 				D17A451328B3867D00B0C9AB /* TransactionDetailsHeaderView.swift in Sources */,
-				D198E1402A1FF9D600007D3E /* DeletePaymentMethodViewModel.swift in Sources */,
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,
 				D1B871F828339B2A00C44441 /* UserDocumentsViewController.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
