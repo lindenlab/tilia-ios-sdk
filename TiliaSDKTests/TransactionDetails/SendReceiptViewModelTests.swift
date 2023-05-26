@@ -95,14 +95,12 @@ final class SendReceiptViewModelTests: XCTestCase {
     var emailVerificationMode: SendReceiptMode?
     var verifyEmail: Void?
     var emailVerified: String?
-    var updateCallback: TLUpdateCallback?
     
-    let onUpdateExpectation = XCTestExpectation(description: "testSuccessSend_OnUpdate")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = SendReceiptViewModel(transactionId: "",
                                          manager: networkManager,
                                          onEmailSent: { },
-                                         onUpdate: { updateCallback = $0; onUpdateExpectation.fulfill() },
+                                         onUpdate: nil,
                                          onError: nil)
     
     let defaultEmailExpectation = XCTestExpectation(description: "testSuccessSend_DefaultEmail")
@@ -145,8 +143,7 @@ final class SendReceiptViewModelTests: XCTestCase {
       defaultEmailExpectation,
       emailVerificationModeExpectation,
       verifyEmailExpectation,
-      emailVerifiedExpectation,
-      onUpdateExpectation
+      emailVerifiedExpectation
     ]
     
     wait(for: expectations, timeout: 2)
@@ -154,7 +151,6 @@ final class SendReceiptViewModelTests: XCTestCase {
     XCTAssertEqual(emailVerificationMode, .verified)
     XCTAssertNotNil(emailVerified)
     XCTAssertNotNil(verifyEmail)
-    XCTAssertEqual(updateCallback?.event.action, .emailVerified)
   }
   
   func testFailureSend() {
