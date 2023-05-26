@@ -264,10 +264,10 @@ private extension CheckoutViewModel {
     }
   }
   
-  func createNonVirtualInvoice(with sectionIndex: Int) {
+  func createNonVirtualInvoice(with paymentSectionIndex: Int) {
     guard let isEscrow = isEscrow else { return }
     createInvoiceLoading.send(true)
-    payButtonIsEnabled.send((sectionIndex, false))
+    payButtonIsEnabled.send((paymentSectionIndex, false))
     var paymentMethods: [PaymentMethodModel] = []
     if let index = selectedWalletIndex, let walletBalance = walletBalance {
       var model = self.paymentMethods[index.row]
@@ -285,7 +285,7 @@ private extension CheckoutViewModel {
       case .success(let model):
         self.invoiceId = model.invoiceId
         self.invoiceInfo = model.info
-        self.payButtonIsEnabled.send((sectionIndex, true))
+        self.payButtonIsEnabled.send((paymentSectionIndex, true))
         self.updateSummary.send(model.info)
       case .failure(let error):
         self.selectedWalletIndex = nil
