@@ -137,32 +137,33 @@ struct PaymentSelectionSectionBuilder {
   }
   
   
-  func updateSections(_ sections: inout [Section],
-                      in tableView: UITableView,
-                      isPayButtonEnabled: Bool) {
-    sections[0].isPayButtonEnabled = isPayButtonEnabled
-    if let footer = tableView.footerView(forSection: 0) as? PaymentFooterView {
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
+                     isPayButtonEnabled: Bool) {
+    section.isPayButtonEnabled = isPayButtonEnabled
+    if let footer = tableView.footerView(forSection: sectionIndex) as? PaymentFooterView {
       footer.configure(isPayButtonEnabled: isPayButtonEnabled)
     }
   }
   
-  func updateSections(_ sections: inout [Section],
-                      in tableView: UITableView,
-                      at index: Int,
-                      isSelected: Bool) {
-    sections[0].items[index].isSelected = isSelected
-    let indexPath = IndexPath(row: index, section: 0)
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at indexPath: IndexPath,
+                     isSelected: Bool) {
+    section.items[indexPath.row].isSelected = isSelected
     if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell, !isSelected {
       cell.configure(isSelected: isSelected)
     }
   }
   
-  func updateSections(_ sections: inout [Section],
-                      in tableView: UITableView,
-                      isEnabled: Bool) {
-    for (index, value) in sections[0].items.enumerated() where !value.isSwitch {
-      sections[0].items[index].isEnabled = isEnabled
-      let indexPath = IndexPath(row: index, section: 0)
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
+                     isEnabled: Bool) {
+    for (index, value) in section.items.enumerated() where !value.isSwitch {
+      section.items[index].isEnabled = isEnabled
+      let indexPath = IndexPath(row: index, section: sectionIndex)
       if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell {
         cell.configure(isEnabled: isEnabled)
       }

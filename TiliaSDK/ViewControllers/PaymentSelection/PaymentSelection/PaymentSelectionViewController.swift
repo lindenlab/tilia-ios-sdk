@@ -129,7 +129,7 @@ extension PaymentSelectionViewController: PaymentMethodSwitchCellDelegate {
   
   func paymentMethodSwitchCell(_ cell: PaymentMethodSwitchCell, didSelect isOn: Bool) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
-    viewModel.selectPaymentMethod(at: indexPath.row, isSelected: isOn)
+    viewModel.selectPaymentMethod(at: indexPath, isSelected: isOn)
   }
   
 }
@@ -140,7 +140,7 @@ extension PaymentSelectionViewController: PaymentMethodRadioCellDelegate {
   
   func paymentMethodRadioCellDidSelect(_ cell: PaymentMethodRadioCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
-    viewModel.selectPaymentMethod(at: indexPath.row)
+    viewModel.selectPaymentMethod(at: indexPath)
   }
   
 }
@@ -187,32 +187,34 @@ private extension PaymentSelectionViewController {
     
     viewModel.paymentButtonIsEnabled.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updateSections(&self.sections,
-                                  in: self.tableView,
-                                  isPayButtonEnabled: $0)
+      self.builder.updateSection(&self.sections[$0.sectionIndex],
+                                 in: self.tableView,
+                                 at: $0.sectionIndex,
+                                 isPayButtonEnabled: $0.isEnabled)
     }.store(in: &subscriptions)
     
     viewModel.deselectIndex.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updateSections(&self.sections,
-                                  in: self.tableView,
-                                  at: $0,
-                                  isSelected: false)
+      self.builder.updateSection(&self.sections[$0.section],
+                                 in: self.tableView,
+                                 at: $0,
+                                 isSelected: false)
     }.store(in: &subscriptions)
     
     viewModel.selectIndex.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updateSections(&self.sections,
-                                  in: self.tableView,
-                                  at: $0,
-                                  isSelected: true)
+      self.builder.updateSection(&self.sections[$0.section],
+                                 in: self.tableView,
+                                 at: $0,
+                                 isSelected: true)
     }.store(in: &subscriptions)
     
     viewModel.paymentMethodsAreEnabled.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updateSections(&self.sections,
-                                  in: self.tableView,
-                                  isEnabled: $0)
+      self.builder.updateSection(&self.sections[$0.sectionIndex],
+                                 in: self.tableView,
+                                 at: $0.sectionIndex,
+                                 isEnabled: $0.isEnabled)
     }.store(in: &subscriptions)
   }
   
