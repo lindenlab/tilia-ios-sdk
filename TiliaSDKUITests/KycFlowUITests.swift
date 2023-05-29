@@ -37,7 +37,7 @@ final class KycFlowUITests: XCTestCase {
     doSmthButton.tap()
     
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
-    XCTAssert(countryOfResidenceTextField.exists)
+    XCTAssert(countryOfResidenceTextField.waitForExistence(timeout: 2))
     countryOfResidenceTextField.tap()
     countryOfResidenceTextField.typeText("\n")
     
@@ -156,7 +156,7 @@ final class KycFlowUITests: XCTestCase {
     doSmthButton.tap()
     
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
-    XCTAssert(countryOfResidenceTextField.exists)
+    XCTAssert(countryOfResidenceTextField.waitForExistence(timeout: 2))
     countryOfResidenceTextField.tap()
     
     let countryOfResidencePicker = app.pickerWheels.firstMatch
@@ -323,7 +323,7 @@ final class KycFlowUITests: XCTestCase {
     doSmthButton.tap()
     
     let countryOfResidenceTextField = app.tables.cells.textFields["countryOfResidenceTextField"]
-    XCTAssert(countryOfResidenceTextField.exists)
+    XCTAssert(countryOfResidenceTextField.waitForExistence(timeout: 2))
     countryOfResidenceTextField.tap()
     countryOfResidenceTextField.typeText("\n")
     
