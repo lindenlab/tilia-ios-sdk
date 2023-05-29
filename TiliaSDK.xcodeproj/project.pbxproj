@@ -1015,8 +1015,10 @@
 		D198E12B2A1D1AD300007D3E /* PaymentSelection */ = {
 			isa = PBXGroup;
 			children = (
-				D198E13C2A1FF98E00007D3E /* PaymentSelection */,
-				D198E13D2A1FF99F00007D3E /* RenamePaymentMethod */,
+				D198E1322A1D632A00007D3E /* Builder */,
+				D198E12C2A1D1B1B00007D3E /* PaymentSelectionViewModel.swift */,
+				D198E12E2A1D1B2D00007D3E /* PaymentSelectionRouter.swift */,
+				D198E1302A1D1B3C00007D3E /* PaymentSelectionViewController.swift */,
 			);
 			path = PaymentSelection;
 			sourceTree = "<group>";
@@ -1035,24 +1037,6 @@
 				D198E1382A1F854C00007D3E /* PaymentSelectionViewModelTests.swift */,
 			);
 			path = PaymentSelection;
-			sourceTree = "<group>";
-		};
-		D198E13C2A1FF98E00007D3E /* PaymentSelection */ = {
-			isa = PBXGroup;
-			children = (
-				D198E1322A1D632A00007D3E /* Builder */,
-				D198E12C2A1D1B1B00007D3E /* PaymentSelectionViewModel.swift */,
-				D198E12E2A1D1B2D00007D3E /* PaymentSelectionRouter.swift */,
-				D198E1302A1D1B3C00007D3E /* PaymentSelectionViewController.swift */,
-			);
-			path = PaymentSelection;
-			sourceTree = "<group>";
-		};
-		D198E13D2A1FF99F00007D3E /* RenamePaymentMethod */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = RenamePaymentMethod;
 			sourceTree = "<group>";
 		};
 		D19A0DA1281FED0500483DDC /* Checkout */ = {
