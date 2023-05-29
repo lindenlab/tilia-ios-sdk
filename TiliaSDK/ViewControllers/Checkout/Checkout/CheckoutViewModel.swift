@@ -179,18 +179,38 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   }
   
   func removePaymentMethod(at index: Int) {
-    // Here will be a request
-    let event = TLEvent(flow: .checkout, action: .paymentMethodDeleted)
-    let model = TLUpdateCallback(event: event, message: L.paymentMethodDeleted)
-    onUpdate?(model)
+    loading.send(true)
+    manager.deletePaymentMethod(with: paymentMethods[index].id) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success:
+        let event = TLEvent(flow: .checkout, action: .paymentMethodDeleted)
+        let model = TLUpdateCallback(event: event, message: L.paymentMethodDeleted)
+        self.onUpdate?(model)
+        self.getUserBalance()
+      case .failure(let error):
+        self.loading.send(false)
+        self.didFail(with: .init(error: error, value: false))
+      }
+    }
   }
   
   func renamePaymentMethod(at index: Int, with text: String) {
-    guard !text.isEmpty else { return }
-    // Here will be a request
-    let event = TLEvent(flow: .checkout, action: .paymentMethodRenamed)
-    let model = TLUpdateCallback(event: event, message: L.paymentMethodRenamed)
-    onUpdate?(model)
+    guard paymentMethods[index].display != text else { return }
+    loading.send(true)
+    manager.renamePaymentMethod(withNewName: text, byId: paymentMethods[index].id) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success:
+        let event = TLEvent(flow: .checkout, action: .paymentMethodRenamed)
+        let model = TLUpdateCallback(event: event, message: L.paymentMethodRenamed)
+        self.onUpdate?(model)
+        self.getUserBalance()
+      case .failure(let error):
+        self.loading.send(false)
+        self.didFail(with: .init(error: error, value: false))
+      }
+    }
   }
   
 }

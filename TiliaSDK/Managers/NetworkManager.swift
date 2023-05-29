@@ -76,6 +76,16 @@ final class NetworkManager {
     serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
   }
   
+  func renamePaymentMethod(withNewName name: String, byId id: String, completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = PaymentRouter.renamePaymentMethod(newName: name, id: id)
+    serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
+  }
+  
+  func deletePaymentMethod(with id: String, completion: @escaping CompletionResultHandler<EmptyModel>) {
+    let router = PaymentRouter.deletePaymentMethod(id: id)
+    serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
+  }
+  
   func getInvoiceDetails(with id: String, completion: @escaping CompletionResultHandler<InvoiceDetailsModel>) {
     let router = InvoiceRouter.getInvoiceDetails(id: id)
     serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)

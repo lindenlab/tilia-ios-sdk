@@ -23,4 +23,32 @@ final class PaymentRouterTests: XCTestCase {
     XCTAssertNotNil(try? router.asURLRequest())
   }
   
+  func testRenamePaymentMethod() {
+    let id = UUID().uuidString
+    let router = PaymentRouter.renamePaymentMethod(newName: "newName", id: id)
+    TLManager.shared.setToken(UUID().uuidString)
+    XCTAssertEqual(router.method, .patch)
+    XCTAssertNil(router.queryParameters)
+    XCTAssertNotNil(router.bodyParameters)
+    XCTAssertEqual(router.service, "payments")
+    XCTAssertEqual(router.endpoint, "/v1/payment_method/\(id)")
+    XCTAssertEqual(router.testData?.count, router.readJSONFromFile("EmptySuccessResponse")?.count)
+    XCTAssertNotNil(try? router.requestHeaders())
+    XCTAssertNotNil(try? router.asURLRequest())
+  }
+  
+  func testDeletePaymentMethod() {
+    let id = UUID().uuidString
+    let router = PaymentRouter.deletePaymentMethod(id: id)
+    TLManager.shared.setToken(UUID().uuidString)
+    XCTAssertEqual(router.method, .delete)
+    XCTAssertNil(router.queryParameters)
+    XCTAssertNil(router.bodyParameters)
+    XCTAssertEqual(router.service, "payments")
+    XCTAssertEqual(router.endpoint, "/v1/payment_method/\(id)")
+    XCTAssertEqual(router.testData?.count, router.readJSONFromFile("EmptySuccessResponse")?.count)
+    XCTAssertNotNil(try? router.requestHeaders())
+    XCTAssertNotNil(try? router.asURLRequest())
+  }
+  
 }

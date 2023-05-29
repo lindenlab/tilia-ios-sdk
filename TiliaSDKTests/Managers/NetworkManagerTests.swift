@@ -138,6 +138,40 @@ final class NetworkManagerTests: XCTestCase {
     XCTAssertEqual(balance, 9701)
   }
   
+  func testRenamePaymentMethodSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var isSuccess = false
+    let expectation = XCTestExpectation(description: "testRenamePaymentMethodSuccess")
+    networkManager.renamePaymentMethod(withNewName: "newName", byId: "id") { result in
+      expectation.fulfill()
+      switch result {
+      case .success:
+        isSuccess = true
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertTrue(isSuccess)
+  }
+  
+  func testDeletePaymentMethodSuccess() {
+    TLManager.shared.setToken(UUID().uuidString)
+    var isSuccess = false
+    let expectation = XCTestExpectation(description: "testDeletePaymentMethodSuccess")
+    networkManager.deletePaymentMethod(with: "id") { result in
+      expectation.fulfill()
+      switch result {
+      case .success:
+        isSuccess = true
+      case .failure:
+        break
+      }
+    }
+    wait(for: [expectation], timeout: 2)
+    XCTAssertTrue(isSuccess)
+  }
+  
   func testGetUserBalanceSuccess() {
     TLManager.shared.setToken(UUID().uuidString)
     var balance: BalanceInfoModel?
