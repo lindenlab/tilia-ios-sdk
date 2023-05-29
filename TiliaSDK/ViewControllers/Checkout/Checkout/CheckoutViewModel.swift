@@ -184,10 +184,10 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
       guard let self = self else { return }
       switch result {
       case .success:
+        self.getUserBalance()
         let event = TLEvent(flow: .checkout, action: .paymentMethodDeleted)
         let model = TLUpdateCallback(event: event, message: L.paymentMethodDeleted)
         self.onUpdate?(model)
-        self.getUserBalance()
       case .failure(let error):
         self.loading.send(false)
         self.didFail(with: .init(error: error, value: false))
@@ -202,10 +202,10 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
       guard let self = self else { return }
       switch result {
       case .success:
+        self.getUserBalance()
         let event = TLEvent(flow: .checkout, action: .paymentMethodRenamed)
         let model = TLUpdateCallback(event: event, message: L.paymentMethodRenamed)
         self.onUpdate?(model)
-        self.getUserBalance()
       case .failure(let error):
         self.loading.send(false)
         self.didFail(with: .init(error: error, value: false))

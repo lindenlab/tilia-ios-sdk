@@ -148,10 +148,10 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
       guard let self = self else { return }
       switch result {
       case .success:
+        self.getPaymentMethods()
         let event = TLEvent(flow: .paymentSelection, action: .paymentMethodDeleted)
         let model = TLUpdateCallback(event: event, message: L.paymentMethodDeleted)
         self.onUpdate?(model)
-        self.getPaymentMethods()
       case .failure(let error):
         self.loading.send(false)
         self.didFail(with: .init(error: error, value: false))
@@ -166,10 +166,10 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
       guard let self = self else { return }
       switch result {
       case .success:
+        self.getPaymentMethods()
         let event = TLEvent(flow: .paymentSelection, action: .paymentMethodRenamed)
         let model = TLUpdateCallback(event: event, message: L.paymentMethodRenamed)
         self.onUpdate?(model)
-        self.getPaymentMethods()
       case .failure(let error):
         self.loading.send(false)
         self.didFail(with: .init(error: error, value: false))
