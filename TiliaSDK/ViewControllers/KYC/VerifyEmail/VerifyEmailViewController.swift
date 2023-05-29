@@ -109,7 +109,7 @@ final class VerifyEmailViewController: BaseViewController {
     let router = VerifyEmailRouter()
     self.viewModel = viewModel
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
   }
   

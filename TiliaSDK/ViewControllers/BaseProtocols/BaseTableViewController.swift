@@ -13,7 +13,7 @@ class BaseTableViewController: BaseViewController {
   
   init(style: UITableView.Style = .grouped) {
     tableView = UITableView(frame: .zero, style: style)
-    super.init(nibName: nil, bundle: nil)
+    super.init()
   }
   
   required init?(coder: NSCoder) {

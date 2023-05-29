@@ -54,7 +54,7 @@ final class TosContentViewController: BaseViewController {
     self.viewModel = TosContentViewModel(manager: manager,
                                          onError: onError)
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
   }
   
