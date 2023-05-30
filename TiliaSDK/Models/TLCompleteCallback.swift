@@ -30,6 +30,15 @@ public struct TLCompleteCallback {
   /// State model
   public let state: State
   
+  /// Additional data
+  public let data: Any?
+  
+  init(event: TLEvent, state: State, data: Any? = nil) {
+    self.event = event
+    self.state = state
+    self.data = data
+  }
+  
 }
 
 // MARK: - CustomStringConvertible
@@ -37,7 +46,8 @@ public struct TLCompleteCallback {
 extension TLCompleteCallback: CustomStringConvertible {
   
   public var description: String {
-    return "Event: \(event.description)\nState: \(state.rawValue)"
+    let dataStr = (data as? CustomStringConvertible).map { "\nData: \($0.description)" } ?? ""
+    return "Event: \(event.description)\nState: \(state.rawValue)" + dataStr
   }
   
 }

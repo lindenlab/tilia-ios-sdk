@@ -28,12 +28,12 @@ final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
   let openUrl = PassthroughSubject<URL, Never>()
   
   private let manager: NetworkManager
-  private let onReload: (Bool) -> Void
+  private let onReload: () -> Void
   private let onError: ((TLErrorCallback) -> Void)?
   private var needToReload = false
   
   init(manager: NetworkManager,
-       onReload: @escaping (Bool) -> Void,
+       onReload: @escaping () -> Void,
        onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
     self.onReload = onReload
@@ -57,7 +57,8 @@ final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
   }
   
   func complete() {
-    onReload(needToReload)
+    guard needToReload else { return }
+    onReload()
   }
   
 }

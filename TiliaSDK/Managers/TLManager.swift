@@ -261,6 +261,36 @@ public extension TLManager {
     viewController.present(transactionDetailsViewController, animated: animated)
   }
   
+  /// Show Payment Selection flow, user access token is required
+  /// - Parameters:
+  ///   - viewController: view controller that is used for presenting Payment Selection flow
+  ///   - amount: amount of transaction details, for example 1000, is not required
+  ///   - currencyCode: currency code, for example USD, is not required
+  ///   - animated: animated flag
+  ///   - onComplete: completion that returns Payment Selection flow state and selected payment methods info - id and amount
+  ///   - onError: completion that returns Payment Selection flow error
+  func presentPaymentSelectionViewController(on viewController: UIViewController,
+                                             withAmount amount: Double?,
+                                             andCurrencyCode currencyCode: String?,
+                                             animated: Bool,
+                                             onComplete: ((TLCompleteCallback) -> Void)? = nil,
+                                             onError: ((TLErrorCallback) -> Void)? = nil) {
+    guard !isTokenEmpty else {
+      let errorCallback = TLErrorCallback(event: TLEvent(flow: .paymentSelection, action: .missingRequiredData),
+                                          error: L.errorPaymentSelectionTitle,
+                                          message: L.missedRequiredData)
+      onError?(errorCallback)
+      return
+    }
+    
+    let paymentSelectionViewController = PaymentSelectionViewController(manager: networkManager,
+                                                                        amount: amount,
+                                                                        currencyCode: currencyCode,
+                                                                        onComplete: onComplete,
+                                                                        onError: onError)
+    viewController.present(paymentSelectionViewController, animated: animated)
+  }
+  
 }
 
 // MARK: - Private Methods

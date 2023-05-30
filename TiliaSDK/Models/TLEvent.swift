@@ -28,6 +28,9 @@ public struct TLEvent {
     /// Transaction History flow
     case transactionHistory = "txnhistory"
     
+    /// Payment Selection flow
+    case paymentSelection = "payment-selection"
+    
   }
   
   /// Tilia action

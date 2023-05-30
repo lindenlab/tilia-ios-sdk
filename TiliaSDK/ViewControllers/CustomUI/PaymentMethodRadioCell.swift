@@ -1,5 +1,5 @@
 //
-//  CheckoutPaymentMethodRadioCell.swift
+//  PaymentMethodRadioCell.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 01.04.2022.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol CheckoutPaymentMethodRadioCellDelegate: AnyObject {
-  func checkoutPaymentMethodRadioCellDidSelect(_ cell: CheckoutPaymentMethodRadioCell)
+protocol PaymentMethodRadioCellDelegate: AnyObject {
+  func paymentMethodRadioCellDidSelect(_ cell: PaymentMethodRadioCell)
 }
 
-final class CheckoutPaymentMethodRadioCell: UITableViewCell {
+final class PaymentMethodRadioCell: UITableViewCell {
   
-  private weak var delegate: CheckoutPaymentMethodRadioCellDelegate?
+  private weak var delegate: PaymentMethodRadioCellDelegate?
   
   private let radioButton: RadioButton = {
     let button = RadioButton()
@@ -54,7 +54,7 @@ final class CheckoutPaymentMethodRadioCell: UITableViewCell {
   func configure(title: String,
                  isDividerHidden: Bool,
                  icon: UIImage?,
-                 delegate: CheckoutPaymentMethodRadioCellDelegate?) {
+                 delegate: PaymentMethodRadioCellDelegate?) {
     titleLabel.text = title
     self.delegate = delegate
     divider.isHidden = isDividerHidden
@@ -73,13 +73,13 @@ final class CheckoutPaymentMethodRadioCell: UITableViewCell {
 
 // MARK: - Private Methods
 
-private extension CheckoutPaymentMethodRadioCell {
+private extension PaymentMethodRadioCell {
   
   func setup() {
     radioButton.addTarget(self, action: #selector(radioButtonDidTap), for: .touchUpInside)
     
     selectionStyle = .none
-    accessibilityIdentifier = "checkoutPaymentMethodCell"
+    accessibilityIdentifier = "paymentMethodRadioCell"
     
     let stackView = UIStackView(arrangedSubviews: [radioButton,
                                                    iconImageView,
@@ -106,7 +106,7 @@ private extension CheckoutPaymentMethodRadioCell {
   }
   
   @objc func radioButtonDidTap() {
-    delegate?.checkoutPaymentMethodRadioCellDidSelect(self)
+    delegate?.paymentMethodRadioCellDidSelect(self)
   }
   
 }

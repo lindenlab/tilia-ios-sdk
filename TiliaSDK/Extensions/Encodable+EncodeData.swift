@@ -17,4 +17,8 @@ extension Encodable {
     return self.encodedData?.simpleSerialize as? [String: Any]
   }
   
+  var jsonStr: String? {
+    return encodedData.flatMap { String(data: $0, encoding: .utf8) }
+  }
+  
 }

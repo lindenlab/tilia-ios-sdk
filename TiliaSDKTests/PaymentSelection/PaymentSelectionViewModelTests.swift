@@ -1,0 +1,221 @@
+//
+//  PaymentSelectionViewModelTests.swift
+//  TiliaSDKTests
+//
+//  Created by Serhii.Petrishenko on 25.05.2023.
+//
+
+import XCTest
+import Combine
+@testable import TiliaSDK
+
+final class PaymentSelectionViewModelTests: XCTestCase {
+  
+  var subscriptions: Set<AnyCancellable>!
+  
+  override func setUpWithError() throws {
+    subscriptions = []
+  }
+  
+  func testSuccessSelectOnePaymentMethod() {
+    var loading: Bool?
+    var needToAcceptTos: Void?
+    var completeCallback: TLCompleteCallback?
+    var selectIndex: Int?
+    var deselectIndex: Int?
+    
+    let completeCallbackExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_CompleteCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = PaymentSelectionViewModel(manager: networkManager,
+                                              amount: nil,
+                                              currencyCode: nil,
+                                              onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
+                                              onError: nil)
+    
+    let loadingExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_Loading")
+    viewModel.loading.sink {
+      loading = $0
+      loadingExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let needToAcceptTosExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_NeedToAcceptTos")
+    viewModel.needToAcceptTos.sink { [weak viewModel] in
+      needToAcceptTos = $0
+      needToAcceptTosExpectation.fulfill()
+      let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                     state: .completed)
+      viewModel?.onTosComplete(event)
+    }.store(in: &subscriptions)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_Content")
+    viewModel.content.sink { [weak viewModel] _ in
+      viewModel?.selectPaymentMethod(at: 0)
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let selectIndexExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_SelectIndex")
+    viewModel.selectIndex.sink {
+      selectIndex = $0
+      selectIndexExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let deselectIndexExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_DeselectIndex")
+    viewModel.deselectIndex.sink {
+      deselectIndex = $0
+      deselectIndexExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let paymentButtonIsEnabledExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_PaymentButtonIsEnabled")
+    viewModel.paymentButtonIsEnabled.sink { [weak viewModel] in
+      guard $0 else { return }
+      if selectIndex == 0 {
+        viewModel?.selectPaymentMethod(at: 1)
+      } else if selectIndex == 1 {
+        viewModel?.useSelectedPaymentMethod()
+        paymentButtonIsEnabledExpectation.fulfill()
+      }
+    }.store(in: &subscriptions)
+    
+    let dismissExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_Dismiss")
+    viewModel.dismiss.sink { [weak viewModel] in
+      viewModel?.complete(isFromCloseAction: false)
+      dismissExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    viewModel.checkIsTosRequired()
+    
+    let expectations = [
+      completeCallbackExpectation,
+      needToAcceptTosExpectation,
+      loadingExpectation,
+      contentExpectation,
+      selectIndexExpectation,
+      deselectIndexExpectation,
+      paymentButtonIsEnabledExpectation,
+      dismissExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(loading)
+    XCTAssertNotNil(needToAcceptTos)
+    XCTAssertEqual(completeCallback?.state, .completed)
+    XCTAssertNotNil(completeCallback?.data)
+    XCTAssertEqual(selectIndex, 1)
+    XCTAssertEqual(deselectIndex, 0)
+  }
+  
+  func testSuccessSelectTwoPaymentMethod() {
+    var loading: Bool?
+    var needToAcceptTos: Void?
+    var completeCallback: TLCompleteCallback?
+    var selectIndex: Int?
+    var paymentMethodsAreEnabled: Bool?
+    
+    let completeCallbackExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_CompleteCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = PaymentSelectionViewModel(manager: networkManager,
+                                              amount: 100000,
+                                              currencyCode: nil,
+                                              onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
+                                              onError: nil)
+    
+    let loadingExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_Loading")
+    viewModel.loading.sink {
+      loading = $0
+      loadingExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let needToAcceptTosExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_NeedToAcceptTos")
+    viewModel.needToAcceptTos.sink { [weak viewModel] in
+      needToAcceptTos = $0
+      needToAcceptTosExpectation.fulfill()
+      let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                     state: .completed)
+      viewModel?.onTosComplete(event)
+    }.store(in: &subscriptions)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_Content")
+    viewModel.content.sink { [weak viewModel] _ in
+      viewModel?.selectPaymentMethod(at: 0, isSelected: true)
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let selectIndexExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_SelectIndex")
+    viewModel.selectIndex.sink {
+      selectIndex = $0
+      selectIndexExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let paymentMethodsAreEnabledExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_PaymentMethodsAreEnabled")
+    viewModel.paymentMethodsAreEnabled.sink {
+      paymentMethodsAreEnabled = $0
+      paymentMethodsAreEnabledExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let paymentButtonIsEnabledExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_PaymentButtonIsEnabled")
+    viewModel.paymentButtonIsEnabled.sink { [weak viewModel] _ in
+      if selectIndex == 0 {
+        viewModel?.selectPaymentMethod(at: 1)
+      } else if selectIndex == 1 {
+        viewModel?.useSelectedPaymentMethod()
+        paymentButtonIsEnabledExpectation.fulfill()
+      }
+    }.store(in: &subscriptions)
+    
+    let dismissExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_Dismiss")
+    viewModel.dismiss.sink { [weak viewModel] in
+      viewModel?.complete(isFromCloseAction: false)
+      dismissExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    viewModel.checkIsTosRequired()
+    
+    let expectations = [
+      completeCallbackExpectation,
+      needToAcceptTosExpectation,
+      loadingExpectation,
+      contentExpectation,
+      selectIndexExpectation,
+      paymentButtonIsEnabledExpectation,
+      paymentMethodsAreEnabledExpectation,
+      dismissExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(loading)
+    XCTAssertNotNil(needToAcceptTos)
+    XCTAssertEqual(completeCallback?.state, .completed)
+    XCTAssertNotNil(completeCallback?.data)
+    XCTAssertEqual(selectIndex, 1)
+    XCTAssertEqual(paymentMethodsAreEnabled, true)
+  }
+  
+  func testErrorLoad() {
+    var error: Error?
+    var errorCallback: TLErrorCallback?
+    
+    let errorCallbackExpectation = XCTestExpectation(description: "testErrorLoad_ErrorCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = PaymentSelectionViewModel(manager: networkManager,
+                                              amount: nil,
+                                              currencyCode: nil,
+                                              onComplete: nil,
+                                              onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
+    
+    let errorExpectation = XCTestExpectation(description: "testErrorLoad_Error")
+    viewModel.error.sink {
+      error = $0.error
+      errorExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken("")
+    viewModel.checkIsTosRequired()
+    
+    wait(for: [errorExpectation, errorCallbackExpectation], timeout: 2)
+    XCTAssertNotNil(error)
+    XCTAssertNotNil(errorCallback)
+  }
+  
+}

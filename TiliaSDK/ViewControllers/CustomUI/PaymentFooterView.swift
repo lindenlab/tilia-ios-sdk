@@ -1,5 +1,5 @@
 //
-//  CheckoutPaymentFooterView.swift
+//  PaymentFooterView.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 31.03.2022.
@@ -7,15 +7,15 @@
 
 import UIKit
 
-protocol CheckoutPaymentFooterViewDelegate: AnyObject {
-  func checkoutPaymentFooterViewPayButtonDidTap(_ footerView: CheckoutPaymentFooterView)
-  func checkoutPaymentFooterViewCloseButtonDidTap(_ footerView: CheckoutPaymentFooterView)
-  func checkoutPaymentFooterViewAddCreditCardButtonDidTap(_ footerView: CheckoutPaymentFooterView)
+protocol PaymentFooterViewDelegate: AnyObject {
+  func paymentFooterViewPayButtonDidTap(_ footerView: PaymentFooterView)
+  func paymentFooterViewCloseButtonDidTap(_ footerView: PaymentFooterView)
+  func paymentFooterViewAddCreditCardButtonDidTap(_ footerView: PaymentFooterView)
 }
 
-final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
+final class PaymentFooterView: UITableViewHeaderFooterView {
   
-  private weak var delegate: CheckoutPaymentFooterViewDelegate?
+  private weak var delegate: PaymentFooterViewDelegate?
   
   private lazy var payButton: PrimaryButton = {
     let button = PrimaryButton()
@@ -49,9 +49,6 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   
   private let textView: TextViewWithLink = {
     let textView = TextViewWithLink()
-    let text = TosAcceptModel.payTitle
-    let links = [TosAcceptModel.termsOfService.description]
-    textView.textData = (text, links)
     textView.linkColor = .tertiaryTextColor
     textView.textColor = .tertiaryTextColor
     textView.font = .systemFont(ofSize: 12)
@@ -85,14 +82,23 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
   func configure(payButtonTitle: String?,
                  closeButtonTitle: String,
                  isCreditCardButtonHidden: Bool,
-                 delegate: CheckoutPaymentFooterViewDelegate?,
+                 delegate: PaymentFooterViewDelegate?,
+                 textViewSubTitle: String?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
     payButton.setTitle(payButtonTitle, for: .normal)
     payButton.isHidden = payButtonTitle == nil
     closeButton.setTitle(closeButtonTitle, for: .normal)
     addCreditCardButton.isHidden = isCreditCardButtonHidden
     addPaymentMethodLabel.isHidden = isCreditCardButtonHidden
-    textView.isHidden = textViewDelegate == nil
+    if let textViewSubTitle = textViewSubTitle {
+      textView.isHidden = false
+      let text = L.paymentAcceptDescription(with: textViewSubTitle)
+      let links = [TosAcceptModel.termsOfService.description]
+      textView.textData = (text, links)
+    } else {
+      textView.isHidden = true
+      textView.attributedText = nil
+    }
     textView.linkDelegate = textViewDelegate
     stackView.setCustomSpacing(isCreditCardButtonHidden ? 16 : 32, after: payButton)
     self.delegate = delegate
@@ -106,7 +112,7 @@ final class CheckoutPaymentFooterView: UITableViewHeaderFooterView {
 
 // MARK: - Private Methods
 
-private extension CheckoutPaymentFooterView {
+private extension PaymentFooterView {
   
   func setup() {
     contentView.backgroundColor = .backgroundColor
@@ -123,15 +129,15 @@ private extension CheckoutPaymentFooterView {
   }
   
   @objc func payButtonDidTap() {
-    delegate?.checkoutPaymentFooterViewPayButtonDidTap(self)
+    delegate?.paymentFooterViewPayButtonDidTap(self)
   }
   
   @objc func addCreditCardButtonDidTap() {
-    delegate?.checkoutPaymentFooterViewAddCreditCardButtonDidTap(self)
+    delegate?.paymentFooterViewAddCreditCardButtonDidTap(self)
   }
   
   @objc func closeButtonDidTap() {
-    delegate?.checkoutPaymentFooterViewCloseButtonDidTap(self)
+    delegate?.paymentFooterViewCloseButtonDidTap(self)
   }
   
 }

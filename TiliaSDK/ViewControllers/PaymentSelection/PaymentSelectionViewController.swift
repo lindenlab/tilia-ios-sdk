@@ -1,36 +1,36 @@
 //
-//  CheckoutViewController.swift
+//  PaymentSelectionViewController.swift
 //  TiliaSDK
 //
-//  Created by Serhii.Petrishenko on 30.03.2022.
+//  Created by Serhii.Petrishenko on 23.05.2023.
 //
 
 import UIKit
 import Combine
 
-final class CheckoutViewController: BaseTableViewController {
+final class PaymentSelectionViewController: BaseTableViewController {
   
   override var hideableView: UIView {
     return tableView
   }
   
-  private let viewModel: CheckoutViewModelProtocol
-  private let router: CheckoutRoutingProtocol
+  private let viewModel: PaymentSelectionViewModelProtocol
+  private let router: PaymentSelectionRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
-  private var sections: [CheckoutSectionBuilder.Section] = []
-  private let builder = CheckoutSectionBuilder()
+  private var sections: [PaymentSelectionSectionBuilder.Section] = []
+  private let builder = PaymentSelectionSectionBuilder()
   
-  init(invoiceId: String,
-       manager: NetworkManager,
-       onUpdate: ((TLUpdateCallback) -> Void)?,
+  init(manager: NetworkManager,
+       amount: Double?,
+       currencyCode: String?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
-    let viewModel = CheckoutViewModel(invoiceId: invoiceId,
-                                      manager: manager,
-                                      onUpdate: onUpdate,
-                                      onComplete: onComplete,
-                                      onError: onError)
-    let router = CheckoutRouter(dataStore: viewModel)
+    let viewModel = PaymentSelectionViewModel(manager: manager,
+                                              amount: amount,
+                                              currencyCode: currencyCode,
+                                              onComplete: onComplete,
+                                              onError: onError)
+    let router = PaymentSelectionRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
     super.init()
@@ -64,8 +64,7 @@ final class CheckoutViewController: BaseTableViewController {
     return builder.cell(for: sections[indexPath.section],
                         in: tableView,
                         at: indexPath,
-                        delegate: self,
-                        isLoading: viewModel.createInvoiceLoading.value)
+                        delegate: self)
   }
   
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -76,22 +75,17 @@ final class CheckoutViewController: BaseTableViewController {
   override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     return builder.footer(for: sections[section],
                           in: tableView,
-                          delegate: self,
-                          isLoading: viewModel.createInvoiceLoading.value)
-  }
-  
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return builder.heightForHeader(in: sections[section])
+                          delegate: self)
   }
   
 }
 
 // MARK: - PaymentFooterViewDelegate
 
-extension CheckoutViewController: PaymentFooterViewDelegate {
+extension PaymentSelectionViewController: PaymentFooterViewDelegate {
   
   func paymentFooterViewPayButtonDidTap(_ footerView: PaymentFooterView) {
-    viewModel.payInvoice()
+    viewModel.useSelectedPaymentMethod()
   }
   
   func paymentFooterViewAddCreditCardButtonDidTap(_ footerView: PaymentFooterView) {
@@ -106,7 +100,7 @@ extension CheckoutViewController: PaymentFooterViewDelegate {
 
 // MARK: - TextViewWithLinkDelegate
 
-extension CheckoutViewController: TextViewWithLinkDelegate {
+extension PaymentSelectionViewController: TextViewWithLinkDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
     router.routeToTosContentView()
@@ -116,7 +110,7 @@ extension CheckoutViewController: TextViewWithLinkDelegate {
 
 // MARK: - PaymentMethodSwitchCellDelegate
 
-extension CheckoutViewController: PaymentMethodSwitchCellDelegate {
+extension PaymentSelectionViewController: PaymentMethodSwitchCellDelegate {
   
   func paymentMethodSwitchCell(_ cell: PaymentMethodSwitchCell, didSelect isOn: Bool) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
@@ -127,7 +121,7 @@ extension CheckoutViewController: PaymentMethodSwitchCellDelegate {
 
 // MARK: - PaymentMethodRadioCellDelegate
 
-extension CheckoutViewController: PaymentMethodRadioCellDelegate {
+extension PaymentSelectionViewController: PaymentMethodRadioCellDelegate {
   
   func paymentMethodRadioCellDidSelect(_ cell: PaymentMethodRadioCell) {
     guard let indexPath = tableView.indexPath(for: cell) else { return }
@@ -138,16 +132,13 @@ extension CheckoutViewController: PaymentMethodRadioCellDelegate {
 
 // MARK: - Private Methods
 
-private extension CheckoutViewController {
+private extension PaymentSelectionViewController {
   
   func setup() {
     tableView.register(TitleInfoHeaderFooterView.self)
-    tableView.register(CheckoutPayloadSummaryFooterView.self)
-    tableView.register(CheckoutPayloadCell.self)
     tableView.register(PaymentFooterView.self)
     tableView.register(PaymentMethodRadioCell.self)
     tableView.register(PaymentMethodSwitchCell.self)
-    tableView.register(ToastViewCell.self)
   }
   
   func bind() {
@@ -161,8 +152,8 @@ private extension CheckoutViewController {
       if $0.value {
         self.showCancelButton()
       }
-      self.router.showToast(title: L.errorPaymentTitle,
-                            message: L.errorPaymentMessage)
+      self.router.showToast(title: L.errorPaymentSelectionTitle,
+                            message: L.errorPaymentSelectionMessage)
     }.store(in: &subscriptions)
     
     viewModel.needToAcceptTos.sink { [weak self] in
@@ -171,75 +162,42 @@ private extension CheckoutViewController {
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      self.sections = self.builder.sections(with: $0)
+      self.sections = self.builder.sections(for: $0)
       self.tableView.reloadData()
-    }.store(in: &subscriptions)
-    
-    viewModel.successfulPayment.sink { [weak self] in
-      guard let self = self, $0 else { return }
-      let reloadSections = self.builder.updateSectionsWithSuccessfulPayment(&self.sections)
-      UIView.performWithoutAnimation {
-        self.tableView.reloadSections(reloadSections, with: .none)
-      }
     }.store(in: &subscriptions)
     
     viewModel.dismiss.sink { [weak self] in
       self?.dismiss(isFromCloseAction: false)
     }.store(in: &subscriptions)
     
-    viewModel.createInvoiceLoading.sink { [weak self] in
+    viewModel.paymentButtonIsEnabled.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updateSections(self.sections,
+      self.builder.updateSections(&self.sections,
                                   in: self.tableView,
-                                  isLoading: $0)
-    }.store(in: &subscriptions)
-    
-    viewModel.payButtonIsEnabled.sink { [weak self] in
-      guard let self = self else { return }
-      self.builder.updatePaymentSection(for: &self.sections,
-                                        in: self.tableView,
-                                        isPayButtonEnabled: $0)
+                                  isPayButtonEnabled: $0)
     }.store(in: &subscriptions)
     
     viewModel.deselectIndex.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updatePaymentSection(for: &self.sections,
-                                        in: self.tableView,
-                                        at: $0,
-                                        isSelected: false)
+      self.builder.updateSections(&self.sections,
+                                  in: self.tableView,
+                                  at: $0,
+                                  isSelected: false)
     }.store(in: &subscriptions)
     
     viewModel.selectIndex.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updatePaymentSection(for: &self.sections,
-                                        in: self.tableView,
-                                        at: $0,
-                                        isSelected: true)
-    }.store(in: &subscriptions)
-    
-    viewModel.updateSummary.sink { [weak self] in
-      guard let self = self else { return }
-      let reloadSections = self.builder.updateSummarySection(for: &self.sections,
-                                                             model: $0)
-      UIView.performWithoutAnimation {
-        self.tableView.reloadSections(reloadSections, with: .none)
-      }
-    }.store(in: &subscriptions)
-    
-    viewModel.updatePayment.sink { [weak self] in
-      guard let self = self else { return }
-      let reloadSections = self.builder.updatePaymentSection(for: &self.sections,
-                                                             model: $0)
-      UIView.performWithoutAnimation {
-        self.tableView.reloadSections(reloadSections, with: .none)
-      }
+      self.builder.updateSections(&self.sections,
+                                  in: self.tableView,
+                                  at: $0,
+                                  isSelected: true)
     }.store(in: &subscriptions)
     
     viewModel.paymentMethodsAreEnabled.sink { [weak self] in
       guard let self = self else { return }
-      self.builder.updatePaymentSection(for: &self.sections,
-                                        in: self.tableView,
-                                        isEnabled: $0)
+      self.builder.updateSections(&self.sections,
+                                  in: self.tableView,
+                                  isEnabled: $0)
     }.store(in: &subscriptions)
   }
   

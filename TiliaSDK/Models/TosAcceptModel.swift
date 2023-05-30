@@ -13,7 +13,6 @@ enum TosAcceptModel: CustomStringConvertible, CaseIterable {
   case privacyPolicy
   
   static var title: String { return L.tosAcceptDescription }
-  static var payTitle: String { return L.payAcceptDescription }
   static var privacyPolicyUrl: URL { return URL(string: "https://www.tilia.io/legal/privacy")! }
   
   var description: String {
