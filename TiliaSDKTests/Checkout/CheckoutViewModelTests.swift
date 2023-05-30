@@ -164,6 +164,88 @@ final class CheckoutViewModelTests: XCTestCase {
     XCTAssertNotNil(updateSummary)
   }
   
+  func testSuccessRenamePaymentMethod() {
+    var updateCallback: TLUpdateCallback?
+    var updatePayment: CheckoutContent?
+    
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = CheckoutViewModel(invoiceId: "",
+                                      manager: networkManager,
+                                      onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                      onComplete: nil,
+                                      onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_Content")
+    viewModel.content.sink { [weak viewModel] _ in
+      viewModel?.renamePaymentMethod(at: 1, with: "newName")
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let updatePaymentExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_UpdatePayment")
+    viewModel.updatePayment.sink {
+      updatePayment = $0
+      updatePaymentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
+    
+    let expectations = [
+      updateCallbackExpectation,
+      updatePaymentExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(updatePayment)
+    XCTAssertEqual(updateCallback?.event.action, .paymentMethodRenamed)
+    XCTAssertEqual(updateCallback?.event.flow, .checkout)
+  }
+  
+  func testSuccessDeletePaymentMethod() {
+    var updateCallback: TLUpdateCallback?
+    var updatePayment: CheckoutContent?
+    
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessDeletePaymentMethod_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = CheckoutViewModel(invoiceId: "",
+                                      manager: networkManager,
+                                      onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                      onComplete: nil,
+                                      onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessDeletePaymentMethod_Content")
+    viewModel.content.sink { [weak viewModel] _ in
+      viewModel?.removePaymentMethod(at: 1)
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let updatePaymentExpectation = XCTestExpectation(description: "testSuccessDeletePaymentMethod_UpdatePayment")
+    viewModel.updatePayment.sink {
+      updatePayment = $0
+      updatePaymentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
+    
+    let expectations = [
+      updateCallbackExpectation,
+      updatePaymentExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(updatePayment)
+    XCTAssertEqual(updateCallback?.event.action, .paymentMethodDeleted)
+    XCTAssertEqual(updateCallback?.event.flow, .checkout)
+  }
+  
   func testErrorCheckIsTosRequired() {
     var error: Error?
     var errorCallback: TLErrorCallback?

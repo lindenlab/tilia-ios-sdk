@@ -230,6 +230,7 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     wait(for: expectations, timeout: 2)
     XCTAssertEqual(count, 2)
     XCTAssertEqual(updateCallback?.event.action, .paymentMethodRenamed)
+    XCTAssertEqual(updateCallback?.event.flow, .paymentSelection)
   }
   
   func testSuccessDeletePaymentMethod() {
@@ -268,6 +269,7 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     wait(for: expectations, timeout: 2)
     XCTAssertEqual(count, 2)
     XCTAssertEqual(updateCallback?.event.action, .paymentMethodDeleted)
+    XCTAssertEqual(updateCallback?.event.flow, .paymentSelection)
   }
   
   func testErrorLoad() {
