@@ -29,6 +29,7 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     let viewModel = PaymentSelectionViewModel(manager: networkManager,
                                               amount: nil,
                                               currencyCode: nil,
+                                              onUpdate: nil,
                                               onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
                                               onError: nil)
     
@@ -117,6 +118,7 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     let viewModel = PaymentSelectionViewModel(manager: networkManager,
                                               amount: 100000,
                                               currencyCode: nil,
+                                              onUpdate: nil,
                                               onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
                                               onError: nil)
     
@@ -192,6 +194,82 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     XCTAssertEqual(paymentMethodsAreEnabled, true)
   }
   
+  func testSuccessRenamePaymentMethod() {
+    var updateCallback: TLUpdateCallback?
+    var count = 0
+    
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = PaymentSelectionViewModel(manager: networkManager,
+                                              amount: nil,
+                                              currencyCode: nil,
+                                              onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                              onComplete: nil,
+                                              onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_Content")
+    viewModel.content.sink { [weak viewModel] _ in
+      count += 1
+      if count == 1 {
+        viewModel?.renamePaymentMethod(at: 1, with: "newName")
+      } else if count == 2 {
+        contentExpectation.fulfill()
+      }
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
+    
+    let expectations = [
+      updateCallbackExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertEqual(count, 2)
+    XCTAssertEqual(updateCallback?.event.action, .paymentMethodRenamed)
+  }
+  
+  func testSuccessDeletePaymentMethod() {
+    var updateCallback: TLUpdateCallback?
+    var count = 0
+    
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = PaymentSelectionViewModel(manager: networkManager,
+                                              amount: nil,
+                                              currencyCode: nil,
+                                              onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                              onComplete: nil,
+                                              onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_Content")
+    viewModel.content.sink { [weak viewModel] _ in
+      count += 1
+      if count == 1 {
+        viewModel?.removePaymentMethod(at: 1)
+      } else if count == 2 {
+        contentExpectation.fulfill()
+      }
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
+    
+    let expectations = [
+      updateCallbackExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertEqual(count, 2)
+    XCTAssertEqual(updateCallback?.event.action, .paymentMethodDeleted)
+  }
+  
   func testErrorLoad() {
     var error: Error?
     var errorCallback: TLErrorCallback?
@@ -201,6 +279,7 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     let viewModel = PaymentSelectionViewModel(manager: networkManager,
                                               amount: nil,
                                               currencyCode: nil,
+                                              onUpdate: nil,
                                               onComplete: nil,
                                               onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     

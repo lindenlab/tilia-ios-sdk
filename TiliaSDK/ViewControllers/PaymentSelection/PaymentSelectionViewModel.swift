@@ -92,7 +92,7 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   init(manager: NetworkManager,
        amount: Double?,
        currencyCode: String?,
-       onUpdate: ((TLUpdateCallback) -> Void)? = nil,
+       onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
