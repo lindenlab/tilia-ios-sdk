@@ -20,6 +20,8 @@ final class TransactionHistoryViewController: BaseViewController {
   private var viewControllers: [UIViewController] = []
   private var selectedViewController: UIViewController?
   
+  private let textField = RoundedTextField()
+  
   private lazy var sectionTypeSegmentedControl: UISegmentedControl = {
     let segmentedControl = UISegmentedControl()
     segmentedControl.addTarget(self, action: #selector(sectionTypeDidChange), for: .valueChanged)
@@ -29,8 +31,11 @@ final class TransactionHistoryViewController: BaseViewController {
     return segmentedControl
   }()
   
-  private lazy var sectionTypeStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [sectionTypeSegmentedControl])
+  private lazy var topStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [textField,
+                                                   sectionTypeSegmentedControl])
+    stackView.spacing = 16
+    stackView.axis = .vertical
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.directionalLayoutMargins = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
     stackView.isHidden = true
@@ -51,7 +56,7 @@ final class TransactionHistoryViewController: BaseViewController {
   }()
   
   private lazy var contentStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [sectionTypeStackView,
+    let stackView = UIStackView(arrangedSubviews: [topStackView,
                                                    closeButtonStackView])
     stackView.axis = .vertical
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -148,7 +153,7 @@ private extension TransactionHistoryViewController {
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      self.sectionTypeStackView.isHidden = false
+      self.topStackView.isHidden = false
       self.closeButtonStackView.isHidden = false
       self.setupContent()
     }.store(in: &subscriptions)
