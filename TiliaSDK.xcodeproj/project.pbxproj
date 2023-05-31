@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4FEC119D44CD8356A75A0B47 /* Pods_TiliaSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC8E4F68FDB5F1AB6F47904 /* Pods_TiliaSDKTests.framework */; };
 		6975C66B636174B1F677154A /* Pods_TiliaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2992F82D81AD4D672B9F9BC /* Pods_TiliaSDK.framework */; };
+		D1064C6E2A27D7CC0072D64F /* UIPickerView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1064C6D2A27D7CC0072D64F /* UIPickerView+Helpers.swift */; };
 		D10C55C32A12148200F735B7 /* GetUserInfoResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D10C55C22A12148200F735B7 /* GetUserInfoResponse.json */; };
 		D10C55C62A12148900F735B7 /* BeginVerifyUserEmailResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D10C55C42A12148900F735B7 /* BeginVerifyUserEmailResponse.json */; };
 		D10C55CB2A1216A100F735B7 /* BeginVerifyUserEmailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10C55CA2A1216A100F735B7 /* BeginVerifyUserEmailModel.swift */; };
@@ -288,6 +289,7 @@
 		8BC8E4F68FDB5F1AB6F47904 /* Pods_TiliaSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TiliaSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		982B375665B93548647700CF /* Pods-TiliaSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDK.release.xcconfig"; path = "Target Support Files/Pods-TiliaSDK/Pods-TiliaSDK.release.xcconfig"; sourceTree = "<group>"; };
 		BB1E529034D47E85C7B88885 /* Pods-TiliaSDKTests.cicd.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TiliaSDKTests.cicd.xcconfig"; path = "Target Support Files/Pods-TiliaSDKTests/Pods-TiliaSDKTests.cicd.xcconfig"; sourceTree = "<group>"; };
+		D1064C6D2A27D7CC0072D64F /* UIPickerView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPickerView+Helpers.swift"; sourceTree = "<group>"; };
 		D10C55C22A12148200F735B7 /* GetUserInfoResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetUserInfoResponse.json; sourceTree = "<group>"; };
 		D10C55C42A12148900F735B7 /* BeginVerifyUserEmailResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BeginVerifyUserEmailResponse.json; sourceTree = "<group>"; };
 		D10C55CA2A1216A100F735B7 /* BeginVerifyUserEmailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeginVerifyUserEmailModel.swift; sourceTree = "<group>"; };
@@ -1001,6 +1003,7 @@
 				D17EFFA42846462500F4B6DD /* UICollectionView+Helpers.swift */,
 				D17EFFA62846466900F4B6DD /* UICollectionViewCell+Helpers.swift */,
 				D1E6F5A628ECD2FF000CDA5E /* UIViewController+Childs.swift */,
+				D1064C6D2A27D7CC0072D64F /* UIPickerView+Helpers.swift */,
 				D1C8A84327F5E49600BF2910 /* String+Helpers.swift */,
 				D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */,
 				D15BA9F2282AABF900511785 /* Date+Helpers.swift */,
@@ -1562,6 +1565,7 @@
 			files = (
 				D16E2A9D28AFA1A600287C55 /* TransactionDetailsViewController.swift in Sources */,
 				D1B871FC28339BE600C44441 /* UserDocumentsViewModel.swift in Sources */,
+				D1064C6E2A27D7CC0072D64F /* UIPickerView+Helpers.swift in Sources */,
 				D1C8A83E27F4FE8D00BF2910 /* UITableViewCell+Helpers.swift in Sources */,
 				D13BDD74282279B800A31F2D /* UserInfoHeaderView.swift in Sources */,
 				D13759C828D355730046234B /* TransactionHistoryRouter.swift in Sources */,
