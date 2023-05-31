@@ -18,7 +18,7 @@ final class UserInfoValidatorTests: XCTestCase {
   }
   
   func testFailureUserInfoEmailValidator() {
-    var model = UserInfoModel()
+    let model = UserInfoModel()
     let isFilled = UserInfoEmailValidator().isFilled(for: model)
     XCTAssertFalse(isFilled)
   }
