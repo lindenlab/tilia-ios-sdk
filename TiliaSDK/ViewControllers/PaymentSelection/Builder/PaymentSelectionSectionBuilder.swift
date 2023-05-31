@@ -22,10 +22,12 @@ struct PaymentSelectionSectionBuilder {
       var isEnabled: Bool
       let icon: UIImage?
       let isDividerHidden: Bool
+      let areSwipeActionsEnabled: Bool
     }
     
     var items: [Item]
     var isPayButtonEnabled: Bool
+    var isEmpty: Bool { return items.isEmpty }
   }
   
   func numberOfRows(in section: Section) -> Int {
@@ -49,6 +51,7 @@ struct PaymentSelectionSectionBuilder {
     } else {
       let newCell = tableView.dequeue(PaymentMethodRadioCell.self, for: indexPath)
       newCell.configure(title: item.title,
+                        subTitle: item.subTitle,
                         isDividerHidden: item.isDividerHidden,
                         icon: item.icon,
                         delegate: delegate)
@@ -70,14 +73,33 @@ struct PaymentSelectionSectionBuilder {
               in tableView: UITableView,
               delegate: FooterDelegate) -> UIView {
     let view = tableView.dequeue(PaymentFooterView.self)
-    view.configure(payButtonTitle: L.usePaymentMethod,
+    let title = section.isEmpty ? nil : L.usePaymentMethod
+    view.configure(payButtonTitle: title,
                    closeButtonTitle: L.cancel,
                    isCreditCardButtonHidden: false,
                    delegate: delegate,
-                   textViewSubTitle: L.usePaymentMethod,
+                   textViewSubTitle: title,
                    textViewDelegate: delegate)
     view.configure(isPayButtonEnabled: section.isPayButtonEnabled)
     return view
+  }
+  
+  func swipeActionsConfiguration(for section: Section,
+                                 at index: Int,
+                                 withDeleteAction deleteAction: @escaping () -> Void,
+                                 andRenameAction renameAction: @escaping () -> Void) -> UISwipeActionsConfiguration? {
+    guard section.items[index].areSwipeActionsEnabled else { return nil }
+    let deleteAction = UIContextualAction(style: .destructive,
+                                          title: L.remove) { _, _, handler in
+      deleteAction()
+      handler(true)
+    }
+    let renameAction = UIContextualAction(style: .normal,
+                                          title: L.rename) { _, _, handler in
+      renameAction()
+      handler(true)
+    }
+    return UISwipeActionsConfiguration(actions: [deleteAction, renameAction])
   }
   
   func sections(for model: PaymentSelectionContent) -> [Section] {
@@ -102,44 +124,46 @@ struct PaymentSelectionSectionBuilder {
         }
       }()
       return .init(title: title,
-                   subTitle: isSwitch ? nil : walletBalance?.display,
+                   subTitle: !isSwitch && value.type.isWallet ? walletBalance?.display : nil,
                    isSwitch: isSwitch,
                    isSelected: false,
                    isEnabled: isEnabled,
                    icon: value.type.icon,
-                   isDividerHidden: index == paymentMethods.count - 1)
+                   isDividerHidden: index == paymentMethods.count - 1,
+                   areSwipeActionsEnabled: !value.type.isWallet)
     }
     return [.init(items: items,
                   isPayButtonEnabled: false)]
   }
   
   
-  func updateSections(_ sections: inout [Section],
-                      in tableView: UITableView,
-                      isPayButtonEnabled: Bool) {
-    sections[0].isPayButtonEnabled = isPayButtonEnabled
-    if let footer = tableView.footerView(forSection: 0) as? PaymentFooterView {
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
+                     isPayButtonEnabled: Bool) {
+    section.isPayButtonEnabled = isPayButtonEnabled
+    if let footer = tableView.footerView(forSection: sectionIndex) as? PaymentFooterView {
       footer.configure(isPayButtonEnabled: isPayButtonEnabled)
     }
   }
   
-  func updateSections(_ sections: inout [Section],
-                      in tableView: UITableView,
-                      at index: Int,
-                      isSelected: Bool) {
-    sections[0].items[index].isSelected = isSelected
-    let indexPath = IndexPath(row: index, section: 0)
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at indexPath: IndexPath,
+                     isSelected: Bool) {
+    section.items[indexPath.row].isSelected = isSelected
     if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell, !isSelected {
       cell.configure(isSelected: isSelected)
     }
   }
   
-  func updateSections(_ sections: inout [Section],
-                      in tableView: UITableView,
-                      isEnabled: Bool) {
-    for (index, value) in sections[0].items.enumerated() where !value.isSwitch {
-      sections[0].items[index].isEnabled = isEnabled
-      let indexPath = IndexPath(row: index, section: 0)
+  func updateSection(_ section: inout Section,
+                     in tableView: UITableView,
+                     at sectionIndex: Int,
+                     isEnabled: Bool) {
+    for (index, value) in section.items.enumerated() where !value.isSwitch {
+      section.items[index].isEnabled = isEnabled
+      let indexPath = IndexPath(row: index, section: sectionIndex)
       if let cell = tableView.cellForRow(at: indexPath) as? PaymentMethodRadioCell {
         cell.configure(isEnabled: isEnabled)
       }

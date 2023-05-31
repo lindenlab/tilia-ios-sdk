@@ -249,16 +249,14 @@ final class UserInfoViewModelTests: XCTestCase {
   }
   
   func testSuccessLoadContentAndUpdateEmail() {
-    var updateCallback: TLUpdateCallback?
     var content: Void?
     var didStartEditingEmail: UserInfoEditEmail?
     var verifyEmail: Void?
     var emailVerified: UserInfoEmailVerified?
     
-    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessLoadContentAndUpdateEmail_UpdateCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = UserInfoViewModel(manager: networkManager,
-                                      onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                      onUpdate: nil,
                                       onComplete: nil,
                                       onError: nil)
     
@@ -299,7 +297,6 @@ final class UserInfoViewModelTests: XCTestCase {
     }.store(in: &subscriptions)
     
     let expectations = [
-      updateCallbackExpectation,
       contentExpectation,
       didStartEditingEmailExpectation,
       verifyEmailExpectation,
@@ -311,7 +308,6 @@ final class UserInfoViewModelTests: XCTestCase {
     
     wait(for: expectations, timeout: 2)
     
-    XCTAssertEqual(updateCallback?.event.action, .emailVerified)
     XCTAssertNotNil(content)
     XCTAssertEqual(didStartEditingEmail?.index, 0)
     XCTAssertNotNil(verifyEmail)

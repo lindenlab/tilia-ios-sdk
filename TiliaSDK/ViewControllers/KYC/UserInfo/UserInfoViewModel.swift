@@ -352,16 +352,12 @@ private extension UserInfoViewModel {
   }
   
   func didVerifyEmail(with mode: VerifyEmailMode) {
-    let event = TLEvent(flow: .kyc, action: .emailVerified)
-    let message = mode.successTitle
-    let model = TLUpdateCallback(event: event, message: message)
-    onUpdate?(model)
     if userInfoModel.email != nil {
       userInfoModel.isEmailUpdated = true
     }
     userInfoModel.email = userInfoModel.needToVerifyEmail
     userInfoModel.needToVerifyEmail = nil
-    emailVerified.send((userInfoModel, message))
+    emailVerified.send((userInfoModel, mode.successTitle))
   }
   
 }

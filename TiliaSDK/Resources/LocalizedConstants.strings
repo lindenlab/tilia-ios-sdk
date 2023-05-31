@@ -204,3 +204,12 @@
 "errorPaymentSelectionTitle" = "Error processing payment selection";
 "errorPaymentSelectionMessage" = "Sorry, we were unable to process your payment selection. Please try again later.";
 "usePaymentMethod" = "Use this payment method";
+"removePaymentMethodTitle" = "Remove payment method";
+"removePaymentMethodMessage" = "Are you sure you want to remove this payment method?";
+"remove" = "Remove";
+"paymentMethodDeleted" = "Payment method is deleted";
+"rename" = "Rename";
+"paymentMethodRenamed" = "Payment method is renamed";
+"renamePaymentMethodTitle" = "Rename payment method";
+"renamePaymentMethodMessage" = "Please enter here new non empty name";
+"newName" = "New name";

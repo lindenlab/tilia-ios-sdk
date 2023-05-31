@@ -66,6 +66,7 @@ final class VerifyEmailViewModel: VerifyEmailViewModelProtocol {
   private let flow: TLEvent.Flow
   private let manager: NetworkManager
   private let onEmailVerified: (VerifyEmailMode) -> Void
+  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let onError: ((TLErrorCallback) -> Void)?
   private var nonce: String?
   
@@ -74,12 +75,14 @@ final class VerifyEmailViewModel: VerifyEmailViewModelProtocol {
        mode: VerifyEmailMode,
        manager: NetworkManager,
        onEmailVerified: @escaping (VerifyEmailMode) -> Void,
+       onUpdate: ((TLUpdateCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     self.email = email
     self.flow = flow
     self.mode = mode
     self.manager = manager
     self.onEmailVerified = onEmailVerified
+    self.onUpdate = onUpdate
     self.onError = onError
   }
   
@@ -114,6 +117,9 @@ final class VerifyEmailViewModel: VerifyEmailViewModelProtocol {
   }
   
   func complete() {
+    let event = TLEvent(flow: flow, action: .emailVerified)
+    let model = TLUpdateCallback(event: event, message: mode.successTitle)
+    onUpdate?(model)
     onEmailVerified(mode)
   }
   

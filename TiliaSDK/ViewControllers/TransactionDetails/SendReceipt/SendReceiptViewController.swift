@@ -105,7 +105,7 @@ final class SendReceiptViewController: BaseViewController {
     let router = SendReceiptRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
   }
   

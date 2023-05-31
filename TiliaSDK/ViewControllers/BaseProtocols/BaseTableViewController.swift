@@ -13,7 +13,7 @@ class BaseTableViewController: BaseViewController {
   
   init(style: UITableView.Style = .grouped) {
     tableView = UITableView(frame: .zero, style: style)
-    super.init(nibName: nil, bundle: nil)
+    super.init()
   }
   
   required init?(coder: NSCoder) {
@@ -64,6 +64,10 @@ extension BaseTableViewController: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return nil
+  }
+  
+  func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     return nil
   }
   

@@ -29,6 +29,7 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     let viewModel = PaymentSelectionViewModel(manager: networkManager,
                                               amount: nil,
                                               currencyCode: nil,
+                                              onUpdate: nil,
                                               onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
                                               onError: nil)
     
@@ -49,27 +50,27 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     
     let contentExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_Content")
     viewModel.content.sink { [weak viewModel] _ in
-      viewModel?.selectPaymentMethod(at: 0)
+      viewModel?.selectPaymentMethod(at: .init(row: 0, section: 0))
       contentExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let selectIndexExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_SelectIndex")
     viewModel.selectIndex.sink {
-      selectIndex = $0
+      selectIndex = $0.row
       selectIndexExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let deselectIndexExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_DeselectIndex")
     viewModel.deselectIndex.sink {
-      deselectIndex = $0
+      deselectIndex = $0.row
       deselectIndexExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let paymentButtonIsEnabledExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_PaymentButtonIsEnabled")
     viewModel.paymentButtonIsEnabled.sink { [weak viewModel] in
-      guard $0 else { return }
+      guard $0.isEnabled else { return }
       if selectIndex == 0 {
-        viewModel?.selectPaymentMethod(at: 1)
+        viewModel?.selectPaymentMethod(at: .init(row: 1, section: 0))
       } else if selectIndex == 1 {
         viewModel?.useSelectedPaymentMethod()
         paymentButtonIsEnabledExpectation.fulfill()
@@ -117,6 +118,7 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     let viewModel = PaymentSelectionViewModel(manager: networkManager,
                                               amount: 100000,
                                               currencyCode: nil,
+                                              onUpdate: nil,
                                               onComplete: { completeCallback = $0; completeCallbackExpectation.fulfill() },
                                               onError: nil)
     
@@ -137,26 +139,26 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     
     let contentExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_Content")
     viewModel.content.sink { [weak viewModel] _ in
-      viewModel?.selectPaymentMethod(at: 0, isSelected: true)
+      viewModel?.selectPaymentMethod(at: .init(row: 0, section: 0), isSelected: true)
       contentExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let selectIndexExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_SelectIndex")
     viewModel.selectIndex.sink {
-      selectIndex = $0
+      selectIndex = $0.row
       selectIndexExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let paymentMethodsAreEnabledExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_PaymentMethodsAreEnabled")
     viewModel.paymentMethodsAreEnabled.sink {
-      paymentMethodsAreEnabled = $0
+      paymentMethodsAreEnabled = $0.isEnabled
       paymentMethodsAreEnabledExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let paymentButtonIsEnabledExpectation = XCTestExpectation(description: "testSuccessSelectOnePaymentMethod_PaymentButtonIsEnabled")
     viewModel.paymentButtonIsEnabled.sink { [weak viewModel] _ in
       if selectIndex == 0 {
-        viewModel?.selectPaymentMethod(at: 1)
+        viewModel?.selectPaymentMethod(at: .init(row: 1, section: 0))
       } else if selectIndex == 1 {
         viewModel?.useSelectedPaymentMethod()
         paymentButtonIsEnabledExpectation.fulfill()
@@ -192,6 +194,84 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     XCTAssertEqual(paymentMethodsAreEnabled, true)
   }
   
+  func testSuccessRenamePaymentMethod() {
+    var updateCallback: TLUpdateCallback?
+    var count = 0
+    
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = PaymentSelectionViewModel(manager: networkManager,
+                                              amount: nil,
+                                              currencyCode: nil,
+                                              onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                              onComplete: nil,
+                                              onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_Content")
+    viewModel.content.sink { [weak viewModel] _ in
+      count += 1
+      if count == 1 {
+        viewModel?.renamePaymentMethod(at: 1, with: "newName")
+      } else if count == 2 {
+        contentExpectation.fulfill()
+      }
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
+    
+    let expectations = [
+      updateCallbackExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertEqual(count, 2)
+    XCTAssertEqual(updateCallback?.event.action, .paymentMethodRenamed)
+    XCTAssertEqual(updateCallback?.event.flow, .paymentSelection)
+  }
+  
+  func testSuccessDeletePaymentMethod() {
+    var updateCallback: TLUpdateCallback?
+    var count = 0
+    
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_UpdateCallback")
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = PaymentSelectionViewModel(manager: networkManager,
+                                              amount: nil,
+                                              currencyCode: nil,
+                                              onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
+                                              onComplete: nil,
+                                              onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_Content")
+    viewModel.content.sink { [weak viewModel] _ in
+      count += 1
+      if count == 1 {
+        viewModel?.removePaymentMethod(at: 1)
+      } else if count == 2 {
+        contentExpectation.fulfill()
+      }
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
+    
+    let expectations = [
+      updateCallbackExpectation,
+      contentExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertEqual(count, 2)
+    XCTAssertEqual(updateCallback?.event.action, .paymentMethodDeleted)
+    XCTAssertEqual(updateCallback?.event.flow, .paymentSelection)
+  }
+  
   func testErrorLoad() {
     var error: Error?
     var errorCallback: TLErrorCallback?
@@ -201,6 +281,7 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     let viewModel = PaymentSelectionViewModel(manager: networkManager,
                                               amount: nil,
                                               currencyCode: nil,
+                                              onUpdate: nil,
                                               onComplete: nil,
                                               onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     

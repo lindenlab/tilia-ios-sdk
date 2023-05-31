@@ -42,6 +42,7 @@ protocol SendReceiptDataStore {
   var userEmail: String { get }
   var verifyEmailMode: VerifyEmailMode { get }
   var onEmailVerified: (VerifyEmailMode) -> Void { get }
+  var onUpdate: ((TLUpdateCallback) -> Void)? { get }
   var onError: ((TLErrorCallback) -> Void)? { get }
 }
 
@@ -62,13 +63,13 @@ final class SendReceiptViewModel: SendReceiptViewModelProtocol, SendReceiptDataS
   let manager: NetworkManager
   var userEmail: String { return needToVerifyEmail ?? "" }
   var verifyEmailMode: VerifyEmailMode { return verifiedEmail == nil ? .verify : .update }
+  let onUpdate: ((TLUpdateCallback) -> Void)?
   let onError: ((TLErrorCallback) -> Void)?
   private(set) lazy var onEmailVerified: (VerifyEmailMode) -> Void = { [weak self] in
     self?.didVerifyEmail(with: $0)
   }
   private let transactionId: String
   private let onEmailSent: () -> Void
-  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private var verifiedEmail: String?
   private var needToVerifyEmail: String? {
     didSet {
@@ -174,14 +175,10 @@ private extension SendReceiptViewModel {
   }
   
   func didVerifyEmail(with mode: VerifyEmailMode) {
-    let event = TLEvent(flow: .kyc, action: .emailVerified)
-    let message = mode.successTitle
-    let model = TLUpdateCallback(event: event, message: message)
-    onUpdate?(model)
     verifiedEmail = needToVerifyEmail
     needToVerifyEmail = nil
     emailVerificationModeModel = .verified
-    emailVerified.send(message)
+    emailVerified.send(mode.successTitle)
   }
   
 }

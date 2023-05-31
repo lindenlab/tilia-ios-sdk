@@ -7,7 +7,42 @@
 
 import UIKit
 
-protocol PaymentSelectionRoutingProtocol: RoutingProtocol {
+protocol PaymentMethodActionsRoutingProtocol: RoutingProtocol { }
+
+extension PaymentMethodActionsRoutingProtocol {
+  
+  func routeToDeletePaymentMethodView(removeAction: @escaping () -> Void) {
+    let alertController = UIAlertController(title: L.removePaymentMethodTitle,
+                                            message: L.removePaymentMethodMessage,
+                                            preferredStyle: .alert)
+    let cancelAction = UIAlertAction(title: L.cancel, style: .cancel)
+    let removeAction = UIAlertAction(title: L.remove, style: .destructive) { _ in
+      removeAction()
+    }
+    alertController.addAction(cancelAction)
+    alertController.addAction(removeAction)
+    viewController?.present(alertController, animated: true)
+  }
+  
+  func routeToRenamePaymentMethodView(renameAction: @escaping (String) -> Void) {
+    let alertController = UIAlertController(title: L.renamePaymentMethodTitle,
+                                            message: L.renamePaymentMethodMessage,
+                                            preferredStyle: .alert)
+    let cancelAction = UIAlertAction(title: L.cancel, style: .cancel)
+    let renameAction = UIAlertAction(title: L.rename, style: .default) { [weak alertController] _ in
+      renameAction(alertController?.textFields?.first?.text ?? "")
+    }
+    alertController.addTextField {
+      $0.placeholder = L.newName
+    }
+    alertController.addAction(cancelAction)
+    alertController.addAction(renameAction)
+    viewController?.present(alertController, animated: true)
+  }
+  
+}
+
+protocol PaymentSelectionRoutingProtocol: PaymentMethodActionsRoutingProtocol {
   func routeToTosView()
   func routeToTosContentView()
   func routeToAddCreditCardView()

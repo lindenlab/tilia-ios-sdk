@@ -85,7 +85,7 @@ final class TosViewController: BaseViewController {
     let router = TosRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
   }
   

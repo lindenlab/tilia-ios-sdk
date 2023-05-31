@@ -63,7 +63,7 @@ final class AddCreditCardViewController: BaseViewController {
                                             onReload: onReload,
                                             onError: onError)
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     router.viewController = self
   }
   

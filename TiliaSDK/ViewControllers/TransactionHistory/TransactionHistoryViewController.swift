@@ -69,7 +69,7 @@ final class TransactionHistoryViewController: BaseViewController {
     let router = TransactionHistoryRouter(dataStore: viewModel)
     self.viewModel = viewModel
     self.router = router
-    super.init(nibName: nil, bundle: nil)
+    super.init()
     TransactionHistorySectionTypeModel.allCases.enumerated().forEach { index, item in
       viewControllers.append(TransactionHistoryChildViewController(manager: manager,
                                                                    sectionType: item,

@@ -20,14 +20,17 @@ final class VerifyEmailViewModelTests: XCTestCase {
   func testSuccessVerify() {
     var emailVerified: VerifyEmailMode?
     var loading: Bool?
+    var updateCallback: TLUpdateCallback?
     
     let emailVerifiedExpectation = XCTestExpectation(description: "testSuccessVerify_EmailVerified")
+    let updateCallbackExpectation = XCTestExpectation(description: "testSuccessVerify_UpdateCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
     let viewModel = VerifyEmailViewModel(email: "test@gmail.com",
                                          flow: .kyc,
                                          mode: .verify,
                                          manager: networkManager,
                                          onEmailVerified: { emailVerified = $0; emailVerifiedExpectation.fulfill() },
+                                         onUpdate: { updateCallback = $0; updateCallbackExpectation.fulfill() },
                                          onError: nil)
     
     let loadingExpectation = XCTestExpectation(description: "testSuccessVerify_Loading")
@@ -50,12 +53,14 @@ final class VerifyEmailViewModelTests: XCTestCase {
     let expectations = [
       emailVerifiedExpectation,
       loadingExpectation,
-      verifiedExpectation
+      verifiedExpectation,
+      updateCallbackExpectation
     ]
     
     wait(for: expectations, timeout: 2)
     XCTAssertNotNil(loading)
     XCTAssertEqual(viewModel.mode, emailVerified)
+    XCTAssertEqual(updateCallback?.event.action, .emailVerified)
   }
   
   func testFailureSendCode() {
@@ -70,6 +75,7 @@ final class VerifyEmailViewModelTests: XCTestCase {
                                          mode: .verify,
                                          manager: networkManager,
                                          onEmailVerified: { _ in },
+                                         onUpdate: nil,
                                          onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     
     let errorExpectation = XCTestExpectation(description: "testFailureSendCode_Error")
@@ -103,6 +109,7 @@ final class VerifyEmailViewModelTests: XCTestCase {
                                          mode: .verify,
                                          manager: networkManager,
                                          onEmailVerified: { _ in },
+                                         onUpdate: nil,
                                          onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     
     let errorExpectation = XCTestExpectation(description: "testFailureVerifyCode_Error")

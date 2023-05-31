@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CheckoutRoutingProtocol: RoutingProtocol {
+protocol CheckoutRoutingProtocol: PaymentMethodActionsRoutingProtocol {
   func routeToTosView()
   func routeToTosContentView()
   func routeToAddCreditCardView()

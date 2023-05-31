@@ -9,11 +9,14 @@ import Foundation
 import Combine
 
 typealias PaymentSelectionContent = (walletBalance: BalanceModel?, amount: Double?, paymentMethods: [PaymentMethodModel])
+typealias PaymentSelectionIsEnabledBySectionIndex = (sectionIndex: Int, isEnabled: Bool)
 
 protocol PaymentSelectionViewModelInputProtocol {
   func checkIsTosRequired()
-  func selectPaymentMethod(at index: Int, isSelected: Bool)
-  func selectPaymentMethod(at index: Int)
+  func selectPaymentMethod(at indexPath: IndexPath, isSelected: Bool)
+  func selectPaymentMethod(at indexPath: IndexPath)
+  func removePaymentMethod(at index: Int)
+  func renamePaymentMethod(at index: Int, with text: String)
   func useSelectedPaymentMethod()
   func complete(isFromCloseAction: Bool)
 }
@@ -24,10 +27,10 @@ protocol PaymentSelectionViewModelOutputProtocol {
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var content: PassthroughSubject<PaymentSelectionContent, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
-  var paymentButtonIsEnabled: PassthroughSubject<Bool, Never> { get }
-  var deselectIndex: PassthroughSubject<Int, Never> { get }
-  var selectIndex: PassthroughSubject<Int, Never> { get }
-  var paymentMethodsAreEnabled: PassthroughSubject<Bool, Never> { get }
+  var paymentButtonIsEnabled: PassthroughSubject<PaymentSelectionIsEnabledBySectionIndex, Never> { get }
+  var deselectIndex: PassthroughSubject<IndexPath, Never> { get }
+  var selectIndex: PassthroughSubject<IndexPath, Never> { get }
+  var paymentMethodsAreEnabled: PassthroughSubject<PaymentSelectionIsEnabledBySectionIndex, Never> { get }
 }
 
 protocol PaymentSelectionDataStore {
@@ -46,10 +49,10 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<PaymentSelectionContent, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
-  let paymentButtonIsEnabled = PassthroughSubject<Bool, Never>()
-  let deselectIndex = PassthroughSubject<Int, Never>()
-  let selectIndex = PassthroughSubject<Int, Never>()
-  let paymentMethodsAreEnabled = PassthroughSubject<Bool, Never>()
+  let paymentButtonIsEnabled = PassthroughSubject<PaymentSelectionIsEnabledBySectionIndex, Never>()
+  let deselectIndex = PassthroughSubject<IndexPath, Never>()
+  let selectIndex = PassthroughSubject<IndexPath, Never>()
+  let paymentMethodsAreEnabled = PassthroughSubject<PaymentSelectionIsEnabledBySectionIndex, Never>()
   
   let manager: NetworkManager
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
@@ -68,17 +71,18 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   
   private let amount: Double?
   private let currencyCode: String?
+  private let onUpdate: ((TLUpdateCallback) -> Void)?
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private var walletBalance: BalanceModel?
   private var paymentMethods: [PaymentMethodModel] = []
   private var isPaymentMethodsUpdated = false
-  private var selectedWalletIndex: Int? {
+  private var selectedWalletIndex: IndexPath? {
     didSet {
       oldValue.map { deselectIndex.send($0) }
       selectedWalletIndex.map { selectIndex.send($0) }
     }
   }
-  private var selectedPaymentMethodIndex: Int? {
+  private var selectedPaymentMethodIndex: IndexPath? {
     didSet {
       oldValue.map { deselectIndex.send($0) }
       selectedPaymentMethodIndex.map { selectIndex.send($0) }
@@ -88,11 +92,13 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   init(manager: NetworkManager,
        amount: Double?,
        currencyCode: String?,
+       onUpdate: ((TLUpdateCallback) -> Void)?,
        onComplete: ((TLCompleteCallback) -> Void)?,
        onError: ((TLErrorCallback) -> Void)?) {
     self.manager = manager
     self.amount = amount?.toNilIfEmpty()
     self.currencyCode = currencyCode?.toNilIfEmpty()
+    self.onUpdate = onUpdate
     self.onComplete = onComplete
     self.onError = onError
   }
@@ -115,25 +121,60 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
     }
   }
   
-  func selectPaymentMethod(at index: Int, isSelected: Bool) {
-    selectedWalletIndex = isSelected ? index : nil
+  func selectPaymentMethod(at indexPath: IndexPath, isSelected: Bool) {
+    selectedWalletIndex = isSelected ? indexPath : nil
     selectedPaymentMethodIndex = nil
     guard
       let walletBalance = walletBalance,
       let amount = amount else { return }
     if walletBalance.balance >= amount && isSelected {
-      paymentMethodsAreEnabled.send(false)
-      paymentButtonIsEnabled.send(true)
+      paymentMethodsAreEnabled.send((indexPath.section, false))
+      paymentButtonIsEnabled.send((indexPath.section, true))
     } else {
-      paymentMethodsAreEnabled.send(true)
-      paymentButtonIsEnabled.send(false)
+      paymentMethodsAreEnabled.send((indexPath.section, true))
+      paymentButtonIsEnabled.send((indexPath.section, false))
     }
   }
   
-  func selectPaymentMethod(at index: Int) {
-    guard selectedPaymentMethodIndex != index else { return }
-    selectedPaymentMethodIndex = index
-    paymentButtonIsEnabled.send(true)
+  func selectPaymentMethod(at indexPath: IndexPath) {
+    guard selectedPaymentMethodIndex != indexPath else { return }
+    selectedPaymentMethodIndex = indexPath
+    paymentButtonIsEnabled.send((indexPath.section, true))
+  }
+  
+  func removePaymentMethod(at index: Int) {
+    loading.send(true)
+    manager.deletePaymentMethod(with: paymentMethods[index].id) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success:
+        self.getPaymentMethods()
+        let event = TLEvent(flow: .paymentSelection, action: .paymentMethodDeleted)
+        let model = TLUpdateCallback(event: event, message: L.paymentMethodDeleted)
+        self.onUpdate?(model)
+      case .failure(let error):
+        self.loading.send(false)
+        self.didFail(with: .init(error: error, value: false))
+      }
+    }
+  }
+  
+  func renamePaymentMethod(at index: Int, with text: String) {
+    guard paymentMethods[index].display != text else { return }
+    loading.send(true)
+    manager.renamePaymentMethod(withNewName: text, byId: paymentMethods[index].id) { [weak self] result in
+      guard let self = self else { return }
+      switch result {
+      case .success:
+        self.getPaymentMethods()
+        let event = TLEvent(flow: .paymentSelection, action: .paymentMethodRenamed)
+        let model = TLUpdateCallback(event: event, message: L.paymentMethodRenamed)
+        self.onUpdate?(model)
+      case .failure(let error):
+        self.loading.send(false)
+        self.didFail(with: .init(error: error, value: false))
+      }
+    }
   }
   
   func useSelectedPaymentMethod() {
@@ -144,12 +185,12 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   func complete(isFromCloseAction: Bool) {
     var paymentMethods: [PaymentMethodModel] = []
     if let index = selectedWalletIndex {
-      var model = self.paymentMethods[index]
+      var model = self.paymentMethods[index.row]
       model.amount = walletBalance?.balance
       paymentMethods.append(model)
     }
     if let index = selectedPaymentMethodIndex {
-      var model = self.paymentMethods[index]
+      var model = self.paymentMethods[index.row]
       model.amount = model.type.isWallet ? walletBalance?.balance : 0
       paymentMethods.append(model)
     }
