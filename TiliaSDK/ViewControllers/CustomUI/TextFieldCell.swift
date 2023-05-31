@@ -15,7 +15,7 @@ final class TextFieldCell: TextFieldsCell {
   }
   
   private let firstTextField = RoundedTextField()
-  private var pickerDataSource: DatePickerDataSource?
+  private var pickerDataSource: PickerDataSource?
   private var fieldMask: String? // "xxx-xxx", supports only digits
   private var maskSeparator: Character? // "-"
   
@@ -89,7 +89,7 @@ final class TextFieldCell: TextFieldsCell {
 
 private extension TextFieldCell {
   
-  final class DatePickerDataSource: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
+  final class PickerDataSource: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     
     let items: [String]
     private let selectHandler: (String) -> Void
@@ -118,7 +118,7 @@ private extension TextFieldCell {
   }
   
   func pickerView(items: [String], selectedIndex: Int?) -> UIPickerView {
-    let pickerDataSource = DatePickerDataSource(items: items) { [weak self] in
+    let pickerDataSource = PickerDataSource(items: items) { [weak self] in
       self?.firstTextField.text = $0
     }
     self.pickerDataSource = pickerDataSource
