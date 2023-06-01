@@ -75,7 +75,7 @@ final class TransactionHistoryChildViewController: UITableViewController {
     guard isViewLoaded else { return }
     tableView.setContentOffset(.init(x: 0, y: -(self.tableView.refreshControl?.frame.height ?? 0)),
                                animated: true)
-    viewModel.loadTransactions()
+    contentDidRefresh()
   }
   
 }
