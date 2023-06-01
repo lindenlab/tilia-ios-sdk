@@ -187,10 +187,6 @@ private extension TransactionHistoryViewController {
       self?.router.routeToTransactionDetailsView()
     }.store(in: &subscriptions)
     
-    viewModel.selectTransaction.sink { [weak self] in
-      self?.router.routeToTransactionDetailsView()
-    }.store(in: &subscriptions)
-    
     viewModel.selectAccount.sink { [weak self] _ in
       
     }.store(in: &subscriptions)
