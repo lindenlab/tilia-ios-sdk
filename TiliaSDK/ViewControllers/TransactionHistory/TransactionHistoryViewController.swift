@@ -187,8 +187,9 @@ private extension TransactionHistoryViewController {
       self?.router.routeToTransactionDetailsView()
     }.store(in: &subscriptions)
     
-    viewModel.selectAccount.sink { [weak self] _ in
-      
+    viewModel.setAccountId.sink { [weak self] accountId in
+      guard let self = self else { return }
+      self.viewControllers.forEach { $0.setAccountId(accountId) }
     }.store(in: &subscriptions)
   }
   

@@ -19,6 +19,7 @@ protocol TransactionHistoryChildViewModelInputProtocol {
   func loadTransactions()
   func loadMoreTransactionsIfNeeded()
   func selectTransaction(at index: Int)
+  func setAccountId(_ accountId: String?)
 }
 
 protocol TransactionHistoryChildViewModelOutputProtocol {
@@ -41,6 +42,7 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   private var transactions: [TransactionDetailsModel] = []
   private var offset = 0
   private var hasMore = false
+  private var accountId: String?
   
   init(manager: NetworkManager,
        sectionType: TransactionHistorySectionTypeModel,
@@ -57,7 +59,7 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
     if loadingMore.value {
       loadingMore.send(false)
     }
-    manager.getTransactionHistory(withLimit: limit, offset: offset, sectionType: sectionType) { [weak self] result in
+    manager.getTransactionHistory(withLimit: limit, offset: offset, sectionType: sectionType, accountId: accountId) { [weak self] result in
       guard let self = self else { return }
       switch result {
       case .success(let model):
@@ -78,7 +80,7 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   func loadMoreTransactionsIfNeeded() {
     guard hasMore && !loadingMore.value else { return }
     loadingMore.send(true)
-    manager.getTransactionHistory(withLimit: limit, offset: offset, sectionType: sectionType) { [weak self] result in
+    manager.getTransactionHistory(withLimit: limit, offset: offset, sectionType: sectionType, accountId: accountId) { [weak self] result in
       guard let self = self, self.hasMore else { return }
       switch result {
       case .success(let model):
@@ -95,6 +97,10 @@ final class TransactionHistoryChildViewModel: TransactionHistoryChildViewModelPr
   
   func selectTransaction(at index: Int) {
     delegate?.transactionHistoryChildViewModel(didSelectTransaction: transactions[index])
+  }
+  
+  func setAccountId(_ accountId: String?) {
+    self.accountId = accountId
   }
   
 }

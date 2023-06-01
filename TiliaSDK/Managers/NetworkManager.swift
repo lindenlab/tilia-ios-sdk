@@ -112,8 +112,8 @@ final class NetworkManager {
     serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
   }
   
-  func getTransactionHistory(withLimit limit: Int, offset: Int, sectionType: TransactionHistorySectionTypeModel, completion: @escaping CompletionResultHandler<TransactionHistoryModel>) {
-    let model = GetTransactionHistoryModel(limit: limit, offset: offset, sectionType: sectionType)
+  func getTransactionHistory(withLimit limit: Int, offset: Int, sectionType: TransactionHistorySectionTypeModel, accountId: String?, completion: @escaping CompletionResultHandler<TransactionHistoryModel>) {
+    let model = GetTransactionHistoryModel(limit: limit, offset: offset, sectionType: sectionType, accountId: accountId)
     let router = InvoiceRouter.getTransactionHistory(model: model)
     serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
   }

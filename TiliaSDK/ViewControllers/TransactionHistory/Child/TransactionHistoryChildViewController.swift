@@ -70,6 +70,14 @@ final class TransactionHistoryChildViewController: UITableViewController {
     viewModel.loadMoreTransactionsIfNeeded()
   }
   
+  func setAccountId(_ accountId: String?) {
+    viewModel.setAccountId(accountId)
+    guard isViewLoaded else { return }
+    tableView.setContentOffset(.init(x: 0, y: -(self.tableView.refreshControl?.frame.height ?? 0)),
+                               animated: true)
+    viewModel.loadTransactions()
+  }
+  
 }
 
 // MARK: - Private Methods

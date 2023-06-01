@@ -20,7 +20,7 @@ protocol TransactionHistoryViewModelOutputProtocol {
   var dismiss: PassthroughSubject<Void, Never> { get }
   var content: PassthroughSubject<UserDetailInfoModel, Never> { get }
   var selectTransaction: PassthroughSubject<Void, Never> { get }
-  var selectAccount: PassthroughSubject<String?, Never> { get }
+  var setAccountId: PassthroughSubject<String?, Never> { get }
 }
 
 protocol TransactionHistoryDataStore {
@@ -42,7 +42,7 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
   let dismiss = PassthroughSubject<Void, Never>()
   let content = PassthroughSubject<UserDetailInfoModel, Never>()
   let selectTransaction = PassthroughSubject<Void, Never>()
-  let selectAccount = PassthroughSubject<String?, Never>()
+  let setAccountId = PassthroughSubject<String?, Never>()
   
   private(set) var selectedTransaction: TransactionDetailsModel?
   let manager: NetworkManager
@@ -95,9 +95,9 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
     guard selectedAccountName != name, let userInfo = userInfo else { return }
     selectedAccountName = name
     if userInfo.defaultAccountName == name {
-      selectAccount.send(nil)
+      setAccountId.send(nil)
     } else if let account = userInfo.mergedAccounts.first(where: { $0.resourceId == name }) {
-      selectAccount.send(account.resourceId)
+      setAccountId.send(account.resourceId)
     }
   }
   
