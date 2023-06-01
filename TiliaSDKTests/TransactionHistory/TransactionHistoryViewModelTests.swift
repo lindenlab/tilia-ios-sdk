@@ -21,7 +21,7 @@ final class TransactionHistoryViewModelTests: XCTestCase {
     var loading: Bool?
     var needToAcceptTos: Void?
     var completeCallback: TLCompleteCallback?
-    var content: Void?
+    var content: UserDetailInfoModel?
     
     let completeCallbackExpectation = XCTestExpectation(description: "testSuccessCheckIsTosRequired_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
