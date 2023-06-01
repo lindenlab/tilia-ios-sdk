@@ -29,6 +29,8 @@ struct UserDetailInfoModel: Decodable, EmailVerifiable {
   let email: String?
   let mergedAccounts: [UserDetailTagModel]
   
+  var defaultAccountName: String { return email ?? id }
+  
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let id = try container.decode(String.self, forKey: .id)

@@ -17,10 +17,15 @@ final class TransactionHistoryViewController: BaseViewController {
   private let viewModel: TransactionHistoryViewModelProtocol
   private let router: TransactionHistoryRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
-  private var viewControllers: [UIViewController] = []
-  private var selectedViewController: UIViewController?
+  private var viewControllers: [TransactionHistoryChildViewController] = []
+  private var selectedViewController: TransactionHistoryChildViewController?
+  private var pickerDataSource: PickerDataSource?
   
-  private let textField = RoundedTextField()
+  private lazy var textField: RoundedTextField = {
+    let textField = RoundedTextField()
+    textField.delegate = self
+    return textField
+  }()
   
   private lazy var sectionTypeSegmentedControl: UISegmentedControl = {
     let segmentedControl = UISegmentedControl()
@@ -104,6 +109,16 @@ final class TransactionHistoryViewController: BaseViewController {
   
 }
 
+// MARK: - UITextFieldDelegate
+
+extension TransactionHistoryViewController: UITextFieldDelegate {
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    viewModel.selectAccount(with: textField.text ?? "")
+  }
+  
+}
+
 // MARK: - Private Methods
 
 private extension TransactionHistoryViewController {
@@ -126,6 +141,15 @@ private extension TransactionHistoryViewController {
     addChild(selectedViewController)
     contentStackView.insertArrangedSubview(selectedViewController.view, at: 1)
     selectedViewController.didMove(toParent: self)
+  }
+  
+  func setupTextField(with model: UserDetailInfoModel) {
+    textField.text = model.defaultAccountName
+    textField.isEnabled = model.isTextFieldEnabled
+    textField.rightView = model.isTextFieldEnabled ? textFieldRightView() : nil
+    textField.rightViewMode = model.isTextFieldEnabled ? .always : .never
+    textField.inputView = model.isTextFieldEnabled ? textFieldInputView(with: model.textFieldInputViewItems) : nil
+    textField.inputAccessoryView = model.isTextFieldEnabled ? textFieldInputAccessoryView() : nil
   }
   
   func bind() {
@@ -156,10 +180,19 @@ private extension TransactionHistoryViewController {
       self.topStackView.isHidden = false
       self.closeButtonStackView.isHidden = false
       self.setupContent()
+      self.setupTextField(with: $0)
     }.store(in: &subscriptions)
     
     viewModel.selectTransaction.sink { [weak self] in
       self?.router.routeToTransactionDetailsView()
+    }.store(in: &subscriptions)
+    
+    viewModel.selectTransaction.sink { [weak self] in
+      self?.router.routeToTransactionDetailsView()
+    }.store(in: &subscriptions)
+    
+    viewModel.selectAccount.sink { [weak self] _ in
+      
     }.store(in: &subscriptions)
   }
   
@@ -181,6 +214,37 @@ private extension TransactionHistoryViewController {
   
   @objc func sectionTypeDidChange() {
     setupContent()
+  }
+  
+  @objc func doneButtonTapped() {
+    textField.resignFirstResponder()
+  }
+  
+  func textFieldRightView() -> UIView {
+    let imageView = UIImageView(image: .chevronDownIcon?.withRenderingMode(.alwaysTemplate))
+    imageView.tintColor = .primaryTextColor
+    return imageView
+  }
+  
+  func textFieldInputView(with items: [String]) -> UIView {
+    pickerDataSource = PickerDataSource(items: items) { [weak self] in
+      self?.textField.text = $0
+    }
+    return UIPickerView.pickerView(withDataSource: pickerDataSource, andSelectedIndex: 0)
+  }
+  
+  func textFieldInputAccessoryView() -> UIView {
+    return UIToolbar.toolbar(forTarget: self, andSelector: #selector(doneButtonTapped))
+  }
+  
+}
+
+private extension UserDetailInfoModel {
+    
+  var isTextFieldEnabled: Bool { return !mergedAccounts.isEmpty }
+  
+  var textFieldInputViewItems: [String] {
+    return [defaultAccountName] + mergedAccounts.map { $0.resourceId }
   }
   
 }

@@ -25,6 +25,13 @@ final class RoundedTextField: UITextField {
     return isReturnKeyEnabled ?? super.hasText
   }
   
+  override var isEnabled: Bool {
+    didSet {
+      backgroundColor = isEnabled ? .backgroundColor : .backgroundDarkerColor
+      textColor = isEnabled ? .primaryTextColor : .secondaryTextColor
+    }
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setup()
@@ -65,7 +72,7 @@ final class RoundedTextField: UITextField {
   }
   
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    guard !isUserInteractionEnabled, let rightView = rightView else {
+    guard !isUserInteractionEnabled || !isEnabled, let rightView = rightView else {
       return super.hitTest(point, with: event)
     }
     let pointInSubview = rightView.convert(point, from: self)
@@ -73,6 +80,21 @@ final class RoundedTextField: UITextField {
       return rightView
     } else {
       return super.hitTest(point, with: event)
+    }
+  }
+  
+  override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    guard inputView != nil else {
+      return super.canPerformAction(action, withSender: sender)
+    }
+    switch action {
+    case #selector(cut(_:)): return false
+    case #selector(copy(_:)): return false
+    case #selector(paste(_:)): return false
+    case #selector(select(_:)): return false
+    case #selector(selectAll(_:)): return false
+    case #selector(delete(_:)): return false
+    default: return super.canPerformAction(action, withSender: sender)
     }
   }
   

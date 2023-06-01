@@ -212,9 +212,9 @@ private extension SendReceiptViewController {
       self.buttonsStackView.axis = $0.stackViewAxis
       self.buttonsStackView.alignment = $0.stackViewAlignment
       self.buttonsStackView.distribution = $0.stackViewDistribution
-      self.textField.rightView = self.editButton(isHidden: $0.isEditButtonHidden)
+      self.textField.rightView = $0.isEditButtonHidden ? nil : self.editButton()
       self.textField.rightViewMode = $0.isEditButtonHidden ? .never : .always
-      self.textField.isUserInteractionEnabled = $0.isTextFieldEditable
+      self.textField.isEnabled = $0.isTextFieldEditable
     }.store(in: &subscriptions)
     
     viewModel.verifyEmail.sink { [weak self] in
@@ -251,8 +251,7 @@ private extension SendReceiptViewController {
     showCloseButton(target: self, action: #selector(closeButtonDidTap))
   }
   
-  func editButton(isHidden: Bool) -> UIButton? {
-    guard !isHidden else { return nil }
+  func editButton() -> UIButton {
     let button = EditButton()
     button.accessibilityIdentifier = "editButton"
     button.addTarget(self,
