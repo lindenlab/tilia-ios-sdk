@@ -114,7 +114,7 @@ extension UserInfoViewController: TextFieldsCellDelegate {
   
   func textViewWithLink(_ textView: TextViewWithLink, didPressOn link: String) {
     guard TosAcceptModel(str: link) == .privacyPolicy else { return }
-    router.routeToTosContentView()
+    router.showWebView(with: TosAcceptModel.termsOfServiceUrl)
   }
   
 }
