@@ -25,18 +25,18 @@ class TextFieldsCell: TitleBaseCell {
     let placeholder: String?
     let text: String?
     let accessibilityIdentifier: String?
-    let isUserInteractionEnabled: Bool
+    let isEnabled: Bool
     let isEditButtonHidden: Bool
     
     init(placeholder: String? = nil,
          text: String? = nil,
          accessibilityIdentifier: String? = nil,
-         isUserInteractionEnabled: Bool = true,
+         isEnabled: Bool = true,
          isEditButtonHidden: Bool = true) {
       self.placeholder = placeholder
       self.text = text
       self.accessibilityIdentifier = accessibilityIdentifier
-      self.isUserInteractionEnabled = isUserInteractionEnabled
+      self.isEnabled = isEnabled
       self.isEditButtonHidden = isEditButtonHidden
     }
   }
@@ -71,7 +71,7 @@ class TextFieldsCell: TitleBaseCell {
       textField.placeholder = content.placeholder
       textField.text = content.text
       textField.accessibilityIdentifier = content.accessibilityIdentifier
-      textField.isUserInteractionEnabled = content.isUserInteractionEnabled
+      textField.isEnabled = content.isEnabled
       textField.rightView = content.isEditButtonHidden ? nil : editButton()
       textField.rightViewMode = content.isEditButtonHidden ? .never : .always
     }

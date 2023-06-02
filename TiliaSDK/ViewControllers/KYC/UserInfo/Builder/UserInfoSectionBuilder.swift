@@ -75,26 +75,26 @@ struct UserInfoSectionBuilder {
           let placeholder: String?
           var text: String?
           let accessibilityIdentifier: String?
-          var isUserInteractionEnabled: Bool
+          var isEnabled: Bool
           var isEditButtonHidden: Bool
           
           var fieldContent: TextFieldsCell.FieldContent {
             return .init(placeholder: placeholder,
                          text: text,
                          accessibilityIdentifier: accessibilityIdentifier,
-                         isUserInteractionEnabled: isUserInteractionEnabled,
+                         isEnabled: isEnabled,
                          isEditButtonHidden: isEditButtonHidden)
           }
           
           init(placeholder: String? = nil,
                text: String? = nil,
                accessibilityIdentifier: String?,
-               isUserInteractionEnabled: Bool = true,
+               isEnabled: Bool = true,
                isEditButtonHidden: Bool = true) {
             self.placeholder = placeholder
             self.text = text
             self.accessibilityIdentifier = accessibilityIdentifier
-            self.isUserInteractionEnabled = isUserInteractionEnabled
+            self.isEnabled = isEnabled
             self.isEditButtonHidden = isEditButtonHidden
           }
         }
@@ -602,7 +602,7 @@ private extension UserInfoSectionBuilder {
                                               fields: [.init(placeholder: L.email,
                                                              text: model.email,
                                                              accessibilityIdentifier: "emailTextField",
-                                                             isUserInteractionEnabled: !model.isEmailVerified,
+                                                             isEnabled: !model.isEmailVerified,
                                                              isEditButtonHidden: !model.isEmailVerified)])
     var items = [
       Section.Item(mode: .label,
@@ -831,7 +831,7 @@ private extension UserInfoSectionBuilder {
     }.flatMap { index -> Int? in
       guard case .fields(var field) = section.items[index].mode else { return nil }
       field.fields[0].isEditButtonHidden = isEditing
-      field.fields[0].isUserInteractionEnabled = isEditing
+      field.fields[0].isEnabled = isEditing
       if !isEditing && model.email != model.needToVerifyEmail {
         field.fields[0].text = model.email
       }

@@ -3,13 +3,38 @@
     "message": [],
     "codes": [],
     "payload": {
-        "account_id": "e8b28fc3-5bd8-4a5a-baff-92b1881333da",
+        "account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
         "username": "janesmith@fakeemail.com",
         "email": "bmac@lindenlab.com",
         "is_blocked": false,
         "blocked_capabilities": {},
         "integrator": "tilia-sdks",
-        "tags": [],
-        "created": "2022-03-01T01:00:49.407666Z"
+        "tags": [
+            {
+                "tag_id": "acttag_2ElrHmCjqMH7EXZUcc6VpYByJil",
+                "resource_type": "invoicing.invoice_v2.invoice_id",
+                "resource_id": "16e3272c-5757-4eae-9620-cee26e99b5fd",
+                "account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+                "namespace": "executed_payouts",
+                "tag": "9",
+                "status": "ACTIVE",
+                "integrator": "tilia-sdks",
+                "created": "2022-09-14T18:42:06.608217Z",
+                "updated": "2022-10-11T00:33:25.167865Z"
+            },
+            {
+                "tag_id": "acttag_2QWbiUep4XDzN0qMBfuBnb7WfMc",
+                "resource_type": "lindenaccounts.accounts_v2.account_id",
+                "resource_id": "2e83390e-fa7f-4b16-85f9-cc6c14e88955",
+                "account_id": "11c52655-d42f-48d3-8926-e4bb5ec7cb03",
+                "namespace": "account_merge",
+                "tag": "merged_from",
+                "status": "ACTIVE",
+                "integrator": "tilia-sdks",
+                "created": "2023-05-30T18:46:51.77158Z",
+                "updated": "2023-05-30T18:46:51.77158Z"
+            }
+        ],
+        "created": "2022-02-17T18:42:00.713819Z"
     }
 }

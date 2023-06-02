@@ -147,4 +147,71 @@ final class TransactionHistoryFlowUITests: XCTestCase {
     backButton.tap()
   }
   
+  func testTransactionHistoryWithSelectMergedAccount() {
+    let app = XCUIApplication()
+    app.launch()
+        
+    let useMocksSwitch = app.switches["useMocksSwitch"]
+    XCTAssert(useMocksSwitch.exists)
+    useMocksSwitch.tap()
+    
+    let cell = app.tables.staticTexts["Transaction History flow"]
+    XCTAssert(cell.exists)
+    cell.tap()
+    
+    let accessTokenTextField = app.textFields["accessTokenTextField"]
+    XCTAssert(accessTokenTextField.exists)
+    accessTokenTextField.tap()
+    accessTokenTextField.typeText(UUID().uuidString)
+    
+    closeKeyboard(app: app)
+    
+    let doSmthButton = app.buttons["doSmthButton"]
+    XCTAssert(doSmthButton.exists)
+    doSmthButton.tap()
+    
+    let acceptSwitch = app.switches["acceptSwitch"]
+    XCTAssert(acceptSwitch.waitForExistence(timeout: 2))
+    acceptSwitch.tap()
+    
+    let acceptButton = app.buttons["acceptButton"]
+    XCTAssert(acceptButton.waitForExistence(timeout: 2))
+    acceptButton.tap()
+    
+    let accountTextField = app.textFields["accountTextField"]
+    XCTAssert(accountTextField.waitForExistence(timeout: 2))
+    accountTextField.tap()
+    
+    let accountsPicker = app.pickerWheels.firstMatch
+    XCTAssert(accountsPicker.exists)
+    accountsPicker.adjust(toPickerWheelValue: "2e83390e-fa7f-4b16-85f9-cc6c14e88955")
+    accountTextField.typeText("\n")
+    
+    let transactionCell = app.tables.cells.firstMatch
+    XCTAssert(transactionCell.waitForExistence(timeout: 2))
+    transactionCell.tap()
+
+    scrollUp(app: app, dy: -400)
+
+    let emailReceiptButton = app.buttons["emailReceiptButton"]
+    XCTAssert(emailReceiptButton.waitForExistence(timeout: 2))
+    emailReceiptButton.tap()
+
+    let sendButton = app.buttons["sendButton"]
+    XCTAssert(sendButton.waitForExistence(timeout: 2))
+    sendButton.tap()
+
+    let closeTransactionDetailsButton = app.tables.buttons["closeButton"]
+    XCTAssert(closeTransactionDetailsButton.waitForExistence(timeout: 2))
+    closeTransactionDetailsButton.tap()
+
+    let closeButton = app.buttons["closeButton"]
+    XCTAssert(closeButton.waitForExistence(timeout: 2))
+    closeButton.tap()
+
+    let backButton = app.navigationBars["Transaction History flow"].buttons["Demo App"]
+    XCTAssert(backButton.exists)
+    backButton.tap()
+  }
+  
 }

@@ -110,7 +110,7 @@ final class InvoiceRouterTests: XCTestCase {
   }
   
   func testGetTransactionHistory() {
-    let model = GetTransactionHistoryModel(limit: 20, offset: 0, sectionType: .pending)
+    let model = GetTransactionHistoryModel(limit: 20, offset: 0, sectionType: .pending, accountId: nil)
     let router = InvoiceRouter.getTransactionHistory(model: model)
     TLManager.shared.setToken(UUID().uuidString)
     XCTAssertEqual(router.method, .get)

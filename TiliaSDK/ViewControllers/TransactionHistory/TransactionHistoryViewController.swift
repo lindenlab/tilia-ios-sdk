@@ -17,8 +17,16 @@ final class TransactionHistoryViewController: BaseViewController {
   private let viewModel: TransactionHistoryViewModelProtocol
   private let router: TransactionHistoryRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
-  private var viewControllers: [UIViewController] = []
-  private var selectedViewController: UIViewController?
+  private var viewControllers: [TransactionHistoryChildViewController] = []
+  private var selectedViewController: TransactionHistoryChildViewController?
+  private var pickerDataSource: PickerDataSource?
+  
+  private lazy var textField: RoundedTextField = {
+    let textField = RoundedTextField()
+    textField.delegate = self
+    textField.accessibilityIdentifier = "accountTextField"
+    return textField
+  }()
   
   private lazy var sectionTypeSegmentedControl: UISegmentedControl = {
     let segmentedControl = UISegmentedControl()
@@ -29,8 +37,11 @@ final class TransactionHistoryViewController: BaseViewController {
     return segmentedControl
   }()
   
-  private lazy var sectionTypeStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [sectionTypeSegmentedControl])
+  private lazy var topStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [textField,
+                                                   sectionTypeSegmentedControl])
+    stackView.spacing = 16
+    stackView.axis = .vertical
     stackView.isLayoutMarginsRelativeArrangement = true
     stackView.directionalLayoutMargins = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
     stackView.isHidden = true
@@ -51,7 +62,7 @@ final class TransactionHistoryViewController: BaseViewController {
   }()
   
   private lazy var contentStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [sectionTypeStackView,
+    let stackView = UIStackView(arrangedSubviews: [topStackView,
                                                    closeButtonStackView])
     stackView.axis = .vertical
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -99,6 +110,21 @@ final class TransactionHistoryViewController: BaseViewController {
   
 }
 
+// MARK: - UITextFieldDelegate
+
+extension TransactionHistoryViewController: UITextFieldDelegate {
+  
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    viewModel.selectAccount(with: textField.text ?? "")
+  }
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+  
+}
+
 // MARK: - Private Methods
 
 private extension TransactionHistoryViewController {
@@ -121,6 +147,15 @@ private extension TransactionHistoryViewController {
     addChild(selectedViewController)
     contentStackView.insertArrangedSubview(selectedViewController.view, at: 1)
     selectedViewController.didMove(toParent: self)
+  }
+  
+  func setupTextField(with model: UserDetailInfoModel) {
+    textField.text = model.defaultAccountName
+    textField.isEnabled = model.isTextFieldEnabled
+    textField.rightView = model.isTextFieldEnabled ? textFieldRightView() : nil
+    textField.rightViewMode = model.isTextFieldEnabled ? .always : .never
+    textField.inputView = model.isTextFieldEnabled ? textFieldInputView(with: model.textFieldInputViewItems) : nil
+    textField.inputAccessoryView = model.isTextFieldEnabled ? textFieldInputAccessoryView() : nil
   }
   
   func bind() {
@@ -148,13 +183,19 @@ private extension TransactionHistoryViewController {
     
     viewModel.content.sink { [weak self] in
       guard let self = self else { return }
-      self.sectionTypeStackView.isHidden = false
+      self.topStackView.isHidden = false
       self.closeButtonStackView.isHidden = false
       self.setupContent()
+      self.setupTextField(with: $0)
     }.store(in: &subscriptions)
     
     viewModel.selectTransaction.sink { [weak self] in
       self?.router.routeToTransactionDetailsView()
+    }.store(in: &subscriptions)
+    
+    viewModel.setAccountId.sink { [weak self] accountId in
+      guard let self = self else { return }
+      self.viewControllers.forEach { $0.setAccountId(accountId) }
     }.store(in: &subscriptions)
   }
   
@@ -176,6 +217,37 @@ private extension TransactionHistoryViewController {
   
   @objc func sectionTypeDidChange() {
     setupContent()
+  }
+  
+  @objc func doneButtonTapped() {
+    textField.resignFirstResponder()
+  }
+  
+  func textFieldRightView() -> UIView {
+    let imageView = UIImageView(image: .chevronDownIcon?.withRenderingMode(.alwaysTemplate))
+    imageView.tintColor = .primaryTextColor
+    return imageView
+  }
+  
+  func textFieldInputView(with items: [String]) -> UIView {
+    pickerDataSource = PickerDataSource(items: items) { [weak self] in
+      self?.textField.text = $0
+    }
+    return UIPickerView.pickerView(withDataSource: pickerDataSource, andSelectedIndex: 0)
+  }
+  
+  func textFieldInputAccessoryView() -> UIView {
+    return UIToolbar.toolbar(forTarget: self, andSelector: #selector(doneButtonTapped))
+  }
+  
+}
+
+private extension UserDetailInfoModel {
+    
+  var isTextFieldEnabled: Bool { return !mergedAccounts.isEmpty }
+  
+  var textFieldInputViewItems: [String] {
+    return [defaultAccountName] + mergedAccounts.map { $0.resourceId }
   }
   
 }

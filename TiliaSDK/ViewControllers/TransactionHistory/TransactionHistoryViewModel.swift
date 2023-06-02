@@ -9,6 +9,7 @@ import Combine
 
 protocol TransactionHistoryViewModelInputProtocol {
   func checkIsTosRequired()
+  func selectAccount(with name: String)
   func complete(isFromCloseAction: Bool)
 }
 
@@ -17,8 +18,9 @@ protocol TransactionHistoryViewModelOutputProtocol {
   var error: PassthroughSubject<ErrorWithBoolModel, Never> { get }
   var needToAcceptTos: PassthroughSubject<Void, Never> { get }
   var dismiss: PassthroughSubject<Void, Never> { get }
-  var content: PassthroughSubject<Void, Never> { get }
+  var content: PassthroughSubject<UserDetailInfoModel, Never> { get }
   var selectTransaction: PassthroughSubject<Void, Never> { get }
+  var setAccountId: PassthroughSubject<String?, Never> { get }
 }
 
 protocol TransactionHistoryDataStore {
@@ -38,8 +40,9 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
   let error = PassthroughSubject<ErrorWithBoolModel, Never>()
   let needToAcceptTos = PassthroughSubject<Void, Never>()
   let dismiss = PassthroughSubject<Void, Never>()
-  let content = PassthroughSubject<Void, Never>()
+  let content = PassthroughSubject<UserDetailInfoModel, Never>()
   let selectTransaction = PassthroughSubject<Void, Never>()
+  let setAccountId = PassthroughSubject<String?, Never>()
   
   private(set) var selectedTransaction: TransactionDetailsModel?
   let manager: NetworkManager
@@ -47,7 +50,7 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
     guard let self = self else { return }
     if $0.state == .completed {
-      self.didLoad()
+      self.loadUserInfo()
     } else {
       self.dismiss.send()
     }
@@ -57,6 +60,8 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
   let onError: ((TLErrorCallback) -> Void)?
   
   private var isLoaded = false
+  private var userInfo: UserDetailInfoModel?
+  private var selectedAccountName: String?
   
   init(manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -77,12 +82,22 @@ final class TransactionHistoryViewModel: TransactionHistoryViewModelProtocol, Tr
         if !model.isTosSigned {
           self.needToAcceptTos.send()
         } else {
-          self.didLoad()
+          self.loadUserInfo()
         }
       case .failure(let error):
         self.loading.send(false)
         self.didFail(with: .init(error: error, value: true))
       }
+    }
+  }
+  
+  func selectAccount(with name: String) {
+    guard selectedAccountName != name, let userInfo = userInfo else { return }
+    selectedAccountName = name
+    if userInfo.defaultAccountName == name {
+      setAccountId.send(nil)
+    } else if let account = userInfo.mergedAccounts.first(where: { $0.resourceId == name }) {
+      setAccountId.send(account.resourceId)
     }
   }
   
@@ -121,9 +136,19 @@ extension TransactionHistoryViewModel: TransactionHistoryChildViewModelDelegate 
 
 private extension TransactionHistoryViewModel {
   
-  func didLoad() {
-    content.send()
-    loading.send(false)
+  func loadUserInfo() {
+    manager.getUserInfo { [weak self] result in
+      guard let self = self else { return }
+      self.loading.send(false)
+      switch result {
+      case .success(let model):
+        self.userInfo = model
+        self.selectedAccountName = model.defaultAccountName
+        self.content.send(model)
+      case .failure(let error):
+        self.didFail(with: .init(error: error, value: true))
+      }
+    }
   }
   
   func didFail(with error: ErrorWithBoolModel) {

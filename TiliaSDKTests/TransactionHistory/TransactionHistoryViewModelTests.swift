@@ -21,7 +21,7 @@ final class TransactionHistoryViewModelTests: XCTestCase {
     var loading: Bool?
     var needToAcceptTos: Void?
     var completeCallback: TLCompleteCallback?
-    var content: Void?
+    var content: UserDetailInfoModel?
     
     let completeCallbackExpectation = XCTestExpectation(description: "testSuccessCheckIsTosRequired_CompleteCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
@@ -289,6 +289,85 @@ final class TransactionHistoryViewModelTests: XCTestCase {
     wait(for: [contentExpectation], timeout: 2)
     XCTAssertNotNil(selectedTransaction)
     XCTAssertNotNil(content)
+  }
+  
+  func testSuccessSelectMergedAccountId() {
+    var content: UserDetailInfoModel?
+    var accountId: String?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = TransactionHistoryViewModel(manager: networkManager,
+                                                onUpdate: nil,
+                                                onComplete: nil,
+                                                onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessSelectMergedAccountId_Content")
+    viewModel.content.sink { [weak viewModel] in
+      content = $0
+      viewModel?.selectAccount(with: $0.mergedAccounts.first?.resourceId ?? "")
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let setAccountIdExpectation = XCTestExpectation(description: "testSuccessSelectMergedAccountId_SetAccountId")
+    viewModel.setAccountId.sink {
+      accountId = $0
+      setAccountIdExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
+    
+    let expectations = [
+      contentExpectation,
+      setAccountIdExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(content)
+    XCTAssertEqual(content?.mergedAccounts.first?.resourceId, accountId)
+  }
+  
+  func testSuccessSelectDefaultAccountId() {
+    var content: UserDetailInfoModel?
+    var accountId: String?
+    
+    let networkManager = NetworkManager(serverClient: ServerTestClient())
+    let viewModel = TransactionHistoryViewModel(manager: networkManager,
+                                                onUpdate: nil,
+                                                onComplete: nil,
+                                                onError: nil)
+    
+    let contentExpectation = XCTestExpectation(description: "testSuccessSelectMergedAccountId_Content")
+    viewModel.content.sink { [weak viewModel] in
+      content = $0
+      viewModel?.selectAccount(with: $0.mergedAccounts.first?.resourceId ?? "")
+      viewModel?.selectAccount(with: $0.defaultAccountName)
+      contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let setAccountIdExpectation = XCTestExpectation(description: "testSuccessSelectMergedAccountId_SetAccountId")
+    viewModel.setAccountId.sink {
+      accountId = $0
+      if $0 == nil {
+        setAccountIdExpectation.fulfill()
+      }
+    }.store(in: &subscriptions)
+    
+    TLManager.shared.setToken(UUID().uuidString)
+    let event = TLCompleteCallback(event: TLEvent(flow: .tos, action: .completed),
+                                   state: .completed)
+    viewModel.onTosComplete(event)
+    
+    let expectations = [
+      contentExpectation,
+      setAccountIdExpectation
+    ]
+    
+    wait(for: expectations, timeout: 2)
+    XCTAssertNotNil(content)
+    XCTAssertNil(accountId)
   }
   
 }
