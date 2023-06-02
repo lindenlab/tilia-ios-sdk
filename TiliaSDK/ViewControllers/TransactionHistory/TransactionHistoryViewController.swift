@@ -24,6 +24,7 @@ final class TransactionHistoryViewController: BaseViewController {
   private lazy var textField: RoundedTextField = {
     let textField = RoundedTextField()
     textField.delegate = self
+    textField.accessibilityIdentifier = "accountTextField"
     return textField
   }()
   
@@ -115,6 +116,11 @@ extension TransactionHistoryViewController: UITextFieldDelegate {
   
   func textFieldDidEndEditing(_ textField: UITextField) {
     viewModel.selectAccount(with: textField.text ?? "")
+  }
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
   }
   
 }
