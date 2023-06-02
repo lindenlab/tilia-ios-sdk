@@ -46,6 +46,7 @@ final class PaymentSelectionFlowTestViewController: TestViewController {
     button.setTitle("Run Payment Selection flow", for: .normal)
     stackView.insertArrangedSubview(amountTextField, at: 1)
     stackView.insertArrangedSubview(currencyTextField, at: 2)
+    stackView.addArrangedSubview(onCompleteLabel)
     stackView.addArrangedSubview(onErrorLabel)
   }
   
@@ -58,8 +59,8 @@ final class PaymentSelectionFlowTestViewController: TestViewController {
       self.label.attributedText = Self.attributedString(text: "onUpdate callback",
                                                         message: $0.description)
     } onComplete: {
-      self.onErrorLabel.attributedText = Self.attributedString(text: "onComplete callback",
-                                                               message: $0.description)
+      self.onCompleteLabel.attributedText = Self.attributedString(text: "onComplete callback",
+                                                                  message: $0.description)
     } onError: {
       self.onErrorLabel.attributedText = Self.attributedString(text: "onError callback",
                                                                message: $0.description)
