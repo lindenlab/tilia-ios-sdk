@@ -87,9 +87,7 @@ final class PaymentSelectionViewController: BaseTableViewController {
         self.viewModel.removePaymentMethod(at: indexPath.row)
       }
     } andRenameAction: {
-      self.router.routeToRenamePaymentMethodView {
-        self.viewModel.renamePaymentMethod(at: indexPath.row, with: $0)
-      }
+      self.viewModel.willRenamePaymentMethod(at: indexPath.row)
     }
   }
   
@@ -215,6 +213,13 @@ private extension PaymentSelectionViewController {
                                  in: self.tableView,
                                  at: $0.sectionIndex,
                                  isEnabled: $0.isEnabled)
+    }.store(in: &subscriptions)
+    
+    viewModel.renamePaymentMethod.sink { [weak self] model in
+      guard let self = self else { return }
+      self.router.routeToRenamePaymentMethodView(with: model.name) {
+        self.viewModel.didRenamePaymentMethod(at: model.index, with: $0)
+      }
     }.store(in: &subscriptions)
   }
   

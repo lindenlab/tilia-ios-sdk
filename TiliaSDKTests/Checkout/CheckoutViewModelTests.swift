@@ -178,8 +178,14 @@ final class CheckoutViewModelTests: XCTestCase {
     
     let contentExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_Content")
     viewModel.content.sink { [weak viewModel] _ in
-      viewModel?.renamePaymentMethod(at: 1, with: "newName")
+      viewModel?.willRenamePaymentMethod(at: 1)
       contentExpectation.fulfill()
+    }.store(in: &subscriptions)
+    
+    let renamePaymentMethodExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_RenamePaymentMethod")
+    viewModel.renamePaymentMethod.sink { [weak viewModel] in
+      viewModel?.didRenamePaymentMethod(at: $0.index, with: "newName")
+      renamePaymentMethodExpectation.fulfill()
     }.store(in: &subscriptions)
     
     let updatePaymentExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_UpdatePayment")
@@ -196,7 +202,8 @@ final class CheckoutViewModelTests: XCTestCase {
     let expectations = [
       updateCallbackExpectation,
       updatePaymentExpectation,
-      contentExpectation
+      contentExpectation,
+      renamePaymentMethodExpectation
     ]
     
     wait(for: expectations, timeout: 2)

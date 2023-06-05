@@ -24,7 +24,7 @@ extension PaymentMethodActionsRoutingProtocol {
     viewController?.present(alertController, animated: true)
   }
   
-  func routeToRenamePaymentMethodView(renameAction: @escaping (String) -> Void) {
+  func routeToRenamePaymentMethodView(with name: String, renameAction: @escaping (String) -> Void) {
     let alertController = UIAlertController(title: L.renamePaymentMethodTitle,
                                             message: L.renamePaymentMethodMessage,
                                             preferredStyle: .alert)
@@ -34,6 +34,7 @@ extension PaymentMethodActionsRoutingProtocol {
     }
     alertController.addTextField {
       $0.placeholder = L.newName
+      $0.text = name
     }
     alertController.addAction(cancelAction)
     alertController.addAction(renameAction)
