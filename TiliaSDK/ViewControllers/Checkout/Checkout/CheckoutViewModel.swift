@@ -10,6 +10,7 @@ import Combine
 
 typealias CheckoutContent = (invoiceInfo: InvoiceInfoModel, walletBalance: BalanceModel, paymentMethods: [PaymentMethodModel], isVirtual: Bool)
 typealias CheckoutPaymentIsEnabledBySectionIndex = (sectionIndex: Int, isEnabled: Bool)
+typealias CheckoutRenamePaymentMethod = (name: String, index: Int)
 
 protocol CheckoutViewModelInputProtocol {
   func checkIsTosRequired()
@@ -18,7 +19,8 @@ protocol CheckoutViewModelInputProtocol {
   func selectPaymentMethod(at indexPath: IndexPath, isSelected: Bool)
   func selectPaymentMethod(at indexPath: IndexPath)
   func removePaymentMethod(at index: Int)
-  func renamePaymentMethod(at index: Int, with text: String)
+  func willRenamePaymentMethod(at index: Int)
+  func didRenamePaymentMethod(at index: Int, with text: String)
 }
 
 protocol CheckoutViewModelOutputProtocol {
@@ -35,6 +37,7 @@ protocol CheckoutViewModelOutputProtocol {
   var updateSummary: PassthroughSubject<InvoiceInfoModel, Never> { get }
   var updatePayment: PassthroughSubject<CheckoutContent, Never> { get }
   var paymentMethodsAreEnabled: PassthroughSubject<CheckoutPaymentIsEnabledBySectionIndex, Never> { get }
+  var renamePaymentMethod: PassthroughSubject<CheckoutRenamePaymentMethod, Never> { get }
 }
 
 protocol CheckoutDataStore {
@@ -61,6 +64,7 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
   let updateSummary = PassthroughSubject<InvoiceInfoModel, Never>()
   let updatePayment = PassthroughSubject<CheckoutContent, Never>()
   let paymentMethodsAreEnabled = PassthroughSubject<CheckoutPaymentIsEnabledBySectionIndex, Never>()
+  let renamePaymentMethod = PassthroughSubject<CheckoutRenamePaymentMethod, Never>()
   
   let manager: NetworkManager
   private(set) lazy var onTosComplete: (TLCompleteCallback) -> Void = { [weak self] in
@@ -195,7 +199,11 @@ final class CheckoutViewModel: CheckoutViewModelProtocol, CheckoutDataStore {
     }
   }
   
-  func renamePaymentMethod(at index: Int, with text: String) {
+  func willRenamePaymentMethod(at index: Int) {
+    renamePaymentMethod.send((paymentMethods[index].display, index))
+  }
+  
+  func didRenamePaymentMethod(at index: Int, with text: String) {
     guard paymentMethods[index].display != text else { return }
     loading.send(true)
     manager.renamePaymentMethod(withNewName: text, byId: paymentMethods[index].id) { [weak self] result in
