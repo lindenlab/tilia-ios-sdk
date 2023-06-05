@@ -97,7 +97,13 @@ struct TransactionDetailsModel: Decodable {
     default:
       sourcePaymentMethod = nil
     }
-    isPoboSourcePaymentMethodProvider = try transactionContainer.decodeIfPresent(String.self, forKey: .sourcePaymentMethodProvider) == "pobo"
+    
+    let poboStr = "pobo"
+    if type == .refund {
+      isPoboSourcePaymentMethodProvider = refundPaymentMethods?.contains { $0.sourcePaymentMethodProvider == poboStr } ?? false
+    } else {
+      isPoboSourcePaymentMethodProvider = try transactionContainer.decodeIfPresent(String.self, forKey: .sourcePaymentMethodProvider) == poboStr
+    }
     
     // Parse only for payout
     if transactionContainer.contains(.payout) {
@@ -285,10 +291,12 @@ struct RefundItemModel: Decodable {
   
   let description: String
   let displayAmount: String
+  let sourcePaymentMethodProvider: String?
   
   private enum CodingKeys: String, CodingKey {
     case description
     case displayAmount = "amount_display"
+    case sourcePaymentMethodProvider = "source_payment_method_provider"
   }
   
 }
