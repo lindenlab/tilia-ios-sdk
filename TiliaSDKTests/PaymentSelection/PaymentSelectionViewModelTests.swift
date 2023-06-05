@@ -211,10 +211,16 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     viewModel.content.sink { [weak viewModel] _ in
       count += 1
       if count == 1 {
-        viewModel?.renamePaymentMethod(at: 1, with: "newName")
+        viewModel?.willRenamePaymentMethod(at: 1)
       } else if count == 2 {
         contentExpectation.fulfill()
       }
+    }.store(in: &subscriptions)
+    
+    let renamePaymentMethodExpectation = XCTestExpectation(description: "testSuccessRenamePaymentMethod_RenamePaymentMethod")
+    viewModel.renamePaymentMethod.sink { [weak viewModel] in
+      viewModel?.didRenamePaymentMethod(at: $0.index, with: "newName")
+      renamePaymentMethodExpectation.fulfill()
     }.store(in: &subscriptions)
     
     TLManager.shared.setToken(UUID().uuidString)
@@ -224,7 +230,8 @@ final class PaymentSelectionViewModelTests: XCTestCase {
     
     let expectations = [
       updateCallbackExpectation,
-      contentExpectation
+      contentExpectation,
+      renamePaymentMethodExpectation
     ]
     
     wait(for: expectations, timeout: 2)
