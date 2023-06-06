@@ -20,7 +20,7 @@ public struct TLCompleteCallback {
     case cancelled
     
     /// Completed state
-    case completed
+    case completed = "complete"
     
   }
   
