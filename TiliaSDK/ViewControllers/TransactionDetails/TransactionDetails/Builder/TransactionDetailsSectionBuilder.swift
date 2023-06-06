@@ -337,7 +337,7 @@ private extension TransactionDetailsSectionBuilder {
                                                       isDividerHidden: $0.offset == recipientItems.count - 1) }
     } else if let refundPaymentMethods = model.refundPaymentMethods {
       items = refundPaymentMethods.enumerated().map { .init(title: $0.element.description,
-                                                            value: $0.element.displayAmount,
+                                                            value: $0.element.isPoboSourcePaymentMethodProvider ? nil : $0.element.displayAmount,
                                                             image: nil,
                                                             leftInset: 32,
                                                             isDividerHidden: $0.offset == refundPaymentMethods.count - 1) }
