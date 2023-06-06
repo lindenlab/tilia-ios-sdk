@@ -26,8 +26,15 @@ struct TransactionDetailsModel: Decodable {
   let refundPaymentMethods: [RefundItemModel]?
   let destinationPaymentMethod: String?
   let sourcePaymentMethod: String?
-  let isPoboSourcePaymentMethodProvider: Bool
   let userReceivedAmount: String?
+  var isPoboSourcePaymentMethodProvider: Bool {
+    if type == .refund {
+      return refundPaymentMethods?.contains { $0.isPoboSourcePaymentMethodProvider } ?? false
+    } else {
+      return _isPoboSourcePaymentMethodProvider ?? false
+    }
+  }
+  private let _isPoboSourcePaymentMethodProvider: Bool?
   
   private enum RootCodingKeys: String, CodingKey {
     case id = "transaction_id"
@@ -97,7 +104,7 @@ struct TransactionDetailsModel: Decodable {
     default:
       sourcePaymentMethod = nil
     }
-    isPoboSourcePaymentMethodProvider = try transactionContainer.decodeIfPresent(String.self, forKey: .sourcePaymentMethodProvider) == "pobo"
+    _isPoboSourcePaymentMethodProvider = (try transactionContainer.decodeIfPresent(String.self, forKey: .sourcePaymentMethodProvider)).map { $0 == "pobo" }
     
     // Parse only for payout
     if transactionContainer.contains(.payout) {
@@ -285,10 +292,20 @@ struct RefundItemModel: Decodable {
   
   let description: String
   let displayAmount: String
+  var isPoboSourcePaymentMethodProvider: Bool { return _isPoboSourcePaymentMethodProvider ?? false }
+  private let _isPoboSourcePaymentMethodProvider: Bool?
   
   private enum CodingKeys: String, CodingKey {
     case description
     case displayAmount = "amount_display"
+    case sourcePaymentMethodProvider = "source_payment_method_provider"
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    description = try container.decode(String.self, forKey: .description)
+    displayAmount = try container.decode(String.self, forKey: .displayAmount)
+    _isPoboSourcePaymentMethodProvider = (try container.decodeIfPresent(String.self, forKey: .sourcePaymentMethodProvider)).map { $0 == "pobo" }
   }
   
 }

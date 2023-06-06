@@ -221,6 +221,7 @@ private extension TransactionDetailsModel {
     } else {
       switch type {
       case .tokenPurchase where !isPoboSourcePaymentMethodProvider,
+          .refund where isPoboSourcePaymentMethodProvider,
           .userPurchase,
           .userPurchaseEscrow:
         attributes[.foregroundColor] = UIColor.failureBackgroundColor
