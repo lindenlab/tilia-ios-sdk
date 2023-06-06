@@ -55,7 +55,7 @@ public struct TLEvent {
     case paymentProcessed = "payment-processed"
     
     /// Flow is completed
-    case completed
+    case completed = "complete"
     
     /// KYC info is submitted successfully
     case kycInfoSubmitted = "kyc-info-submitted"

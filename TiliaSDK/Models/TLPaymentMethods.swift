@@ -19,6 +19,11 @@ public struct TLPaymentMethods: Encodable, CustomStringConvertible {
 
 public struct TLPaymentMethod: Encodable {
   
+  private enum CodingKeys: String, CodingKey {
+    case id = "payment_method_id"
+    case amount
+  }
+  
   public let id: String
   public let amount: Double
   
