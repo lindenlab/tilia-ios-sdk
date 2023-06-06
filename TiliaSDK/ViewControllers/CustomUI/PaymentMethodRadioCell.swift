@@ -77,6 +77,7 @@ final class PaymentMethodRadioCell: UITableViewCell {
   }
   
   func configure(isEnabled: Bool) {
+    setupBackgroundColor(isEnabled: isEnabled)
     radioButton.isEnabled = isEnabled
   }
   
@@ -104,8 +105,7 @@ private extension PaymentMethodRadioCell {
     stackView.alignment = .center
     stackView.setCustomSpacing(16, after: radioButton)
     
-    backgroundColor = .backgroundColor
-    contentView.backgroundColor = .backgroundColor
+    setupBackgroundColor(isEnabled: true)
     contentView.addSubview(stackView)
     contentView.addSubview(divider)
     
@@ -118,6 +118,11 @@ private extension PaymentMethodRadioCell {
       divider.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
       divider.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
     ])
+  }
+  
+  func setupBackgroundColor(isEnabled: Bool) {
+    backgroundColor = isEnabled ? .backgroundColor : .backgroundDarkerColor
+    contentView.backgroundColor = isEnabled ? .backgroundColor : .backgroundDarkerColor
   }
   
   @objc func radioButtonDidTap() {
