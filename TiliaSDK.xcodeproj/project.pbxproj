@@ -234,6 +234,7 @@
 		D1E6F5A728ECD2FF000CDA5E /* UIViewController+Childs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6F5A628ECD2FF000CDA5E /* UIViewController+Childs.swift */; };
 		D1E6F5AA28F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1E6F5A828F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json */; };
 		D1E6F5AB28F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = D1E6F5A928F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json */; };
+		D1E8D82E2A2E8F82005BED22 /* LimitTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8D82D2A2E8F82005BED22 /* LimitTextFieldDelegate.swift */; };
 		D1E8F8F92829585A0037EA8F /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */; };
 		D1E8F8FB28297AD00037EA8F /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E8F8FA28297AD00037EA8F /* LabelCell.swift */; };
 		D1E97794290AADBE00FB20AB /* AccountRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E97793290AADBE00FB20AB /* AccountRouterTests.swift */; };
@@ -518,6 +519,7 @@
 		D1E6F5A628ECD2FF000CDA5E /* UIViewController+Childs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Childs.swift"; sourceTree = "<group>"; };
 		D1E6F5A828F06A32000CDA5E /* GetTransactionDetailsTokenConvertResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsTokenConvertResponse.json; sourceTree = "<group>"; };
 		D1E6F5A928F06A32000CDA5E /* GetTransactionDetailsTokenPurchaseResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GetTransactionDetailsTokenPurchaseResponse.json; sourceTree = "<group>"; };
+		D1E8D82D2A2E8F82005BED22 /* LimitTextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitTextFieldDelegate.swift; sourceTree = "<group>"; };
 		D1E8F8F82829585A0037EA8F /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		D1E8F8FA28297AD00037EA8F /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		D1E97793290AADBE00FB20AB /* AccountRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouterTests.swift; sourceTree = "<group>"; };
@@ -788,6 +790,7 @@
 				D10C55CC2A12182B00F735B7 /* UserDetailInfoModel.swift */,
 				D10C55CA2A1216A100F735B7 /* BeginVerifyUserEmailModel.swift */,
 				D10C55D02A121A4900F735B7 /* FinishVerifyUserEmailModel.swift */,
+				D1E8D82D2A2E8F82005BED22 /* LimitTextFieldDelegate.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1630,6 +1633,7 @@
 				D123208D28A6D5A10039990A /* TosContentRouter.swift in Sources */,
 				D154AD4B2811E785003976CB /* BaseViewController.swift in Sources */,
 				D16E2A8D28AF8D1200287C55 /* TransactionDetailsFlowTestViewController.swift in Sources */,
+				D1E8D82E2A2E8F82005BED22 /* LimitTextFieldDelegate.swift in Sources */,
 				D126AF212878365300CAC5F2 /* UserInfoProcessingCell.swift in Sources */,
 				D19A0DA9281FED7200483DDC /* UserInfoViewController.swift in Sources */,
 				D1BB6349287F3012007616DE /* SubmittedKycStatusModel.swift in Sources */,
