@@ -168,7 +168,7 @@ final class PaymentSelectionViewModel: PaymentSelectionViewModelProtocol, Paymen
   }
   
   func didRenamePaymentMethod(at index: Int, with text: String) {
-    guard paymentMethods[index].display != text else { return }
+    guard !text.isEmpty, paymentMethods[index].display != text else { return }
     loading.send(true)
     manager.renamePaymentMethod(withNewName: text, byId: paymentMethods[index].id) { [weak self] result in
       guard let self = self else { return }

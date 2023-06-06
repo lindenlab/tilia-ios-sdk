@@ -19,6 +19,7 @@ final class CheckoutViewController: BaseTableViewController {
   private var subscriptions: Set<AnyCancellable> = []
   private var sections: [CheckoutSectionBuilder.Section] = []
   private let builder = CheckoutSectionBuilder()
+  private lazy var limitTextFieldDelegate = LimitTextFieldDelegate(limit: 36)
   
   init(invoiceId: String,
        manager: NetworkManager,
@@ -257,7 +258,7 @@ private extension CheckoutViewController {
     
     viewModel.renamePaymentMethod.sink { [weak self] model in
       guard let self = self else { return }
-      self.router.routeToRenamePaymentMethodView(with: model.name) {
+      self.router.routeToRenamePaymentMethodView(with: model.name, textFieldDelegate: self.limitTextFieldDelegate) {
         self.viewModel.didRenamePaymentMethod(at: model.index, with: $0)
       }
     }.store(in: &subscriptions)

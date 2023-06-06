@@ -19,6 +19,7 @@ final class PaymentSelectionViewController: BaseTableViewController {
   private var subscriptions: Set<AnyCancellable> = []
   private var sections: [PaymentSelectionSectionBuilder.Section] = []
   private let builder = PaymentSelectionSectionBuilder()
+  private lazy var limitTextFieldDelegate = LimitTextFieldDelegate(limit: 36)
   
   init(manager: NetworkManager,
        amount: Double?,
@@ -217,7 +218,7 @@ private extension PaymentSelectionViewController {
     
     viewModel.renamePaymentMethod.sink { [weak self] model in
       guard let self = self else { return }
-      self.router.routeToRenamePaymentMethodView(with: model.name) {
+      self.router.routeToRenamePaymentMethodView(with: model.name, textFieldDelegate: self.limitTextFieldDelegate) {
         self.viewModel.didRenamePaymentMethod(at: model.index, with: $0)
       }
     }.store(in: &subscriptions)
