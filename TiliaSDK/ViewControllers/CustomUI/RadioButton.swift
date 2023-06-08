@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class RadioButton: UIButton {
+final class RadioButton: Button {
   
   override var intrinsicContentSize: CGSize {
     return CGSize(width: 20, height: 20)
@@ -15,15 +15,16 @@ final class RadioButton: UIButton {
   
   var isRadioSelected: Bool = false {
     didSet {
-      setup()
+      setupBorder()
     }
   }
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    backgroundColor = .backgroundColor
-    isExclusiveTouch = true
+  override init(style: Style? = nil, frame: CGRect = .zero) {
+    super.init(style: style, frame: frame)
     addTarget(self, action: #selector(didTap), for: .touchUpInside)
+    setBackgroundColor(.backgroundColor, for: .normal)
+    setBackgroundColor(.backgroundDarkerColor, for: .disabled)
+    setupBorder()
   }
   
   required init?(coder: NSCoder) {
@@ -33,13 +34,12 @@ final class RadioButton: UIButton {
   override public func layoutSubviews() {
     super.layoutSubviews()
     layer.cornerRadius = bounds.height * 0.5
-    setup()
   }
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
-    setup()
+    setupBorder()
   }
   
 }
@@ -48,7 +48,7 @@ final class RadioButton: UIButton {
 
 private extension RadioButton {
   
-  func setup() {
+  func setupBorder() {
     if isRadioSelected {
       layer.borderWidth = 6
       layer.borderColor = UIColor.primaryColor.cgColor
