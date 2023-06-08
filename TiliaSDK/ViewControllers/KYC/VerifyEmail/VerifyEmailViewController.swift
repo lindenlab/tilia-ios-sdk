@@ -133,9 +133,11 @@ extension VerifyEmailViewController: UITextFieldDelegate {
   
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     guard !string.isEmpty else { return true }
-    guard !string.trimmingCharacters(in: CharacterSet.decimalDigits.inverted).isEmpty else { return false }
+    guard !string.trimmingCharacters(in: CharacterSet.alphanumerics.inverted).isEmpty else { return false }
     let newText = textField.text?.newString(forRange: range, withReplacementString: string) ?? ""
-    viewModel.verifyCode(newText)
+    DispatchQueue.main.async {
+      self.viewModel.verifyCode(newText)
+    }
     return viewModel.validator.canEnterMore(newText)
   }
   
