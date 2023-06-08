@@ -28,7 +28,7 @@ final class RoundedTextField: UITextField {
   override var isEnabled: Bool {
     didSet {
       backgroundColor = isEnabled ? .backgroundColor : .backgroundDarkerColor
-      textColor = isEnabled ? .primaryTextColor : .secondaryTextColor
+      textColor = isEnabled ? .primaryTextColor : .tertiaryTextColor
     }
   }
   
