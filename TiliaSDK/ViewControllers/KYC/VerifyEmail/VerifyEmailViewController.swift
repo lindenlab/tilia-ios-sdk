@@ -54,7 +54,6 @@ final class VerifyEmailViewController: BaseViewController {
     textField.placeholder = L.enterSixDigitCode
     textField.returnKeyType = .done
     textField.isReturnKeyEnabled = false
-    textField.keyboardType = .numberPad
     textField.delegate = self
     textField.accessibilityIdentifier = "enterCodeTextField"
     return textField
