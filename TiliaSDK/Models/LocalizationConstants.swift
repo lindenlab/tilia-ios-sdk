@@ -176,7 +176,7 @@ enum L {
   static let fees = "fees".localized
   static let tax = "tax".localized
   static let tokenPurchase = "tokenPurchase".localized
-  static let updateYourEmailTitle = "updateYourEmailTitle".localized
+  static let updateYourEmail = "updateYourEmail".localized
   static let verifyYourEmailTitle = "verifyYourEmailTitle".localized
   static let enterSixDigitCode = "enterSixDigitCode".localized
   static let clickToResendTitle = "clickToResendTitle".localized
@@ -252,9 +252,6 @@ enum L {
   }
   static func useYourBalance(with arguments: CVarArg...) -> String {
     return "useYourBalance".localized(with: arguments)
-  }
-  static func updateYourEmailMessage(with arguments: CVarArg...) -> String {
-    return "updateYourEmailMessage".localized(with: arguments)
   }
   static func verifyYourEmailMessage(with arguments: CVarArg...) -> String {
     return "verifyYourEmailMessage".localized(with: arguments)
