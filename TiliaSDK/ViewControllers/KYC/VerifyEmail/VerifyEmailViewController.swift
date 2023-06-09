@@ -53,6 +53,7 @@ final class VerifyEmailViewController: BaseViewController {
     let textField = RoundedTextField()
     textField.placeholder = L.enterSixDigitCode
     textField.delegate = self
+    textField.autocapitalizationType = .allCharacters
     textField.accessibilityIdentifier = "enterCodeTextField"
     return textField
   }()
