@@ -180,10 +180,9 @@
 "tax" = "Tax";
 "tokenPurchase" = "Token purchase";
 "useYourBalance" = "Use your %@ balance";
-"updateYourEmailTitle" = "Update your email";
-"updateYourEmailMessage" = "We have sent a six digit code to %@. Please check your email and enter the verification code to update your email.";
+"updateYourEmail" = "Update your email";
 "verifyYourEmailTitle" = "Verify your email";
-"verifyYourEmailMessage" = "We have sent a six digit code to %@. Please check your email and enter the verification code";
+"verifyYourEmailMessage" = "We have sent a verification code to %@. Please check your email and enter the code that you received.";
 "enterSixDigitCode" = "Enter six digit code";
 "clickToResendTitle" = "Click to resend";
 "clickToResendMessage" = "Didn't get a code? Click to resend";

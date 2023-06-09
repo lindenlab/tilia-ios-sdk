@@ -16,7 +16,7 @@ enum VerifyEmailMode {
   var title: String {
     switch self {
     case .verify: return L.verifyYourEmailTitle
-    case .update: return L.updateYourEmailTitle
+    case .update: return L.updateYourEmail
     }
   }
   
@@ -24,13 +24,6 @@ enum VerifyEmailMode {
     switch self {
     case .verify: return L.yourEmailIsVerified
     case .update: return L.yourEmailIsUpdated
-    }
-  }
-  
-  func message(for email: String) -> String {
-    switch self {
-    case .verify: return L.verifyYourEmailMessage(with: email)
-    case .update: return L.updateYourEmailMessage(with: email)
     }
   }
   

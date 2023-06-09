@@ -45,16 +45,15 @@ final class VerifyEmailViewController: BaseViewController {
     label.numberOfLines = 0
     label.font = .systemFont(ofSize: 16)
     label.textColor = .primaryTextColor
-    label.text = viewModel.mode.message(for: viewModel.email)
+    label.text = L.verifyYourEmailMessage(with: viewModel.email)
     return label
   }()
   
   private lazy var textField: RoundedTextField = {
     let textField = RoundedTextField()
     textField.placeholder = L.enterSixDigitCode
-    textField.returnKeyType = .done
-    textField.isReturnKeyEnabled = false
     textField.delegate = self
+    textField.autocapitalizationType = .allCharacters
     textField.accessibilityIdentifier = "enterCodeTextField"
     return textField
   }()
