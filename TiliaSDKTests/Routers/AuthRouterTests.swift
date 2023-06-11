@@ -18,7 +18,20 @@ final class AuthRouterTests: XCTestCase {
     XCTAssertNotNil(router.bodyParameters)
     XCTAssertEqual(router.service, "auth")
     XCTAssertEqual(router.endpoint, "/authorize/user")
-    XCTAssertEqual(router.testData?.count, router.readJSONFromFile("GetAddCreditCardRedirectUrlResponse")?.count)
+    XCTAssertEqual(router.testData?.count, router.readJSONFromFile("GetAddPaymentMethodRedirectUrlResponse")?.count)
+    XCTAssertNotNil(try? router.requestHeaders())
+    XCTAssertNotNil(try? router.asURLRequest())
+  }
+  
+  func testGetAddPaypalRedirectUrl() {
+    let router = AuthRouter.getPaypalRedirectUrl
+    TLManager.shared.setToken(UUID().uuidString)
+    XCTAssertEqual(router.method, .post)
+    XCTAssertNil(router.queryParameters)
+    XCTAssertNotNil(router.bodyParameters)
+    XCTAssertEqual(router.service, "auth")
+    XCTAssertEqual(router.endpoint, "/authorize/user")
+    XCTAssertEqual(router.testData?.count, router.readJSONFromFile("GetAddPaymentMethodRedirectUrlResponse")?.count)
     XCTAssertNotNil(try? router.requestHeaders())
     XCTAssertNotNil(try? router.asURLRequest())
   }

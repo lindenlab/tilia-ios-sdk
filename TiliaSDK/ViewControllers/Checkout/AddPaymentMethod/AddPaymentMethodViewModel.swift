@@ -1,5 +1,5 @@
 //
-//  AddCreditCardViewModel.swift
+//  AddPaymentMethodViewModel.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 21.04.2022.
@@ -8,20 +8,20 @@
 import Foundation
 import Combine
 
-protocol AddCreditCardViewModelInputProtocol {
+protocol AddPaymentMethodViewModelInputProtocol {
   func openBrowser()
   func complete()
 }
 
-protocol AddCreditCardViewModelOutputProtocol {
+protocol AddPaymentMethodViewModelOutputProtocol {
   var loading: PassthroughSubject<Bool, Never> { get }
   var error: PassthroughSubject<Error, Never> { get }
   var openUrl: PassthroughSubject<URL, Never> { get }
 }
 
-protocol AddCreditCardViewModelProtocol: AddCreditCardViewModelInputProtocol, AddCreditCardViewModelOutputProtocol { }
+protocol AddPaymentMethodViewModelProtocol: AddPaymentMethodViewModelInputProtocol, AddPaymentMethodViewModelOutputProtocol { }
 
-final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
+final class AddPaymentMethodViewModel: AddPaymentMethodViewModelProtocol {
   
   let loading = PassthroughSubject<Bool, Never>()
   let error = PassthroughSubject<Error, Never>()
@@ -65,7 +65,7 @@ final class AddCreditCardViewModel: AddCreditCardViewModelProtocol {
 
 // MARK: - Private Methods
 
-private extension AddCreditCardViewModel {
+private extension AddPaymentMethodViewModel {
   
   func didFail(with error: Error) {
     let event = TLEvent(flow: .checkout, action: .error)
