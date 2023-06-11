@@ -13,9 +13,11 @@ protocol UserInfoValidator {
 
 struct UserInfoEmailValidator: UserInfoValidator {
   
+  let isVerify: Bool
+  
   func isFilled(for model: UserInfoModel) -> Bool {
-    if let needToVerifyEmail = model.needToVerifyEmail {
-      return SendReceiptValidator.isEmailValid(needToVerifyEmail)
+    if isVerify {
+      return SendReceiptValidator.isEmailValid(model.needToVerifyEmail ?? "")
     } else {
       return model.isEmailVerified
     }

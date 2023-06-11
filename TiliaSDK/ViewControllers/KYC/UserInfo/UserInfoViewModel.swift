@@ -131,7 +131,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
                      at index: Int,
                      isExpanded: Bool,
                      nextSectionIndex: Int?) {
-    guard let isSectionFilled = validator(for: section.type)?.isFilled(for: userInfoModel) else { return }
+    guard let isSectionFilled = validator(for: section.type, checkVerifyEmail: false)?.isFilled(for: userInfoModel) else { return }
     expandSection.send((index, userInfoModel, isExpanded, isSectionFilled, nextSectionIndex))
   }
   
@@ -204,7 +204,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     }
     
     guard isFieldChanged,
-          let isSectionFilled = validator(for: section.type)?.isFilled(for: userInfoModel) else { return }
+          let isSectionFilled = validator(for: section.type, checkVerifyEmail: true)?.isFilled(for: userInfoModel) else { return }
     setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
   }
   
@@ -224,7 +224,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   func cancelEditingEmail(for section: UserInfoSectionBuilder.Section, at index: Int) {
     userInfoModel.needToVerifyEmail = nil
-    let isFilled = validator(for: section.type)?.isFilled(for: userInfoModel) == true
+    let isFilled = validator(for: section.type, checkVerifyEmail: false)?.isFilled(for: userInfoModel) == true
     isSectionFilled.send((isFilled, index))
     didEndEditingEmail.send((userInfoModel, index))
   }
@@ -270,9 +270,9 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
 
 private extension UserInfoViewModel {
   
-  func validator(for section: UserInfoSectionBuilder.Section.SectionType) -> UserInfoValidator? {
+  func validator(for section: UserInfoSectionBuilder.Section.SectionType, checkVerifyEmail: Bool) -> UserInfoValidator? {
     switch section {
-    case .email: return UserInfoEmailValidator()
+    case .email: return UserInfoEmailValidator(isVerify: checkVerifyEmail)
     case .location: return UserInfoLocationValidator()
     case .personal: return UserInfoPersonalValidator()
     case .tax: return UserInfoTaxValidator()
