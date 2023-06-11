@@ -10,7 +10,7 @@ import UIKit
 protocol CheckoutRoutingProtocol: PaymentMethodActionsRoutingProtocol {
   func routeToTosView()
   func routeToTosContentView()
-  func routeToAddCreditCardView()
+  func routeToAddPaymentMethodView(with mode: AddPaymentMethodMode)
 }
 
 final class CheckoutRouter: CheckoutRoutingProtocol {
@@ -41,10 +41,11 @@ final class CheckoutRouter: CheckoutRoutingProtocol {
     viewController?.present(tosContentViewController, animated: true)
   }
   
-  func routeToAddCreditCardView() {
-    let addCreditCardViewController = AddCreditCardViewController(manager: dataStore.manager,
-                                                                  onReload: dataStore.onReload,
-                                                                  onError: dataStore.onError)
+  func routeToAddPaymentMethodView(with mode: AddPaymentMethodMode) {
+    let addCreditCardViewController = AddPaymentMethodViewController(manager: dataStore.manager,
+                                                                     mode: mode,
+                                                                     onReload: dataStore.onReload,
+                                                                     onError: dataStore.onError)
     viewController?.present(addCreditCardViewController, animated: true)
   }
   

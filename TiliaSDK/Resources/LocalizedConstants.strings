@@ -26,11 +26,13 @@
 "addPaymentMethodTitle" = "Add a payment method to your account";
 "addCreditCardTitle" = "Add credit card";
 "addCreditCardMessage" = "Tap the button below to securely provide your credit card information in a browser. When you're done, click the 'Done' button.";
+"addPaypalTitle" = "Add PayPal";
+"addPaypalMessage" = "Tap the button below to securely connect your PayPal account in a browser.  When you're done, click the 'Done' button.";
 "openBrowser" = "Open browser";
 "opening" = "Opening...";
 "goBack" = "Go back";
-"errorAddCreditTitle" =  "Error processing adding credit card";
-"errorAddCreditMessage" =  "Sorry, we were unable to process adding your credit card. Please try again later.";
+"errorAddPaymentMethodTitle" =  "Error processing adding payment method";
+"errorAddPaymentMethodMessage" =  "Sorry, we were unable to process adding your payment method. Please try again later.";
 "verifyYourIdentity" = "Verify your identity";
 "userInfoMessage" = "We need to get to know you a bit better. Please fill out the form below, it should only take a few minutes.";
 "location" = "Location";
@@ -212,3 +214,4 @@
 "renamePaymentMethodTitle" = "Rename payment method";
 "renamePaymentMethodMessage" = "Please enter here new non empty name";
 "newName" = "New name";
+"add" = "Add";

@@ -10,6 +10,7 @@ import UIKit
 protocol PaymentFooterViewDelegate: AnyObject {
   func paymentFooterViewPayButtonDidTap(_ footerView: PaymentFooterView)
   func paymentFooterViewCloseButtonDidTap(_ footerView: PaymentFooterView)
+  func paymentFooterViewAddPaypalButtonDidTap(_ footerView: PaymentFooterView)
   func paymentFooterViewAddCreditCardButtonDidTap(_ footerView: PaymentFooterView)
 }
 
@@ -26,10 +27,19 @@ final class PaymentFooterView: UITableViewHeaderFooterView {
   
   private let addPaymentMethodLabel: UILabel = {
     let label = UILabel()
-    label.text = L.addPaymentMethodTitle.localized
+    label.text = L.addPaymentMethodTitle
     label.textColor = .primaryTextColor
     label.font = .systemFont(ofSize: 16)
     return label
+  }()
+  
+  private lazy var addPaypalButton: NonPrimaryButton = {
+    let button = NonPrimaryButton(style: .titleAndImageCenter)
+    button.setTitle(L.add, for: .normal)
+    button.setImage(.payPalIcon, for: .normal)
+    button.addTarget(self, action: #selector(addPaypalButtonDidTap), for: .touchUpInside)
+    button.accessibilityIdentifier = "addPaypalButton"
+    return button
   }()
   
   private lazy var addCreditCardButton: NonPrimaryButton = {
@@ -60,6 +70,7 @@ final class PaymentFooterView: UITableViewHeaderFooterView {
     let stackView = UIStackView(arrangedSubviews: [
       payButton,
       addPaymentMethodLabel,
+      addPaypalButton,
       addCreditCardButton,
       closeButton,
       textView
@@ -81,15 +92,16 @@ final class PaymentFooterView: UITableViewHeaderFooterView {
   
   func configure(payButtonTitle: String?,
                  closeButtonTitle: String,
-                 isCreditCardButtonHidden: Bool,
+                 areAddPaymentMethodButtonsHidden: Bool,
                  delegate: PaymentFooterViewDelegate?,
                  textViewSubTitle: String?,
                  textViewDelegate: TextViewWithLinkDelegate?) {
     payButton.setTitle(payButtonTitle, for: .normal)
     payButton.isHidden = payButtonTitle == nil
     closeButton.setTitle(closeButtonTitle, for: .normal)
-    addCreditCardButton.isHidden = isCreditCardButtonHidden
-    addPaymentMethodLabel.isHidden = isCreditCardButtonHidden
+    addPaypalButton.isHidden = areAddPaymentMethodButtonsHidden
+    addCreditCardButton.isHidden = areAddPaymentMethodButtonsHidden
+    addPaymentMethodLabel.isHidden = areAddPaymentMethodButtonsHidden
     if let textViewSubTitle = textViewSubTitle {
       textView.isHidden = false
       let text = L.paymentAcceptDescription(with: textViewSubTitle)
@@ -100,7 +112,7 @@ final class PaymentFooterView: UITableViewHeaderFooterView {
       textView.attributedText = nil
     }
     textView.linkDelegate = textViewDelegate
-    stackView.setCustomSpacing(isCreditCardButtonHidden ? 16 : 32, after: payButton)
+    stackView.setCustomSpacing(areAddPaymentMethodButtonsHidden ? 16 : 32, after: payButton)
     self.delegate = delegate
   }
   
@@ -130,6 +142,10 @@ private extension PaymentFooterView {
   
   @objc func payButtonDidTap() {
     delegate?.paymentFooterViewPayButtonDidTap(self)
+  }
+  
+  @objc func addPaypalButtonDidTap() {
+    delegate?.paymentFooterViewAddPaypalButtonDidTap(self)
   }
   
   @objc func addCreditCardButtonDidTap() {

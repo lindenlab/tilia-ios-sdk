@@ -11,7 +11,7 @@ import XCTest
 final class AuthRouterTests: XCTestCase {
   
   func testGetAddCreditCardRedirectUrl() {
-    let router = AuthRouter.getAddCreditCardRedirectUrl
+    let router = AuthRouter.getCreditCardRedirectUrl
     TLManager.shared.setToken(UUID().uuidString)
     XCTAssertEqual(router.method, .post)
     XCTAssertNil(router.queryParameters)

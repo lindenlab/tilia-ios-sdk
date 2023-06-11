@@ -23,6 +23,7 @@
 		D11A7E5728FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */; };
 		D11A7E5928FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */; };
 		D11A7E5D28FDDD11005B93D2 /* GetTransactionHistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11A7E5C28FDDD11005B93D2 /* GetTransactionHistoryModel.swift */; };
+		D11DA2862A35ECFC00BC3EB0 /* AddPaymentMethodMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11DA2852A35ECFC00BC3EB0 /* AddPaymentMethodMode.swift */; };
 		D120F2CB27F1DDD5009B30DD /* TosRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CA27F1DDD5009B30DD /* TosRouter.swift */; };
 		D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */; };
 		D120F2D427F1FE84009B30DD /* TosAcceptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */; };
@@ -136,7 +137,7 @@
 		D18D730228415E8200660715 /* BundleToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18D730128415E8200660715 /* BundleToken.swift */; };
 		D190A3ED2806052200A25DBD /* TosFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EC2806052200A25DBD /* TosFlowUITests.swift */; };
 		D190A3EF2806055000A25DBD /* CheckoutFlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */; };
-		D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */; };
+		D19197CB281800C700B892FA /* AddPaymentMethodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19197CA281800C700B892FA /* AddPaymentMethodViewModelTests.swift */; };
 		D192AD7D27E8DC5D00E3DC2A /* BaseResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */; };
 		D192AD8027E8DEA600E3DC2A /* Decodable+DecodeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */; };
 		D192AD8227E8DEEF00E3DC2A /* Encodable+EncodeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */; };
@@ -304,6 +305,7 @@
 		D11A7E5628FD2CA7005B93D2 /* TransactionHistoryFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryFlowUITests.swift; sourceTree = "<group>"; };
 		D11A7E5828FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryViewModelTests.swift; sourceTree = "<group>"; };
 		D11A7E5C28FDDD11005B93D2 /* GetTransactionHistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTransactionHistoryModel.swift; sourceTree = "<group>"; };
+		D11DA2852A35ECFC00BC3EB0 /* AddPaymentMethodMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPaymentMethodMode.swift; sourceTree = "<group>"; };
 		D120F2CA27F1DDD5009B30DD /* TosRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosRouter.swift; sourceTree = "<group>"; };
 		D120F2CD27F1DEB4009B30DD /* RoutingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingProtocol.swift; sourceTree = "<group>"; };
 		D120F2D327F1FE84009B30DD /* TosAcceptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosAcceptModel.swift; sourceTree = "<group>"; };
@@ -420,7 +422,7 @@
 		D18D730128415E8200660715 /* BundleToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleToken.swift; sourceTree = "<group>"; };
 		D190A3EC2806052200A25DBD /* TosFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TosFlowUITests.swift; sourceTree = "<group>"; };
 		D190A3EE2806055000A25DBD /* CheckoutFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutFlowUITests.swift; sourceTree = "<group>"; };
-		D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewModelTests.swift; sourceTree = "<group>"; };
+		D19197CA281800C700B892FA /* AddPaymentMethodViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPaymentMethodViewModelTests.swift; sourceTree = "<group>"; };
 		D192AD7C27E8DC5D00E3DC2A /* BaseResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseResponse.swift; sourceTree = "<group>"; };
 		D192AD7F27E8DEA600E3DC2A /* Decodable+DecodeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decodable+DecodeObject.swift"; sourceTree = "<group>"; };
 		D192AD8127E8DEEF00E3DC2A /* Encodable+EncodeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+EncodeData.swift"; sourceTree = "<group>"; };
@@ -791,6 +793,7 @@
 				D10C55CA2A1216A100F735B7 /* BeginVerifyUserEmailModel.swift */,
 				D10C55D02A121A4900F735B7 /* FinishVerifyUserEmailModel.swift */,
 				D1E8D82D2A2E8F82005BED22 /* LimitTextFieldDelegate.swift */,
+				D11DA2852A35ECFC00BC3EB0 /* AddPaymentMethodMode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1259,7 +1262,7 @@
 			isa = PBXGroup;
 			children = (
 				D1B872D62805A1B200DD1F7B /* CheckoutViewModelTests.swift */,
-				D19197CA281800C700B892FA /* AddCreditCardViewModelTests.swift */,
+				D19197CA281800C700B892FA /* AddPaymentMethodViewModelTests.swift */,
 			);
 			path = Checkout;
 			sourceTree = "<group>";
@@ -1676,6 +1679,7 @@
 				D17A451328B3867D00B0C9AB /* TransactionDetailsHeaderView.swift in Sources */,
 				D1CCE8D827F4C5E400FD0E25 /* UserBalanceByCurrencyTestViewController.swift in Sources */,
 				D1B871F828339B2A00C44441 /* UserDocumentsViewController.swift in Sources */,
+				D11DA2862A35ECFC00BC3EB0 /* AddPaymentMethodMode.swift in Sources */,
 				D120F2CE27F1DEB4009B30DD /* RoutingProtocol.swift in Sources */,
 				D138A7742A14D1E4004A4CB9 /* VerifyEmailValidator.swift in Sources */,
 				D17EFFA72846466900F4B6DD /* UICollectionViewCell+Helpers.swift in Sources */,
@@ -1770,7 +1774,7 @@
 				D19AA5C42A0E486A00F9493B /* SettingsRouterTests.swift in Sources */,
 				D1FC23CE290B032100ECD7AF /* EncodableTests.swift in Sources */,
 				D11A7E5928FD2CCC005B93D2 /* TransactionHistoryViewModelTests.swift in Sources */,
-				D19197CB281800C700B892FA /* AddCreditCardViewModelTests.swift in Sources */,
+				D19197CB281800C700B892FA /* AddPaymentMethodViewModelTests.swift in Sources */,
 				D1FECF2328886BDF00EEC63B /* UserDocumentsViewModelTests.swift in Sources */,
 				D1EFAB4028BECA0300AB1C31 /* TransactionDetailsViewModelTests.swift in Sources */,
 				D1E9779C290AAE1300FB20AB /* KycRouterTests.swift in Sources */,

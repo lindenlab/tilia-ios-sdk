@@ -1,5 +1,5 @@
 //
-//  AddCreditCardViewModelTests.swift
+//  AddPaymentMethodViewModelTests.swift
 //  TiliaSDKTests
 //
 //  Created by Serhii.Petrishenko on 26.04.2022.
@@ -9,7 +9,7 @@ import XCTest
 import Combine
 @testable import TiliaSDK
 
-final class AddCreditCardViewModelTests: XCTestCase {
+final class AddPaymentMethodViewModelTests: XCTestCase {
   
   var subscriptions: Set<AnyCancellable>!
   
@@ -24,9 +24,10 @@ final class AddCreditCardViewModelTests: XCTestCase {
     
     let reloadExpectation = XCTestExpectation(description: "testSuccessOpenBrowser_Reload")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = AddCreditCardViewModel(manager: networkManager,
-                                           onReload: { needToReload = (); reloadExpectation.fulfill() },
-                                           onError: nil)
+    let viewModel = AddPaymentMethodViewModel(manager: networkManager,
+                                              mode: .creditCard,
+                                              onReload: { needToReload = (); reloadExpectation.fulfill() },
+                                              onError: nil)
     
     let loadingExpectation = XCTestExpectation(description: "testSuccessOpenBrowser_Loading")
     viewModel.loading.sink {
@@ -61,9 +62,10 @@ final class AddCreditCardViewModelTests: XCTestCase {
     
     let errorCallbackExpectation = XCTestExpectation(description: "testErrorOpenBrowser_ErrorCallback")
     let networkManager = NetworkManager(serverClient: ServerTestClient())
-    let viewModel = AddCreditCardViewModel(manager: networkManager,
-                                           onReload: { },
-                                           onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
+    let viewModel = AddPaymentMethodViewModel(manager: networkManager,
+                                              mode: .paypal,
+                                              onReload: { },
+                                              onError: { errorCallback = $0; errorCallbackExpectation.fulfill() })
     
     let errorExpectation = XCTestExpectation(description: "testErrorOpenBrowser_Error")
     viewModel.error.sink { [weak viewModel] in

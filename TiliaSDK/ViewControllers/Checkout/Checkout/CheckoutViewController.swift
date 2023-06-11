@@ -106,8 +106,12 @@ extension CheckoutViewController: PaymentFooterViewDelegate {
     viewModel.payInvoice()
   }
   
+  func paymentFooterViewAddPaypalButtonDidTap(_ footerView: PaymentFooterView) {
+    router.routeToAddPaymentMethodView(with: .paypal)
+  }
+  
   func paymentFooterViewAddCreditCardButtonDidTap(_ footerView: PaymentFooterView) {
-    router.routeToAddCreditCardView()
+    router.routeToAddPaymentMethodView(with: .creditCard)
   }
   
   func paymentFooterViewCloseButtonDidTap(_ footerView: PaymentFooterView) {
