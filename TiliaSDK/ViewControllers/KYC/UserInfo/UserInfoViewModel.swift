@@ -101,7 +101,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private var isFlowCompleted = false
-  private var timer: Timer?
   
   init(manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -265,10 +264,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     onComplete?(model)
   }
   
-  deinit {
-    timer?.invalidate()
-  }
-  
 }
 
 // MARK: - Private Methods
@@ -293,7 +288,6 @@ private extension UserInfoViewModel {
   }
   
   func getSubmittedStatus(for kycId: String) {
-    invalidateTimer()
     manager.getSubmittedKycStatus(with: kycId) { [weak self] result in
       guard let self = self else { return }
       switch result {
@@ -304,7 +298,7 @@ private extension UserInfoViewModel {
           self.isFlowCompleted = true
           self.successfulCompleting.send()
         case .processing:
-          self.resumeTimer(kycId: kycId)
+          self.debounceGetSubmittedStatus(for: kycId)
           self.processing.send()
         case .manualReview:
           self.manualReview.send()
@@ -317,16 +311,10 @@ private extension UserInfoViewModel {
     }
   }
   
-  func resumeTimer(kycId: String) {
-    timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
-      guard let self = self else { return }
+  func debounceGetSubmittedStatus(for kycId: String) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
       self.getSubmittedStatus(for: kycId)
     }
-  }
-
-  func invalidateTimer() {
-    timer?.invalidate()
-    timer = nil
   }
   
   func didFail(with error: ErrorWithBoolModel) {
@@ -348,7 +336,7 @@ private extension UserInfoViewModel {
   func getStatus(for model: SubmittedKycModel) {
     successfulUploading.send()
     sendUpdateCallback(with: model.state)
-    resumeTimer(kycId: model.kycId)
+    debounceGetSubmittedStatus(for: model.kycId)
   }
   
   func didVerifyEmail(with mode: VerifyEmailMode) {
