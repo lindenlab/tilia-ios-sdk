@@ -101,7 +101,6 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   private let onComplete: ((TLCompleteCallback) -> Void)?
   private var isFlowCompleted = false
-  private var timer: Timer?
   
   init(manager: NetworkManager,
        onUpdate: ((TLUpdateCallback) -> Void)?,
@@ -132,7 +131,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
                      at index: Int,
                      isExpanded: Bool,
                      nextSectionIndex: Int?) {
-    guard let isSectionFilled = validator(for: section.type)?.isFilled(for: userInfoModel) else { return }
+    guard let isSectionFilled = validator(for: section.type, checkVerifyEmail: false)?.isFilled(for: userInfoModel) else { return }
     expandSection.send((index, userInfoModel, isExpanded, isSectionFilled, nextSectionIndex))
   }
   
@@ -205,7 +204,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     }
     
     guard isFieldChanged,
-          let isSectionFilled = validator(for: section.type)?.isFilled(for: userInfoModel) else { return }
+          let isSectionFilled = validator(for: section.type, checkVerifyEmail: true)?.isFilled(for: userInfoModel) else { return }
     setSectionText.send((indexPath, fieldIndex, text, isSectionFilled))
   }
   
@@ -225,7 +224,7 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
   
   func cancelEditingEmail(for section: UserInfoSectionBuilder.Section, at index: Int) {
     userInfoModel.needToVerifyEmail = nil
-    let isFilled = validator(for: section.type)?.isFilled(for: userInfoModel) == true
+    let isFilled = validator(for: section.type, checkVerifyEmail: false)?.isFilled(for: userInfoModel) == true
     isSectionFilled.send((isFilled, index))
     didEndEditingEmail.send((userInfoModel, index))
   }
@@ -265,19 +264,15 @@ final class UserInfoViewModel: UserInfoViewModelProtocol, UserInfoDataStore {
     onComplete?(model)
   }
   
-  deinit {
-    timer?.invalidate()
-  }
-  
 }
 
 // MARK: - Private Methods
 
 private extension UserInfoViewModel {
   
-  func validator(for section: UserInfoSectionBuilder.Section.SectionType) -> UserInfoValidator? {
+  func validator(for section: UserInfoSectionBuilder.Section.SectionType, checkVerifyEmail: Bool) -> UserInfoValidator? {
     switch section {
-    case .email: return UserInfoEmailValidator()
+    case .email: return UserInfoEmailValidator(isVerify: checkVerifyEmail)
     case .location: return UserInfoLocationValidator()
     case .personal: return UserInfoPersonalValidator()
     case .tax: return UserInfoTaxValidator()
@@ -293,7 +288,6 @@ private extension UserInfoViewModel {
   }
   
   func getSubmittedStatus(for kycId: String) {
-    invalidateTimer()
     manager.getSubmittedKycStatus(with: kycId) { [weak self] result in
       guard let self = self else { return }
       switch result {
@@ -304,7 +298,7 @@ private extension UserInfoViewModel {
           self.isFlowCompleted = true
           self.successfulCompleting.send()
         case .processing:
-          self.resumeTimer(kycId: kycId)
+          self.debounceGetSubmittedStatus(for: kycId)
           self.processing.send()
         case .manualReview:
           self.manualReview.send()
@@ -317,16 +311,10 @@ private extension UserInfoViewModel {
     }
   }
   
-  func resumeTimer(kycId: String) {
-    timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { [weak self] _ in
-      guard let self = self else { return }
+  func debounceGetSubmittedStatus(for kycId: String) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
       self.getSubmittedStatus(for: kycId)
     }
-  }
-
-  func invalidateTimer() {
-    timer?.invalidate()
-    timer = nil
   }
   
   func didFail(with error: ErrorWithBoolModel) {
@@ -348,7 +336,7 @@ private extension UserInfoViewModel {
   func getStatus(for model: SubmittedKycModel) {
     successfulUploading.send()
     sendUpdateCallback(with: model.state)
-    resumeTimer(kycId: model.kycId)
+    debounceGetSubmittedStatus(for: model.kycId)
   }
   
   func didVerifyEmail(with mode: VerifyEmailMode) {

@@ -10,16 +10,23 @@ import XCTest
 
 final class UserInfoValidatorTests: XCTestCase {
   
-  func testSuccessUserInfoEmailValidator() {
+  func testSuccessUserInfoVerifiedEmailValidator() {
     var model = UserInfoModel()
     model.email = "test@gmail.com"
-    let isFilled = UserInfoEmailValidator().isFilled(for: model)
+    let isFilled = UserInfoEmailValidator(isVerify: false).isFilled(for: model)
+    XCTAssertTrue(isFilled)
+  }
+  
+  func testSuccessUserInfoNeedToVerifyEmailValidator() {
+    var model = UserInfoModel()
+    model.needToVerifyEmail = "test@gmail.com"
+    let isFilled = UserInfoEmailValidator(isVerify: true).isFilled(for: model)
     XCTAssertTrue(isFilled)
   }
   
   func testFailureUserInfoEmailValidator() {
     let model = UserInfoModel()
-    let isFilled = UserInfoEmailValidator().isFilled(for: model)
+    let isFilled = UserInfoEmailValidator(isVerify: true).isFilled(for: model)
     XCTAssertFalse(isFilled)
   }
   
