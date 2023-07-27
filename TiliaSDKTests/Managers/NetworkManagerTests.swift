@@ -333,11 +333,11 @@ final class NetworkManagerTests: XCTestCase {
     XCTAssertEqual(model?.total, 40)
   }
   
-  func testGetAddCreditCardRedirectUrlSuccess() {
+  func testGetAddPaymentMethodRedirectUrlSuccess() {
     TLManager.shared.setToken(UUID().uuidString)
     var url: URL?
-    let expectation = XCTestExpectation(description: "testGetAddCreditCardRedirectUrlSuccess")
-    networkManager.getAddCreditCardRedirectUrl { result in
+    let expectation = XCTestExpectation(description: "testGetAddPaymentMethodRedirectUrlSuccess")
+    networkManager.getAddPaymentMethodRedirectUrl(for: .creditCard) { result in
       expectation.fulfill()
       switch result {
       case .success(let model):

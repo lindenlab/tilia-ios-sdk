@@ -1,5 +1,5 @@
 //
-//  AddCreditCardViewController.swift
+//  AddPaymentMethodViewController.swift
 //  TiliaSDK
 //
 //  Created by Serhii.Petrishenko on 21.04.2022.
@@ -8,16 +8,16 @@
 import UIKit
 import Combine
 
-final class AddCreditCardViewController: BaseViewController {
+final class AddPaymentMethodViewController: BaseViewController {
   
-  private let viewModel: AddCreditCardViewModelProtocol
-  private let router: AddCreditCardRoutingProtocol
+  private let viewModel: AddPaymentMethodViewModelProtocol
+  private let router: AddPaymentMethodRoutingProtocol
   private var subscriptions: Set<AnyCancellable> = []
   
-  private let titleInfoView: TitleInfoView = {
+  private lazy var titleInfoView: TitleInfoView = {
     let view = TitleInfoView()
-    view.title = L.addCreditCardTitle
-    view.subTitle = L.addCreditCardMessage
+    view.title = viewModel.mode.title
+    view.subTitle = viewModel.mode.message
     return view
   }()
   
@@ -56,12 +56,14 @@ final class AddCreditCardViewController: BaseViewController {
   }
   
   init(manager: NetworkManager,
+       mode: AddPaymentMethodMode,
        onReload: @escaping () -> Void,
        onError: ((TLErrorCallback) -> Void)?) {
-    let router = AddCreditCardRouter()
-    self.viewModel = AddCreditCardViewModel(manager: manager,
-                                            onReload: onReload,
-                                            onError: onError)
+    let router = AddPaymentMethodRouter()
+    self.viewModel = AddPaymentMethodViewModel(manager: manager,
+                                               mode: mode,
+                                               onReload: onReload,
+                                               onError: onError)
     self.router = router
     super.init()
     router.viewController = self
@@ -79,7 +81,7 @@ final class AddCreditCardViewController: BaseViewController {
 
 // MARK: - Private Methods
 
-private extension AddCreditCardViewController {
+private extension AddPaymentMethodViewController {
   
   func setup() {
     view.addSubview(stackView)
@@ -98,8 +100,8 @@ private extension AddCreditCardViewController {
     }.store(in: &subscriptions)
     
     viewModel.error.sink { [weak self] _ in
-      self?.router.showToast(title: L.errorAddCreditTitle,
-                             message: L.errorAddCreditMessage)
+      self?.router.showToast(title: L.errorAddPaymentMethodTitle,
+                             message: L.errorAddPaymentMethodMessage)
     }.store(in: &subscriptions)
     
     viewModel.openUrl.sink { [weak self] in

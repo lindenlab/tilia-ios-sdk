@@ -118,9 +118,8 @@ final class NetworkManager {
     serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
   }
   
-  func getAddCreditCardRedirectUrl(completion: @escaping CompletionResultHandler<RedirectUrlModel>) {
-    let router = AuthRouter.getAddCreditCardRedirectUrl
-    serverClient.performRequestWithBaseResponseDecodableModel(router: router, completion: completion)
+  func getAddPaymentMethodRedirectUrl(for mode: AddPaymentMethodMode, completion: @escaping CompletionResultHandler<RedirectUrlModel>) {
+    serverClient.performRequestWithBaseResponseDecodableModel(router: mode.router, completion: completion)
   }
   
   func submitKyc(with model: SubmitKycModel, completion: @escaping CompletionResultHandler<SubmittedKycModel>) {

@@ -43,7 +43,7 @@ struct CheckoutSectionBuilder {
       
       var items: [Item]
       var isPayButtonEnabled: Bool
-      let isCreditCardButtonHidden: Bool
+      let areAddPaymentMethodButtonsHidden: Bool
       var isEmpty: Bool { return items.isEmpty }
     }
     
@@ -151,7 +151,7 @@ struct CheckoutSectionBuilder {
       let title = model.isEmpty ? nil : L.payNow
       view.configure(payButtonTitle: title,
                      closeButtonTitle: L.cancel,
-                     isCreditCardButtonHidden: model.isCreditCardButtonHidden,
+                     areAddPaymentMethodButtonsHidden: model.areAddPaymentMethodButtonsHidden,
                      delegate: delegate,
                      textViewSubTitle: title,
                      textViewDelegate: delegate)
@@ -161,7 +161,7 @@ struct CheckoutSectionBuilder {
       let view = tableView.dequeue(PaymentFooterView.self)
       view.configure(payButtonTitle: nil,
                      closeButtonTitle: L.done,
-                     isCreditCardButtonHidden: true,
+                     areAddPaymentMethodButtonsHidden: true,
                      delegate: delegate,
                      textViewSubTitle: nil,
                      textViewDelegate: delegate)
@@ -332,7 +332,7 @@ private extension CheckoutSectionBuilder {
       ]
       payment = .init(items: items,
                       isPayButtonEnabled: true,
-                      isCreditCardButtonHidden: true)
+                      areAddPaymentMethodButtonsHidden: true)
     } else {
       let count = paymentMethods.count
       let hasNotOnlyWallet = paymentMethods.first(where: { !$0.type.isWallet }) != nil
@@ -347,7 +347,7 @@ private extension CheckoutSectionBuilder {
       }
       payment = .init(items: items,
                       isPayButtonEnabled: false,
-                      isCreditCardButtonHidden: false)
+                      areAddPaymentMethodButtonsHidden: false)
     }
     return payment
   }

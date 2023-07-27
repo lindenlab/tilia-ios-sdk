@@ -76,7 +76,7 @@ struct PaymentSelectionSectionBuilder {
     let title = section.isEmpty ? nil : L.usePaymentMethod
     view.configure(payButtonTitle: title,
                    closeButtonTitle: L.cancel,
-                   isCreditCardButtonHidden: false,
+                   areAddPaymentMethodButtonsHidden: false,
                    delegate: delegate,
                    textViewSubTitle: title,
                    textViewDelegate: delegate)

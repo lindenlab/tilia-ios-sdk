@@ -9,21 +9,24 @@ import Alamofire
 
 enum AuthRouter: RouterProtocol {
   
-  case getAddCreditCardRedirectUrl
+  case getCreditCardRedirectUrl
+  case getPaypalRedirectUrl
   
   var method: HTTPMethod {
     switch self {
-    case .getAddCreditCardRedirectUrl: return .post
+    case .getCreditCardRedirectUrl, .getPaypalRedirectUrl: return .post
     }
   }
   
   var bodyParameters: Parameters? {
+    var parameters = ["mechanism": "tilia_hosted"]
     switch self {
-    case .getAddCreditCardRedirectUrl: return [
-      "mechanism": "tilia_hosted",
-      "flow": "addcard"
-    ]
+    case .getCreditCardRedirectUrl:
+      parameters["flow"] = "addcard"
+    case .getPaypalRedirectUrl:
+      parameters["flow"] = "addpaypal"
     }
+    return parameters
   }
   
   var service: String { return "auth" }
@@ -38,7 +41,8 @@ extension AuthRouter {
   
   var testData: Data? {
     switch self {
-    case .getAddCreditCardRedirectUrl: return readJSONFromFile("GetAddCreditCardRedirectUrlResponse")
+    case .getCreditCardRedirectUrl, .getPaypalRedirectUrl:
+      return readJSONFromFile("GetAddPaymentMethodRedirectUrlResponse")
     }
   }
   

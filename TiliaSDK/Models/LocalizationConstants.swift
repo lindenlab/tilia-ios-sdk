@@ -36,11 +36,13 @@ enum L {
   static let addPaymentMethodTitle = "addPaymentMethodTitle".localized
   static let addCreditCardTitle = "addCreditCardTitle".localized
   static let addCreditCardMessage = "addCreditCardMessage".localized
+  static let addPaypalTitle = "addPaypalTitle".localized
+  static let addPaypalMessage = "addPaypalMessage".localized
   static let openBrowser = "openBrowser".localized
   static let opening = "opening".localized
   static let goBack = "goBack".localized
-  static let errorAddCreditTitle = "errorAddCreditTitle".localized
-  static let errorAddCreditMessage = "errorAddCreditMessage".localized
+  static let errorAddPaymentMethodTitle = "errorAddPaymentMethodTitle".localized
+  static let errorAddPaymentMethodMessage = "errorAddPaymentMethodMessage".localized
   static let verifyYourIdentity = "verifyYourIdentity".localized
   static let userInfoMessage = "userInfoMessage".localized
   static let location = "location".localized
@@ -207,6 +209,7 @@ enum L {
   static let renamePaymentMethodTitle = "renamePaymentMethodTitle".localized
   static let renamePaymentMethodMessage = "renamePaymentMethodMessage".localized
   static let newName = "newName".localized
+  static let add = "add".localized
   
   static func kycInfoSubmitted(with arguments: CVarArg...) -> String {
     return "kycInfoSubmitted".localized(with: arguments)
